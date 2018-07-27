@@ -1,6 +1,7 @@
 PROGETTO COMPILATORI E INTERPRETI 2018
 
-Il progetto consiste nella realizzazione di un compilatore per un linguaggio la cui sintassi deve comprendere quella di FOOL che si trova nel prototipo disponibile 
+Il progetto consiste nella realizzazione di un compilatore per un linguaggio
+la cui sintassi deve comprendere quella di FOOL che si trova nel prototipo disponibile 
 sul sito di e-learning.
 
 Il progetto e` una estensione object-oriented imperativa del linguaggio FOOL 

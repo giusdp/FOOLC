@@ -3,11 +3,10 @@
 \usepackage[italian]{babel}
 \usepackage[utf8]{inputenc}
 
-\title{Report Progetto Compilatori e Interpreti}
-\subtitle{Un Compilatore per FOOL}
-\date{A.A 2017/2018}
-\author{Giuseppe De Palma, Eduart Uzeir, Domenico Coriale e Andrew Memma}
-
+\title{Report del Progetto di Compilatori e Interpreti}
+\date{Data Consegna}
+\author{Giuseppe De Palma XXXXXX, Eduart Uzeir XXXXXX\\ Domenico Coriale XXXXXX e Andrew Memma XXXXXX\\
+\\Corso di Laurea Magistrale in Informatica 2017/2018}
 \begin{document}
 
 \maketitle
@@ -15,15 +14,38 @@
 \tableofcontents
 
 \chapter{Introduzione}
-Breve capitolo introduttivo sul progetto. Viene discusso l'obiettivo generale del progetto e la base da cui si è partiti.
+Breve capitolo introduttivo sul progetto. Viene discusso l'obiettivo generale del progetto 
+e la base da cui si è partiti.\\
+\\
+Il lavoro presentato riguarda un compilatore per un semplice linguaggio di programmazione imperativo: FOOL.
+L'obiettivo di tale progetto è puramente accademico, volto allo studio sullo sviluppo e funzionamento dei compilatori.\\
+Il progetto è parte di esame del corso ``Compilatori e Intepreti'' della Magistrale in Informatica dell'università di Bologna.
+Il gruppo di lavoro, composto da quattro studenti del suddetto corso, si è dedicato allo sviluppo durante il periodo
+di Luglio e Agosto 2018.
 
-\section{Outline}
-Brevissima sezione dove si presentano i contenuti delle sezioni successive.
-
-\chapter{Struttura del Progetto}
+\chapter{Descrizione del Progetto}
 Si discute brevemente la struttura dei package e delle classi, l'implementazione etc.
+
+FOOL è un linguaggio imperativo molto basilare che è stato parzialmente esteso con il paradigma orientato a oggetti.
+Questo progetto è un esercizio puramente accademico sull’implementazione di un
+compilatore/interprete per un linguaggio di programmazione semplificato, FOOL. Il
+lavoro è stato svolto partendo da una base giá funzionante e fornita dal professore,
+che è stata poi estesa con le caratteristiche richieste. Il progetto si basa sul tool per
+la generazione automatica di parser Antlr, nella sua versione 4.7.
+Nella sua versione iniziale FOOL prevedeva le operazioni di base di un linguaggio di
+programmazione imperativo (definizione e utilizzo di simboli e funzioni). Nel corso del
+progetto è stato esteso parzialmente con il paradigma orientato a oggetti, dando la
+possibilitá di definire classi e istanziarle a runtime.
+Si tratta appunto di un esercizio di stile senza alcuna finalitá pratica, in quanto il
+linguaggio si basa su programmi e funzioni composti da una singola istruzione
+effettiva e utilizza variabili dal valore non modificabile (di fatto soltanto costanti).
+Essendo queste limitazioni derivanti direttamente dalla grammatica BNF stabilita
+dalla consegna sono state intese come imposizioni e non modificate.
+
 \section{Utilizzo}
 Si spiega con dettaglio come lanciare e utilizzare il progetto.
+
+\chapter{Analisi Preliminare}
 
 \chapter{Sintassi}
 Punto di inizio dello sviluppo. Si discute l'analisi lessicale. La grammatica, la generazione di token.
