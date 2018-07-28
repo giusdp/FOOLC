@@ -4,7 +4,7 @@
 \usepackage[utf8]{inputenc}
 
 \title{Report del Progetto di Compilatori e Interpreti}
-\date{Data Consegna}
+\date{Data di Consegna}
 \author{Giuseppe De Palma XXXXXX, Eduart Uzeir XXXXXX\\ Domenico Coriale XXXXXX e Andrew Memma XXXXXX\\
 \\Corso di Laurea Magistrale in Informatica 2017/2018}
 \begin{document}
@@ -14,33 +14,17 @@
 \tableofcontents
 
 \chapter{Introduzione}
-Breve capitolo introduttivo sul progetto. Viene discusso l'obiettivo generale del progetto 
-e la base da cui si è partiti.\\
-\\
-Il lavoro presentato riguarda un compilatore per un semplice linguaggio di programmazione imperativo: FOOL.
-L'obiettivo di tale progetto è puramente accademico, volto allo studio sullo sviluppo e funzionamento dei compilatori.\\
-Il progetto è parte di esame del corso ``Compilatori e Intepreti'' della Magistrale in Informatica dell'università di Bologna.
-Il gruppo di lavoro, composto da quattro studenti del suddetto corso, si è dedicato allo sviluppo durante il periodo
-di Luglio e Agosto 2018.
+Il lavoro presentato riguarda un compilatore per un semplice linguaggio di programmazione imperativo: FOOL. Il progetto è parte dell'esame del corso ``Compilatori e Intepreti'' della Magistrale in Informatica, Università di Bologna. Il lavoro è stato svolto da 4 studenti del suddetto corso nel periodo estivo del 2018.\\
+
+L'obiettivo di tale progetto è puramente accademico, volto allo studio sullo sviluppo e funzionamento dei compilatori. Partendo dal testo di un programma scritto in FOOL, il compilatore lo analizza sia per ricavarne le informazioni necessarie per generare codice eseguibile, sia per controllarne la correttezza. Si fa uso di diverse tecniche per cercare errori nei programmi (a tempo di compilazione). In particolare, il linguaggio si avvale di un semplice sistema di tipi e il compilatore esegue un controllo di tipi statico che permette di segnalare all'utente errori di tipo. Con questo controllo si ha il vantaggio di evitare i cosiddetti errori \textit{untrapped} e una parte degli errori \textit{trapped}, cioè l'insieme degli errori ``proibiti''.\footnote{Distinguiamo due generi di errore in un programma: errori \textit{trapped}, ovvero quelli che provocano il fallimento della computazione, e gli errori	\textit{untrapped}, che non	presentano sintomi immediatamente visibili, e sono perciò più insidiosi. Al primo tipo appartengono, ad esempio, la divisione per zero o un accesso proibito alla memoria; al secondo la lettura erronea di una porzione non significativa della memoria.}\\
+
+FOOL non è l'unico linguaggio utilizzato, infatti il compilatore deve generare del codice eseguibile (da un elaboratore) partendo da un programma scritto in FOOL. Questo nuovo codice è scritto in un linguaggio \textit{assembly} per una \textit{stack machine} con registri (SVM, che sta per Simple Virtual Machine). Anch'esso usato per scopi accademici, senza un reale utilizzo pratico. Ha istruzioni per alcuni calcoli aritmentici, gestione dello \textit{stack} e salti condizionati. In accordo con le estensioni fatte a FOOL, anche il linguaggio della SVM è stato arricchito.
+
+\section{Outline}
+Nei capitoli successivi è presentato in modo approfondito il progetto e le sue caratteristiche principali. In particolare è descritta la struttura del compilatore e come utilizzarlo, per poi mostrare una breve analisi fatta sulle diverse parti che lo costituiscono. Il capitolo 4 discute la grammatica del linguaggio e come da questa si ricavino le informazioni per proseguire con la compilazione. Nel capitolo 5 è discussa l'analisi semantica, di particolare importanza è la sezione del \textit{type checking}. Prima di concludere è descritta, nel capitolo 6, la generazione del codice \textit{assembly}.
 
 \chapter{Descrizione del Progetto}
 Si discute brevemente la struttura dei package e delle classi, l'implementazione etc.
-
-FOOL è un linguaggio imperativo molto basilare che è stato parzialmente esteso con il paradigma orientato a oggetti.
-Questo progetto è un esercizio puramente accademico sull’implementazione di un
-compilatore/interprete per un linguaggio di programmazione semplificato, FOOL. Il
-lavoro è stato svolto partendo da una base giá funzionante e fornita dal professore,
-che è stata poi estesa con le caratteristiche richieste. Il progetto si basa sul tool per
-la generazione automatica di parser Antlr, nella sua versione 4.7.
-Nella sua versione iniziale FOOL prevedeva le operazioni di base di un linguaggio di
-programmazione imperativo (definizione e utilizzo di simboli e funzioni). Nel corso del
-progetto è stato esteso parzialmente con il paradigma orientato a oggetti, dando la
-possibilitá di definire classi e istanziarle a runtime.
-Si tratta appunto di un esercizio di stile senza alcuna finalitá pratica, in quanto il
-linguaggio si basa su programmi e funzioni composti da una singola istruzione
-effettiva e utilizza variabili dal valore non modificabile (di fatto soltanto costanti).
-Essendo queste limitazioni derivanti direttamente dalla grammatica BNF stabilita
-dalla consegna sono state intese come imposizioni e non modificate.
 
 \section{Utilizzo}
 Si spiega con dettaglio come lanciare e utilizzare il progetto.
