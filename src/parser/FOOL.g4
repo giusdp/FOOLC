@@ -32,15 +32,17 @@ type   : INT
        | BOOL 
        ;  
     
-exp    : left=term (PLUS right=exp)?
+exp    : left=term ((PLUS | MINUS) right=exp)?
        ;
    
-term   : left=factor (TIMES right=term)?
+term   : left=factor ((TIMES | DIV) right=term)?
        ;
    
-factor : left=value (EQ right=value)?
+factor : left=value ((EQ|GREATER|LESS|GREATEREQUAL|LESSEQUAL) right=boolops)?
        ;     
-   
+
+boolops: (NOT)? left=value ((OR|AND) right=boolops)?;
+
 value  : INTEGER          #intVal
        | ( TRUE | FALSE ) #boolVal
        | LPAR exp RPAR    #baseExp
@@ -77,11 +79,15 @@ INT    : 'int' ;
 BOOL   : 'bool' ;
 
 // AGGIUNTI PER IL PROGETTO
-LESSEQUAL     : '<=';
+MINUS         : '-';
+DIVISION      : '/';
+GREATER       : '>';
+LESS          : '<';
 GREATEREQUAL  : '>=';
-AND           : '&&';
+LESSEQUAL     : '<=';
 OR            : '||';
-NOT           : '!';
+AND           : '&&';
+NOT           : 'not';
 
 //Numbers
 fragment DIGIT : '0'..'9';    
