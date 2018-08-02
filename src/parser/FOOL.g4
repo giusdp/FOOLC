@@ -32,10 +32,10 @@ type   : INT
        | BOOL 
        ;  
     
-exp    : left=term ((PLUS | MINUS) right=exp)?
+exp    : (MINUS)? left=term ((PLUS | MINUS) right=exp)?
        ;
    
-term   : left=factor ((TIMES | DIV) right=term)?
+term   : left=factor ((TIMES | DIVISION) right=term)?
        ;
    
 factor : left=value ((EQ|GREATER|LESS|GREATEREQUAL|LESSEQUAL) right=boolops)?
