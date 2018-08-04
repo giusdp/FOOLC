@@ -40,8 +40,8 @@ value  : INTEGER          #intVal
        | ( TRUE | FALSE ) #boolVal
        | LPAR exp RPAR    #baseExp
        | IF cond=exp THEN CLPAR thenBranch=exp CRPAR ELSE CLPAR elseBranch=exp CRPAR  #ifExp
-       | ID                                            #varExp
-       | ID ( LPAR (exp (COMMA exp)* )? RPAR )        #funExp
+       | ID                                             #varExp
+       | ID ( LPAR (exp (COMMA exp)* )? RPAR )?         #funExp
        ; 
 
 /*------------------------------------------------------------------
@@ -94,3 +94,7 @@ ID             : CHAR (CHAR | DIGIT)* ;
 WS             : (' '|'\t'|'\n'|'\r')-> skip;
 LINECOMENTS    : '//' (~('\n'|'\r'))* -> skip;
 BLOCKCOMENTS   : '/*'( ~('/'|'*')|'/'~'*'|'*'~'/'|BLOCKCOMENTS)* '*/' -> skip;
+
+//VERY SIMPLISTIC ERROR CHECK FOR THE LEXING PROCESS, THE OUTPUT GOES DIRECTLY TO THE TERMINAL
+//THIS IS WRONG!!!!
+ERR     : . { System.out.println("Invalid char: "+ getText()); lexicalErrors++; } -> channel(HIDDEN); 

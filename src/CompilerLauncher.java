@@ -72,8 +72,8 @@ public class CompilerLauncher {
 		}
 
 		Environment env = new Environment();
+		
 		ArrayList<SemanticError> err = ast.checkSemantics(env);
-
 		if (err.size() > 0) {
 			System.out.println("You had: " + err.size() + " error(s):");
 			for (SemanticError e : err) {
