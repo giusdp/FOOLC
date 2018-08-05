@@ -91,14 +91,17 @@ public class CompilerLauncher {
 		System.out.println("Perfoming Type Checking...");
 		Node type = ast.typeCheck(); //type-checking bottom-up 
 
-		System.out.println("Type Checking Succesful");
+		System.out.println(type.toPrint("Type checking succesful! Type of the program is: "));
 
 		/*if (type instanceof BottomTypeNode) {
 			System.out.println("Type checking of the program not successful.");
 			System.exit(2);
 		}*/
 
-		if (doCodeGen) {
+		if (!doCodeGen) {
+			System.out.println("Code generation disabled!");
+		}
+		else {
 
 			try {
 				// CODE GENERATION  prova.fool.asm

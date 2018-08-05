@@ -1,1 +1,1 @@
-true + true;
+not true && true;
