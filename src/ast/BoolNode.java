@@ -5,31 +5,36 @@ import java.util.ArrayList;
 import util.Environment;
 import util.SemanticError;
 
+
+//Node representing a boolean value: False or True
 public class BoolNode implements Node {
 
+  //The boolean value
   private boolean val;
-  
-  public BoolNode (boolean n) {
-    val=n;
-  }
-  
-  public String toPrint(String s) {
-    if (val) return s+"Bool:true\n";
-    else return s+"Bool:false\n";  
-  }
-  
-  public Node typeCheck() {
-    return new BoolTypeNode();
-  }    
-  
-  @Override
- 	public ArrayList<SemanticError> checkSemantics(Environment env) {
 
- 	  return new ArrayList<SemanticError>();
- 	}
-  
+  public BoolNode(boolean n) {
+      val = n;
+  }
+
+  public String toPrint(String s) {
+      if (val)
+          return s + "Bool:true\n";
+      else
+          return s + "Bool:false\n";
+  }
+
+  //A bool node is of type Bool, always
+  public Node typeCheck() {
+      return new BoolTypeNode();
+  }
+
+  @Override
+  public ArrayList<SemanticError> checkSemantics(Environment env) {
+      return new ArrayList<SemanticError>();
+  }
+
   public String codeGeneration() {
-		return "push "+(val?1:0)+"\n";
-	  }
-         
-}  
+      return "push " + (val ? 1 : 0) + "\n";
+  }
+
+}

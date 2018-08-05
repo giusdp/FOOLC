@@ -21,7 +21,7 @@ public class FOOLLexer extends Lexer {
 		LPAR=10, RPAR=11, CLPAR=12, CRPAR=13, IF=14, THEN=15, ELSE=16, PRINT=17, 
 		LET=18, IN=19, VAR=20, FUN=21, INT=22, BOOL=23, MINUS=24, DIVISION=25, 
 		GREATER=26, LESS=27, GREATEREQUAL=28, LESSEQUAL=29, OR=30, AND=31, NOT=32, 
-		INTEGER=33, ID=34, WS=35, LINECOMENTS=36, BLOCKCOMENTS=37;
+		INTEGER=33, ID=34, WS=35, LINECOMMENTS=36, BLOCKCOMMENTS=37;
 	public static String[] modeNames = {
 		"DEFAULT_MODE"
 	};
@@ -31,7 +31,7 @@ public class FOOLLexer extends Lexer {
 		"LPAR", "RPAR", "CLPAR", "CRPAR", "IF", "THEN", "ELSE", "PRINT", "LET", 
 		"IN", "VAR", "FUN", "INT", "BOOL", "MINUS", "DIVISION", "GREATER", "LESS", 
 		"GREATEREQUAL", "LESSEQUAL", "OR", "AND", "NOT", "DIGIT", "INTEGER", "CHAR", 
-		"ID", "WS", "LINECOMENTS", "BLOCKCOMENTS"
+		"ID", "WS", "LINECOMMENTS", "BLOCKCOMMENTS"
 	};
 
 	private static final String[] _LITERAL_NAMES = {
@@ -45,7 +45,7 @@ public class FOOLLexer extends Lexer {
 		"FALSE", "LPAR", "RPAR", "CLPAR", "CRPAR", "IF", "THEN", "ELSE", "PRINT", 
 		"LET", "IN", "VAR", "FUN", "INT", "BOOL", "MINUS", "DIVISION", "GREATER", 
 		"LESS", "GREATEREQUAL", "LESSEQUAL", "OR", "AND", "NOT", "INTEGER", "ID", 
-		"WS", "LINECOMENTS", "BLOCKCOMENTS"
+		"WS", "LINECOMMENTS", "BLOCKCOMMENTS"
 	};
 	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
 
@@ -156,7 +156,7 @@ public class FOOLLexer extends Lexer {
 		"<\3\2\2\2\u00ac\u00ad\7~\2\2\u00ad\u00ae\7~\2\2\u00ae>\3\2\2\2\u00af\u00b0"+
 		"\7(\2\2\u00b0\u00b1\7(\2\2\u00b1@\3\2\2\2\u00b2\u00b3\7p\2\2\u00b3\u00b4"+
 		"\7q\2\2\u00b4\u00b5\7v\2\2\u00b5B\3\2\2\2\u00b6\u00b7\4\62;\2\u00b7D\3"+
-		"\2\2\2\u00b8\u00ba\7/\2\2\u00b9\u00b8\3\2\2\2\u00b9\u00ba\3\2\2\2\u00ba"+
+		"\2\2\2\u00b8\u00ba\5\61\31\2\u00b9\u00b8\3\2\2\2\u00b9\u00ba\3\2\2\2\u00ba"+
 		"\u00bc\3\2\2\2\u00bb\u00bd\5C\"\2\u00bc\u00bb\3\2\2\2\u00bd\u00be\3\2"+
 		"\2\2\u00be\u00bc\3\2\2\2\u00be\u00bf\3\2\2\2\u00bfF\3\2\2\2\u00c0\u00c1"+
 		"\t\2\2\2\u00c1H\3\2\2\2\u00c2\u00c7\5G$\2\u00c3\u00c6\5G$\2\u00c4\u00c6"+

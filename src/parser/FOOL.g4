@@ -16,32 +16,29 @@ varasm : vardec ASM exp ;
 
 fun    : type ID LPAR ( vardec ( COMMA vardec)* )? RPAR (let)? exp ;
 
-dec    : varasm           #varAssignment
-       | fun              #funDeclaration
+dec    : varasm  #varAssignment
+       | fun     #funDeclaration
        ;
-         
    
 type   : INT  
        | BOOL 
        ;  
     
-exp    : (MINUS)? left=term ((PLUS | MINUS) right=exp)?
+exp    : left=term ((PLUS | MINUS) right=exp)?
        ;
    
 term   : left=factor ((TIMES | DIVISION) right=term)?
        ;
    
-factor : left=value ((EQ|GREATER|LESS|GREATEREQUAL|LESSEQUAL) right=boolops)?
-       ;     
-
-boolops: (NOT)? left=value ((OR|AND) right=boolops)?;
+factor : left=value ((EQ|GREATER|LESS|GREATEREQUAL|LESSEQUAL|OR|AND) right=factor)?
+       ;
 
 value  : INTEGER          #intVal
-       | ( TRUE | FALSE ) #boolVal
+       | (NOT)? ( TRUE | FALSE ) #boolVal
        | LPAR exp RPAR    #baseExp
        | IF cond=exp THEN CLPAR thenBranch=exp CRPAR ELSE CLPAR elseBranch=exp CRPAR  #ifExp
-       | ID                                            #varExp
-       | ID ( LPAR (exp (COMMA exp)* )? RPAR )        #funExp
+       | ID                                      #varExp
+       | ID ( LPAR (exp (COMMA exp)* )? RPAR )   #funExp
        ; 
 
 /*------------------------------------------------------------------
@@ -84,7 +81,7 @@ NOT           : 'not';
 
 //Numbers
 fragment DIGIT : '0'..'9';    
-INTEGER        : ('-')?DIGIT+;
+INTEGER        : (MINUS)?DIGIT+;
 
 //IDs
 fragment CHAR  : 'a'..'z' |'A'..'Z' ;
@@ -92,5 +89,5 @@ ID             : CHAR (CHAR | DIGIT)* ;
 
 //ESCAPED SEQUENCES
 WS             : (' '|'\t'|'\n'|'\r')-> skip;
-LINECOMENTS    : '//' (~('\n'|'\r'))* -> skip;
-BLOCKCOMENTS   : '/*'( ~('/'|'*')|'/'~'*'|'*'~'/'|BLOCKCOMENTS)* '*/' -> skip;
+LINECOMMENTS    : '//' (~('\n'|'\r'))* -> skip;
+BLOCKCOMMENTS   : '/*'( ~('/'|'*')|'/'~'*'|'*'~'/'|BLOCKCOMMENTS)* '*/' -> skip;

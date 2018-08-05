@@ -1,0 +1,15 @@
+\babel@toc {italian}{}
+\babel@toc {italian}{}
+\contentsline {chapter}{\numberline {1}Introduzione}{3}
+\contentsline {section}{\numberline {1.1}Outline}{3}
+\contentsline {chapter}{\numberline {2}Descrizione del Progetto}{4}
+\contentsline {section}{\numberline {2.1}Utilizzo}{4}
+\contentsline {chapter}{\numberline {3}Analisi Preliminare}{5}
+\contentsline {chapter}{\numberline {4}Sintassi}{6}
+\contentsline {chapter}{\numberline {5}Semantica}{7}
+\contentsline {section}{\numberline {5.1}Type Checking}{7}
+\contentsline {chapter}{\numberline {6}Generazione del Codice}{8}
+\contentsline {section}{\numberline {6.1}Generazione del Codice Intermedia}{8}
+\contentsline {section}{\numberline {6.2}Generazione del Codice}{8}
+\contentsline {chapter}{\numberline {7}Garbage Collection}{9}
+\contentsline {chapter}{\numberline {8}Conclusioni}{10}

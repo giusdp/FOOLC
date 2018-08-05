@@ -87,12 +87,6 @@ public interface FOOLVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitFactor(FOOLParser.FactorContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link FOOLParser#boolops}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitBoolops(FOOLParser.BoolopsContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code intVal}
 	 * labeled alternative in {@link FOOLParser#value}.
 	 * @param ctx the parse tree

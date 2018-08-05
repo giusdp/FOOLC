@@ -1,0 +1,12 @@
+Gli operatori di disuguaglianza e logici (tutti accorpati nella classe LogicOpsNode), voglione che entrambi gli 
+operandi siano lo stesso tipo. Il typechecking controlla che left e right siano uno il sottotipo dell'altro (quindi
+lo stesso tipo). 
+
+E' giusto? Perché non sono ammessi sottotipi? Un valore float può essere confrontato con un valore int? 
+In Java si può fare, così come in ogni altro linguaggio di programmazione in pratica. 
+
+Si potrebbe avere il tipo Number con sottotipi float e int. Il controllo dei tipi per un operatore numerico potrebbe
+controllare se gli operandi siano sottotipi di Number, in questo modo si permette il confronto tra float e int.
+
+Ora che mi ricordo non esiste il tipo float. In FOOL ci sono solo i tipi int e bool. Quindi va bene controllare che i due operandi siano lo stesso
+tipo.
