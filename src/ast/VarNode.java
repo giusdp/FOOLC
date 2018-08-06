@@ -28,7 +28,8 @@ public class VarNode implements Node {
 
 		//env.offset = -2;
 		HashMap<String,STEntry> hm = env.getST().get(env.getNestLevel());
-		STEntry entry = new STEntry(env.getNestLevel(),type, env.decOffset()); //separo introducendo "entry"
+		//separo introducendo "entry"
+		STEntry entry = new STEntry(env.getNestLevel(),type, env.decOffset()); 
 
 		if ( hm.put(id,entry) != null )
 			res.add(new SemanticError("Var id "+id+" already declared"));

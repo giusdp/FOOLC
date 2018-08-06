@@ -1,8 +1,7 @@
 package type;
 
-public class IntType implements Type {
+public class IntType extends Type {
 
-	@Override
 	public String toPrint(String s) {
 		return s+"Int Type\n"; 
 	}

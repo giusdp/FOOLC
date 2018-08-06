@@ -1,6 +1,6 @@
 package type;
 
-public class BoolType implements Type {
+public class BoolType extends Type {
 
 	@Override
 	public String toPrint(String s) {

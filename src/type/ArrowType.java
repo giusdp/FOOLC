@@ -2,7 +2,7 @@ package type;
 
 import java.util.ArrayList;
 
-public class ArrowType implements Type {
+public class ArrowType extends Type {
 
 	private ArrayList<Type> parlist; 
 	  private Type ret;

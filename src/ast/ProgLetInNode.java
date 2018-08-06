@@ -8,11 +8,13 @@ import util.Environment;
 import util.STEntry;
 import util.SemanticError;
 
+/* Class representing a Let in instruction node */
 public class ProgLetInNode implements Node {
 
 	private ArrayList<Node> declist;
 	private Node exp;
 
+	/* takes the list of declarations and the final expression */
 	public ProgLetInNode (ArrayList<Node> d, Node e) {
 		declist=d;
 		exp=e;

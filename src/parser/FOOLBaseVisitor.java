@@ -2,6 +2,8 @@
 package parser;
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
+import type.Type;
+
 /**
  * This class provides an empty implementation of {@link FOOLVisitor},
  * which can be extended to create a visitor which only needs to handle a subset

@@ -1,6 +1,6 @@
 package type;
 
-public class VoidType implements Type {
+public class VoidType extends Type {
 
 	@Override
 	public String toPrint(String s) {
