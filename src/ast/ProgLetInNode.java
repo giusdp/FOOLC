@@ -2,6 +2,7 @@ package ast;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import type.Type;
 import util.FOOLlib;
 import util.Environment;
 import util.STEntry;
@@ -51,7 +52,7 @@ public class ProgLetInNode implements Node {
 		return res;
 	}
 
-	public Node typeCheck () {
+	public Type typeCheck () {
 		for (Node dec:declist) {
 			dec.typeCheck();
 		}

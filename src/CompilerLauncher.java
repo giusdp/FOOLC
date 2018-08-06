@@ -16,6 +16,8 @@ import util.Environment;
 import util.SemanticError;
 import util.SyntaxErrorListener;
 
+import type.Type;
+
 /**
  * 
  */
@@ -89,7 +91,7 @@ public class CompilerLauncher {
 
 		// TODO da passare l'env al typechecking 
 		System.out.println("Perfoming Type Checking...");
-		Node type = ast.typeCheck(); //type-checking bottom-up 
+		Type type = ast.typeCheck(); //type-checking bottom-up 
 
 		System.out.println(type.toPrint("Type checking succesful! Type of the program is: "));
 

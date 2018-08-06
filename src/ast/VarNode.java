@@ -3,6 +3,7 @@ package ast;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import type.Type;
 import util.Environment;
 import util.STEntry;
 import util.SemanticError;
@@ -11,10 +12,10 @@ import util.FOOLlib;
 public class VarNode implements Node {
 
 	private String id;
-	private Node type;
+	private Type type;
 	private Node exp;
 
-	public VarNode (String i, Node t, Node v) {
+	public VarNode (String i, Type t, Node v) {
 		id=i;
 		type=t;
 		exp=v;
@@ -44,7 +45,7 @@ public class VarNode implements Node {
 	}
 
 	//valore di ritorno non utilizzato
-	public Node typeCheck () {
+	public Type typeCheck () {
 		if (! (FOOLlib.isSubtype(exp.typeCheck(),type)) ){      
 			System.out.println("incompatible value for variable "+id);
 			System.exit(0);

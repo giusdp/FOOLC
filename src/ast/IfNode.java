@@ -2,6 +2,8 @@ package ast;
 
 import java.util.ArrayList;
 
+import type.Type;
+import type.BoolType;
 import util.Environment;
 import util.SemanticError;
 import util.FOOLlib;
@@ -41,13 +43,13 @@ public class IfNode implements Node {
 	}
   
   
-  public Node typeCheck() {
-    if (!(FOOLlib.isSubtype(cond.typeCheck(),new BoolTypeNode()))) {
+  public Type typeCheck() {
+    if (!(FOOLlib.isSubtype(cond.typeCheck(),new BoolType()))) {
       System.out.println("non boolean condition in if");
       System.exit(0);
     }
-    Node t = th.typeCheck();
-    Node e = el.typeCheck();
+    Type t = th.typeCheck();
+    Type e = el.typeCheck();
     if (FOOLlib.isSubtype(t,e)) 
       return e;
     if (FOOLlib.isSubtype(e,t))

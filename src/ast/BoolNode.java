@@ -2,6 +2,8 @@ package ast;
 
 import java.util.ArrayList;
 
+import type.BoolType;
+import type.Type;
 import util.Environment;
 import util.SemanticError;
 
@@ -24,8 +26,8 @@ public class BoolNode implements Node {
   }
 
   //A bool node is of type Bool, always
-  public Node typeCheck() {
-      return new BoolTypeNode();
+  public Type typeCheck() {
+      return new BoolType();
   }
 
   @Override

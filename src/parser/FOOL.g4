@@ -33,6 +33,12 @@ term   : left=factor ((TIMES | DIVISION) right=term)?
 factor : left=value ((EQ|GREATER|LESS|GREATEREQUAL|LESSEQUAL|OR|AND) right=factor)?
        ;
 
+stm    : id=exp (assegnamento) SEMIC
+       | IF cond=exp THEN CLPAR thenBranch=stms CRPAR ELSE CLPAR elseBranch=stms CRPAR  #ifStm ;
+       // if exp then { stms } else { stms } (condizionale) ;
+
+stms   : ( stm )+ ;
+
 value  : INTEGER          #intVal
        | (NOT)? ( TRUE | FALSE ) #boolVal
        | LPAR exp RPAR    #baseExp

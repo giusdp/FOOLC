@@ -2,6 +2,7 @@ package ast;
 
 import java.util.ArrayList;
 
+import type.Type;
 import util.Environment;
 import util.SemanticError;
 
@@ -24,7 +25,7 @@ public class ProgNode implements Node {
 		return exp.checkSemantics(env);
 	}
   
-  public Node typeCheck() {
+  public Type typeCheck() {
     return exp.typeCheck();
   }  
   

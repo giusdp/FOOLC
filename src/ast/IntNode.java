@@ -2,6 +2,8 @@ package ast;
 
 import java.util.ArrayList;
 
+import type.IntType;
+import type.Type;
 import util.Environment;
 import util.SemanticError;
 
@@ -17,8 +19,8 @@ public class IntNode implements Node {
 		return s+"Int:" + Integer.toString(val) +"\n";  
 	}
 
-	public Node typeCheck() {
-		return new IntTypeNode();
+	public Type typeCheck() {
+		return new IntType();
 	} 
 
 	@Override

@@ -2,6 +2,8 @@ package ast;
 
 import java.util.ArrayList;
 
+import type.BoolType;
+import type.Type;
 import util.Environment;
 import util.FOOLlib;
 import util.SemanticError;
@@ -75,9 +77,9 @@ public class LogicOpsNode implements Node {
 	}
 
 	@Override
-	public Node typeCheck() {
-		Node l = left.typeCheck();
-		Node r = right.typeCheck();
+	public Type typeCheck() {
+		Type l = left.typeCheck();
+		Type r = right.typeCheck();
 		if (! ( FOOLlib.isSubtype(l,r) || FOOLlib.isSubtype(r,l) ) ) {
 			System.out.println("ERROR: Incompatible types in " + opToPrint + "\n");
 			System.exit(1);
@@ -87,12 +89,12 @@ public class LogicOpsNode implements Node {
 		// controllare che left e right siano di tipo bool. Se left non lo è (quindi manco right)
 		// allora è errore!
 		if (opType == LogicOpsType.AND || opType == LogicOpsType.OR) {
-			if (! FOOLlib.isSubtype(l, new BoolTypeNode())) {
+			if (! FOOLlib.isSubtype(l, new BoolType())) {
 				System.out.println("ERROR: Non-Bool types used in" + opToPrint + "\n");
 				System.exit(1);
 			}
 		}
-		return new BoolTypeNode();
+		return new BoolType();
 	}
 
 	@Override

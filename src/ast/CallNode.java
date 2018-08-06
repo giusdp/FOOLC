@@ -1,6 +1,8 @@
 package ast;
 import java.util.ArrayList;
 
+import type.ArrowType;
+import type.Type;
 import util.Environment;
 import util.SemanticError;
 import util.FOOLlib;
@@ -57,14 +59,16 @@ public String toPrint(String s) {  //
 		 return res;
 	}
   
-  public Node typeCheck () {  //                           
-	 ArrowTypeNode t=null;
-     if (entry.getType() instanceof ArrowTypeNode) t=(ArrowTypeNode) entry.getType(); 
+  public Type typeCheck () {  //                           
+	 ArrowType t=null;
+     if (entry.getType() instanceof ArrowType) {
+    	 t=(ArrowType) entry.getType(); 
+     }
      else {
        System.out.println("Invocation of a non-function "+id);
        System.exit(0);
      }
-     ArrayList<Node> p = t.getParList();
+     ArrayList<Type> p = t.getParList();
      if ( !(p.size() == parlist.size()) ) {
        System.out.println("Wrong number of parameters in the invocation of "+id);
        System.exit(0);

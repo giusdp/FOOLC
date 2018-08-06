@@ -2,6 +2,8 @@ package ast;
 
 import java.util.ArrayList;
 
+import type.IntType;
+import type.Type;
 import util.Environment;
 import util.FOOLlib;
 import util.SemanticError;
@@ -61,13 +63,13 @@ public class IntOpsNode implements Node {
 	}
 
 	@Override
-	public Node typeCheck() {
-        if (! ( FOOLlib.isSubtype(left.typeCheck(),new IntTypeNode()) &&
-                FOOLlib.isSubtype(right.typeCheck(),new IntTypeNode()) ) ) {
+	public Type typeCheck() {
+        if (! ( FOOLlib.isSubtype(left.typeCheck(),new IntType()) &&
+                FOOLlib.isSubtype(right.typeCheck(),new IntType()) ) ) {
           System.out.println("ERROR: Non integers in "+opToPrint+"\n");
           System.exit(1);
         }
-        return new IntTypeNode();
+        return new IntType();
 	}
 
 	@Override

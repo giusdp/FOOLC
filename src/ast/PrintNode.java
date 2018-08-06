@@ -2,6 +2,7 @@ package ast;
 
 import java.util.ArrayList;
 
+import type.Type;
 import util.Environment;
 import util.SemanticError;
 
@@ -17,7 +18,7 @@ public class PrintNode implements Node {
     return s+"Print\n" + val.toPrint(s+"  ") ;
   }
   
-  public Node typeCheck() {
+  public Type typeCheck() {
     return val.typeCheck();
   }  
   

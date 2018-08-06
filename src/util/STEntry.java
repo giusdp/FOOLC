@@ -1,11 +1,11 @@
 package util;
 
-import ast.Node;;
+import type.Type;
 
 public class STEntry {
 
 	private int nestingLevel;
-	private Node type;
+	private Type type;
 	private int offset;
 
 	public STEntry(int nestingLevel, int os) {
@@ -13,17 +13,17 @@ public class STEntry {
 		offset = os;
 	}
 
-	public STEntry(int nestingLevel, Node t, int os) {
+	public STEntry(int nestingLevel, Type t, int os) {
 		this.nestingLevel = nestingLevel;
 		type = t;
 		offset = os;
 	}
 
-	public void setType(Node t) {
+	public void setType(Type t) {
 		type = t;
 	}
 
-	public Node getType() {
+	public Type getType() {
 		return type;
 	}
 
