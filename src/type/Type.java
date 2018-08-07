@@ -8,27 +8,21 @@ import util.SemanticError;
 
 public abstract class Type implements Node {
 	
-	public static enum types {INT, BOOL, VOID, CLASS};
+	// public static enum types {INT, BOOL, VOID, CLASS};
 	
 	public abstract String toPrint(String s);
 
+	// Non utilizzato
 	@Override
-	public Type typeCheck() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public Type typeCheck() {return null; } 
 
+	// Non utilizzato
 	@Override
-	public String codeGeneration() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public String codeGeneration() { return null;	}
 
+	// Non utilizzato
 	@Override
-	public ArrayList<SemanticError> checkSemantics(Environment env) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public ArrayList<SemanticError> checkSemantics(Environment env) { return null; }
 	
 	
 

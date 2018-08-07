@@ -31,8 +31,7 @@ public class ParNode implements Node {
 	}
   
   public String toPrint(String s) {
-	  return s+"Par:" + id +"\n"
-			 +type.toPrint(s+"  ") ; 
+	  return s + "Par:" + id +"\n" + type.toPrint(s+"  ") ; 
   }
   
   //non utilizzato

@@ -22,6 +22,8 @@ dec    : varasm  #varAssignment
    
 type   : INT  
        | BOOL 
+       | VOID
+       | CLASS
        ;  
     
 exp    : left=term ((PLUS | MINUS) right=exp)?
@@ -33,7 +35,8 @@ term   : left=factor ((TIMES | DIVISION) right=term)?
 factor : left=value ((EQ|GREATER|LESS|GREATEREQUAL|LESSEQUAL|OR|AND) right=factor)?
        ;
 
-stm    : id=exp (assegnamento) SEMIC
+// Gli stms forse sono da usare solo nel corpo di metodi?
+stm    : ID ASM exp SEMIC #Assignment
        | IF cond=exp THEN CLPAR thenBranch=stms CRPAR ELSE CLPAR elseBranch=stms CRPAR  #ifStm ;
        // if exp then { stms } else { stms } (condizionale) ;
 
@@ -75,6 +78,7 @@ INT    : 'int' ;
 BOOL   : 'bool' ;
 
 // AGGIUNTI PER IL PROGETTO
+// Espressioni
 MINUS         : '-';
 DIVISION      : '/';
 GREATER       : '>';
@@ -84,6 +88,13 @@ LESSEQUAL     : '<=';
 OR            : '||';
 AND           : '&&';
 NOT           : 'not';
+
+//Tipi
+VOID  : 'void';
+CLASS : 'class';
+
+//Comandi
+
 
 //Numbers
 fragment DIGIT : '0'..'9';    

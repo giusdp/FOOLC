@@ -12,27 +12,27 @@ public class CallNode implements Node {
 
   private String id;
   private STEntry entry; 
-  private ArrayList<Node> parlist; 
-  private int nestinglevel;
+  private ArrayList<Node> parList; 
+  private int nestingLevel;
 
   
   public CallNode (String i, STEntry e, ArrayList<Node> p, int nl) {
     id=i;
     entry=e;
-    parlist = p;
-    nestinglevel=nl;
+    parList = p;
+    nestingLevel=nl;
   }
   
   public CallNode(String text, ArrayList<Node> args) {
 	id=text;
-    parlist = args;
+    parList = args;
 }
 
 public String toPrint(String s) {  //
     String parlstr="";
-	for (Node par:parlist)
+	for (Node par:parList)
 	  parlstr+=par.toPrint(s+"  ");		
-	return s+"Call:" + id + " at nestlev " + nestinglevel +"\n" 
+	return s+"Call:" + id + " at nestlev " + nestingLevel +"\n" 
            +entry.toPrint(s+"  ")
            +parlstr;        
   }
@@ -51,9 +51,9 @@ public String toPrint(String s) {  //
 		 
 		 else{
 			 this.entry = tmp;
-			 this.nestinglevel = env.getNestLevel();
+			 this.nestingLevel = env.getNestLevel();
 			 
-			 for(Node arg : parlist)
+			 for(Node arg : parList)
 				 res.addAll(arg.checkSemantics(env));
 		 }
 		 return res;
@@ -69,12 +69,12 @@ public String toPrint(String s) {  //
        System.exit(0);
      }
      ArrayList<Type> p = t.getParList();
-     if ( !(p.size() == parlist.size()) ) {
+     if ( !(p.size() == parList.size()) ) {
        System.out.println("Wrong number of parameters in the invocation of "+id);
        System.exit(0);
      } 
-     for (int i=0; i<parlist.size(); i++) 
-       if ( !(FOOLlib.isSubtype( (parlist.get(i)).typeCheck(), p.get(i)) ) ) {
+     for (int i=0; i<parList.size(); i++) 
+       if ( !(FOOLlib.isSubtype( (parList.get(i)).typeCheck(), p.get(i)) ) ) {
          System.out.println("Wrong type for "+(i+1)+"-th parameter in the invocation of "+id);
          System.exit(0);
        } 
@@ -83,11 +83,11 @@ public String toPrint(String s) {  //
   
   public String codeGeneration() {
 	    String parCode="";
-	    for (int i=parlist.size()-1; i>=0; i--)
-	    	parCode+=parlist.get(i).codeGeneration();
+	    for (int i=parList.size()-1; i>=0; i--)
+	    	parCode+=parList.get(i).codeGeneration();
 	    
 	    String getAR="";
-		  for (int i=0; i<nestinglevel - entry.getNestLevel(); i++) 
+		  for (int i=0; i<nestingLevel - entry.getNestLevel(); i++) 
 		    	 getAR+="lw\n";
 	    
 		return "lfp\n"+ //CL

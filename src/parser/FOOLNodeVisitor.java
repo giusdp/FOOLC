@@ -1,6 +1,7 @@
 package parser;
 
 import ast.Node;
+import ast.ParNode;
 import ast.ProgLetInNode;
 import ast.ProgNode;
 import ast.VarNode;
@@ -26,9 +27,12 @@ import parser.FOOLParser.VarAssignmentContext;
 import parser.FOOLParser.VarExpContext;
 import parser.FOOLParser.VarasmContext;
 import parser.FOOLParser.VardecContext;
+
 import type.BoolType;
+import type.ClassType;
 import type.IntType;
 import type.Type;
+import type.VoidType;
 
 import static ast.IntOpsNode.IntOpsType.*;
 import static ast.LogicOpsNode.LogicOpsType.*;
@@ -36,7 +40,10 @@ import static ast.LogicOpsNode.LogicOpsType.*;
 import java.util.ArrayList;
 
 import ast.BoolNode;
+import ast.CallNode;
+import ast.FunNode;
 import ast.IdNode;
+import ast.IfNode;
 import ast.IntNode;
 
 public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
@@ -79,14 +86,6 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 	}
 
 	@Override
-	public Node visitVardec(VardecContext ctx) {
-		System.out.println("visitVardec");
-		// TODO Auto-generated method stub
-		System.out.println("visitVardec");
-		return super.visitVardec(ctx);
-	}
-
-	@Override
 	public Node visitVarasm(VarasmContext ctx) {
 		System.out.println("visitVarasm");
 		//declare the result node
@@ -106,20 +105,47 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 	@Override
 	public Node visitFun(FunContext ctx) {
 		System.out.println("visitFun");
-		// TODO Auto-generated method stub
-		System.out.println("visitFun");
-		return super.visitFun(ctx);
+		//initialize @res with the visits to the type and its ID
+		FunNode res = new FunNode(ctx.ID().getText(), (Type) visit(ctx.type()));
+
+		//add argument declarations
+		//we are getting a shortcut here by constructing directly the ParNode
+		//this could be done differently by visiting instead the VardecContext
+		for (VardecContext vc : ctx.vardec())
+			res.addPar(new ParNode(vc.ID().getText(), (Type) visit(vc.type())));
+
+		//add body
+		//create a list for the nested declarations
+		ArrayList<Node> innerDec = new ArrayList<Node>();
+
+		//check whether there are actually nested decs
+		if (ctx.let() != null) {
+			//if there are visit each dec and add it to the @innerDec list
+			for (DecContext dc : ctx.let().dec())
+				innerDec.add(visit(dc));
+		}
+
+		//get the exp body
+		Node exp = visit(ctx.exp());
+
+		//add the body and the inner declarations to the function
+		res.addDecBody(innerDec, exp);
+
+		return res;
 	}
 
 	@Override
 	public Node visitType(TypeContext ctx) {
 		System.out.println("visitType");
-		System.out.println("CLASSE RITORNATA:");
 
 		if (ctx.INT() != null) return new IntType();
-		
-		else return new BoolType();
-		
+
+		else if (ctx.BOOL() != null) return new BoolType();
+
+		else if (ctx.VOID() != null) return new VoidType();
+
+		else return new ClassType();
+
 	}
 
 	@Override
@@ -197,7 +223,14 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 	public Node visitBoolVal(BoolValContext ctx) {
 		System.out.println("visitBoolVal");
 		//there is no need to perform a check here, the lexer ensures this text is a boolean
-		return new BoolNode(Boolean.parseBoolean(ctx.getText()));
+		boolean res = false;
+		if (ctx.getText().startsWith("not")) {
+			res = ! Boolean.parseBoolean(ctx.getText().substring(3, ctx.getText().length()));
+			return new BoolNode(res);
+		}
+		else {
+			return new BoolNode(Boolean.parseBoolean(ctx.getText()));
+		}
 	}
 
 	@Override
@@ -217,8 +250,23 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 	@Override
 	public Node visitIfExp(IfExpContext ctx) {
 		System.out.println("visitIfExp");
-		// TODO Auto-generated method stub
-		return super.visitIfExp(ctx);
+		//create the resulting node
+		IfNode res;
+
+		//visit the conditional, then the then branch, and then the else branch
+		//notice once again the need of named terminals in the rule, this is because
+		//we need to point to the right expression among the 3 possible ones in the rule
+
+		Node condExp = visit(ctx.cond);
+
+		Node thenExp = visit(ctx.thenBranch);
+
+		Node elseExp = visit(ctx.elseBranch);
+
+		//build the @res properly and return it
+		res = new IfNode(condExp, thenExp, elseExp);
+
+		return res;
 	}
 
 	@Override
@@ -231,8 +279,21 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 	@Override
 	public Node visitFunExp(FunExpContext ctx) {
 		System.out.println("visitFunExp");
-		// TODO Auto-generated method stub
-		return super.visitFunExp(ctx);
+		//this corresponds to a function invocation
+
+		//declare the result
+		Node res;
+
+		//get the invocation arguments
+		ArrayList<Node> args = new ArrayList<Node>();
+
+		for (ExpContext exp : ctx.exp())
+			args.add(visit(exp));
+
+		//instantiate the invocation
+		res = new CallNode(ctx.ID().getText(), args);
+
+		return res;
 	}
 
 

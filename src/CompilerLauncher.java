@@ -27,6 +27,7 @@ import type.Type;
  *
  */
 public class CompilerLauncher {
+	
 
 	static boolean doCodeGen = false;
 
