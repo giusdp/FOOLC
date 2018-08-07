@@ -87,12 +87,12 @@ public interface FOOLVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitFactor(FOOLParser.FactorContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code Assignment}
+	 * Visit a parse tree produced by the {@code AsmStm}
 	 * labeled alternative in {@link FOOLParser#stm}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitAssignment(FOOLParser.AssignmentContext ctx);
+	T visitAsmStm(FOOLParser.AsmStmContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code ifStm}
 	 * labeled alternative in {@link FOOLParser#stm}.

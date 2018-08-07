@@ -15,7 +15,7 @@ COMANDI
 
 Esiste la categoria sintattica stm:
 
-stm : 	id = exp (assegnamento) ;
+stm : 	id = exp (assegnamento) ; //
 	| if exp then { stms } else { stms } (condizionale)
 	
 stms :  ( stm )+
@@ -40,7 +40,7 @@ Quindi, significa che occorre estendere
    }
 
 ** espressioni **
-   x.m(..)                          	// x e` un oggetto, m e` un metodo
+   x.m(..)                  // x e` un oggetto, m e` un metodo
    new C(..)				// C e` un identificatore di classe
    null
 

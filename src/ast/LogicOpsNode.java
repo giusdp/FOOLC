@@ -85,7 +85,7 @@ public class LogicOpsNode implements Node {
 			System.exit(1);
 		}
 
-		// Se sono dello stesso tipo e l'operazione è and oppure or, allora bisogna
+		// Se sono dello stesso tipo e l'operazione è AND oppure OR, allora bisogna
 		// controllare che left e right siano di tipo bool. Se left non lo è (quindi manco right)
 		// allora è errore!
 		if (opType == LogicOpsType.AND || opType == LogicOpsType.OR) {

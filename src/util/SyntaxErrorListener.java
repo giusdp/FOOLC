@@ -20,7 +20,7 @@ public class SyntaxErrorListener extends BaseErrorListener {
 	public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol, 
 			int line, int charPositionInLine,
 			String msg, RecognitionException e) {
-		// TODO Auto-generated method stub
+		
 		List<String> stack = ((Parser) recognizer).getRuleInvocationStack();
         Collections.reverse(stack);
         System.err.println("Rule stack: " + stack);

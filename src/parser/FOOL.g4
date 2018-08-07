@@ -4,8 +4,8 @@ grammar FOOL;
  * PARSER RULES
  *------------------------------------------------------------------*/
   
-prog   : exp SEMIC        #singleExp
-       | let exp SEMIC    #letInExp
+prog   : exp SEMIC                   #singleExp
+       | let ( exp SEMIC | stms ) END    #letInExp
        ;
 
 let    : LET (dec SEMIC)+ IN ;
@@ -14,7 +14,7 @@ vardec : type ID ;
 
 varasm : vardec ASM exp ;
 
-fun    : type ID LPAR ( vardec ( COMMA vardec)* )? RPAR (let)? exp ;
+fun    : type ID LPAR ( vardec ( COMMA vardec)* )? RPAR (let)? ( exp | stms ) ;
 
 dec    : varasm  #varAssignment
        | fun     #funDeclaration
@@ -36,7 +36,7 @@ factor : left=value ((EQ|GREATER|LESS|GREATEREQUAL|LESSEQUAL|OR|AND) right=facto
        ;
 
 // Gli stms forse sono da usare solo nel corpo di metodi?
-stm    : ID ASM exp SEMIC #Assignment
+stm    : ID ASM exp SEMIC                                                               #AsmStm
        | IF cond=exp THEN CLPAR thenBranch=stms CRPAR ELSE CLPAR elseBranch=stms CRPAR  #ifStm ;
        // if exp then { stms } else { stms } (condizionale) ;
 
@@ -89,6 +89,7 @@ OR            : '||';
 AND           : '&&';
 NOT           : 'not';
 
+END           : 'end';
 //Tipi
 VOID  : 'void';
 CLASS : 'class';

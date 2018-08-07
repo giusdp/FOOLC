@@ -28,12 +28,15 @@ public class IdNode implements Node {
 	  //create result list
 	  ArrayList<SemanticError> res = new ArrayList<SemanticError>();
 	  
-	  int j=env.getNestLevel();
+	  int j = env.getNestLevel();
 	  STEntry tmp=null; 
-	  while (j>=0 && tmp==null)
-		  tmp=(env.getST().get(j--)).get(id);
-      if (tmp==null)
-          res.add(new SemanticError("Id "+id+" not declared"));
+	  while (j >= 0 && tmp==null) {
+		  tmp = (env.getST().get(j)).get(id);
+		  j = j - 1;
+	  }
+	 
+      if (tmp == null)
+          res.add(new SemanticError("Id "+ id +" not declared"));
       
       else{
     	  entry = tmp;

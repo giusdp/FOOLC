@@ -1,1 +1,7 @@
-not false && not false;
+let 
+    int x = 1; 
+    int y = 1;
+in 
+    x = 1;
+    x = 2;
+end

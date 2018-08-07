@@ -31,7 +31,7 @@ public class VarNode implements Node {
 		//separo introducendo "entry"
 		STEntry entry = new STEntry(env.getNestLevel(),type, env.decOffset()); 
 
-		if ( hm.put(id,entry) != null )
+		if ( hm.put(id, entry) != null )
 			res.add(new SemanticError("Var id "+id+" already declared"));
 
 		res.addAll(exp.checkSemantics(env));
@@ -40,9 +40,7 @@ public class VarNode implements Node {
 	}
 
 	public String toPrint(String s) {
-		return s+"Var:" + id +"\n"
-				+type.toPrint(s+"  ")  
-				+exp.toPrint(s+"  "); 
+		return s+"Var:" + id +"\n" + type.toPrint(s+"  ")  + exp.toPrint(s+"  "); 
 	}
 
 	//valore di ritorno non utilizzato
