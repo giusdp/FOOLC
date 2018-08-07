@@ -15,7 +15,7 @@ COMANDI
 
 Esiste la categoria sintattica stm:
 
-stm : 	id = exp (assegnamento) ; //
+stm : 	id = exp (assegnamento) ;
 	| if exp then { stms } else { stms } (condizionale)
 	
 stms :  ( stm )+
