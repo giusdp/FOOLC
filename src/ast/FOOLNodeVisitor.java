@@ -1,15 +1,11 @@
-package parser;
+package ast;
 
-import ast.Node;
-import ast.ParNode;
-import ast.ProgLetInNode;
-import ast.ProgNode;
-import ast.VarNode;
-import ast.IntOpsNode;
-import ast.LogicOpsNode;
+import parser.FOOLBaseVisitor;
+import parser.FOOLParser;
 import parser.FOOLParser.AsmStmContext;
 import parser.FOOLParser.BaseExpContext;
 import parser.FOOLParser.BoolValContext;
+import parser.FOOLParser.ClassExpContext;
 import parser.FOOLParser.DecContext;
 import parser.FOOLParser.ExpContext;
 import parser.FOOLParser.FactorContext;
@@ -42,21 +38,25 @@ import static ast.LogicOpsNode.LogicOpsType.*;
 
 import java.util.ArrayList;
 
-import ast.BoolNode;
-import ast.CallNode;
-import ast.FunNode;
-import ast.IdNode;
-import ast.IfNode;
-import ast.IntNode;
-
 public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 
+	
+	
+	// Prog class
+	@Override
+	public Node visitClassExp(ClassExpContext ctx) {
+
+		return super.visitClassExp(ctx);
+	}
+
+	// PROG exp
 	@Override
 	public Node visitSingleExp(SingleExpContext ctx) {
-		ProgNode prog = new ProgNode(visit(ctx.exp()));
+		ProgExpNode prog = new ProgExpNode(visit(ctx.exp()));
 		return prog;
 	}
 
+	// PROG let
 	@Override
 	public Node visitLetInExp(LetInExpContext ctx) {
 

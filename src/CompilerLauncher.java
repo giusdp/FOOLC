@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 
+import ast.FOOLNodeVisitor;
 import ast.Node;
 import parser.FOOLLexer;
-import parser.FOOLNodeVisitor;
 import parser.FOOLParser;
 import util.Environment;
 import util.SemanticError;

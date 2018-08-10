@@ -4,9 +4,12 @@ grammar FOOL;
  * PARSER RULES
  *------------------------------------------------------------------*/
   
-prog   : exp SEMIC                   #singleExp
-       | let ( exp SEMIC | stms ) END    #letInExp
+prog   : exp SEMIC                      #singleExp
+       | let ( exp SEMIC | stms ) END   #letInExp
+       | (classdec)+ SEMIC	            #classExp
        ;
+
+classdec  : CLASS ID (LPAR vardec ( COMMA vardec)* RPAR)?  (CLPAR (fun SEMIC)+ CRPAR)? ;
 
 let    : LET (dec SEMIC)+ IN ;
 
@@ -23,8 +26,7 @@ dec    : varasm  #varAssignment
 type   : INT  
        | BOOL 
        | VOID
-       | CLASS
-       ;  
+       ;
     
 exp    : left=term ((PLUS | MINUS) right=exp)?
        ;
@@ -36,7 +38,7 @@ factor : left=value ((EQ|GREATER|LESS|GREATEREQUAL|LESSEQUAL|OR|AND) right=facto
        ;
 
 // Gli stms forse sono da usare solo nel corpo di metodi?
-stm    : ID ASM exp SEMIC                                                               #AsmStm
+stm    : ID ASM exp SEMIC                                                           #AsmStm
        | IF cond=exp THEN CLPAR thenBranch=stms CRPAR ELSE CLPAR elseBranch=stms CRPAR  #ifStm ;
        // if exp then { stms } else { stms } (condizionale) ;
 
@@ -46,9 +48,11 @@ value  : INTEGER          #intVal
        | (NOT)? ( TRUE | FALSE ) #boolVal
        | LPAR exp RPAR    #baseExp
        | IF cond=exp THEN CLPAR thenBranch=exp CRPAR ELSE CLPAR elseBranch=exp CRPAR  #ifExp
-       | ID                                      #varExp
-       | ID ( LPAR (exp (COMMA exp)* )? RPAR )   #funExp
-       ; 
+       | ID                                                 #varExp
+       | ID ( LPAR (exp (COMMA exp)* )? RPAR )              #funExp
+       | ID DOT ID ( LPAR (exp (COMMA exp)* )? RPAR )	    #methodExp
+       | NEW ID (LPAR (exp (COMMA exp)*)? RPAR)   		    #newExp
+       ;
 
 /*------------------------------------------------------------------
  * LEXER RULES
@@ -88,13 +92,15 @@ LESSEQUAL     : '<=';
 OR            : '||';
 AND           : '&&';
 NOT           : 'not';
-
 END           : 'end';
-//Tipi
-VOID  : 'void';
-CLASS : 'class';
 
-//Comandi
+VOID  : 'void';
+
+CLASS   : 'class' ;
+THIS   : 'this' ;
+NEW    : 'new' ;
+DOT    : '.' ;
+
 
 
 //Numbers

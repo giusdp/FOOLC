@@ -6,11 +6,11 @@ import type.Type;
 import util.Environment;
 import util.SemanticError;
 
-public class ProgNode implements Node {
+public class ProgExpNode implements Node {
 
   private Node exp;
   
-  public ProgNode (Node e) {
+  public ProgExpNode (Node e) {
     exp=e;
   }
   
