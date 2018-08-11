@@ -3,6 +3,12 @@
 \usepackage[italian]{babel}
 \usepackage[utf8]{inputenc}
 
+\usepackage{bussproofs}
+\usepackage{amssymb}
+\usepackage{latexsym}
+
+\usepackage{amsmath}
+
 \title{Report del Progetto di Compilatori e Interpreti}
 \date{Data di Consegna}
 \author{Giuseppe De Palma XXXXXX, Eduart Uzeir XXXXXX\\ Domenico Coriale XXXXXX e Andrew Memma XXXXXX\\
@@ -43,6 +49,16 @@ Si spiega brevemente le decisioni di design per le symbol tables ed il sistema d
 \section{Type Checking}
 sezione importantissimo, qui è dove bisogna essere i più precisi e formali. Si discute per bene lo sviluppo
 e implementazione del type checking.
+
+\[
+\begin{array}{lcl}
+k & ::= & 0 \mid 1 \mid \dots \mid true \mid false\\
+T & ::= & int \mid bool \mid void \mid T \to T'\\
+E & ::= & k \mid id \mid E + E \mid E - E \mid E \times E \mid E \div E \mid\\
+& &  E < E \mid E > E \mid E \le E \mid E \ge E \mid E \lor E \mid E \land E \mid \lnot E
+\end{array}
+\]
+
 
 \chapter{Generazione del Codice}
 Capitolo sulla code generation. Si discute come si trasforma il codice scritto nella grammatica

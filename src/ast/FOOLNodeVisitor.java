@@ -40,8 +40,6 @@ import java.util.ArrayList;
 
 public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 
-	
-	
 	// Prog class
 	@Override
 	public Node visitClassExp(ClassExpContext ctx) {
@@ -102,8 +100,7 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 
 	@Override
 	public Node visitAsmStm(AsmStmContext ctx) {
-		IdNode idnode = new IdNode(ctx.ID().getText());
-		return idnode;
+		return new IdNode(ctx.ID().getText());
 	}
 
 	@Override
@@ -303,7 +300,6 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 
 	@Override
 	public Node visitVarExp(VarExpContext ctx) {
-		// TODO Auto-generated method stub
 		return new IdNode(ctx.ID().getText());
 	}
 

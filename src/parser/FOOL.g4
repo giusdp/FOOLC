@@ -6,18 +6,18 @@ grammar FOOL;
   
 prog   : exp SEMIC                      #singleExp
        | let ( exp SEMIC | stms ) END   #letInExp
-       | (classdec)+ SEMIC	            #classExp
+       | (classdec)+ (let ( exp SEMIC | stms ) END )? exp SEMIC #classExp
        ;
 
-classdec  : CLASS ID (LPAR vardec ( COMMA vardec)* RPAR)?  (CLPAR (fun SEMIC)+ CRPAR)? ;
+classdec  : CLASS ID (EXTENDS ID)? (LPAR vardec ( COMMA vardec)* RPAR)? (CLPAR (fun SEMIC)+ CRPAR)? SEMIC;
 
-let    : LET (dec SEMIC)+ IN ;
+let    : LET (dec)+ IN ;
 
 vardec : type ID ;
 
-varasm : vardec ASM exp ;
+varasm : vardec ASM exp SEMIC ;
 
-fun    : type ID LPAR ( vardec ( COMMA vardec)* )? RPAR (let)? ( exp | stms ) ;
+fun    : type ID LPAR ( vardec ( COMMA vardec)* )? RPAR (let)? ( exp SEMIC | stms ) ;
 
 dec    : varasm  #varAssignment
        | fun     #funDeclaration
@@ -26,6 +26,7 @@ dec    : varasm  #varAssignment
 type   : INT  
        | BOOL 
        | VOID
+       | ID
        ;
     
 exp    : left=term ((PLUS | MINUS) right=exp)?
@@ -38,11 +39,11 @@ factor : left=value ((EQ|GREATER|LESS|GREATEREQUAL|LESSEQUAL|OR|AND) right=facto
        ;
 
 // Gli stms forse sono da usare solo nel corpo di metodi?
-stm    : ID ASM exp SEMIC                                                           #AsmStm
+stm    : ID ASM exp                                                               #AsmStm
        | IF cond=exp THEN CLPAR thenBranch=stms CRPAR ELSE CLPAR elseBranch=stms CRPAR  #ifStm ;
        // if exp then { stms } else { stms } (condizionale) ;
 
-stms   : ( stm )+ ;
+stms   : ( stm SEMIC )+ ;
 
 value  : INTEGER          #intVal
        | (NOT)? ( TRUE | FALSE ) #boolVal
@@ -100,7 +101,7 @@ CLASS   : 'class' ;
 THIS   : 'this' ;
 NEW    : 'new' ;
 DOT    : '.' ;
-
+EXTENDS: 'extends';
 
 
 //Numbers

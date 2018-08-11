@@ -44,8 +44,10 @@ public String toPrint(String s) {  //
 		
 		 int j=env.getNestLevel();
 		 STEntry tmp=null; 
+		 
 		 while (j>=0 && tmp==null)
 		     tmp=(env.getST().get(j--)).get(id);
+		 
 		 if (tmp==null)
 			 res.add(new SemanticError("Id "+id+" not declared"));
 		 

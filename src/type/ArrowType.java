@@ -16,8 +16,11 @@ public class ArrowType extends Type {
 	  public String toPrint(String s) { //
 		String parlstr="";
 	    for (Type par:parlist)
-	      parlstr+=par.toPrint(s+"  ");
-		return s+"ArrowType\n" + parlstr + ret.toPrint(s+"  ->") ; 
+	      parlstr+=par.toPrint(" ");
+	    if (parlist.isEmpty()) {
+	    	parlstr= " Void Type ";
+	    }
+		return s+"ArrowType: " + parlstr + " "+ ret.toPrint("-> ") ; 
 	  }
 	  
 	  public Type getRet () { //

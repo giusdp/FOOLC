@@ -35,15 +35,20 @@ public class FunNode implements Node {
 	  
 	  //env.offset = -2;
 	  HashMap<String,STEntry> hm = env.getST().get(env.getNestLevel());
-      STEntry entry = new STEntry(env.getNestLevel(),env.decOffset()); //separo introducendo "entry"
+      STEntry entry = new STEntry(env.getNestLevel(),env.decOffset()); 
+      //separo introducendo "entry"
+      
+      System.out.println("VAR: " + id + " STENTRY: " + entry.getNestLevel() + 
+				" offset: " + entry.getOffset());
+		
       
       if ( hm.put(id,entry) != null )
         res.add(new SemanticError("Fun id "+id+" already declared"));
       else{
     	  //creare una nuova hashmap per la symTable
 	      env.incNestLevel();
-	      HashMap<String,STEntry> hmn = new HashMap<String,STEntry> ();
-	      env.getST().add(hmn);
+	      HashMap<String,STEntry> nuova_hm = new HashMap<String,STEntry> ();
+	      env.getST().add(nuova_hm);
 	      
 	      ArrayList<Type> parTypes = new ArrayList<Type>();
 	      int paroffset=1;
@@ -52,7 +57,7 @@ public class FunNode implements Node {
 	      for(Node a : parlist){
 	    	  ParNode arg = (ParNode) a;
 	    	  parTypes.add(arg.getType());
-	    	  if ( hmn.put(arg.getId(),new STEntry(env.getNestLevel(),arg.getType(),paroffset++)) != null  )
+	    	  if ( nuova_hm.put(arg.getId(),new STEntry(env.getNestLevel(),arg.getType(),paroffset++)) != null  )
 	    		  System.out.println("Parameter id "+arg.getId()+" already declared");
               
 	      }

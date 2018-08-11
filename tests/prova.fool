@@ -1,7 +1,7 @@
 let 
-    int x = 1; 
-    int y = 1;
+	int x = 5;
+	int f(int z) 5;
+	bool y = true;
 in 
-    x = 1;
-    x = 2;
+	6;
 end

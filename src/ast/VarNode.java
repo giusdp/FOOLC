@@ -26,13 +26,18 @@ public class VarNode implements Node {
 		//create result list
 		ArrayList<SemanticError> res = new ArrayList<SemanticError>();
 
-		//env.offset = -2;
+		// Il nesting level viene incrementato ogni volta in cui si entra in uno scope,
+		// quindi non sarà mai -1, perché il let in, le funzioni e le classi creano nuovi scope
+		// e le variabili non possono essere dichiarate al di fuori di quei comandi.
 		HashMap<String,STEntry> hm = env.getST().get(env.getNestLevel());
 		//separo introducendo "entry"
-		STEntry entry = new STEntry(env.getNestLevel(),type, env.decOffset()); 
+		STEntry entry = new STEntry(env.getNestLevel(), type, env.decOffset()); 
+		//System.out.println("Current nest level: " + env.getNestLevel() + " last offset: " + env.getOffset());
 
+		System.out.println("VAR: " + id + " STENTRY: " + entry.getNestLevel() + 
+				" type: " + entry.getType().toPrint("") + " offset: " + entry.getOffset());
 		if ( hm.put(id, entry) != null )
-			res.add(new SemanticError("Var id "+id+" already declared"));
+			res.add(new SemanticError("Var with id "+ id +" is already declared"));
 
 		res.addAll(exp.checkSemantics(env));
 

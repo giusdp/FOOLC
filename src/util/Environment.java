@@ -5,7 +5,8 @@ import java.util.HashMap;
 
 public class Environment {
 
-	private ArrayList<HashMap<String, STEntry>> symTable = new ArrayList<HashMap<String, STEntry>>();
+	private ArrayList<HashMap<String, STEntry>> symTable = 
+			new ArrayList<HashMap<String, STEntry>>();
 	private int nestingLevel;
 	private int offset;
 
@@ -16,10 +17,6 @@ public class Environment {
 
 	public ArrayList<HashMap<String, STEntry>> getST() {
 		return symTable;
-	}
-
-	public int getLastNestLevel() {
-		return symTable.size() - 1;
 	}
 
 	public int getNestLevel() {
@@ -50,6 +47,7 @@ public class Environment {
 		offset = n;
 	}
 
-	//livello ambiente con dichiarazioni piu' esterno � 0 (prima posizione ArrayList) invece che 1 (slides)
-	//il "fronte" della lista di tabelle � symTable.get(nestingLevel)
+	//livello ambiente con dichiarazioni piu' esterno è 0 (prima posizione ArrayList) 
+	//invece che 1 (slides)
+	//il "fronte" della lista di tabelle è symTable.get(nestingLevel)
 }

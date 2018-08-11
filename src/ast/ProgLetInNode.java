@@ -23,7 +23,7 @@ public class ProgLetInNode implements Node {
 		exp=e;
 		statements = null;
 	}
-	
+
 	public ProgLetInNode (ArrayList<Node> d, ArrayList<Node> stms) {
 		declist=d;
 		exp=null;
@@ -34,14 +34,17 @@ public class ProgLetInNode implements Node {
 		String declstr="";
 		for (Node dec:declist)
 			declstr+=dec.toPrint(s+"  ");
+
+		if (statements != null) {
+			String stmsstr="";
+			for (Node stm: statements)
+				stmsstr+=stm.toPrint(s+"  ");
+			
+			return s+"ProgLetIn\n" + declstr + " " + stmsstr ;
+		}
+		return s+"ProgLetIn\n" + declstr + exp.toPrint(s+"  ") ; 
 		
-		String stmsstr="";
-		for (Node stm: statements)
-			stmsstr+=stm.toPrint(s+"  ");
-		
-		if (exp != null) return s+"ProgLetIn\n" + declstr + exp.toPrint(s+"  ") ; 
-		else return s+"ProgLetIn\n" + declstr + " " + stmsstr ; 
-		
+
 	}
 
 	@Override
@@ -49,6 +52,7 @@ public class ProgLetInNode implements Node {
 		env.incNestLevel();
 		HashMap<String,STEntry> hm = new HashMap<String,STEntry> ();
 		env.getST().add(hm);
+		//System.out.println("Lista di Hashmaps size entrando:" + env.getST().size());
 
 		//declare resulting list
 		ArrayList<SemanticError> res = new ArrayList<SemanticError>();
@@ -69,6 +73,9 @@ public class ProgLetInNode implements Node {
 		}
 		//clean the scope, we are leaving a let scope
 		env.getST().remove(env.decNestLevel());
+
+		//System.out.println("Lista di Hashmaps size uscendo:" + env.getST().size());
+
 
 		//return the result
 		return res;
