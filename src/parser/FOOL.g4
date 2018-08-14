@@ -6,10 +6,10 @@ grammar FOOL;
   
 prog   : exp SEMIC                      #singleExp
        | let ( exp SEMIC | stms ) END   #letInExp
-       | (classdec)+ (let ( exp SEMIC | stms ) END )? exp SEMIC #classExp
+       | (classdec)+ (let)? exp SEMIC #classExp
        ;
 
-classdec  : CLASS ID (EXTENDS ID)? (LPAR vardec ( COMMA vardec)* RPAR)? (CLPAR (fun SEMIC)+ CRPAR)? SEMIC;
+classdec  : CLASS ID (EXTENDS ID)? (LPAR vardec ( COMMA vardec)* RPAR)? (CLPAR (fun)+ CRPAR)? SEMIC;
 
 let    : LET (dec)+ IN ;
 
@@ -53,6 +53,7 @@ value  : INTEGER          #intVal
        | ID ( LPAR (exp (COMMA exp)* )? RPAR )              #funExp
        | ID DOT ID ( LPAR (exp (COMMA exp)* )? RPAR )	    #methodExp
        | NEW ID (LPAR (exp (COMMA exp)*)? RPAR)   		    #newExp
+       | NULL                                               #nullExp
        ;
 
 /*------------------------------------------------------------------
@@ -83,7 +84,6 @@ INT    : 'int' ;
 BOOL   : 'bool' ;
 
 // AGGIUNTI PER IL PROGETTO
-// Espressioni
 MINUS         : '-';
 DIVISION      : '/';
 GREATER       : '>';
@@ -95,13 +95,14 @@ AND           : '&&';
 NOT           : 'not';
 END           : 'end';
 
-VOID  : 'void';
+VOID    : 'void';
 
 CLASS   : 'class' ;
-THIS   : 'this' ;
-NEW    : 'new' ;
-DOT    : '.' ;
-EXTENDS: 'extends';
+THIS    : 'this' ;
+NEW     : 'new' ;
+DOT     : '.' ;
+EXTENDS : 'extends';
+NULL    : 'null';
 
 
 //Numbers
