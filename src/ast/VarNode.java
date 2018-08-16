@@ -3,6 +3,7 @@ package ast;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import type.ClassType;
 import type.Type;
 import util.Environment;
 import util.STEntry;
@@ -32,15 +33,31 @@ public class VarNode implements Node {
 		HashMap<String,STEntry> hm = env.getST().get(env.getNestLevel());
 		//separo introducendo "entry"
 		STEntry entry = new STEntry(env.getNestLevel(), type, env.decOffset()); 
-		//System.out.println("Current nest level: " + env.getNestLevel() + " last offset: " + env.getOffset());
+		
+		//System.out.println("VAR: " + id + " STENTRY: " + entry.getNestLevel() + 
+			//	"\ntype: " + entry.getType().toPrint("") + " offset: " + entry.getOffset());
+		if (type instanceof ClassType) {
+			
+			int j = env.getNestLevel();
+			STEntry tmp = null;
 
-		System.out.println("VAR: " + id + " STENTRY: " + entry.getNestLevel() + 
-				"\ntype: " + entry.getType().toPrint("") + " offset: " + entry.getOffset());
+			while (j >= 0 && tmp == null) {
+				tmp = (env.getST().get(j--)).get(((ClassType) type).getId()); // Il nome della classe 
+				//equivale al tipo della variabile
+			}
+			
+			if (tmp == null) {
+				res.add(new SemanticError("Class " + ((ClassType) type).getId() + " has not been declared."));
+				return res;
+			} 
+		}
+		else {
+		
 		if ( hm.put(id, entry) != null )
 			res.add(new SemanticError("Var with id "+ id +" is already declared"));
-
+		return res;
+		}
 		res.addAll(exp.checkSemantics(env));
-
 		return res;
 	}
 

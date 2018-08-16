@@ -19,10 +19,10 @@ public class MethodCallNode implements Node {
 	private IdNode varNode;
 	private String ownerClass;
 
-	public MethodCallNode(String text, ArrayList<Node> args, Node sn) {
-		id = text;
+	public MethodCallNode(String m, ArrayList<Node> args, Node obj) {
+		id = m;
 		parList = args;
-		varNode = (IdNode) sn;
+		varNode = (IdNode) obj;
 	}
 
 	@Override

@@ -1,3 +1,4 @@
+class a;
 let 
 	a a = new a();
 	int f() 3;

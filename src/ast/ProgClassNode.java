@@ -79,6 +79,7 @@ public class ProgClassNode implements Node {
 
 	@Override
 	public Type typeCheck() {
+		// TODO da fare
 		return new ClassType("A");
 	}
 	@Override

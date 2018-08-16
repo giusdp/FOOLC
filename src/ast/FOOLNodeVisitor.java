@@ -95,8 +95,17 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 		
 	@Override
 	public Node visitMethodExp(MethodExpContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitMethodExp(ctx);
+		ArrayList<Node> args = new ArrayList<Node>();
+
+		for (ExpContext exp : ctx.exp())
+			args.add(visit(exp));
+
+		MethodCallNode m = new MethodCallNode(
+				ctx.ID(1).getText(), 
+				args, 
+				new IdNode(ctx.ID(0).getText()));
+
+		return m;
 	}
 
 	@Override

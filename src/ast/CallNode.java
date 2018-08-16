@@ -10,10 +10,10 @@ import util.STEntry;
 
 public class CallNode implements Node {
 
-  private String id;
-  private STEntry entry; 
-  private ArrayList<Node> parList; 
-  private int nestingLevel;
+  protected String id;
+  protected STEntry entry; 
+  protected ArrayList<Node> parList; 
+  protected int nestingLevel;
 
   
   public CallNode (String i, STEntry e, ArrayList<Node> p, int nl) {
@@ -27,6 +27,10 @@ public class CallNode implements Node {
 	id=text;
     parList = args;
 }
+  
+public String getId() {
+	return id;
+}
 
 public String toPrint(String indent) {  //
     String parlstr="";
@@ -39,6 +43,7 @@ public String toPrint(String indent) {  //
 
 @Override
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
+	
 		//create the result
 		ArrayList<SemanticError> res = new ArrayList<SemanticError>();
 		
@@ -48,9 +53,9 @@ public String toPrint(String indent) {  //
 		 while (j>=0 && tmp==null)
 		     tmp=(env.getST().get(j--)).get(id);
 		 
-		 if (tmp==null)
+		 if (tmp==null) {
 			 res.add(new SemanticError("Id " + id + " not declared"));
-		 
+		 }
 		 else{
 			 this.entry = tmp;
 			 this.nestingLevel = env.getNestLevel();
