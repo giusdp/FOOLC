@@ -30,13 +30,13 @@ public class ParNode implements Node {
 	  return new ArrayList<SemanticError>();
 	}
   
-  public String toPrint(String s) {
-	  return s + "Par:" + id +"\n" + type.toPrint(s+"  ") ; 
+  public String toPrint(String indent) {
+	  return indent + "Par:" + id +"\n" + type.toPrint(indent+"  ") ; 
   }
   
   //non utilizzato
   public Type typeCheck () {
-     return null;
+     return type;
   }
   
   //non utilizzato

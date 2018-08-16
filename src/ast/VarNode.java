@@ -35,7 +35,7 @@ public class VarNode implements Node {
 		//System.out.println("Current nest level: " + env.getNestLevel() + " last offset: " + env.getOffset());
 
 		System.out.println("VAR: " + id + " STENTRY: " + entry.getNestLevel() + 
-				" type: " + entry.getType().toPrint("") + " offset: " + entry.getOffset());
+				"\ntype: " + entry.getType().toPrint("") + " offset: " + entry.getOffset());
 		if ( hm.put(id, entry) != null )
 			res.add(new SemanticError("Var with id "+ id +" is already declared"));
 
@@ -44,8 +44,8 @@ public class VarNode implements Node {
 		return res;
 	}
 
-	public String toPrint(String s) {
-		return s+"Var:" + id +"\n" + type.toPrint(s+"  ")  + exp.toPrint(s+"  "); 
+	public String toPrint(String indent) {
+		return indent+"Var:" + id +"\n" + type.toPrint(indent+"  ")  + exp.toPrint(indent+"  "); 
 	}
 
 	//valore di ritorno non utilizzato

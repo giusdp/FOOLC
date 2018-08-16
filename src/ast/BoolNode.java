@@ -18,11 +18,11 @@ public class BoolNode implements Node {
       val = n;
   }
 
-  public String toPrint(String s) {
+  public String toPrint(String indent) {
       if (val)
-          return s + "Bool:true\n";
+          return indent + "Bool:true\n";
       else
-          return s + "Bool:false\n";
+          return indent + "Bool:false\n";
   }
 
   //A bool node is of type Bool, always

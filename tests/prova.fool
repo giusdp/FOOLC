@@ -1,7 +1,7 @@
 let 
-	int x = 5;
-	int f(int z) 5;
-	bool y = true;
+	a a = new a();
+	int f() 3;
+	bool g(int x) 3; 
 in 
-	6;
+	g( f() );
 end

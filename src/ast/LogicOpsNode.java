@@ -59,8 +59,8 @@ public class LogicOpsNode implements Node {
 	}
 
 	@Override
-	public String toPrint(String s) {
-		return s + opToPrint + "\n" + left.toPrint(s + "  ") + right.toPrint(s + "  ");
+	public String toPrint(String indent) {
+		return indent + opToPrint + "\n" + left.toPrint(indent + "  ") + right.toPrint(indent + "  ");
 	}
 
 	@Override

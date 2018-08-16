@@ -14,9 +14,8 @@ public class ProgExpNode implements Node {
     exp=e;
   }
   
-  public String toPrint(String s) {
-    
-    return "Prog\n" + exp.toPrint("  ") ;
+  public String toPrint(String indent) {
+    return "Prog\n" + exp.toPrint(indent + "  ") ;
   }
   
   @Override

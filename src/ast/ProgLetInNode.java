@@ -30,20 +30,20 @@ public class ProgLetInNode implements Node {
 		statements = stms;
 	}
 
-	public String toPrint(String s) {
+	public String toPrint(String indent) {
 		String declstr="";
 		for (Node dec:declist)
-			declstr+=dec.toPrint(s+"  ");
+			declstr+=dec.toPrint(indent+"  ");
 
 		if (statements != null) {
 			String stmsstr="";
 			for (Node stm: statements)
-				stmsstr+=stm.toPrint(s+"  ");
-			
-			return s+"ProgLetIn\n" + declstr + " " + stmsstr ;
+				stmsstr+=stm.toPrint(indent+"  ");
+
+			return indent+"ProgLetIn\n" + declstr + " " + stmsstr ;
 		}
-		return s+"ProgLetIn\n" + declstr + exp.toPrint(s+"  ") ; 
-		
+		return indent+"ProgLetIn\n" + declstr + exp.toPrint(indent+"  ") ; 
+
 
 	}
 
@@ -61,8 +61,9 @@ public class ProgLetInNode implements Node {
 		if(declist.size() > 0){
 			env.setOffset(-2);
 			//if there are children then check semantics for every child and save the results
-			for(Node n : declist)
+			for(Node n : declist) {
 				res.addAll(n.checkSemantics(env));
+			}
 		}
 
 		//check semantics in the exp body or stms body

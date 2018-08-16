@@ -18,8 +18,8 @@ public class IdNode implements Node {
     id=i;
   }
   
-  public String toPrint(String s) {
-	return s+"Id:" + id + " at nestlev " + nestinglevel +"\n" + entry.toPrint(s+"  ") ;  
+  public String toPrint(String indent) {
+	return indent+"Id:" + id + " at nestlev " + nestinglevel +"\n" + entry.toPrint(indent+"  ") ;  
   }
   
   @Override

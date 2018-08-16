@@ -20,8 +20,8 @@ public class IfNode implements Node {
     el=e;
   }
   
-  public String toPrint(String s) {
-    return s+"If\n" + cond.toPrint(s+"  ") + th.toPrint(s+"  ") + el.toPrint(s+"  "); 
+  public String toPrint(String indent) {
+    return indent+"If\n" + cond.toPrint(indent+"  ") + th.toPrint(indent+"  ") + el.toPrint(indent+"  "); 
   }
   
   

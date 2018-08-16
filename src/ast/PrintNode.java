@@ -14,8 +14,8 @@ public class PrintNode implements Node {
     val=v;
   }
   
-  public String toPrint(String s) {
-    return s+"Print\n" + val.toPrint(s+"  ") ;
+  public String toPrint(String indent) {
+    return indent+"Print\n" + val.toPrint(indent+"  ") ;
   }
   
   public Type typeCheck() {

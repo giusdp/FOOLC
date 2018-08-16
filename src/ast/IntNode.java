@@ -15,8 +15,8 @@ public class IntNode implements Node {
 		val = n;
 	}
 
-	public String toPrint(String s) {
-		return s+"Int:" + Integer.toString(val) +"\n";  
+	public String toPrint(String indent) {
+		return indent+"Int:" + Integer.toString(val) +"\n";  
 	}
 
 	public Type typeCheck() {

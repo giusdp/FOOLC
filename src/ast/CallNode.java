@@ -28,12 +28,12 @@ public class CallNode implements Node {
     parList = args;
 }
 
-public String toPrint(String s) {  //
+public String toPrint(String indent) {  //
     String parlstr="";
 	for (Node par:parList)
-	  parlstr+=par.toPrint(s+"  ");		
-	return s+"Call:" + id + " at nestlev " + nestingLevel +"\n" 
-           +entry.toPrint(s+"  ")
+	  parlstr+=par.toPrint(indent + "  ");		
+	return indent+"Call:" + id + " at nestlev " + nestingLevel +"\n" 
+           +entry.toPrint(indent + "  ")
            +parlstr;        
   }
 
@@ -49,7 +49,7 @@ public String toPrint(String s) {  //
 		     tmp=(env.getST().get(j--)).get(id);
 		 
 		 if (tmp==null)
-			 res.add(new SemanticError("Id "+id+" not declared"));
+			 res.add(new SemanticError("Id " + id + " not declared"));
 		 
 		 else{
 			 this.entry = tmp;

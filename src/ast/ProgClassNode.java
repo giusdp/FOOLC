@@ -3,6 +3,7 @@ package ast;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import type.ClassType;
 import type.Type;
 import util.Environment;
 import util.STEntry;
@@ -37,48 +38,48 @@ public class ProgClassNode implements Node {
 	
 	@Override
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
-		env.incNestLevel(); // nestingLevel is now 0
-		env.setClassOffset(-2);
+		env.incNestLevel(); // porto il nesting level a 0
+		//env.setClassOffset(-2);
 
-		// create a new hashmap and add it to the symbol table
+		// Creo una nuova hashmap e la aggiugno alla symbol table
 		HashMap<String, STEntry> hm = new HashMap<String, STEntry>();
-		env.getST().add(hm);
+		env.getST().add(hm);// Nuovo scope (della classe)
 
 		ArrayList<SemanticError> res = new ArrayList<SemanticError>();
 
-		int initialClassOffset = env.getClassOffset();
-		// check semantics for every class declaration
+		//int initialClassOffset = env.getClassOffset();
+		
+		// Controlla la semantica per ogni dichiarazione nella classe 
 		for (ClassNode n : classList) {
 			res.addAll(n.checkSemantics(env));
-			initialClassOffset -= n.getMethodList().size() + 1;
-			env.setClassOffset(initialClassOffset);
+			//initialClassOffset -= n.getMethodList().size() + 1;
+			//env.setClassOffset(initialClassOffset);
 		}
 
-		// if there are lets
+		// Se ci sono lets
 		if (decList.size() > 0) {
-			env.setOffset(env.getClassOffset());
+			//env.setOffset(env.getClassOffset());
 
 			for (Node n : decList)
 				res.addAll(n.checkSemantics(env));
 		}
 
 		if (res.size() > 0)
-			return res;
+			return res; // Se ci sono errori ci possiamo già fermare
 
-		//check semantics in the exp node
+		// Controlla l'espressione fuori 
 		res.addAll(exp.checkSemantics(env));
 
-		// leave the class scope
-		//env.getST().remove(env.decNestLevel());
-		env.decNestLevel();
+		// Lascia lo scope
+		env.getST().remove(env.decNestLevel());
+		//env.decNestLevel();
 
 		return res;
 	}
 
 	@Override
 	public Type typeCheck() {
-		// TODO Auto-generated method stub
-		return null;
+		return new ClassType("A");
 	}
 	@Override
 	public String codeGeneration() {

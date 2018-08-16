@@ -6,6 +6,7 @@ import parser.FOOLParser.AsmStmContext;
 import parser.FOOLParser.BaseExpContext;
 import parser.FOOLParser.BoolValContext;
 import parser.FOOLParser.ClassExpContext;
+import parser.FOOLParser.ClassdecContext;
 import parser.FOOLParser.DecContext;
 import parser.FOOLParser.ExpContext;
 import parser.FOOLParser.FactorContext;
@@ -17,6 +18,9 @@ import parser.FOOLParser.IfStmContext;
 import parser.FOOLParser.IntValContext;
 import parser.FOOLParser.LetContext;
 import parser.FOOLParser.LetInExpContext;
+import parser.FOOLParser.MethodExpContext;
+import parser.FOOLParser.NewExpContext;
+import parser.FOOLParser.NullExpContext;
 import parser.FOOLParser.SingleExpContext;
 import parser.FOOLParser.StmContext;
 import parser.FOOLParser.StmsContext;
@@ -44,7 +48,75 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 	@Override
 	public Node visitClassExp(ClassExpContext ctx) {
 
-		return super.visitClassExp(ctx);
+		ArrayList<ClassNode> classNodeList = new ArrayList<ClassNode>();
+
+		// Visita tutte le classi
+		for (ClassdecContext cc : ctx.classdec())
+			classNodeList.add((ClassNode) visit(cc));
+
+		// Se ci sono lets 
+		ArrayList<Node> declarations = new ArrayList<Node>();
+		if (ctx.let() != null) {
+			for (DecContext dc : ctx.let().dec())
+				declarations.add(visit(dc));
+		}
+
+		// Visita il nodo exp
+		Node exp = visit(ctx.exp());
+
+		ProgClassNode c = new ProgClassNode(classNodeList, declarations, exp);
+
+		return c;
+	}
+
+	@Override
+	public Node visitClassdec(ClassdecContext ctx) {
+		// ID(0) è il nome della classe. ID(1) è la superclasse. 
+		// ID(n) serve per accedere ai due ID presenti nella regola
+		ClassNode c = new ClassNode(ctx.ID(0).getText());
+
+		if (ctx.ID(1) != null)
+			c.setSuperClass(ctx.ID(1).getText());
+
+		// Visita i campi (le variabili dichiarate)
+		for (VardecContext vc : ctx.vardec()) {
+			Type type = (Type) visit(vc.type());
+			//type.isField(true);
+			c.addField(new ParNode(vc.ID().getText(), type));
+		}
+
+		// visit all class's methods
+		for (FunContext fc : ctx.fun()) {
+			FunNode f = (FunNode) visit(fc);
+			c.addMethod(f);
+		}
+		return c;
+	}
+		
+	@Override
+	public Node visitMethodExp(MethodExpContext ctx) {
+		// TODO Auto-generated method stub
+		return super.visitMethodExp(ctx);
+	}
+
+	@Override
+	public Node visitNewExp(NewExpContext ctx) {
+		CallNode res;
+
+		ArrayList<Node> args = new ArrayList<Node>();
+
+		for (ExpContext exp : ctx.exp())
+			args.add(visit(exp));
+
+		res = new CallNode(ctx.ID().getText(), args);
+
+		return res;
+	}
+
+	@Override
+	public Node visitNullExp(NullExpContext ctx) {
+		// TODO Auto-generated method stub
+		return super.visitNullExp(ctx);
 	}
 
 	// PROG exp
@@ -74,7 +146,7 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 			declarations.add(visit(dc));
 		}
 
-		
+
 		//visit exp or stms context
 		if (ctx.stms() == null) {
 			Node exp = visit(ctx.exp());
@@ -91,7 +163,7 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 
 		//build @res accordingly with the result of the visits to its
 		//content
-		
+
 
 		return res;
 	}
@@ -178,7 +250,7 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 
 		else if (ctx.VOID() != null) return new VoidType();
 
-		else return new ClassType();
+		else return new ClassType(ctx.getText());
 
 	}
 
