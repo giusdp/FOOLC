@@ -99,7 +99,7 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 
 		for (ExpContext exp : ctx.exp())
 			args.add(visit(exp));
-
+		
 		MethodCallNode m = new MethodCallNode(
 				ctx.ID(1).getText(), 
 				args, 

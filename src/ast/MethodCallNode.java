@@ -41,8 +41,32 @@ public class MethodCallNode implements Node {
 		
 		ArrayList<SemanticError> res = new ArrayList<SemanticError>();
 		
-		//TODO
+		res.addAll(varNode.checkSemantics(env));
+		if (res.size() > 0) {
+			return res;
+		}
+		
+		if (!(varNode.getType() instanceof ClassType)) {
+			res.add(new SemanticError("Var id '" + varNode.getId()
+			+ "' is not an object; cannot invoke method " + id + "."));
+			return res;
+		}
 
+		// Dopo i controlli preliminari sulla variabile usata. 
+		// Si cerca la definizione del metodo nell'hashmap dei metodi
+		ownerClass = ((ClassType) varNode.getType()).getId(); // Ottendo il nome/tipo della classe
+		
+		//Non può succedere in realtà perché quando si va ad instanziare la classe, se non è stata
+		// definita già è errore, quindi molto prima di questo controllo.
+		if (env.getClassMethods().get(ownerClass) == null){
+			res.add(new SemanticError("Class "+ ownerClass + " not defined."));
+			return res;
+		}
+		if (!env.getClassMethods().get(ownerClass).contains(id)) {
+			res.add(new SemanticError("Method "+ id + " in class " + ownerClass + " is not defined."));
+			return res;
+		}
+	
 		return res;
 	}
 

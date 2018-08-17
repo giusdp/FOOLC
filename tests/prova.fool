@@ -1,8 +1,8 @@
-class a;
+class A (int x) { int f(int x) x; };
 let 
-	a a = new a();
-	int f() 3;
-	bool g(int x) 3; 
-in 
-	g( f() );
+	//int f(int x) 4;
+	int e = 3;
+    A o = new A();
+in
+    o.f();
 end

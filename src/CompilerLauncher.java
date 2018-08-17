@@ -76,6 +76,7 @@ public class CompilerLauncher {
 
 		Environment env = new Environment();
 		
+		System.out.println("Perfoming Check Semantics...");
 		ArrayList<SemanticError> err = ast.checkSemantics(env);
 		if (err.size() > 0) {
 			System.out.println("You had: " + err.size() + " error(s):");
@@ -84,10 +85,10 @@ public class CompilerLauncher {
 			}
 			System.exit(1);
 		}
+		System.out.println("Check Semantics ok!");
 
-
-		System.out.println("Visualizing AST...");
-		System.out.println(ast.toPrint(""));
+		//System.out.println("Visualizing AST...");
+		//System.out.println(ast.toPrint(""));
 
 
 		// TODO da passare l'env al typechecking 

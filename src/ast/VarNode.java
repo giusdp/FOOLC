@@ -36,26 +36,28 @@ public class VarNode implements Node {
 		
 		//System.out.println("VAR: " + id + " STENTRY: " + entry.getNestLevel() + 
 			//	"\ntype: " + entry.getType().toPrint("") + " offset: " + entry.getOffset());
+		boolean varClass = false;
 		if (type instanceof ClassType) {
+			varClass = true;
 			
 			int j = env.getNestLevel();
 			STEntry tmp = null;
 
 			while (j >= 0 && tmp == null) {
-				tmp = (env.getST().get(j--)).get(((ClassType) type).getId()); // Il nome della classe 
-				//equivale al tipo della variabile
+				tmp = (env.getST().get(j--)).get(((ClassType) type).getId());
+				// Il nome della classe equivale al tipo della variabile
 			}
 			
 			if (tmp == null) {
-				res.add(new SemanticError("Class " + ((ClassType) type).getId() + " has not been declared."));
+				res.add(new SemanticError("Class " + ((ClassType) type).getId() + " has not been defined."));
 				return res;
 			} 
 		}
-		else {
-		
 		if ( hm.put(id, entry) != null )
-			res.add(new SemanticError("Var with id "+ id +" is already declared"));
-		return res;
+		{
+			if(!varClass)res.add(new SemanticError("Id for var "+ id +" is already declared."));
+			else res.add(new SemanticError("Id "+ id +" already used as class name. Can't use exact name for var."));
+			return res;
 		}
 		res.addAll(exp.checkSemantics(env));
 		return res;

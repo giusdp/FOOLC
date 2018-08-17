@@ -2,14 +2,20 @@ package util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 
 public class Environment {
 
 	private ArrayList<HashMap<String, STEntry>> symTable = 
 			new ArrayList<HashMap<String, STEntry>>();
+	
 	private int nestingLevel;
 	private int offset;
 
+	// Tiene traccia dei methodi dichiarati nelle classi. 
+	//Utilizzato per la check semantics delle invocazione ai metodi
+	private HashMap<String, Set<String>> classMethods = new HashMap<>();
+	
 	public Environment() {
 		nestingLevel = -1;
 		offset = 0;
@@ -45,6 +51,15 @@ public class Environment {
 
 	public void setOffset(int n) {
 		offset = n;
+	}
+
+
+	public HashMap<String, Set<String>> getClassMethods() {
+		return classMethods;
+	}
+	
+	public void addMethod(String c, String m) {
+		classMethods.get(c).add(m);
 	}
 
 	//livello ambiente con dichiarazioni piu' esterno è 0 (prima posizione ArrayList) 

@@ -1,7 +1,11 @@
 package ast;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 import type.ClassType;
 import type.Type;
@@ -44,6 +48,8 @@ public class ClassNode implements Node {
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
 		//create result list
 		ArrayList<SemanticError> res = new ArrayList<SemanticError>();
+	
+		env.getClassMethods().put(id, new HashSet<>());
 
 		//env.offset = -2;
 		HashMap<String,STEntry> hm = env.getST().get(env.getNestLevel());
@@ -61,6 +67,7 @@ public class ClassNode implements Node {
 		env.getST().add(nuovoScope);
 
 		int paroffset=1;
+		
 		for (Node field : fieldList) {
 			ParNode arg = (ParNode) field;
 			if (nuovoScope.put(arg.getId(),new STEntry(env.getNestLevel(),arg.getType(),paroffset++)) != null) {
@@ -72,10 +79,15 @@ public class ClassNode implements Node {
 		for (Node method : methodList) {
 			FunNode fun = (FunNode) method;
 			res.addAll(fun.checkSemantics(env));
+			// Aggiungo i metodi della classe nella hashmap classMethods 
+			// per non perderli dopo se vengono invocati
+			env.addMethod(id, fun.getId());
 		}
 
 		env.getST().remove(env.decNestLevel());
-
+		
+		
+		
 		return res;
 	}
 

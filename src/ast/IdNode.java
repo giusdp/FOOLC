@@ -18,7 +18,11 @@ public class IdNode implements Node {
     id=i;
   }
   
-  public String toPrint(String indent) {
+  public String getId() {
+	return id;
+}
+
+public String toPrint(String indent) {
 	return indent+"Id:" + id + " at nestlev " + nestinglevel +"\n" + entry.toPrint(indent+"  ") ;  
   }
   
@@ -63,5 +67,9 @@ public class IdNode implements Node {
 			   "add\n"+ 
                "lw\n"; //carico sullo stack il valore all'indirizzo ottenuto
 
+  }
+  
+  public Type getType() {
+	  return entry.getType();
   }
 }  

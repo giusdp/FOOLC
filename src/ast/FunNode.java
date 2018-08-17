@@ -46,8 +46,8 @@ public class FunNode implements Node {
 		STEntry entry = new STEntry(env.getNestLevel(),env.decOffset()); 
 		//separo introducendo "entry"
 
-		System.out.println("FUN: " + id + " STENTRY: " + entry.getNestLevel() + 
-				" offset: " + entry.getOffset());
+		//System.out.println("FUN: " + id + " STENTRY: " + entry.getNestLevel() + 
+			//	" offset: " + entry.getOffset());
 
 		if ( hm.put(id,entry) != null )
 			res.add(new SemanticError("Fun id "+ id +" already declared"));
