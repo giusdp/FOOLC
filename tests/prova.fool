@@ -1,8 +1,11 @@
-class A (int x) { int f(int x) x; };
+class A (int x	) { int f(int x) x; };
 let 
 	//int f(int x) 4;
 	int e = 3;
-    A o = new A();
+    A o = null;
 in
-    o.f();
+	o = new A(e);
 end
+
+// SERVE L'ACCESSO AI CAMPI DELLA CLASSE PER POTERLI CAMBIARE, E IN PIÙ SERVE CHE GLI STMS FUNZIONINO BENE
+// ANCHE INTERVALLANDO CON LE EXP

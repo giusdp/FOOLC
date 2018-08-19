@@ -87,8 +87,8 @@ public class CompilerLauncher {
 		}
 		System.out.println("Check Semantics ok!");
 
-		//System.out.println("Visualizing AST...");
-		//System.out.println(ast.toPrint(""));
+		System.out.println("Visualizing AST...");
+		System.out.println(ast.toPrint(""));
 
 
 		// TODO da passare l'env al typechecking 

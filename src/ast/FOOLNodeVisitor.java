@@ -68,6 +68,8 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 
 		return c;
 	}
+	
+	
 
 	@Override
 	public Node visitClassdec(ClassdecContext ctx) {
