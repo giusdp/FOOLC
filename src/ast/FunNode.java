@@ -90,8 +90,10 @@ public class FunNode implements Node {
 
 			//check body
 			if (expBody == null) { // If its stms
-				for(Node s : stmsBody)
+				for(Node s : stmsBody) {
+					//System.out.println(s.toPrint(""));
 					res.addAll(s.checkSemantics(env));
+				}
 			}
 			else {
 				res.addAll(expBody.checkSemantics(env));	

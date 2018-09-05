@@ -185,12 +185,13 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 
 	@Override
 	public Node visitAsmStm(AsmStmContext ctx) {
-		System.out.println("VISIT ASM STM");
+		System.out.println(ctx.ID());
+		System.out.println(ctx.ASM());
+		System.out.println(ctx.body);
 		IdNode res = new IdNode(ctx.ID().getText());
-		System.out.println("VISIT ASM STM 2");
-		System.out.println(res);
 		return res;
 	}
+
 
 	@Override
 	public Node visitIfStm(IfStmContext ctx) {

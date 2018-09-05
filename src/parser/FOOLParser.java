@@ -990,6 +990,7 @@ public class FOOLParser extends Parser {
 		}
 	}
 	public static class AsmStmContext extends StmContext {
+		public ExpContext body;
 		public TerminalNode ID() { return getToken(FOOLParser.ID, 0); }
 		public TerminalNode ASM() { return getToken(FOOLParser.ASM, 0); }
 		public ExpContext exp() {
@@ -1050,7 +1051,7 @@ public class FOOLParser extends Parser {
 				setState(147);
 				match(ASM);
 				setState(148);
-				exp();
+				((AsmStmContext)_localctx).body = exp();
 				}
 				break;
 			case IF:

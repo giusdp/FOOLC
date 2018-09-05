@@ -39,7 +39,7 @@ factor : left=value ((EQ|GREATER|LESS|GREATEREQUAL|LESSEQUAL|OR|AND) right=facto
        ;
 
 // Gli stms forse sono da usare solo nel corpo di metodi?
-stm    : ID ASM exp                                                               #AsmStm
+stm    : ID ASM body=exp																#AsmStm
        | IF cond=exp THEN CLPAR thenBranch=stms CRPAR ELSE CLPAR elseBranch=stms CRPAR  #ifStm ;
        // if exp then { stms } else { stms } (condizionale) ;
 

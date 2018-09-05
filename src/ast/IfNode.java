@@ -15,6 +15,7 @@ public class IfNode implements Node {
   private Node el;
   
   public IfNode (Node c, Node t, Node e) {
+	
     cond=c;
     th=t;
     el=e;
@@ -34,6 +35,7 @@ public class IfNode implements Node {
 	  res.addAll(cond.checkSemantics(env));
 	 	  
 	  //check semantics in the then and in the else exp
+	  
 	  res.addAll(th.checkSemantics(env));
 	  res.addAll(el.checkSemantics(env));
 	  
