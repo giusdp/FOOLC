@@ -112,6 +112,7 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 
 	@Override
 	public Node visitNewExp(NewExpContext ctx) {
+		//System.out.println("VISIT NEW");
 		CallNode res;
 
 		ArrayList<Node> args = new ArrayList<Node>();
@@ -127,7 +128,8 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 	@Override
 	public Node visitNullExp(NullExpContext ctx) {
 		// TODO Auto-generated method stub
-		return super.visitNullExp(ctx);
+		//System.out.println("VISIT NULL");
+		return new NullNode();
 	}
 
 	// PROG exp
@@ -183,11 +185,17 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 
 	@Override
 	public Node visitAsmStm(AsmStmContext ctx) {
-		return new IdNode(ctx.ID().getText());
+		System.out.println("VISIT ASM STM");
+		IdNode res = new IdNode(ctx.ID().getText());
+		System.out.println("VISIT ASM STM 2");
+		System.out.println(res);
+		return res;
 	}
 
 	@Override
 	public Node visitIfStm(IfStmContext ctx) {
+
+		//System.out.println("VISIT IF STM");
 		//create the resulting node
 		IfNode ifnode = null;
 
@@ -196,18 +204,20 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 		//we need to point to the right expression among the 3 possible ones in the rule
 
 		Node condExp = visit(ctx.cond);
-
+		
 		Node thenExp = visit(ctx.thenBranch);
-
+		
 		Node elseExp = visit(ctx.elseBranch);
 
 		//build the @res properly and return it
+		
 		ifnode = new IfNode(condExp, thenExp, elseExp);
 		return ifnode;
 	}
 
 	@Override
 	public Node visitVarasm(VarasmContext ctx) {
+		//System.out.println("VISIT VAR ASM");
 		//declare the result node
 		VarNode result;
 
@@ -218,11 +228,13 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 		Node expNode = visit(ctx.exp());
 
 		//build the varNode
+		
 		return new VarNode(ctx.vardec().ID().getText(), type, expNode);
 	}
 
 	@Override
 	public Node visitFun(FunContext ctx) {
+		//System.out.println("VISIT FUN");
 		//initialize @res with the visits to the type and its ID
 		FunNode res = new FunNode(ctx.ID().getText(), (Type) visit(ctx.type()));
 
@@ -243,11 +255,23 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 				innerDec.add(visit(dc));
 		}
 
-		//get the exp body
-		Node exp = visit(ctx.exp());
+		//get the exp or stms body
+		if (ctx.stms() == null) {  // IF IT'S EXP (stms is null)
+			Node exp = visit(ctx.exp());
+			res.addDecExpBody(innerDec, exp);
+		}
+		else { // ALTRIMENTI SONO STMS
+			ArrayList<Node> statements = new ArrayList<Node>();
+			for (StmContext stm : ctx.stms().stm()) {
+				statements.add(visit(stm));
+			}
+			res.addDecStmsBody(innerDec, statements);
+
+		}
+		
 
 		//add the body and the inner declarations to the function
-		res.addDecBody(innerDec, exp);
+		
 
 		return res;
 	}
@@ -255,6 +279,7 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 	@Override
 	public Node visitType(TypeContext ctx) {
 
+		//System.out.println("VISIT TYPE");
 		if (ctx.INT() != null) return new IntType();
 
 		else if (ctx.BOOL() != null) return new BoolType();
@@ -267,6 +292,8 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 
 	@Override
 	public Node visitExp(ExpContext ctx) {
+
+		//System.out.println("VISIT EXP");
 		//check whether this is a simple or binary expression
 		//notice here the necessity of having named elements in the grammar
 		if (ctx.right == null) {
@@ -282,6 +309,8 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 
 	@Override
 	public Node visitTerm(TermContext ctx) {
+
+		//System.out.println("VISIT TERM");
 		//check whether this is a simple or binary expression
 		//notice here the necessity of having named elements in the grammar
 		if (ctx.right == null) {
@@ -297,6 +326,8 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 
 	@Override
 	public Node visitFactor(FactorContext ctx) {
+
+		//System.out.println("VISIT FACTOR");
 		//check whether this is a simple or binary expression
 		//notice here the necessity of having named elements in the grammar
 		if (ctx.right == null) {
@@ -326,6 +357,8 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 
 	@Override
 	public Node visitIntVal(IntValContext ctx) {
+
+		//System.out.println("VISIT INT VAL");
 		// notice that this method is not actually a rule but a named production #intVal
 
 		// ProgNode -> exp -> term -> factor -> IntNode
@@ -337,6 +370,8 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 
 	@Override
 	public Node visitBoolVal(BoolValContext ctx) {
+
+		//System.out.println("VISIT BOOL VAL");
 		//there is no need to perform a check here, the lexer ensures this text is a boolean
 		boolean res = false;
 		if (ctx.getText().startsWith("not")) {
@@ -362,6 +397,8 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 
 	@Override
 	public Node visitIfExp(IfExpContext ctx) {
+
+		//System.out.println("VISIT IF EXP");
 		//create the resulting node
 		IfNode res;
 
@@ -383,11 +420,15 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 
 	@Override
 	public Node visitVarExp(VarExpContext ctx) {
+
+		//System.out.println("VISIT VAR EXP");
 		return new IdNode(ctx.ID().getText());
 	}
 
 	@Override
 	public Node visitFunExp(FunExpContext ctx) {
+
+		//System.out.println("VISIT FUN EXP");
 		//this corresponds to a function invocation
 
 		//declare the result

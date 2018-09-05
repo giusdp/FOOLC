@@ -13,18 +13,24 @@ public class FunNode implements Node {
 
 	private String id;
 	private Type type; 
-	private ArrayList<Node> parlist = new ArrayList<Node>(); 
+	private ArrayList<Node> parlist = new ArrayList<>(); 
 	private ArrayList<Node> declist; 
-	private Node body;
+	private Node expBody;
+	private ArrayList<Node> stmsBody;
 
 	public FunNode (String i, Type t) {
 		id=i;
 		type=t;
 	}
 
-	public void addDecBody (ArrayList<Node> d, Node b) {
+	public void addDecExpBody (ArrayList<Node> d, Node b) {
 		declist=d;
-		body=b;
+		expBody=b;
+	}
+	
+	public void addDecStmsBody (ArrayList<Node> d, ArrayList<Node> b) {
+		declist=d;
+		stmsBody=b;
 	}
 
 	public String getId() {
@@ -83,8 +89,13 @@ public class FunNode implements Node {
 			}
 
 			//check body
-			res.addAll(body.checkSemantics(env));
-
+			if (expBody == null) { // If its stms
+				for(Node s : stmsBody)
+					res.addAll(s.checkSemantics(env));
+			}
+			else {
+				res.addAll(expBody.checkSemantics(env));	
+			}
 			//close scope
 			env.getST().remove(env.decNestLevel());
 
@@ -109,7 +120,7 @@ public class FunNode implements Node {
 		+type.toPrint(indent+"  ")
 		+parlstr
 		+declstr
-		+body.toPrint(indent+"  ") ; 
+		+expBody.toPrint(indent+"  ") ; 
 	}
 
 	//valore di ritorno non utilizzato
@@ -117,7 +128,7 @@ public class FunNode implements Node {
 		if (declist!=null) 
 			for (Node dec:declist)
 				dec.typeCheck();
-		if ( !(FOOLlib.isSubtype(body.typeCheck(),type)) ){
+		if ( !(FOOLlib.isSubtype(expBody.typeCheck(),type)) ){
 			System.out.println("Wrong return type for function "+id);
 			System.exit(0);
 		}  
@@ -143,7 +154,7 @@ public class FunNode implements Node {
 				"cfp\n"+ //setta $fp a $sp				
 				"lra\n"+ //inserimento return address
 				declCode+ //inserimento dichiarazioni locali
-				body.codeGeneration()+
+				expBody.codeGeneration()+
 				"srv\n"+ //pop del return value
 				popDecl+
 				"sra\n"+ // pop del return address

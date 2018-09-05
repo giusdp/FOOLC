@@ -1,11 +1,9 @@
-class A (int x	) { int f(int x) x; };
+class A (int x) { int f(int x) x; };
+class B extends A { int f(int x) x + 1; };
 let 
-	//int f(int x) 4;
 	int e = 3;
-    A o = null;
+	A o = null;
+    void g(int cond) if ( e == cond ) then { o = new A(3); } else { o = new B(); };
 in
-	o = new A(e);
+	g(3);
 end
-
-// SERVE L'ACCESSO AI CAMPI DELLA CLASSE PER POTERLI CAMBIARE, E IN PIÙ SERVE CHE GLI STMS FUNZIONINO BENE
-// ANCHE INTERVALLANDO CON LE EXP
