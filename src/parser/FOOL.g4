@@ -4,12 +4,12 @@ grammar FOOL;
  * PARSER RULES
  *------------------------------------------------------------------*/
   
-prog   : exp SEMIC                                          #singleExp
-       | let ( exp | stms )+ SEMIC                          #letInExp
-       | (classdec)+ ((let ( exp | stms )+ ) | exp) SEMIC   #classExp
+prog   : exp SEMIC                                                  #singleExp
+       | let ( exp SEMIC | stms )+                                  #letInExp
+       | (classdec)+ ((let ( exp SEMIC | stms )+ ) | exp SEMIC)     #classExp
        ;
 
-classdec  : CLASS ID (EXTENDS ID)? (LPAR vardec SEMIC (vardec SEMIC)* RPAR)? (CLPAR (fun)+ CRPAR)? SEMIC;
+classdec  : CLASS ID (EXTENDS ID)? (LPAR vardec (vardec COMMA)* RPAR)? (CLPAR (fun)+ CRPAR)? SEMIC;
 
 let    : LET (dec)+ IN ;
 
