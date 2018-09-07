@@ -48,26 +48,34 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 	@Override
 	public Node visitClassExp(ClassExpContext ctx) {
 
-		ArrayList<ClassNode> classNodeList = new ArrayList<ClassNode>();
+		ArrayList<ClassNode> classes = new ArrayList<ClassNode>();
 		ArrayList<Node> declarations = new ArrayList<Node>();
 		ArrayList<Node> expressions = new ArrayList<Node>();
 		ArrayList<Node> statements = new ArrayList<Node>();
 		
 		// Visita tutte le classi
 		for (ClassdecContext cc : ctx.classdec())
-			classNodeList.add((ClassNode) visit(cc));
+			classes.add((ClassNode) visit(cc));
 
 		// Se ci sono lets 
 		
 		if (ctx.let() != null) {
 			for (DecContext dc : ctx.let().dec())
 				declarations.add(visit(dc));
+			
+			for (ExpContext e : ctx.exp())
+				expressions.add(visit(e));
+			
+			for (StmsContext stm : ctx.stms()) {
+				//System.out.println(dc.toString());
+				for (StmContext s : stm.stm()) {
+					statements.add(visit(stm));	
+				}
+			}
 		}
 
-		// Visita il nodo exp
-		Node exp = visit(ctx.exp());
 
-		ProgClassNode c = new ProgClassNode(classNodeList, declarations, exp);
+		ProgClassNode c = new ProgClassNode(classes, declarations, expressions, statements);
 
 		return c;
 	}

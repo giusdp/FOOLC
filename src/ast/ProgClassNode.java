@@ -17,12 +17,12 @@ public class ProgClassNode implements Node {
 	private ArrayList<Node> expList;
 	private ArrayList<Node> stmList;
 	
-	public ProgClassNode(ArrayList<ClassNode> l,
-						 ArrayList<Node> d,
+	public ProgClassNode(ArrayList<ClassNode> classes,
+						 ArrayList<Node> decs,
 						 ArrayList<Node> exps,
 						 ArrayList<Node> stms) {
-		classList = l;
-		decList = d;
+		classList = classes;
+		decList = decs;
 		expList = exps;
 		stmList = stms;
 	}
