@@ -147,8 +147,11 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 		ProgLetInNode res;
 
 		//list of declarations in @res
-		ArrayList<Node> declarations = new ArrayList<Node>();
-
+		ArrayList<Node> declarations = new ArrayList<>();
+		ArrayList<Node> expressions = new ArrayList<>();
+		ArrayList<Node> statements = new ArrayList<>();
+		
+		
 		//visit all nodes corresponding to declarations inside the let
 		//context and store them in @declarations
 		//notice that the ctx.let().dec() method returns a list, this is
@@ -159,24 +162,21 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 			declarations.add(visit(dc));
 		}
 
-
-		//visit exp or stms context
-		if (ctx.stms() == null) {
-			Node exp = visit(ctx.exp());
-			res = new ProgLetInNode(declarations, exp);
+		//visit exp and stms context
+		for (ExpContext exp : ctx.exp()) {
+			//System.out.println(dc.toString());
+			expressions.add(visit(exp));
 		}
-		else {
-			ArrayList<Node> statements = new ArrayList<Node>();
-			for (StmContext stm : ctx.stms().stm()) {
-				statements.add(visit(stm));
+		for (StmsContext stm : ctx.stms()) {
+			//System.out.println(dc.toString());
+			for (StmContext s : stm.stm()) {
+				statements.add(visit(stm));	
 			}
-			res = new ProgLetInNode(declarations, statements);
-
 		}
-
+		
+		res = new ProgLetInNode(declarations, expressions, statements);
 		//build @res accordingly with the result of the visits to its
 		//content
-
 
 		return res;
 	}

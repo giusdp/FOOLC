@@ -13,38 +13,37 @@ import util.SemanticError;
 public class ProgLetInNode implements Node {
 
 	private ArrayList<Node> declist;
-	private Node exp; // E' null se il corpo sono statements
+	private ArrayList<Node> exps; // E' null se il corpo sono statements
 	private ArrayList<Node> statements; // Questa è la lista di statements nel caso in cui
 	// il corpo sono statements. 
-
-	/* takes the list of declarations and the final expression */
-	public ProgLetInNode (ArrayList<Node> d, Node e) {
-		declist=d;
-		exp=e;
-		statements = null;
-	}
-
-	public ProgLetInNode (ArrayList<Node> d, ArrayList<Node> stms) {
-		declist=d;
-		exp=null;
-		statements = stms;
+	
+	/* takes the list of declarations, the expressions and the statements*/
+	public ProgLetInNode(ArrayList<Node> d, ArrayList<Node> exps, ArrayList<Node> stms) {
+		this.declist = d;
+		this.exps = exps;
+		this.statements= stms;
 	}
 
 	public String toPrint(String indent) {
-		String declstr="";
+		String declString="";
 		for (Node dec:declist)
-			declstr+=dec.toPrint(indent+"  ");
-
-		if (statements != null) {
-			String stmsstr="";
-			for (Node stm: statements)
-				stmsstr+=stm.toPrint(indent+"  ");
-
-			return indent+"ProgLetIn\n" + declstr + " " + stmsstr ;
+			declString+=dec.toPrint(indent+"  ");
+		
+		String expString="";
+		for (Node e : exps) {
+			expString += e.toPrint(indent + "  ");
 		}
-		return indent+"ProgLetIn\n" + declstr + exp.toPrint(indent+"  ") ; 
 
+			String stmString="";
+			for (Node stm: statements)
+				stmString+=stm.toPrint(indent+"  ");
 
+		return indent+"ProgLetIn\n"
+			   + declString
+			   + "  "
+			   + expString
+			   + "  " 
+			   + stmString; 
 	}
 
 	@Override
@@ -57,21 +56,23 @@ public class ProgLetInNode implements Node {
 		//declare resulting list
 		ArrayList<SemanticError> res = new ArrayList<SemanticError>();
 
-		//check semantics in the dec list
-		if(declist.size() > 0){
-			env.setOffset(-2);
-			//if there are children then check semantics for every child and save the results
-			for(Node n : declist) {
-				res.addAll(n.checkSemantics(env));
-			}
-		}
+		env.setOffset(-2); // Code generation stuff
 
-		//check semantics in the exp body or stms body
-		if (exp != null) res.addAll(exp.checkSemantics(env));
-		else {
-			for(Node s : statements)
-				res.addAll(s.checkSemantics(env));
+
+		//check semantics in the dec list
+		//if there are children then check semantics for every child and save the results
+		for(Node n : declist) {
+			res.addAll(n.checkSemantics(env));
 		}
+		
+		//check semantics in the exp body or stms body
+		for (Node e : exps) {
+			res.addAll(e.checkSemantics(env));
+		}
+		
+		for(Node s : statements)
+			res.addAll(s.checkSemantics(env));
+		
 		//clean the scope, we are leaving a let scope
 		env.getST().remove(env.decNestLevel());
 
@@ -86,13 +87,14 @@ public class ProgLetInNode implements Node {
 		for (Node dec:declist) {
 			dec.typeCheck();
 		}
-		if (exp != null) return exp.typeCheck();
-		else {
-			for(Node s : statements) {
-				s.typeCheck();
-			}
-			return new VoidType();
+		for (Node e : exps) {
+			e.typeCheck();
 		}
+		for(Node s : statements) {
+			s.typeCheck();
+		}
+		
+		return new VoidType();
 	}
 
 	public String codeGeneration() {
@@ -100,7 +102,17 @@ public class ProgLetInNode implements Node {
 		for (Node dec:declist) {
 			declCode += dec.codeGeneration();
 		}
-		return  "push 0\n"+ declCode + exp.codeGeneration() + "halt\n" + FOOLlib.getCode();
+		
+		String expsCode = "";
+		for (Node e : exps) {
+			expsCode += e.codeGeneration();
+		}
+
+		String stmsCode = "";
+		for (Node s : statements) {
+			stmsCode += s.codeGeneration();
+		}
+		return  "push 0\n"+ declCode + expsCode + stmsCode + "halt\n" + FOOLlib.getCode();
 	} 
 
 
