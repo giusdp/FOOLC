@@ -9,7 +9,7 @@ prog   : exp SEMIC                                                  #singleExp
        | (classdec)+ ( let ( exp SEMIC | stms )+ )?                      #classExp
        ;
 
-classdec  : CLASS ID (EXTENDS ID)? (LPAR vardec (vardec COMMA)* RPAR)? (CLPAR (fun)+ CRPAR)? SEMIC;
+classdec  : CLASS ID (EXTENDS ID)? (LPAR vardec (COMMA vardec)* RPAR)? (CLPAR (fun)+ CRPAR)? SEMIC;
 
 let    : LET (dec)+ IN ;
 

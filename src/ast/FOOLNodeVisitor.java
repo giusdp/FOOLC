@@ -74,7 +74,6 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 			}
 		}
 
-
 		ProgClassNode c = new ProgClassNode(classes, declarations, expressions, statements);
 
 		return c;

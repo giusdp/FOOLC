@@ -47,7 +47,7 @@ assembly:
 	  | BRANCHLESSEQ l=LABEL {	code.add(BRANCHLESSEQ);
 	  							labelRef.put(code.size(),$l.text);
 	  							code.add(0);}
-	  | BRANCHGREATEQ l=LABEL {	code.add(BRANCHGREATEQ);
+	  /* | BRANCHGREATEQ l=LABEL {	code.add(BRANCHGREATEQ);
 	  							labelRef.put(code.size(),$l.text);
 	  							code.add(0);}
 	  | BRANCHLESS l=LABEL {	code.add(BRANCHLESS);
@@ -55,7 +55,7 @@ assembly:
 	  							code.add(0);}
 	  | BRANCHGREAT l=LABEL {	code.add(BRANCHGREAT);
 			  					labelRef.put(code.size(),$l.text);
-			  					code.add(0);}
+			  					code.add(0);} */
 	  | JS 					{	code.add(JS);}		     
 	  | LOADRA 				{	code.add(LOADRA);}    
 	  | STORERA 			{	code.add(STORERA);}  

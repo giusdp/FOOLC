@@ -1,9 +1,1 @@
 class A (int x) { int f(int x) x; };
-class B extends A { int f(int x) x + 1; };
-let 
-	int e = 3;
-	A o = null;
-    void g(int cond) if ( e == cond ) then { o = new A(3); } else { o = new B(); };
-in
-	g(3);
-end
