@@ -42,16 +42,7 @@ public class MethodCallNode implements Node {
 		ArrayList<SemanticError> res = new ArrayList<SemanticError>();
 		
 		res.addAll(varNode.checkSemantics(env));
-		if (res.size() > 0) {
-			return res;
-		}
 		
-		if (!(varNode.getType() instanceof ClassType)) {
-			res.add(new SemanticError("Var id '" + varNode.getId()
-			+ "' is not an object; cannot invoke method " + id + "."));
-			return res;
-		}
-
 		// Dopo i controlli preliminari sulla variabile usata. 
 		// Si cerca la definizione del metodo nell'hashmap dei metodi
 		ownerClass = ((ClassType) varNode.getType()).getId(); // Ottendo il nome/tipo della classe
@@ -73,6 +64,14 @@ public class MethodCallNode implements Node {
 	@Override
 	public Type typeCheck() {
 		// TODO Auto-generated method stub
+		
+		if (!(varNode.getType() instanceof ClassType)) {
+			// TODO: Method of detecting error in TypeCheck.
+			// E.g. un ErrorType classe
+			/* res.add(new SemanticError("Var id '" + varNode.getId()
+			+ "' is not an object; cannot invoke method " + id + "."));
+			return res; */
+		}
 		return null;
 	}
 

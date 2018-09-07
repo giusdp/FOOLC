@@ -1,1 +1,7 @@
-class A (int x) { int f(int x) x; };
+class A;
+let 
+	int f() 4;
+	int x = 4;
+in 
+	g();
+	x.f();

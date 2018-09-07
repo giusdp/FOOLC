@@ -130,7 +130,7 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 		for (ExpContext exp : ctx.exp())
 			args.add(visit(exp));
 
-		res = new CallNode(ctx.ID().getText(), args);
+		res = new CallNode(ctx.ID().getText(), args, true);
 
 		return res;
 	}
@@ -449,7 +449,7 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 			args.add(visit(exp));
 
 		//instantiate the invocation
-		res = new CallNode(ctx.ID().getText(), args);
+		res = new CallNode(ctx.ID().getText(), args, false);
 
 		return res;
 	}

@@ -34,7 +34,7 @@ public class IfNode implements Node {
 	  //check semantics in the condition
 	  res.addAll(cond.checkSemantics(env));
 	 	  
-	  //check semantics in the then and in the else exp
+	  //check semantics in then and in else exp
 	  
 	  res.addAll(th.checkSemantics(env));
 	  res.addAll(el.checkSemantics(env));

@@ -14,18 +14,12 @@ public class CallNode implements Node {
   protected STEntry entry; 
   protected ArrayList<Node> parList; 
   protected int nestingLevel;
-
+  private boolean isConstructorCall = false;
   
-  public CallNode (String i, STEntry e, ArrayList<Node> p, int nl) {
-    id=i;
-    entry=e;
-    parList = p;
-    nestingLevel=nl;
-  }
-  
-  public CallNode(String text, ArrayList<Node> args) {
+  public CallNode(String text, ArrayList<Node> args, boolean isConstrCall) {
 	id=text;
     parList = args;
+    isConstructorCall = isConstrCall;
 }
   
 public String getId() {
@@ -41,7 +35,7 @@ public String toPrint(String indent) {  //
            +parlstr;        
   }
 
-@Override
+	@Override
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
 	
 		//create the result
@@ -54,7 +48,8 @@ public String toPrint(String indent) {  //
 		     tmp=(env.getST().get(j--)).get(id);
 		 
 		 if (tmp==null) {
-			 res.add(new SemanticError("Id " + id + " not declared"));
+			 String errorSubject = (isConstructorCall) ? "Class " : "Function ";
+			 res.add(new SemanticError(errorSubject + id + " not declared"));
 		 }
 		 else{
 			 this.entry = tmp;

@@ -4,8 +4,6 @@ public class ClassType extends Type {
 
 	private String id;
 	
-	
-	
 	public ClassType(String id) {
 		this.id = id;
 	}
