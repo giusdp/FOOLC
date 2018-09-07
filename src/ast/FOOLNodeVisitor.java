@@ -49,13 +49,16 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 	public Node visitClassExp(ClassExpContext ctx) {
 
 		ArrayList<ClassNode> classNodeList = new ArrayList<ClassNode>();
-
+		ArrayList<Node> declarations = new ArrayList<Node>();
+		ArrayList<Node> expressions = new ArrayList<Node>();
+		ArrayList<Node> statements = new ArrayList<Node>();
+		
 		// Visita tutte le classi
 		for (ClassdecContext cc : ctx.classdec())
 			classNodeList.add((ClassNode) visit(cc));
 
 		// Se ci sono lets 
-		ArrayList<Node> declarations = new ArrayList<Node>();
+		
 		if (ctx.let() != null) {
 			for (DecContext dc : ctx.let().dec())
 				declarations.add(visit(dc));
@@ -146,7 +149,7 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 		//resulting node of the right type
 		ProgLetInNode res;
 
-		//list of declarations in @res
+		//list of declarations, exps and stms in @res
 		ArrayList<Node> declarations = new ArrayList<>();
 		ArrayList<Node> expressions = new ArrayList<>();
 		ArrayList<Node> statements = new ArrayList<>();

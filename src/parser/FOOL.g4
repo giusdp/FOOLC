@@ -6,7 +6,7 @@ grammar FOOL;
   
 prog   : exp SEMIC                                                  #singleExp
        | let ( exp SEMIC | stms )+                                  #letInExp
-       | (classdec)+ ((let ( exp SEMIC | stms )+ ) | exp SEMIC)     #classExp
+       | (classdec)+ ( let ( exp SEMIC | stms )+ )?                      #classExp
        ;
 
 classdec  : CLASS ID (EXTENDS ID)? (LPAR vardec (vardec COMMA)* RPAR)? (CLPAR (fun)+ CRPAR)? SEMIC;

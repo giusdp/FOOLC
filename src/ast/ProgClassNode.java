@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import type.ClassType;
 import type.Type;
+import type.VoidType;
 import util.Environment;
 import util.STEntry;
 import util.SemanticError;
@@ -13,27 +14,32 @@ public class ProgClassNode implements Node {
 	
 	private ArrayList<ClassNode> classList;
 	private ArrayList<Node> decList;
-	private Node exp;
+	private ArrayList<Node> expList;
+	private ArrayList<Node> stmList;
 	
-	public ProgClassNode(ArrayList<ClassNode> l, ArrayList<Node> d, Node e) {
+	public ProgClassNode(ArrayList<ClassNode> l,
+						 ArrayList<Node> d,
+						 ArrayList<Node> exps,
+						 ArrayList<Node> stms) {
 		classList = l;
 		decList = d;
-		exp = e;
+		expList = exps;
+		stmList = stms;
 	}
 	
 	@Override
 	public String toPrint(String indent) {
-		String fieldstr = "", decstr = "";
+		String fieldString = "", decString = "", expString = "", stmString = "";
 
-		if (decList.size() > 0) {
-			for (Node d : decList)
-				decstr += d.toPrint(indent + "  ");
-		}
-
-		for (ClassNode c : classList)
-			fieldstr += c.toPrint(indent + "  ");
-
-		return indent + "ProgClassNode\n" + fieldstr + decstr + exp.toPrint(indent + "  ");
+		for (Node d : decList) decString += d.toPrint(indent + "  ");
+		
+		for (ClassNode c : classList) fieldString += c.toPrint(indent + "  ");
+		
+		for (Node e : expList) expString += e.toPrint(indent + "  ");
+		
+		for (Node s : stmList) stmString += s.toPrint(indent + "  ");
+		
+		return indent + "ProgClassNode\n" + fieldString + decString + expString + stmString;
 	}
 	
 	@Override
@@ -57,19 +63,18 @@ public class ProgClassNode implements Node {
 		}
 
 		// Se ci sono lets
-		if (decList.size() > 0) {
 			//env.setOffset(env.getClassOffset());
-
-			for (Node n : decList)
-				res.addAll(n.checkSemantics(env));
-		}
-
-		if (res.size() > 0)
-			return res; // Se ci sono errori ci possiamo già fermare
+		for (Node n : decList)
+			res.addAll(n.checkSemantics(env));
 
 		// Controlla l'espressione fuori 
-		res.addAll(exp.checkSemantics(env));
+		for (Node e : expList) {
+			res.addAll(e.checkSemantics(env));
+		}
 
+		for (Node s : stmList) {
+			res.addAll(s.checkSemantics(env));
+		}
 		// Lascia lo scope
 		env.getST().remove(env.decNestLevel());
 		//env.decNestLevel();
@@ -80,7 +85,7 @@ public class ProgClassNode implements Node {
 	@Override
 	public Type typeCheck() {
 		// TODO da fare
-		return new ClassType("A");
+		return new VoidType();
 	}
 	@Override
 	public String codeGeneration() {
