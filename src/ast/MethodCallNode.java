@@ -45,8 +45,14 @@ public class MethodCallNode implements Node {
 		
 		// Dopo i controlli preliminari sulla variabile usata. 
 		// Si cerca la definizione del metodo nell'hashmap dei metodi
-		ownerClass = ((ClassType) varNode.getType()).getId(); // Ottendo il nome/tipo della classe
-		
+		// Siccome la sintassi è un metodo di una classe, la variabile dovrebbe essere una classe
+		// Se non lo è si intercetta l'eccezione e si da un Semantic Error
+		try {
+			ownerClass = ((ClassType) varNode.getType()).getId(); // Ottendo il nome/tipo della classe
+		}
+		catch (ClassCastException e) {
+			res.add(new SemanticError("Var " + varNode.getId() + " is not ClassType, instead it's " + varNode.getType().toPrint("")));
+		}
 		//Non può succedere in realtà perché quando si va ad instanziare la classe, se non è stata
 		// definita già è errore, quindi molto prima di questo controllo.
 		if (env.getClassMethods().get(ownerClass) == null){
