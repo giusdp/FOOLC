@@ -49,20 +49,23 @@ public class MethodCallNode implements Node {
 		// Se non lo è si intercetta l'eccezione e si da un Semantic Error
 		try {
 			ownerClass = ((ClassType) varNode.getType()).getId(); // Ottendo il nome/tipo della classe
+		
+			//Non può succedere in realtà perché quando si va ad instanziare la classe, se non è stata
+			// definita già è errore, quindi molto prima di questo controllo.
+			if (env.getClassMethods().get(ownerClass) == null){
+				res.add(new SemanticError("Class "+ ownerClass + " not defined."));
+				return res;
+			}
+			if (!env.getClassMethods().get(ownerClass).contains(id)) {
+				res.add(new SemanticError("Method "+ id + " in class " + ownerClass + " is not defined."));
+				return res;
+			}
 		}
 		catch (ClassCastException e) {
+			// TODO: Però questo è un controllo di tipi, si dovrebbe fare nel type check non qui
 			res.add(new SemanticError("Var " + varNode.getId() + " is not ClassType, instead it's " + varNode.getType().toPrint("")));
 		}
-		//Non può succedere in realtà perché quando si va ad instanziare la classe, se non è stata
-		// definita già è errore, quindi molto prima di questo controllo.
-		if (env.getClassMethods().get(ownerClass) == null){
-			res.add(new SemanticError("Class "+ ownerClass + " not defined."));
-			return res;
-		}
-		if (!env.getClassMethods().get(ownerClass).contains(id)) {
-			res.add(new SemanticError("Method "+ id + " in class " + ownerClass + " is not defined."));
-			return res;
-		}
+		
 	
 		return res;
 	}

@@ -69,14 +69,13 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 			for (StmsContext stm : ctx.stms()) {
 				//System.out.println(dc.toString());
 				for (StmContext s : stm.stm()) {
-					statements.add(visit(stm));	
+					statements.add(visit(s));	
 				}
 			}
 		}
 
-		ProgClassNode c = new ProgClassNode(classes, declarations, expressions, statements);
-
-		return c;
+		return new ProgClassNode(classes, declarations, expressions, statements);
+	
 	}
 	
 	

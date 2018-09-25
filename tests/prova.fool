@@ -1,7 +1,7 @@
-class A;
+class A{ int f() 5; };
 let 
 	int f() 4;
-	int x = 4;
+	A x = 4;
 in 
 	f();
 	x.f();
