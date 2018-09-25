@@ -48,15 +48,15 @@ public class FunNode implements Node {
 		ArrayList<SemanticError> res = new ArrayList<SemanticError>();
 
 		//env.offset = -2;
-		HashMap<String,STEntry> hm = env.getST().get(env.getNestLevel());
+		HashMap<String,STEntry> currentScope = env.getST().get(env.getNestLevel());
 		STEntry entry = new STEntry(env.getNestLevel(),env.decOffset()); 
 		//separo introducendo "entry"
 
 		//System.out.println("FUN: " + id + " STENTRY: " + entry.getNestLevel() + 
 			//	" offset: " + entry.getOffset());
 
-		if ( hm.put(id,entry) != null )
-			res.add(new SemanticError("Fun id "+ id +" already declared"));
+		if ( currentScope.put(id,entry) != null )
+			res.add(new SemanticError("Function "+ id +" already declared"));
 		else{
 			//creare una nuova hashmap per la symTable
 			env.incNestLevel();
@@ -70,8 +70,8 @@ public class FunNode implements Node {
 			for(Node a : parlist){
 				ParNode arg = (ParNode) a;
 				parTypes.add(arg.getType());
-				if (nuovoScope.put(arg.getId(),new STEntry(env.getNestLevel(),arg.getType(),paroffset++)) != null) {
-					System.out.println("Parameter "+arg.getId()+" already declared");
+				STEntry parSTEntry = new STEntry(env.getNestLevel(),arg.getType(),paroffset++);
+				if (nuovoScope.put(arg.getId(), parSTEntry) != null) {
 					res.add(new SemanticError("Parameter "+arg.getId()+" already declared"));
 				}
 			}

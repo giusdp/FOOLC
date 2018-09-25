@@ -1,7 +1,7 @@
-class A{ int f() 5; };
-let 
-	int f() 4;
-	A x = 4;
-in 
-	f();
-	x.f();
+class A (int x, bool x) { 
+	int f() 5;
+//	int f() 4;
+ };
+ class B extends C {
+ 	int f() 3;
+ };

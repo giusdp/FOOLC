@@ -2,7 +2,8 @@ package util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Set;
+
+import ast.ClassNode;
 
 public class Environment {
 
@@ -12,9 +13,7 @@ public class Environment {
 	private int nestingLevel;
 	private int offset;
 
-	// Tiene traccia dei methodi dichiarati nelle classi. 
-	//Utilizzato per la check semantics delle invocazione ai metodi
-	private HashMap<String, Set<String>> classMethods = new HashMap<>();
+	private HashMap<String, ClassNode> classMap = new HashMap<>();
 	
 	public Environment() {
 		nestingLevel = -1;
@@ -53,14 +52,10 @@ public class Environment {
 		offset = n;
 	}
 
-
-	public HashMap<String, Set<String>> getClassMethods() {
-		return classMethods;
+	public HashMap<String, ClassNode> getClassMap() {
+		return classMap;
 	}
 	
-	public void addMethod(String c, String m) {
-		classMethods.get(c).add(m);
-	}
 
 	//livello ambiente con dichiarazioni piu' esterno è 0 (prima posizione ArrayList) 
 	//invece che 1 (slides)

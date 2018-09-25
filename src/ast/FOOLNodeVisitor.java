@@ -57,7 +57,7 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 		for (ClassdecContext cc : ctx.classdec())
 			classes.add((ClassNode) visit(cc));
 
-		// Se ci sono lets 
+		// Se c'è let
 		
 		if (ctx.let() != null) {
 			for (DecContext dc : ctx.let().dec())
@@ -86,13 +86,13 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 		// ID(n) serve per accedere ai due ID presenti nella regola
 		ClassNode c = new ClassNode(ctx.ID(0).getText());
 
-		if (ctx.ID(1) != null)
-			c.setSuperClass(ctx.ID(1).getText());
-
+		if (ctx.ID(1) != null) {
+			c.setSuperClassName(ctx.ID(1).getText());
+		}
+		
 		// Visita i campi (le variabili dichiarate)
 		for (VardecContext vc : ctx.vardec()) {
 			Type type = (Type) visit(vc.type());
-			//type.isField(true);
 			c.addField(new ParNode(vc.ID().getText(), type));
 		}
 

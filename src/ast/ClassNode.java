@@ -20,7 +20,8 @@ public class ClassNode implements Node {
 	private ArrayList<Node> methodList = new ArrayList<>();
 
 	// EREDITARIETA
-	private String superClass;
+	private String superClassName;
+	private ClassNode superClass;
 
 	public ClassNode(String name) {
 		this.id = name;
@@ -46,32 +47,54 @@ public class ClassNode implements Node {
 
 	@Override
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
+		
+		/**
+		 * Da verificare:
+		 * - superclasse esiste (se ci sia)
+		 * - classe non è stata ridichiarata
+		 * - chiamare checkSemantics ai campi e alle funzioni
+		 * NON necessari:
+		 * - controllare che funzioni/campi sono già dichiarati (fatto da IdNode etc.)
+		 */
+		
 		//create result list
 		ArrayList<SemanticError> res = new ArrayList<SemanticError>();
-	
-		env.getClassMethods().put(id, new HashSet<>());
 
 		//env.offset = -2;
-		HashMap<String,STEntry> hm = env.getST().get(env.getNestLevel());
+		
+		// Controllo classe già dichiarata
+		HashMap<String,STEntry> outerScope = env.getST().get(env.getNestLevel());
 
 		STEntry entry = new STEntry(env.getNestLevel(), new ClassType(id), env.decOffset()); 
 
-		if ( hm.put(id, entry) != null ) {
+		if ( outerScope.put(id, entry) != null ) {
 			res.add(new SemanticError("Class "+ id +" is already declared"));
 			return res; // Se la classe è già stata dichiarata allora possiamo fermarci
 		}
+		// ****************
+		
+		// Controllo super classe dichiarata
+		
+		if (superClassName != null) {
+			if (outerScope.get(superClassName) == null) {
+				res.add(new SemanticError("Super class "+ superClassName +" is not declared"));
+			} else {
+				setSuperClass(env.getClassMap().get(superClassName));
+			}
+		}
+		
 		// Altrimenti proseguiamo con la creazione di un nuovo scope
 		// Dove inserire i campi e i metodi e fare i controlli dovuti
 		env.incNestLevel();
-		HashMap<String,STEntry> nuovoScope = new HashMap<String,STEntry> ();
-		env.getST().add(nuovoScope);
+		HashMap<String,STEntry> newScope = new HashMap<String,STEntry> ();
+		env.getST().add(newScope);
 
 		int paroffset=1;
 		
 		for (Node field : fieldList) {
 			ParNode arg = (ParNode) field;
-			if (nuovoScope.put(arg.getId(),new STEntry(env.getNestLevel(),arg.getType(),paroffset++)) != null) {
-				System.out.println("Parameter "+arg.getId()+" already declared");
+			STEntry argSTEntry = new STEntry(env.getNestLevel(),arg.getType(),paroffset++);
+			if (newScope.put(arg.getId(), argSTEntry) != null) {
 				res.add(new SemanticError("Parameter "+arg.getId()+" already declared"));
 			}
 		}
@@ -79,14 +102,9 @@ public class ClassNode implements Node {
 		for (Node method : methodList) {
 			FunNode fun = (FunNode) method;
 			res.addAll(fun.checkSemantics(env));
-			// Aggiungo i metodi della classe nella hashmap classMethods 
-			// per non perderli dopo se vengono invocati
-			env.addMethod(id, fun.getId());
 		}
 
 		env.getST().remove(env.decNestLevel());
-		
-		
 		
 		return res;
 	}
@@ -122,12 +140,16 @@ public class ClassNode implements Node {
 		return methodList;
 	}
 
-	public String getSuperClass() {
-		return superClass;
+	public String getSuperClassName() {
+		return superClassName;
 	}
 
-	public void setSuperClass(String superClass) {
-		this.superClass = superClass;
+	public void setSuperClassName(String superClassName) {
+		this.superClassName = superClassName;
+	}
+	
+	public void setSuperClass(ClassNode parent) {
+		this.superClass = parent;
 	}
 
 
