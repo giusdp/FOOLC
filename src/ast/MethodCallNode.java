@@ -3,6 +3,7 @@ package ast;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import ast.FunNode;
 import type.ArrowType;
 import type.ClassType;
 import type.Type;
@@ -32,8 +33,10 @@ public class MethodCallNode implements Node {
 		for (Node par : parList)
 			parlstr += par.toPrint(indent + "  ");
 
+		// TODO: methodEntry is null at runtime. Causes NullPtrException.
+		// methodEntry is never instantiated here.
 		return indent + "Call:" + id + " at nestlev " + nestLevel 
-				+ "\n" + methodEntry.toPrint(indent + "  ") + parlstr;
+				+ "\n" + /*methodEntry.toPrint(indent + "  ") +*/ parlstr;
 	}
 	
 	@Override
@@ -52,11 +55,21 @@ public class MethodCallNode implements Node {
 		
 			//Non può succedere in realtà perché quando si va ad instanziare la classe, se non è stata
 			// definita già è errore, quindi molto prima di questo controllo.
-			if (env.getClassMethods().get(ownerClass) == null){
+			if (env.getClassMap().get(ownerClass) == null){
 				res.add(new SemanticError("Class "+ ownerClass + " not defined."));
 				return res;
 			}
-			if (!env.getClassMethods().get(ownerClass).contains(id)) {
+			
+			// Verificare che il metodo 'id' esiste in classe 'ownerClass':
+			boolean methodDeclared = false;
+			for (Node fn : env.getClassMap().get(ownerClass).getMethodList()) {
+				FunNode function = (FunNode) fn;
+				if (function.getId().equals(this.id)) {
+					methodDeclared = true;
+					break;
+				}
+			}	
+			if (!methodDeclared) {
 				res.add(new SemanticError("Method "+ id + " in class " + ownerClass + " is not defined."));
 				return res;
 			}

@@ -1,7 +1,8 @@
-class A (int x, bool x) { 
-	int f() 5;
-//	int f() 4;
- };
- class B extends C {
- 	int f() 3;
- };
+class A (int x) { 
+	int f(int x) 5;
+};
+
+let
+	A object = new A();
+in
+	object.f(object.f(object.f()));

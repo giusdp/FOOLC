@@ -112,7 +112,7 @@ public class ClassNode implements Node {
 	@Override
 	public Type typeCheck() {
 		// TODO Auto-generated method stub
-		return null;
+		return new ClassType(this.id);
 	}
 
 	@Override
