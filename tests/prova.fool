@@ -5,4 +5,4 @@ class A (int x) {
 let
 	A object = new A();
 in
-	object.f(object.f(object.f()));
+	object.f();

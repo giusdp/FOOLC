@@ -23,7 +23,7 @@ public class IdNode implements Node {
 }
 
 public String toPrint(String indent) {
-	System.out.println(entry);
+	//System.out.println(entry);
 	return indent+"Id:" + id + " at nestlev " + nestinglevel +"\n" + entry.toPrint(indent+"  ") ;  
   }
   
