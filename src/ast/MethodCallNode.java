@@ -35,7 +35,7 @@ public class MethodCallNode implements Node {
 		// TODO: methodEntry is null at runtime. Causes NullPtrException.
 		// methodEntry is never instantiated here.
 		return indent + "Method Call:" + id + " at nesting level " + nestLevel 
-				+ "\n" + /*methodEntry.toPrint(indent + "  ") +*/ parlstr;
+				+ "\n" + indent + "    from class " + ownerClass + /*methodEntry.toPrint(indent + "  ") +*/ parlstr;
 	}
 	
 	@Override
@@ -79,10 +79,11 @@ public class MethodCallNode implements Node {
 						break;
 					}
 				}
-				if (!methodDeclared) {
-					res.add(new SemanticError("Method "+ id + " in class " + ownerClass + " is not defined."));
-					return res;
-				}
+			}
+			
+			if (!methodDeclared) {
+				res.add(new SemanticError("Method "+ id + " in class " + ownerClass + " is not defined."));
+				return res;
 			}
 		}
 		catch (ClassCastException e) {

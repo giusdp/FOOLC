@@ -1,5 +1,5 @@
 class P {int f(int x) 5;};
-class A extends P (int x);
+class A (int x);
 
 let
 	A object = new A();
