@@ -1,7 +1,5 @@
-class P;
-class A extends P (int x) { 
-	int f() 5;
-};
+class P {int f(int x) 5;};
+class A extends P (int x);
 
 let
 	A object = new A();

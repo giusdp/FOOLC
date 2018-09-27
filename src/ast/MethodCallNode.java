@@ -14,7 +14,6 @@ import util.SemanticError;
 public class MethodCallNode implements Node {
 	
 	private String id;
-	private STEntry methodEntry;
 	private ArrayList<Node> parList;
 	private int nestLevel;
 	private IdNode varNode;
@@ -35,7 +34,7 @@ public class MethodCallNode implements Node {
 
 		// TODO: methodEntry is null at runtime. Causes NullPtrException.
 		// methodEntry is never instantiated here.
-		return indent + "Call:" + id + " at nestlev " + nestLevel 
+		return indent + "Method Call:" + id + " at nesting level " + nestLevel 
 				+ "\n" + /*methodEntry.toPrint(indent + "  ") +*/ parlstr;
 	}
 	
@@ -62,16 +61,28 @@ public class MethodCallNode implements Node {
 			
 			// Verificare che il metodo 'id' esiste in classe 'ownerClass':
 			boolean methodDeclared = false;
-			for (Node fn : env.getClassMap().get(ownerClass).getMethodList()) {
+			ClassNode owner = env.getClassMap().get(ownerClass);
+			for (Node fn : owner.getMethodList()) {
 				FunNode function = (FunNode) fn;
 				if (function.getId().equals(this.id)) {
 					methodDeclared = true;
 					break;
 				}
 			}	
-			if (!methodDeclared) {
-				res.add(new SemanticError("Method "+ id + " in class " + ownerClass + " is not defined."));
-				return res;
+			// Se il metodo non è dichiarato nella 'ownerClass' e la 'ownerClass' estende 
+			// una classe, bisogna controllare che il metodo sia della 'superClass'
+			if (owner.getSuperClassName() != null && !methodDeclared) {
+				for (Node fn : env.getClassMap().get(owner.getSuperClassName()).getMethodList()) {
+					FunNode function = (FunNode) fn;
+					if (function.getId().equals(this.id)) {
+						methodDeclared = true;
+						break;
+					}
+				}
+				if (!methodDeclared) {
+					res.add(new SemanticError("Method "+ id + " in class " + ownerClass + " is not defined."));
+					return res;
+				}
 			}
 		}
 		catch (ClassCastException e) {
