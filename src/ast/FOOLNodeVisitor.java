@@ -247,12 +247,14 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 		//we are getting a shortcut here by constructing directly the ParNode
 		//this could be done differently by visiting instead the VardecContext
 		ArrayList<Node> parTypes = new ArrayList<>();
-		for (VardecContext vc : ctx.vardec())
+		for (VardecContext vc : ctx.vardec()) {
 			parTypes.add(new ParNode(vc.ID().getText(), (Type) visit(vc.type())));
-
+			
+		}
+		
 		//initialize @res with the visits to the type and its ID
 		Type returnType = (Type) visit(ctx.type());
-		System.out.println(returnType.toPrint("  "));
+		//System.out.println(returnType.toPrint("  "));
 		FunNode res = new FunNode(ctx.ID().getText(), returnType, parTypes);
 
 		

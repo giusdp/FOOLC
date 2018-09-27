@@ -1,5 +1,6 @@
-class A (int x) { 
-	int f(int x) 5;
+class P;
+class A extends P (int x) { 
+	int f() 5;
 };
 
 let

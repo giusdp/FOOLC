@@ -40,7 +40,7 @@ public class ClassNode implements Node {
 		}
 
 		if (superClass != null)
-			superstr += indent + "  " + "Implements:" + superClass + "\n";
+			superstr += indent + "  " + "Implements: " + superClassName + "\n";
 
 		return indent + "Class:" + id + "\n" + superstr + fieldstr + methodstr;
 	}

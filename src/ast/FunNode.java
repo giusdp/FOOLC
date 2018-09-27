@@ -25,10 +25,11 @@ public class FunNode implements Node {
 		parlist = parameters;
 		
 		ArrayList<Type> parTypes = new ArrayList<>();
-		for (Node par : parTypes) {
+		for (Node par : parameters) {
 			ParNode p = (ParNode) par;
 			parTypes.add(p.getType());
 		}
+		
 		
 		functionType = new ArrowType(parTypes, type);
 		
@@ -125,7 +126,7 @@ public class FunNode implements Node {
 		if (declist!=null) 
 			for (Node dec:declist)
 				declstr+=dec.toPrint(indent+"  ");
-		return indent + functionType.toPrint("  ");
+		return indent + "Fun: "+ id + " of type " +functionType.toPrint("");
 				/*"Fun:" + id +"\n"
 		+type.toPrint(indent+"  ")
 		+parlstr

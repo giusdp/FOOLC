@@ -14,13 +14,15 @@ public class ArrowType extends Type {
 	    
 	@Override
 	public String toPrint(String s) { //
-		String parlstr="";
-	    for (Type par:parlist)
-	      parlstr+=par.toPrint(" ");
+		String parListString="";
+	    for (Type par:parlist) {
+	    	String parString = par.toPrint(" ");
+	    	parListString+= parString.substring(0, parString.length()-1);
+	      }
 	    if (parlist.isEmpty()) {
-	    	parlstr= " Void Type ";
+	    	parListString= " Void Type ";
 	    }
-		return s+"ArrowType: " + parlstr + " "+ ret.toPrint("-> ") ; 
+		return s+"ArrowType: " + parListString + " "+ ret.toPrint("-> ") ; 
 	}
 	  
 	public Type getRet () { //

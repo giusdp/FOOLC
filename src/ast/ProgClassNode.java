@@ -39,19 +39,19 @@ public class ProgClassNode implements Node {
 		
 		for (Node s : stmList) stmString += s.toPrint(indent + "  ");
 		
-		String let = "Let Declarations\n", in = "IN\n";
+		String let = " Let Declarations\n", in = " IN\n";
 		if (decString.equals("")) {
 			let = "";
 			in = "";
 		}
 		
-		String ex = "Expressions\n";
+		String ex = " Expressions\n";
 		if (expString.equals("")) ex = "";
 		
-		String st = "Statements\n";
+		String st = " Statements\n";
 		if (stmString.equals("")) st = "";
 		
-		return indent + "ProgClassNode\nClasses\n" + classesString + let + decString + in + ex + expString + st + stmString;
+		return indent + "ProgClassNode\n Classes\n" + classesString + let + decString + in + ex + expString + st + stmString;
 	}
 	
 	@Override
