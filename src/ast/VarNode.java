@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import type.ClassType;
+import type.ErrorType;
 import type.Type;
 import util.Environment;
 import util.STEntry;
@@ -69,11 +70,12 @@ public class VarNode implements Node {
 
 	//valore di ritorno non utilizzato
 	public Type typeCheck () {
-		if (! (FOOLlib.isSubtype(exp.typeCheck(),type)) ){      
-			System.out.println("incompatible value for variable "+id);
-			System.exit(0);
+		if (! (FOOLlib.isSubtype(exp.typeCheck(),type)) ){ 
+			ErrorType error = new ErrorType();
+			error.addErrorMessage("Incompatible value for variable" + id);
+			return error;
 		}     
-		return null;
+		return type;
 	}
 
 	public String codeGeneration() {

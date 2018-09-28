@@ -2,6 +2,7 @@ package ast;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import type.ErrorType;
 import type.Type;
 import type.VoidType;
 import util.FOOLlib;
@@ -27,22 +28,30 @@ public class ProgLetInNode implements Node {
 	public String toPrint(String indent) {
 		String declString="";
 		for (Node dec:declist)
-			declString+=dec.toPrint(indent+"  ");
+			declString+=dec.toPrint(indent+"    ");
 		
 		String expString="";
 		for (Node e : exps) {
-			expString += e.toPrint(indent + "  ");
+			expString += e.toPrint(indent + "    ");
 		}
 
-			String stmString="";
-			for (Node stm: statements)
-				stmString+=stm.toPrint(indent+"  ");
-
-		return indent+"ProgLetIn\n"
+		String stmString="";
+		for (Node stm: statements)
+			stmString+=stm.toPrint(indent+"    ");
+		
+		String let = "Let Declarations\n", in = "IN\n";
+		
+		String ex = " Expressions\n  ";
+		if (expString.equals("")) ex = "";
+		
+		String st = " Statements\n   ";
+		if (stmString.equals("")) st = "";
+		
+		return indent+"ProgLetIn\n  " + let 
 			   + declString
-			   + "  "
+			   + "  " + in + "  " + ex
 			   + expString
-			   + "  " 
+			   + "  " + st + "  " 
 			   + stmString; 
 	}
 
@@ -84,14 +93,19 @@ public class ProgLetInNode implements Node {
 	}
 
 	public Type typeCheck () {
+		Type type;
+		
 		for (Node dec:declist) {
-			dec.typeCheck();
+			type = dec.typeCheck();
+			if (type instanceof ErrorType) return type;
 		}
 		for (Node e : exps) {
-			e.typeCheck();
+			type = e.typeCheck();
+			if (type instanceof ErrorType) return type;			
 		}
 		for(Node s : statements) {
-			s.typeCheck();
+			type = s.typeCheck();
+			if (type instanceof ErrorType) return type;
 		}
 		
 		return new VoidType();

@@ -2,6 +2,7 @@ package ast;
 import java.util.ArrayList;
 
 import type.ArrowType;
+import type.ErrorType;
 import type.Type;
 import util.Environment;
 import util.SemanticError;
@@ -63,22 +64,23 @@ public String toPrint(String indent) {  //
   
   public Type typeCheck () {  //                           
 	 ArrowType t=null;
+	 ErrorType error = new ErrorType();
      if (entry.getType() instanceof ArrowType) {
     	 t=(ArrowType) entry.getType(); 
      }
      else {
-       System.out.println("Invocation of a non-function "+id);
-       System.exit(0);
+    	 error.addErrorMessage("Invocation of a non-function "+id);
+    	 return error;
      }
      ArrayList<Type> p = t.getParList();
      if ( !(p.size() == parList.size()) ) {
-       System.out.println("Wrong number of parameters in the invocation of "+id);
-       System.exit(0);
+    	 error.addErrorMessage("Wrong number of parameters in the invocation of "+id);
+    	 return error;
      } 
      for (int i=0; i<parList.size(); i++) 
        if ( !(FOOLlib.isSubtype( (parList.get(i)).typeCheck(), p.get(i)) ) ) {
-         System.out.println("Wrong type for "+(i+1)+"-th parameter in the invocation of "+id);
-         System.exit(0);
+    	   error.addErrorMessage("Wrong type for "+(i+1)+"-th parameter in the invocation of "+id);
+    	   return error;
        } 
      return t.getRet();
   }

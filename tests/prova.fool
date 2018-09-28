@@ -1,7 +1,7 @@
-class P {int f(int x) 5;};
-class A (int x);
-
 let
-	A object = new A();
+	bool returnvar = false;
+	int num = 3;
+
+	bool test() true;
 in
-	object.f();
+	test;

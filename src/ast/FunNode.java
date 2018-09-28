@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import type.ArrowType;
+import type.ErrorType;
 import type.Type;
 import util.FOOLlib;
 import util.STEntry;
@@ -12,17 +13,28 @@ import util.SemanticError;
 public class FunNode implements Node {
 
 	private String id;
-	private Type type; 
+	private Type returnType;
+	private Node returnNode;
 	private ArrayList<Node> parlist;
 	private ArrayList<Node> declist; 
-	private Node expBody;
+	private ArrayList<Node> expsBody;
 	private ArrayList<Node> stmsBody;
 	private ArrowType functionType;
 
-	public FunNode (String i, Type t, ArrayList<Node> parameters) {
+	public FunNode (String i,
+					Type t,
+					Node lastNode,
+					ArrayList<Node> parameters,
+					ArrayList<Node> decls,
+					ArrayList<Node> exps,
+					ArrayList<Node> stms) {
 		id=i;
-		type=t;
+		returnType=t;
 		parlist = parameters;
+		expsBody = exps;
+		stmsBody = stms;
+		declist = decls;
+		returnNode = lastNode;
 		
 		ArrayList<Type> parTypes = new ArrayList<>();
 		for (Node par : parameters) {
@@ -30,19 +42,8 @@ public class FunNode implements Node {
 			parTypes.add(p.getType());
 		}
 		
+		functionType = new ArrowType(parTypes, returnType);
 		
-		functionType = new ArrowType(parTypes, type);
-		
-	}
-
-	public void addDecExpBody (ArrayList<Node> d, Node b) {
-		declist=d;
-		expBody=b;
-	}
-	
-	public void addDecStmsBody (ArrayList<Node> d, ArrayList<Node> b) {
-		declist=d;
-		stmsBody=b;
 	}
 
 	public String getId() {
@@ -89,7 +90,7 @@ public class FunNode implements Node {
 			}
 
 			//set func type
-			entry.setType( new ArrowType(parTypes, type) );
+			entry.setType( new ArrowType(parTypes, returnType) );
 
 			//check semantics in the dec list
 			if(declist.size() > 0){
@@ -100,17 +101,14 @@ public class FunNode implements Node {
 					res.addAll(n.checkSemantics(env));
 			}
 
-			//check body
-			if (expBody == null) { // If its stms
-				for(Node s : stmsBody) {
-					//System.out.println(s.toPrint(""));
-					res.addAll(s.checkSemantics(env));
-				}
+			// Check semantics for function statements and expressions.
+			for(Node s : stmsBody) {
+				res.addAll(s.checkSemantics(env));
 			}
-			else {
-				res.addAll(expBody.checkSemantics(env));	
+			for (Node funExp : expsBody) {
+				res.addAll(funExp.checkSemantics(env));	
 			}
-			//close scope
+			// Close scope.
 			env.getST().remove(env.decNestLevel());
 
 		}
@@ -136,14 +134,24 @@ public class FunNode implements Node {
 
 	//valore di ritorno non utilizzato
 	public Type typeCheck () {
-		if (declist!=null) 
-			for (Node dec:declist)
-				dec.typeCheck();
-		if ( !(FOOLlib.isSubtype(expBody.typeCheck(),type)) ){
-			System.out.println("Wrong return type for function "+id);
-			System.exit(0);
+		if (declist!=null) {
+			for (Node dec:declist) {
+				Type type = dec.typeCheck();
+				if (type instanceof ErrorType) return type;
+			}
+		}
+		Type type = returnNode.typeCheck();
+		if(type instanceof ErrorType) {
+			return type;
+		}
+				
+		if ( !(FOOLlib.isSubtype(type, returnType)) ){
+			ErrorType error = new ErrorType();
+			error.addErrorMessage("Function " + id + " must return: " + returnType.toPrint("") +
+					   "Actually returned: " + returnNode.typeCheck().toPrint(""));
+			return error;
 		}  
-		return null;
+		return returnType;
 	}
 
 	public String codeGeneration() {
@@ -151,6 +159,11 @@ public class FunNode implements Node {
 		String declCode="";
 		if (declist!=null) for (Node dec:declist)
 			declCode+=dec.codeGeneration();
+		
+		String expsCode = "";
+		for (Node exp : expsBody) {
+			expsCode += exp.codeGeneration();
+		}
 
 		String popDecl="";
 		if (declist!=null) for (Node dec:declist)
@@ -165,7 +178,7 @@ public class FunNode implements Node {
 				"cfp\n"+ //setta $fp a $sp				
 				"lra\n"+ //inserimento return address
 				declCode+ //inserimento dichiarazioni locali
-				expBody.codeGeneration()+
+				expsCode+
 				"srv\n"+ //pop del return value
 				popDecl+
 				"sra\n"+ // pop del return address
