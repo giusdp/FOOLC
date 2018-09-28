@@ -1,11 +1,7 @@
-//class P {int f(int x) 5;};
-//class A (int x);
-
 let
 	bool returnvar = false;
 	int num = 3;
-	bool test()
-		3;
-//		A object = new A();
+
+	bool test() 3;
 in
 	test();

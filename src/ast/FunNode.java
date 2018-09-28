@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import type.ArrowType;
+import type.ErrorType;
 import type.Type;
 import util.FOOLlib;
 import util.STEntry;
@@ -133,15 +134,24 @@ public class FunNode implements Node {
 
 	//valore di ritorno non utilizzato
 	public Type typeCheck () {
-		if (declist!=null) 
-			for (Node dec:declist)
-				dec.typeCheck();
-		if ( !(FOOLlib.isSubtype(returnNode.typeCheck(),returnType)) ){
-			System.out.println("Function " + id + " must return: " + returnType.toPrint("") +
-							   "Actually returned: " + returnNode.typeCheck().toPrint(""));
-			System.exit(0);
+		if (declist!=null) {
+			for (Node dec:declist) {
+				Type type = dec.typeCheck();
+				if (type instanceof ErrorType) return type;
+			}
+		}
+		Type type = returnNode.typeCheck();
+		if(type instanceof ErrorType) {
+			return type;
+		}
+				
+		if ( !(FOOLlib.isSubtype(type, returnType)) ){
+			ErrorType error = new ErrorType();
+			error.addErrorMessage("Function " + id + " must return: " + returnType.toPrint("") +
+					   "Actually returned: " + returnNode.typeCheck().toPrint(""));
+			return error;
 		}  
-		return null;
+		return returnType;
 	}
 
 	public String codeGeneration() {

@@ -15,7 +15,7 @@ import parser.FOOLParser;
 import util.Environment;
 import util.SemanticError;
 import util.SyntaxErrorListener;
-
+import type.ErrorType;
 import type.Type;
 
 /**
@@ -96,12 +96,16 @@ public class CompilerLauncher {
 		System.out.println("Perfoming Type Checking...");
 		Type type = ast.typeCheck(); //type-checking bottom-up 
 
-		System.out.println(type.toPrint("Type checking succesful! Type of the program is: "));
+		
 
-		/*if (type instanceof BottomTypeNode) {
+		if (type instanceof ErrorType) {
 			System.out.println("Type checking of the program not successful.");
+			System.out.println(type.toPrint("  "));
 			System.exit(2);
-		}*/
+		} 
+		else {
+			System.out.println(type.toPrint("Type checking succesful! Type of the program is: "));
+		}
 
 		if (!doCodeGen) {
 			System.out.println("Code generation disabled!");
