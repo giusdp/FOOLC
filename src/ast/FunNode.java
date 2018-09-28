@@ -137,7 +137,8 @@ public class FunNode implements Node {
 			for (Node dec:declist)
 				dec.typeCheck();
 		if ( !(FOOLlib.isSubtype(returnNode.typeCheck(),returnType)) ){
-			System.out.println("Wrong return type for function " + id);
+			System.out.println("Function " + id + " must return: " + returnType.toPrint("") +
+							   "Actually returned: " + returnNode.typeCheck().toPrint(""));
 			System.exit(0);
 		}  
 		return null;

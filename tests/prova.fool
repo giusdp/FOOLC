@@ -1,12 +1,11 @@
-class P {int f(int x) 5;};
-class A (int x);
+//class P {int f(int x) 5;};
+//class A (int x);
 
 let
-	P object = new P();
 	bool returnvar = false;
+	int num = 3;
 	bool test()
 		returnvar = true;
-		returnvar;
-		42;
+		3;
 in
 	test();

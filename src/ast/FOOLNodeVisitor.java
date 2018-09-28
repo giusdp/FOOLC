@@ -276,7 +276,11 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 			}
 		}
 		
-		Node returningNode = visit(ctx.children.get(ctx.children.size() - 1));
+		Node returningNode = visit(ctx.lastexp);
+		if (returningNode  == null) {
+			returningNode = visit(ctx.laststm);
+		}
+		
 		FunNode res = new FunNode(ctx.ID().getText(), returnType, returningNode, parTypes, innerDec, expressions, statements);
 
 		return res;
