@@ -13,14 +13,26 @@ public class FunNode implements Node {
 
 	private String id;
 	private Type type; 
-	private ArrayList<Node> parlist = new ArrayList<>(); 
+	private ArrayList<Node> parlist;
 	private ArrayList<Node> declist; 
 	private Node expBody;
 	private ArrayList<Node> stmsBody;
+	private ArrowType functionType;
 
-	public FunNode (String i, Type t) {
+	public FunNode (String i, Type t, ArrayList<Node> parameters) {
 		id=i;
 		type=t;
+		parlist = parameters;
+		
+		ArrayList<Type> parTypes = new ArrayList<>();
+		for (Node par : parameters) {
+			ParNode p = (ParNode) par;
+			parTypes.add(p.getType());
+		}
+		
+		
+		functionType = new ArrowType(parTypes, type);
+		
 	}
 
 	public void addDecExpBody (ArrayList<Node> d, Node b) {
@@ -38,7 +50,7 @@ public class FunNode implements Node {
 	}
 
 	public Type getType() {
-		return type;
+		return functionType;
 	}
 
 	@Override
@@ -106,10 +118,6 @@ public class FunNode implements Node {
 		return res;
 	}
 
-	public void addPar (Node p) {
-		parlist.add(p);
-	}  
-
 	public String toPrint(String indent) {
 		String parlstr="";
 		for (Node par:parlist)
@@ -118,11 +126,12 @@ public class FunNode implements Node {
 		if (declist!=null) 
 			for (Node dec:declist)
 				declstr+=dec.toPrint(indent+"  ");
-		return indent+"Fun:" + id +"\n"
+		return indent + "Fun: "+ id + " of type " +functionType.toPrint("");
+				/*"Fun:" + id +"\n"
 		+type.toPrint(indent+"  ")
 		+parlstr
 		+declstr
-		+expBody.toPrint(indent+"  ") ; 
+		+expBody.toPrint(indent+"  "); */
 	}
 
 	//valore di ritorno non utilizzato

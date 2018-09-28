@@ -242,15 +242,22 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 	@Override
 	public Node visitFun(FunContext ctx) {
 		//System.out.println("VISIT FUN");
-		//initialize @res with the visits to the type and its ID
-		FunNode res = new FunNode(ctx.ID().getText(), (Type) visit(ctx.type()));
 
 		//add argument declarations
 		//we are getting a shortcut here by constructing directly the ParNode
 		//this could be done differently by visiting instead the VardecContext
-		for (VardecContext vc : ctx.vardec())
-			res.addPar(new ParNode(vc.ID().getText(), (Type) visit(vc.type())));
+		ArrayList<Node> parTypes = new ArrayList<>();
+		for (VardecContext vc : ctx.vardec()) {
+			parTypes.add(new ParNode(vc.ID().getText(), (Type) visit(vc.type())));
+			
+		}
+		
+		//initialize @res with the visits to the type and its ID
+		Type returnType = (Type) visit(ctx.type());
+		//System.out.println(returnType.toPrint("  "));
+		FunNode res = new FunNode(ctx.ID().getText(), returnType, parTypes);
 
+		
 		//add body
 		//create a list for the nested declarations
 		ArrayList<Node> innerDec = new ArrayList<Node>();

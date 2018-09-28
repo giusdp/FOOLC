@@ -31,7 +31,7 @@ public class ParNode implements Node {
 	}
   
   public String toPrint(String indent) {
-	  return indent + "Par:" + id +"\n" + type.toPrint(indent+"  ") ; 
+	  return indent + "Par: " + id + " of type " + type.toPrint("") ; 
   }
   
   //non utilizzato

@@ -40,7 +40,7 @@ public class ClassNode implements Node {
 		}
 
 		if (superClass != null)
-			superstr += indent + "  " + "Implements:" + superClass + "\n";
+			superstr += indent + "  " + "Extends: " + superClassName + "\n";
 
 		return indent + "Class:" + id + "\n" + superstr + fieldstr + methodstr;
 	}
@@ -112,7 +112,7 @@ public class ClassNode implements Node {
 	@Override
 	public Type typeCheck() {
 		// TODO Auto-generated method stub
-		return null;
+		return new ClassType(this.id);
 	}
 
 	@Override
