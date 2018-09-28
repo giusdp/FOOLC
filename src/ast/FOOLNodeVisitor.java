@@ -239,7 +239,6 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 
 	@Override
 	public Node visitFun(FunContext ctx) {
-		//System.out.println("VISIT FUN");
 
 		//add argument declarations
 		//we are getting a shortcut here by constructing directly the ParNode
@@ -276,9 +275,12 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 			}
 		}
 		
-		Node returningNode = visit(ctx.lastexp);
-		if (returningNode  == null) {
+		// Final line of function is either a stm or exp.
+		Node returningNode = null;
+		if (ctx.lastexp  == null) {
 			returningNode = visit(ctx.laststm);
+		} else {
+			returningNode = visit(ctx.lastexp);
 		}
 		
 		FunNode res = new FunNode(ctx.ID().getText(), returnType, returningNode, parTypes, innerDec, expressions, statements);

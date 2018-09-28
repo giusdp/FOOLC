@@ -99,7 +99,19 @@ public class ProgClassNode implements Node {
 
 	@Override
 	public Type typeCheck() {
-		// TODO da fare
+		for (ClassNode cl : classList) {
+			cl.typeCheck();
+		}
+		for (Node dec : decList) {
+			dec.typeCheck();
+		}
+		for (Node e : expList) {
+			e.typeCheck();
+		}
+		for(Node s : stmList) {
+			s.typeCheck();
+		}
+		
 		return new VoidType();
 	}
 	@Override

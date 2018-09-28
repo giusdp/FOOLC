@@ -5,7 +5,7 @@ let
 	bool returnvar = false;
 	int num = 3;
 	bool test()
-		returnvar = true;
 		3;
+//		A object = new A();
 in
 	test();
