@@ -173,11 +173,9 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 
 		//visit exp and stms context
 		for (ExpContext exp : ctx.exp()) {
-			//System.out.println(dc.toString());
 			expressions.add(visit(exp));
 		}
 		for (StmsContext stm : ctx.stms()) {
-			//System.out.println(dc.toString());
 			for (StmContext s : stm.stm()) {
 				statements.add(visit(s));	
 			}
@@ -254,10 +252,7 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 		
 		//initialize @res with the visits to the type and its ID
 		Type returnType = (Type) visit(ctx.type());
-		//System.out.println(returnType.toPrint("  "));
-		FunNode res = new FunNode(ctx.ID().getText(), returnType, parTypes);
 
-		
 		//add body
 		//create a list for the nested declarations
 		ArrayList<Node> innerDec = new ArrayList<Node>();
@@ -269,23 +264,20 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 				innerDec.add(visit(dc));
 		}
 
-		//get the exp or stms body
-		if (ctx.stms() == null) {  // IF IT'S EXP (stms is null)
-			Node exp = visit(ctx.exp());
-			res.addDecExpBody(innerDec, exp);
+		ArrayList<Node> statements = new ArrayList<Node>();
+		ArrayList<Node> expressions = new ArrayList<Node>();
+		
+		for (ExpContext exp : ctx.exp()) {
+			expressions.add(visit(exp));
 		}
-		else { // ALTRIMENTI SONO STMS
-			ArrayList<Node> statements = new ArrayList<Node>();
-			for (StmContext stm : ctx.stms().stm()) {
-				statements.add(visit(stm));
+		for (StmsContext stm : ctx.stms()) {
+			for (StmContext s : stm.stm()) {
+				statements.add(visit(s));	
 			}
-			res.addDecStmsBody(innerDec, statements);
-
 		}
 		
-
-		//add the body and the inner declarations to the function
-		
+		Node returningNode = visit(ctx.children.get(ctx.children.size() - 1));
+		FunNode res = new FunNode(ctx.ID().getText(), returnType, returningNode, parTypes, innerDec, expressions, statements);
 
 		return res;
 	}

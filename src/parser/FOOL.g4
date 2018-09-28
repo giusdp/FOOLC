@@ -17,7 +17,7 @@ vardec : type ID ;
 
 varasm : vardec ASM exp SEMIC ;
 
-fun    : type ID LPAR ( vardec ( COMMA vardec)* )? RPAR (let)? ( exp SEMIC | stms ) ;
+fun    : type ID LPAR ( vardec ( COMMA vardec)* )? RPAR (let)? ( exp SEMIC | stms )+ ;
 
 dec    : varasm  #varAssignment
        | fun     #funDeclaration

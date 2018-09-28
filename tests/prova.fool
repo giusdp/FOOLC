@@ -2,6 +2,11 @@ class P {int f(int x) 5;};
 class A (int x);
 
 let
-	A object = new A();
+	P object = new P();
+	bool returnvar = false;
+	bool test()
+		returnvar = true;
+		returnvar;
+		42;
 in
-	object.f();
+	test();
