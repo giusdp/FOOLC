@@ -3,6 +3,7 @@ package ast;
 import java.util.ArrayList;
 
 import type.ArrowType;
+import type.ErrorType;
 import type.Type;
 import util.Environment;
 import util.SemanticError;
@@ -53,8 +54,9 @@ public String toPrint(String indent) {
   
   public Type typeCheck () {
 	if (entry.getType() instanceof ArrowType) { //
-	  System.out.println("Wrong usage of function identifier");
-      System.exit(0);
+	  ErrorType error = new ErrorType();
+	  error.addErrorMessage("Wrong usage of function identifier: "+id);
+	  return error;
     }	 
     return entry.getType();
   }

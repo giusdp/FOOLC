@@ -80,6 +80,7 @@ public class CompilerLauncher {
 		ArrayList<SemanticError> err = ast.checkSemantics(env);
 		
 		if (err.size() > 0) {
+			System.out.println("Check Semantics FAILED");
 			System.out.println("You had: " + err.size() + " error(s):");
 			for (SemanticError e : err) {
 				System.out.println("\t" + e);				
@@ -99,7 +100,7 @@ public class CompilerLauncher {
 		
 
 		if (type instanceof ErrorType) {
-			System.out.println("Type checking of the program not successful.");
+			System.out.println("Type Checking FAILED.");
 			System.out.println(type.toPrint("  "));
 			System.exit(2);
 		} 

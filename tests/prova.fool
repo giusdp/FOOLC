@@ -2,6 +2,6 @@ let
 	bool returnvar = false;
 	int num = 3;
 
-	bool test() 3;
+	bool test() true;
 in
-	test();
+	test;
