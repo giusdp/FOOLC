@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import type.ClassType;
+import type.ErrorType;
 import type.Type;
 import util.Environment;
 import util.STEntry;
@@ -23,6 +24,7 @@ public class ClassNode implements Node {
 	private String superClassName;
 	private ClassNode superClass;
 
+	// COSTRUTTORE
 	public ClassNode(String name) {
 		this.id = name;
 	}
@@ -111,7 +113,24 @@ public class ClassNode implements Node {
 
 	@Override
 	public Type typeCheck() {
-		// TODO Auto-generated method stub
+		// Ci sarebbe da controllare il tipo di tutti i campi e di tutti i metodi e della superclasse, se c'e',
+		// per vedere se ci sono errori, e poi se tutto va bene si ritorna il ClassType.
+		// Pero' e' inutile controllare il tipo di Par perche' non dara' mai errori (vedi ParNode per il perche')
+		// La superclasse e' anche inutile controllare perche' gia' ProgClassNode si occupa
+		// del type checking di tutte le classi, quindi direi di controllare solo i tipi dei metodi.
+		Type methodType;
+		for (Node m : methodList) {
+			FunNode method = (FunNode) m;
+			methodType = method.typeCheck();
+			if (methodType instanceof ErrorType) return methodType; // Return ErrorType se c'e' un errore nei metodi
+		}
+		
+		// Una volta controllato che i metodi vadano bene, bisogna controllare l'overriding dei metodi!
+		// Se c'e' una super classe e ci sono overriding dei metodi, bisogna controllare che sia stato fatto
+		// bene, usando la regola del type checking sull'overriding nelle slides
+		
+		/* METTERE QUI CODICE TYPE CHECKING OVERRIDING */
+		
 		return new ClassType(this.id);
 	}
 
