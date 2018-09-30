@@ -52,17 +52,17 @@ public class MethodCallNode implements Node {
 		try {
 			ownerClass = ((ClassType) varNode.getType()).getId(); // Ottendo il nome/tipo della classe
 		
+			ClassNode ownerClassNode = env.getClassMap().get(ownerClass);
 			//Non può succedere in realtà perché quando si va ad instanziare la classe, se non è stata
 			// definita già è errore, quindi molto prima di questo controllo.
-			if (env.getClassMap().get(ownerClass) == null){
+			if (ownerClassNode == null){
 				res.add(new SemanticError("Class "+ ownerClass + " not defined."));
 				return res;
 			}
 			
 			// Verificare che il metodo 'id' esiste in classe 'ownerClass':
 			boolean methodDeclared = false;
-			ClassNode owner = env.getClassMap().get(ownerClass);
-			for (Node fn : owner.getMethodList()) {
+			for (Node fn : ownerClassNode.getMethodList()) {
 				FunNode function = (FunNode) fn;
 				if (function.getId().equals(this.id)) {
 					methodDeclared = true;
@@ -71,8 +71,8 @@ public class MethodCallNode implements Node {
 			}	
 			// Se il metodo non è dichiarato nella 'ownerClass' e la 'ownerClass' estende 
 			// una classe, bisogna controllare che il metodo sia della 'superClass'
-			if (owner.getSuperClassName() != null && !methodDeclared) {
-				for (Node fn : env.getClassMap().get(owner.getSuperClassName()).getMethodList()) {
+			if (ownerClassNode.getSuperClass() != null && !methodDeclared) {
+				for (Node fn : ownerClassNode.getSuperClass().getMethodList()) {
 					FunNode function = (FunNode) fn;
 					if (function.getId().equals(this.id)) {
 						methodDeclared = true;

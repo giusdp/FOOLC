@@ -6,7 +6,6 @@ public class ErrorType extends Type {
 	
 	@Override
 	public String toPrint(String s) {
-		// TODO Auto-generated method stub
 		return msg;
 	}
 

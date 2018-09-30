@@ -1,7 +1,6 @@
-let
-	bool returnvar = false;
-	int num = 3;
-
-	bool test() true;
+class P{int f() 3;};
+class A extends P{int f() 3;};
+let 
+	A a = new A();
 in
-	test;
+	a.f();

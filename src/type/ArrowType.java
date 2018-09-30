@@ -25,7 +25,7 @@ public class ArrowType extends Type {
 		return s+"ArrowType: " + parListString + " "+ ret.toPrint("-> ") ; 
 	}
 	  
-	public Type getRet () { //
+	public Type getReturn() { //
 	    return ret;
 	}
 	  

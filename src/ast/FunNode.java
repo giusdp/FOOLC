@@ -132,7 +132,6 @@ public class FunNode implements Node {
 		+expBody.toPrint(indent+"  "); */
 	}
 
-	//valore di ritorno non utilizzato
 	public Type typeCheck () {
 		if (declist!=null) {
 			for (Node dec:declist) {
@@ -140,17 +139,35 @@ public class FunNode implements Node {
 				if (type instanceof ErrorType) return type;
 			}
 		}
-		Type type = returnNode.typeCheck();
-		if(type instanceof ErrorType) {
-			return type;
+		
+		// Dobbiamo controllare che non ci siano errori di tipo anche per tutte
+		// le istruzioni nel corpo della funzione
+		Type type;
+		for(Node stm : stmsBody) {
+			type = stm.typeCheck();
+			if(type instanceof ErrorType) return type;
 		}
-				
-		if ( !(FOOLlib.isSubtype(type, returnType)) ){
+		for (Node exp : expsBody) {
+			type = exp.typeCheck();
+			if(type instanceof ErrorType) return type;
+		}
+		
+		// Controllo del returnNode (in realta' viene gia' fatto quando si controlla il corpo
+		// Pero' ora ci serve proprio il tipo per vedere se e' subtype di return type
+		
+		Type returnNodeType = returnNode.typeCheck();
+		/* if(returnNodeType instanceof ErrorType) return returnNodeType; */
+		// Non serve vedere se e' instanceof ErrorType perche' se cosi' fosse sarebbe gia' uscito prima al 
+		// controllo del corpo
+		
+		if ( !(FOOLlib.isSubtype(returnNodeType, returnType)) ){
 			ErrorType error = new ErrorType();
 			error.addErrorMessage("Function " + id + " must return: " + returnType.toPrint("") +
 					   "Actually returned: " + returnNode.typeCheck().toPrint(""));
 			return error;
 		}  
+		
+		
 		return returnType;
 	}
 
@@ -166,8 +183,9 @@ public class FunNode implements Node {
 		}
 
 		String popDecl="";
-		if (declist!=null) for (Node dec:declist)
-			popDecl+="pop\n";
+		if (declist!=null) 
+			for (Node dec:declist)
+				popDecl+="pop\n";
 
 		String popParl="";
 		for (Node dec:parlist)

@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import type.ArrowType;
 import type.ClassType;
 import type.ErrorType;
 import type.Type;
@@ -20,13 +21,34 @@ public class ClassNode implements Node {
 	private ArrayList<Node> fieldList = new ArrayList<>();
 	private ArrayList<Node> methodList = new ArrayList<>();
 
+	private ClassType type;
+	
 	// EREDITARIETA
 	private String superClassName;
 	private ClassNode superClass;
 
 	// COSTRUTTORE
-	public ClassNode(String name) {
+	public ClassNode(String name, ArrayList<Node> fieldList, ArrayList<Node> methodList) {
 		this.id = name;
+		this.fieldList = fieldList;
+		this.methodList = methodList;
+		
+		type = new ClassType(id);
+		
+		ArrayList<Type> fieldTypeList = new ArrayList<>();
+		for (Node par : fieldList) {
+			ParNode p = (ParNode) par;
+			fieldTypeList.add(p.getType());
+		}
+		type.setFieldTypeList(fieldTypeList);
+		
+		ArrayList<ArrowType> methodTypeList = new ArrayList<>();
+		for (Node m : methodList) {
+			FunNode f = (FunNode) m;
+			fieldTypeList.add(f.getType());
+		}
+		type.setMethodTypeList(methodTypeList);
+		
 	}
 
 	@Override
@@ -65,11 +87,11 @@ public class ClassNode implements Node {
 		//env.offset = -2;
 		
 		// Controllo classe già dichiarata
-		HashMap<String,STEntry> outerScope = env.getST().get(env.getNestLevel());
+		HashMap<String,STEntry> currentScope = env.getST().get(env.getNestLevel());
 
 		STEntry entry = new STEntry(env.getNestLevel(), new ClassType(id), env.decOffset()); 
 
-		if ( outerScope.put(id, entry) != null ) {
+		if ( currentScope.put(id, entry) != null ) {
 			res.add(new SemanticError("Class "+ id +" is already declared"));
 			return res; // Se la classe è già stata dichiarata allora possiamo fermarci
 		}
@@ -78,7 +100,7 @@ public class ClassNode implements Node {
 		// Controllo super classe dichiarata
 		
 		if (superClassName != null) {
-			if (outerScope.get(superClassName) == null) {
+			if (currentScope.get(superClassName) == null) {
 				res.add(new SemanticError("Super class "+ superClassName +" is not declared"));
 			} else {
 				setSuperClass(env.getClassMap().get(superClassName));
@@ -131,7 +153,7 @@ public class ClassNode implements Node {
 		
 		/* METTERE QUI CODICE TYPE CHECKING OVERRIDING */
 		
-		return new ClassType(this.id);
+		return type;
 	}
 
 	@Override
@@ -146,13 +168,6 @@ public class ClassNode implements Node {
 
 	public ArrayList<Node> getFieldList() {
 		return fieldList;
-	}
-
-	public void addField(Node node) {
-		fieldList.add(node);
-	}
-	public void addMethod(Node node) {
-		methodList.add(node);
 	}
 
 	public ArrayList<Node> getMethodList() {
@@ -171,5 +186,12 @@ public class ClassNode implements Node {
 		this.superClass = parent;
 	}
 
+	public ClassNode getSuperClass() {
+		return superClass;
+	}
+	
+	public ClassType getClassType() {
+		return type;
+	}
 
 }

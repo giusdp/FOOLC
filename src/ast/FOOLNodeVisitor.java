@@ -82,25 +82,31 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 
 	@Override
 	public Node visitClassdec(ClassdecContext ctx) {
-		// ID(0) è il nome della classe. ID(1) è la superclasse. 
-		// ID(n) serve per accedere ai due ID presenti nella regola
-		ClassNode c = new ClassNode(ctx.ID(0).getText());
-
-		if (ctx.ID(1) != null) {
-			c.setSuperClassName(ctx.ID(1).getText());
-		}
+				
+		ArrayList<Node> fieldList = new ArrayList<>();
+		ArrayList<Node> methodList = new ArrayList<>();
+		
 		
 		// Visita i campi (le variabili dichiarate)
 		for (VardecContext vc : ctx.vardec()) {
 			Type type = (Type) visit(vc.type());
-			c.addField(new ParNode(vc.ID().getText(), type));
+			fieldList.add(new ParNode(vc.ID().getText(), type));
 		}
 
 		// visit all class's methods
 		for (FunContext fc : ctx.fun()) {
 			FunNode f = (FunNode) visit(fc);
-			c.addMethod(f);
+			methodList.add(f);
 		}
+		
+		// ID(0) è il nome della classe. ID(1) è la superclasse. 
+		// ID(n) serve per accedere ai due ID presenti nella regola
+		ClassNode c = new ClassNode(ctx.ID(0).getText(), fieldList, methodList);
+		
+		if (ctx.ID(1) != null) {
+			c.setSuperClassName(ctx.ID(1).getText());
+		}
+		
 		return c;
 	}
 		
@@ -298,7 +304,10 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 
 		else if (ctx.VOID() != null) return new VoidType();
 
-		else return new ClassType(ctx.getText());
+		else {
+			System.out.println("VISITTYPE: CLASSTYPE. IN FOOLNODEVISITOR AAAAAAAAAAAAAAAAAAAAAA");
+			return new ClassType(ctx.getText());
+		}
 
 	}
 

@@ -2,6 +2,7 @@ package ast;
 import java.util.ArrayList;
 
 import type.ArrowType;
+import type.ClassType;
 import type.ErrorType;
 import type.Type;
 import util.Environment;
@@ -63,26 +64,39 @@ public String toPrint(String indent) {  //
 	}
   
   public Type typeCheck () {  //                           
-	 ArrowType t=null;
+	 ArrowType funType=null;
+	 ClassType classType = null;
 	 ErrorType error = new ErrorType();
-     if (entry.getType() instanceof ArrowType) {
-    	 t=(ArrowType) entry.getType(); 
+	 Type entryType = entry.getType();
+	 
+	 // Se l'invocazione e' di una normale funzione, allora il type sara' un arrowtype e il typechecking si fa su questo
+     if (entryType instanceof ArrowType) {
+    	 funType=(ArrowType) entryType; 
+    	 ArrayList<Type> parTypes = funType.getParList();
+         if ( !(parTypes.size() == parList.size()) ) {
+        	 error.addErrorMessage("Wrong number of parameters in the invocation of "+id);
+        	 return error;
+         } 
+         for (int i=0; i<parList.size(); i++) 
+           if ( !(FOOLlib.isSubtype( (parList.get(i)).typeCheck(), parTypes.get(i)) ) ) {
+        	   error.addErrorMessage("Wrong type for the "+(i+1)+"-th parameter in the invocation of "+id);
+        	   return error;
+           } 
+         return funType.getReturn();
      }
-     else {
-    	 error.addErrorMessage("Invocation of a non-function "+id);
-    	 return error;
-     }
-     ArrayList<Type> p = t.getParList();
-     if ( !(p.size() == parList.size()) ) {
-    	 error.addErrorMessage("Wrong number of parameters in the invocation of "+id);
-    	 return error;
-     } 
-     for (int i=0; i<parList.size(); i++) 
-       if ( !(FOOLlib.isSubtype( (parList.get(i)).typeCheck(), p.get(i)) ) ) {
-    	   error.addErrorMessage("Wrong type for "+(i+1)+"-th parameter in the invocation of "+id);
-    	   return error;
-       } 
-     return t.getRet();
+     // ALTRIMENTI, se e' una invocazione del costruttore (new Class() ) allora il tipo sara' un classtype e si fa
+     // type checking sul costruttore (TODO: POTREMMO SEPARARE LA LOGICA IN UNA CLASSE ConstructorNode)
+	 if (entryType instanceof ClassType) {
+		 classType = (ClassType) entryType;
+		 
+	 }
+
+	 // ALTRIMENTI se non e' ne' funzione ne' costruttore, allora errore
+	 error.addErrorMessage("Invocation of a non-function "+id);
+	 return error;
+ 
+     
+     
   }
   
   public String codeGeneration() {
