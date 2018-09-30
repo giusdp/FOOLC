@@ -45,10 +45,14 @@ public class ConstructorNode implements Node {
 		 if (entryType instanceof ClassType) {
 			 classType = (ClassType) entryType;
 			 
+			 // Bisogna controllare che i tipi degli argomenti (parList) siano subtype dei campi della classe
+			 // I campi della classe sono da considerarsi come parametri
+			 
+			 return classType;
 		 }
 
 		 // ALTRIMENTI se non e' ne' funzione ne' costruttore, allora errore
-		 error.addErrorMessage("Invocation of a non-function "+id);
+		 error.addErrorMessage("Invocation of 'new "+id + "' but it's not a constructor.");
 		 return error;
 	 
 	}
