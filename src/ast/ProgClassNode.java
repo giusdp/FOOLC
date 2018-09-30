@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import type.ClassType;
+import type.ErrorType;
 import type.Type;
 import type.VoidType;
 import util.Environment;
@@ -99,17 +100,22 @@ public class ProgClassNode implements Node {
 
 	@Override
 	public Type typeCheck() {
+		Type type;
 		for (ClassNode cl : classList) {
-			cl.typeCheck();
+			type = cl.typeCheck();
+			if (type instanceof ErrorType) return type;
 		}
 		for (Node dec : decList) {
-			dec.typeCheck();
+			type = dec.typeCheck();
+			if (type instanceof ErrorType) return type;
 		}
 		for (Node e : expList) {
-			e.typeCheck();
+			type = e.typeCheck();
+			if (type instanceof ErrorType) return type;
 		}
 		for(Node s : stmList) {
-			s.typeCheck();
+			type = s.typeCheck();
+			if (type instanceof ErrorType) return type;
 		}
 		
 		return new VoidType();
