@@ -128,16 +128,16 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 	@Override
 	public Node visitNewExp(NewExpContext ctx) {
 		//System.out.println("VISIT NEW");
-		CallNode res;
+		ConstructorNode constr;
 
 		ArrayList<Node> args = new ArrayList<Node>();
 
 		for (ExpContext exp : ctx.exp())
 			args.add(visit(exp));
 
-		res = new CallNode(ctx.ID().getText(), args, true);
+		constr = new ConstructorNode(ctx.ID().getText(), args);
 
-		return res;
+		return constr;
 	}
 
 	@Override
@@ -305,7 +305,7 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 		else if (ctx.VOID() != null) return new VoidType();
 
 		else {
-			System.out.println("VISITTYPE: CLASSTYPE. IN FOOLNODEVISITOR AAAAAAAAAAAAAAAAAAAAAA");
+			//System.out.println("VISITTYPE: CLASSTYPE. IN FOOLNODEVISITOR AAAAAAAAAAAAAAAAAAAAAA");
 			return new ClassType(ctx.getText());
 		}
 
@@ -462,7 +462,7 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 			args.add(visit(exp));
 
 		//instantiate the invocation
-		res = new CallNode(ctx.ID().getText(), args, false);
+		res = new CallNode(ctx.ID().getText(), args);
 
 		return res;
 	}
