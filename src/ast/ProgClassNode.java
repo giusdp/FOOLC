@@ -100,6 +100,11 @@ public class ProgClassNode implements Node {
 
 	@Override
 	public Type typeCheck() {
+		
+		// TODO: se c'è tempo, fare refactoring delle chiamate
+		//       ripetute di typeCheck() e l'if.
+		//       e.g. checkForErrors(ArrayList<Node>), e pure
+		//            checkForErrors(ArrayList< ArrayList<Node> >).
 		Type type;
 		for (ClassNode cl : classList) {
 			type = cl.typeCheck();

@@ -140,7 +140,9 @@ public class ClassNode implements Node {
 		// Pero' e' inutile controllare il tipo di Par perche' non dara' mai errori (vedi ParNode per il perche')
 		// La superclasse e' anche inutile controllare perche' gia' ProgClassNode si occupa
 		// del type checking di tutte le classi, quindi direi di controllare solo i tipi dei metodi.
-		Type methodType;
+		
+		// TODO: controllare tipi dei campi (istanceof NullNode?)
+		Type methodType; 
 		for (Node m : methodList) {
 			FunNode method = (FunNode) m;
 			methodType = method.typeCheck();

@@ -40,8 +40,8 @@ public class ConstructorNode implements Node {
 		 Type entryType = entry.getType();
 		 
 		 
-	     // ALTRIMENTI, se e' una invocazione del costruttore (new Class() ) allora il tipo sara' un classtype e si fa
-	     // type checking sul costruttore (TODO: POTREMMO SEPARARE LA LOGICA IN UNA CLASSE ConstructorNode)
+	     // Se e' una invocazione del costruttore (new Class() ) allora il tipo sara' un classtype e si fa
+	     // type checking sul costruttore 
 		 if (entryType instanceof ClassType) {
 			 classType = (ClassType) entryType;
 			 

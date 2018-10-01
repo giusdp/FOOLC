@@ -1,6 +1,6 @@
-class P{int f() 3;};
+class P(int x, int y){int f() 3;};
 class A extends P{int f() 3;};
 let 
-	A a = new A();
+	A a = new A(4, 6);
 in
 	a.f();
