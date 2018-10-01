@@ -58,6 +58,10 @@ public String toPrint(String indent) {  //
 			 for(Node arg : parList)
 				 res.addAll(arg.checkSemantics(env));
 		 }
+		 
+		 // TODO: Bisogna controllare anche che il numero di argomenti passati sia correto,
+		 // e che i tipi siano sotto tipi di ciò che richiede la funzione
+		 
 		 return res;
 	}
   
