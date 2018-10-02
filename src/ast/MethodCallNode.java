@@ -20,12 +20,21 @@ public class MethodCallNode implements Node {
 	private int nestLevel;
 	private IdNode varNode;
 	private String ownerClass;
-	private STEntry entry; 
+	private STEntry entry;
+	
+	// Fields for polymorphic type-checking.
+	private ArrayList<Type> overwrittenParamTypes;
+	private Type overwrittenType;
+	private Type overwritingType;
 
 	public MethodCallNode(String m, ArrayList<Node> args, Node obj) {
 		id = m;
 		parList = args;
 		varNode = (IdNode) obj;
+		
+		overwrittenParamTypes = new ArrayList<Type>();
+		overwrittenType = null;
+		overwritingType = null;
 	}
 
 	@Override
@@ -69,15 +78,21 @@ public class MethodCallNode implements Node {
 				FunNode function = (FunNode) fn;
 				if (function.getId().equals(this.id)) {
 					methodDeclared = true;
-					break;
+					// Remove break; continue searching for polymorphic version of method.
+					//break;
 				}
 			}	
 			// Se il metodo non è dichiarato nella 'ownerClass' e la 'ownerClass' estende 
 			// una classe, bisogna controllare che il metodo sia della 'superClass'
-			if (ownerClassNode.getSuperClass() != null && !methodDeclared) {
-				for (Node fn : ownerClassNode.getSuperClass().getMethodList()) {
+			while (ownerClassNode.getSuperClass() != null && !methodDeclared) {
+				ownerClassNode = ownerClassNode.getSuperClass();
+				for (Node fn : ownerClassNode.getMethodList()) {
 					FunNode function = (FunNode) fn;
 					if (function.getId().equals(this.id)) {
+						// if method is declared in subclass is polymorphic, store type for TypeChecking.
+						if (methodDeclared = true) {
+							overwrittenType = function.getType();
+						}
 						methodDeclared = true;
 						break;
 					}
@@ -100,15 +115,36 @@ public class MethodCallNode implements Node {
 
 	@Override
 	public Type typeCheck() {
+		ErrorType error = new ErrorType();
+		/*
+		 * To be achieved:
+		 * check we're calling it on the correct classType X-> done in CheckSemantics.
+		 * check the return type == return type of declaration
+		 * case: f is polymorphic
+		 * 	new return type T' <: old return type T
+		 *  old par types Ti <: new par types Ti'
+		 */
+
+		// Case: method is polymorphic.
+		if (overwrittenType != null) {
+			// Verify that T' <: T.
+			if (!FOOLlib.isSubtype(overwritingType,overwrittenType)) {
+				error.addErrorMessage("Type mismatch: return type of " + ownerClass + "." + id + "()" +
+									  " expecting:" + overwrittenType.toPrint(""));
+				return error;
+			}
+			
+			// Verify old parameters are subtypes of new parameters.
+		}
 		
 		ClassType classType = null;
-		 ErrorType error = new ErrorType();
+		return new ClassType(id);
+		 
 		 // TODO: Per fare il type checking ci serve il tipo della classe, pero' in checksemantics
 		 // non lo prendiamo perche' viene usato la classMap in environment e non la ST.
 		 // Una soluzione e' trasformare la classMap in una Symbol Table solo delle classi dove
 		 // conserviamo sia metodi e campi, sia il tipo della classe.
-		 error.addErrorMessage("Type checking of MethodCallNode not implemented.");
-		 return error;
+		 //error.addErrorMessage("Type checking of MethodCallNode not implemented.");
 	}
 
 	@Override
