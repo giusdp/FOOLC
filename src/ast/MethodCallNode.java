@@ -6,8 +6,10 @@ import java.util.HashMap;
 import ast.FunNode;
 import type.ArrowType;
 import type.ClassType;
+import type.ErrorType;
 import type.Type;
 import util.Environment;
+import util.FOOLlib;
 import util.STEntry;
 import util.SemanticError;
 
@@ -18,6 +20,7 @@ public class MethodCallNode implements Node {
 	private int nestLevel;
 	private IdNode varNode;
 	private String ownerClass;
+	private STEntry entry; 
 
 	public MethodCallNode(String m, ArrayList<Node> args, Node obj) {
 		id = m;
@@ -97,16 +100,15 @@ public class MethodCallNode implements Node {
 
 	@Override
 	public Type typeCheck() {
-		// TODO Auto-generated method stub
 		
-		if (!(varNode.getType() instanceof ClassType)) {
-			// TODO: Method of detecting error in TypeCheck.
-			// E.g. un ErrorType classe
-			/* res.add(new SemanticError("Var id '" + varNode.getId()
-			+ "' is not an object; cannot invoke method " + id + "."));
-			return res; */
-		}
-		return null;
+		ClassType classType = null;
+		 ErrorType error = new ErrorType();
+		 // TODO: Per fare il type checking ci serve il tipo della classe, pero' in checksemantics
+		 // non lo prendiamo perche' viene usato la classMap in environment e non la ST.
+		 // Una soluzione e' trasformare la classMap in una Symbol Table solo delle classi dove
+		 // conserviamo sia metodi e campi, sia il tipo della classe.
+		 error.addErrorMessage("Type checking of MethodCallNode not implemented.");
+		 return error;
 	}
 
 	@Override

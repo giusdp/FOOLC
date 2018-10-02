@@ -45,7 +45,7 @@ public class ClassNode implements Node {
 		ArrayList<ArrowType> methodTypeList = new ArrayList<>();
 		for (Node m : methodList) {
 			FunNode f = (FunNode) m;
-			fieldTypeList.add(f.getType());
+			methodTypeList.add((ArrowType) f.getType());
 		}
 		type.setMethodTypeList(methodTypeList);
 		
@@ -89,7 +89,7 @@ public class ClassNode implements Node {
 		// Controllo classe già dichiarata
 		HashMap<String,STEntry> currentScope = env.getST().get(env.getNestLevel());
 
-		STEntry entry = new STEntry(env.getNestLevel(), new ClassType(id), env.decOffset()); 
+		STEntry entry = new STEntry(env.getNestLevel(), type, env.decOffset()); 
 
 		if ( currentScope.put(id, entry) != null ) {
 			res.add(new SemanticError("Class "+ id +" is already declared"));

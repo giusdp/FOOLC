@@ -2,9 +2,6 @@ package type;
 
 import java.util.ArrayList;
 
-import ast.FunNode;
-import ast.ParNode;
-
 public class ClassType extends Type {
 
 	private String id;
@@ -32,5 +29,15 @@ public class ClassType extends Type {
 	public String toPrint(String s) {
 		return s+"Class Type " + id + "\n"; 
 	}
+
+	public ArrayList<Type> getFieldTypeList() {
+		return fieldTypeList;
+	}
+
+	public ArrayList<ArrowType> getMethodTypeList() {
+		return methodTypeList;
+	}
+	
+	
 
 }

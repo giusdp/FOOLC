@@ -84,7 +84,7 @@ public String toPrint(String indent) {  //
          return funType.getReturn();
      }
 
-	 // ALTRIMENTI se non e' ne' funzione ne' costruttore, allora errore
+	 // ALTRIMENTI se non e' ne' funzione, allora errore
 	 error.addErrorMessage("Invocation of a non-function "+id);
 	 return error;
  
