@@ -163,7 +163,7 @@ public class FunNode implements Node {
 		if ( !(FOOLlib.isSubtype(returnNodeType, returnType)) ){
 			ErrorType error = new ErrorType();
 			error.addErrorMessage("Function " + id + " must return: " + returnType.toPrint("") +
-					   "Actually returned: " + returnNode.typeCheck().toPrint(""));
+					   "Actually returned: " + returnNodeType.toPrint(""));
 			return error;
 		}  
 		

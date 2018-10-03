@@ -24,8 +24,8 @@ public class MethodCallNode implements Node {
 	
 	// Fields for polymorphic type-checking.
 	private ArrayList<Type> overwrittenParamTypes;
-	private Type overwrittenType;
-	private Type overwritingType;
+	private ArrowType derivedType;
+	private ArrowType baseType;
 
 	public MethodCallNode(String m, ArrayList<Node> args, Node obj) {
 		id = m;
@@ -33,8 +33,8 @@ public class MethodCallNode implements Node {
 		varNode = (IdNode) obj;
 		
 		overwrittenParamTypes = new ArrayList<Type>();
-		overwrittenType = null;
-		overwritingType = null;
+		derivedType = null;
+		baseType = null;
 	}
 
 	@Override
@@ -78,20 +78,22 @@ public class MethodCallNode implements Node {
 				FunNode function = (FunNode) fn;
 				if (function.getId().equals(this.id)) {
 					methodDeclared = true;
+					baseType = (ArrowType) function.getType();
 					// Remove break; continue searching for polymorphic version of method.
 					//break;
 				}
 			}	
 			// Se il metodo non è dichiarato nella 'ownerClass' e la 'ownerClass' estende 
 			// una classe, bisogna controllare che il metodo sia della 'superClass'
-			while (ownerClassNode.getSuperClass() != null && !methodDeclared) {
+			while (ownerClassNode.getSuperClass() != null /*&& !methodDeclared*/) {
 				ownerClassNode = ownerClassNode.getSuperClass();
 				for (Node fn : ownerClassNode.getMethodList()) {
 					FunNode function = (FunNode) fn;
 					if (function.getId().equals(this.id)) {
 						// if method is declared in subclass is polymorphic, store type for TypeChecking.
 						if (methodDeclared = true) {
-							overwrittenType = function.getType();
+							derivedType = baseType;
+							baseType = (ArrowType) function.getType();
 						}
 						methodDeclared = true;
 						break;
@@ -126,11 +128,14 @@ public class MethodCallNode implements Node {
 		 */
 
 		// Case: method is polymorphic.
-		if (overwrittenType != null) {
+		if (derivedType != null) {
 			// Verify that T' <: T.
-			if (!FOOLlib.isSubtype(overwritingType,overwrittenType)) {
-				error.addErrorMessage("Type mismatch: return type of " + ownerClass + "." + id + "()" +
-									  " expecting:" + overwrittenType.toPrint(""));
+			Type derivedReturnType = derivedType.getReturn();
+			Type baseReturnType = baseType.getReturn();
+			
+			if (!FOOLlib.isSubtype(baseReturnType,derivedReturnType)) {
+				error.addErrorMessage("Derived method " + ownerClass + "." + id + "() must return same " +
+									  "type as overridden method: " + baseReturnType.toPrint(""));
 				return error;
 			}
 			
