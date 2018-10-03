@@ -118,6 +118,7 @@ public class MethodCallNode implements Node {
 		ErrorType error = new ErrorType();
 		/*
 		 * To be achieved:
+		 * Check PASSED PARAMETER types match DECLARED parameter types.
 		 * check we're calling it on the correct classType X-> done in CheckSemantics.
 		 * check the return type == return type of declaration
 		 * case: f is polymorphic

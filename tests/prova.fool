@@ -1,7 +1,7 @@
-class P(int x, int y)	{ int f() 3; };
-class B extends P		{ bool f() true; };
+class P(int x, int y)	{ bool f() true; };
+class B extends P		{ int f() 4; };
 class A extends B		{ int f() 3; };
 let 
 	A a = new A();
 in
-	a.f();
+		a.f();

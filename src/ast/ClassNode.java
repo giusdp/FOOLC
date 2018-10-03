@@ -141,6 +141,26 @@ public class ClassNode implements Node {
 		// La superclasse e' anche inutile controllare perche' gia' ProgClassNode si occupa
 		// del type checking di tutte le classi, quindi direi di controllare solo i tipi dei metodi.
 		
+		// Type-check polymorphic methods.
+		ClassNode superclassIterator = this.getSuperClass();
+		// Organise return types of class methods into array for comparison:
+		ArrayList<ArrowType> derivedMethodTypes = new ArrayList<ArrowType>();
+		ArrayList<ArrowType> baseMethodTypes = new ArrayList<ArrowType>();
+		
+		while (superclassIterator != null) {
+			for (Node myMethods : this.getMethodList()) {
+				FunNode derivedMethod = (FunNode) myMethods;
+				for (Node baseMethods : superclassIterator.getMethodList()) {
+					FunNode baseMethod = (FunNode) baseMethods;
+					// if method is polymorphic:
+					if (baseMethod.getId().equals(derivedMethod.getId())) {
+						// TODO: Check derivedMethod not already added before adding.
+						derivedMethodTypes.add((ArrowType) derivedMethod.getType());
+					}
+				}
+			}
+		}
+		
 		// TODO: controllare tipi dei campi (istanceof NullNode?)
 		Type methodType; 
 		for (Node m : methodList) {
