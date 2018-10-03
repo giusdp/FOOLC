@@ -12,6 +12,7 @@ import type.ClassType;
 import type.ErrorType;
 import type.Type;
 import util.Environment;
+import util.FOOLlib;
 import util.STEntry;
 import util.SemanticError;
 
@@ -143,10 +144,13 @@ public class ClassNode implements Node {
 		
 		// Type-check polymorphic methods.
 		ClassNode superclassIterator = this.getSuperClass();
-		// Organise return types of class methods into array for comparison:
-		ArrayList<ArrowType> derivedMethodTypes = new ArrayList<ArrowType>();
-		ArrayList<ArrowType> baseMethodTypes = new ArrayList<ArrowType>();
 		
+		// Organise return types of class methods into array for comparison:
+		
+		// With this map we can keep track of the BASE arrowtype associated with a certain DERIVED function
+		// so later we can get the arrowtype of the derived function and check it against the base function type
+		HashMap<FunNode, ArrowType> derivedMethodToBaseArrowTypeMap = new HashMap<>();
+				
 		while (superclassIterator != null) {
 			for (Node myMethods : this.getMethodList()) {
 				FunNode derivedMethod = (FunNode) myMethods;
@@ -154,11 +158,14 @@ public class ClassNode implements Node {
 					FunNode baseMethod = (FunNode) baseMethods;
 					// if method is polymorphic:
 					if (baseMethod.getId().equals(derivedMethod.getId())) {
-						// TODO: Check derivedMethod not already added before adding.
-						derivedMethodTypes.add((ArrowType) derivedMethod.getType());
+
+						// If the derived method is already present, we update the associated arrowtype of the higher class
+						derivedMethodToBaseArrowTypeMap.put(derivedMethod, (ArrowType) baseMethod.getType());
+						
 					}
 				}
 			}
+			superclassIterator = superclassIterator.getSuperClass();
 		}
 		
 		// TODO: controllare tipi dei campi (istanceof NullNode?)
@@ -173,7 +180,30 @@ public class ClassNode implements Node {
 		// Se c'e' una super classe e ci sono overriding dei metodi, bisogna controllare che sia stato fatto
 		// bene, usando la regola del type checking sull'overriding nelle slides
 		
-		/* METTERE QUI CODICE TYPE CHECKING OVERRIDING */
+		// baseReturn :> thisReturn
+		// baseParameter <: thisParameter
+		
+		ErrorType error = new ErrorType();
+		
+		Iterator it = derivedMethodToBaseArrowTypeMap.keySet().iterator();
+
+		while (it.hasNext()) {
+			FunNode derivedMethod = (FunNode) it.next();
+			ArrowType derivedMethodType = (ArrowType) derivedMethod.getType();
+			ArrowType baseMethodType = derivedMethodToBaseArrowTypeMap.get(derivedMethod);
+			
+			
+			// DO the override type checking
+			if ( !(FOOLlib.isSubtype(derivedMethodType.getReturn(), baseMethodType.getReturn()) ) ) {
+				error.addErrorMessage("Derived method " + derivedMethod.getId() + " in class " + this.id + " must return same type " +
+						  "or subtype of overridden method: " + baseMethodType.getReturn().toPrint(""));
+				return error;
+	           } 
+			
+			
+			
+		}
+		
 		
 		return type;
 	}

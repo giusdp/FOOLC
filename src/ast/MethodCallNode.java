@@ -127,7 +127,7 @@ public class MethodCallNode implements Node {
 		 */
 
 		// Case: method is polymorphic.
-		if (baseType != null) {
+		/* if (baseType != null) {
 			// Verify that T' <: T.
 			Type derivedReturnType = derivedType.getReturn();
 			Type baseReturnType = baseType.getReturn();
@@ -139,7 +139,7 @@ public class MethodCallNode implements Node {
 			}
 			
 			// Verify old parameters are subtypes of new parameters.
-		}
+		} */
 		
 		ClassType classType = null;
 		return new ClassType(id);

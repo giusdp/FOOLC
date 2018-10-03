@@ -2,7 +2,7 @@ package type;
 
 public class ErrorType extends Type {
 
-	public String msg = "";
+	public String msg = "TypeError: ";
 	
 	@Override
 	public String toPrint(String s) {

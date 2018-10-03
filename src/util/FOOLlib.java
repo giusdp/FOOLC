@@ -1,6 +1,7 @@
 package util;
 
 import ast.*;
+import type.ArrowType;
 import type.Type;
 
 public class FOOLlib {
@@ -13,6 +14,7 @@ public class FOOLlib {
 
   //valuta se il tipo "a" è <: al tipo "b", dove "a" e "b" sono tipi di base: int o bool
   public static boolean isSubtype (Type a, Type b) {
+	  
     return a.getClass().equals(b.getClass()); //
   } 
   
