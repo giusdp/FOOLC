@@ -78,21 +78,19 @@ public class MethodCallNode implements Node {
 				FunNode function = (FunNode) fn;
 				if (function.getId().equals(this.id)) {
 					methodDeclared = true;
-					baseType = (ArrowType) function.getType();
-					// Remove break; continue searching for polymorphic version of method.
-					//break;
+					derivedType = (ArrowType) function.getType();
+					break;
 				}
 			}	
 			// Se il metodo non è dichiarato nella 'ownerClass' e la 'ownerClass' estende 
 			// una classe, bisogna controllare che il metodo sia della 'superClass'
-			while (ownerClassNode.getSuperClass() != null /*&& !methodDeclared*/) {
+			while (ownerClassNode.getSuperClass() != null) {
 				ownerClassNode = ownerClassNode.getSuperClass();
 				for (Node fn : ownerClassNode.getMethodList()) {
 					FunNode function = (FunNode) fn;
 					if (function.getId().equals(this.id)) {
-						// if method is declared in subclass is polymorphic, store type for TypeChecking.
+						// if method declared in subclass is polymorphic, store type for TypeChecking.
 						if (methodDeclared = true) {
-							derivedType = baseType;
 							baseType = (ArrowType) function.getType();
 						}
 						methodDeclared = true;
@@ -128,14 +126,14 @@ public class MethodCallNode implements Node {
 		 */
 
 		// Case: method is polymorphic.
-		if (derivedType != null) {
+		if (baseType != null) {
 			// Verify that T' <: T.
 			Type derivedReturnType = derivedType.getReturn();
 			Type baseReturnType = baseType.getReturn();
 			
 			if (!FOOLlib.isSubtype(baseReturnType,derivedReturnType)) {
-				error.addErrorMessage("Derived method " + ownerClass + "." + id + "() must return same " +
-									  "type as overridden method: " + baseReturnType.toPrint(""));
+				error.addErrorMessage("Derived method " + ownerClass + "." + id + "() must return same type " +
+									  "or subtype of overridden method: " + baseReturnType.toPrint(""));
 				return error;
 			}
 			
