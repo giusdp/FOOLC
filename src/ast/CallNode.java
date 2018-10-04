@@ -62,9 +62,8 @@ public String toPrint(String indent) {  //
 		 return res;
 	}
   
-  public Type typeCheck () {  //                           
+  public Type typeCheck () {                           
 	 ArrowType funType=null;
-	 ClassType classType = null;
 	 ErrorType error = new ErrorType();
 	 Type entryType = entry.getType();
 	 
@@ -73,12 +72,13 @@ public String toPrint(String indent) {  //
     	 funType=(ArrowType) entryType; 
     	 ArrayList<Type> parTypes = funType.getParList();
          if ( !(parTypes.size() == parList.size()) ) {
-        	 error.addErrorMessage("Wrong number of parameters in the invocation of "+id);
+        	 error.addErrorMessage("Wrong number of parameters in the invocation of function: "+id +
+        			 ". \n Expected " + parTypes.size() + " but found " + parList.size());
         	 return error;
          } 
          for (int i=0; i<parList.size(); i++) 
            if ( !(FOOLlib.isSubtype( (parList.get(i)).typeCheck(), parTypes.get(i)) ) ) {
-        	   error.addErrorMessage("Wrong type for the "+(i+1)+"-th parameter in the invocation of "+id);
+        	   error.addErrorMessage("Wrong type for the "+(i+1)+"-th parameter in the invocation of function: "+id);
         	   return error;
            } 
          return funType.getReturn();

@@ -17,24 +17,25 @@ public class MethodCallNode implements Node {
 	
 	private String id;
 	private ArrayList<Node> parList;
-	private int nestLevel;
+
 	private IdNode varNode;
 	private String ownerClass;
-	private STEntry entry;
 	
-	// Fields for polymorphic type-checking.
-	private ArrayList<Type> overwrittenParamTypes;
-	private ArrowType derivedType;
-	private ArrowType baseType;
+	private Type methodType;
+	
+//	Fields for polymorphic type-checking.
+//	private ArrayList<Type> overwrittenParamTypes;
+//	private ArrowType derivedType;
+//	private ArrowType baseType;
 
 	public MethodCallNode(String m, ArrayList<Node> args, Node obj) {
 		id = m;
 		parList = args;
 		varNode = (IdNode) obj;
 		
-		overwrittenParamTypes = new ArrayList<Type>();
-		derivedType = null;
-		baseType = null;
+//		overwrittenParamTypes = new ArrayList<Type>();
+//		derivedType = null;
+//		baseType = null;
 	}
 
 	@Override
@@ -46,8 +47,7 @@ public class MethodCallNode implements Node {
 
 		// TODO: methodEntry is null at runtime. Causes NullPtrException.
 		// methodEntry is never instantiated here.
-		return indent + "Method Call:" + id + " at nesting level " + nestLevel 
-				+ "\n" + indent + "    from class " + ownerClass + /*methodEntry.toPrint(indent + "  ") +*/ parlstr;
+		return indent + "Method Call:" + id + "\n" + indent + "    from class " + ownerClass + /*methodEntry.toPrint(indent + "  ") +*/ parlstr;
 	}
 	
 	@Override
@@ -77,25 +77,25 @@ public class MethodCallNode implements Node {
 			for (Node fn : ownerClassNode.getMethodList()) {
 				FunNode function = (FunNode) fn;
 				if (function.getId().equals(this.id)) {
+					methodType = (ArrowType) function.getType();
 					methodDeclared = true;
-					derivedType = (ArrowType) function.getType();
 					break;
 				}
 			}	
 			// Se il metodo non è dichiarato nella 'ownerClass' e la 'ownerClass' estende 
 			// una classe, bisogna controllare che il metodo sia della 'superClass'
-			while (ownerClassNode.getSuperClass() != null) {
-				ownerClassNode = ownerClassNode.getSuperClass();
-				for (Node fn : ownerClassNode.getMethodList()) {
-					FunNode function = (FunNode) fn;
-					if (function.getId().equals(this.id)) {
-						// if method declared in subclass is polymorphic, store type for TypeChecking.
-						if (methodDeclared = true) {
-							baseType = (ArrowType) function.getType();
+			if (!methodDeclared) {
+				while (ownerClassNode.getSuperClass() != null) {
+					for (Node fn : ownerClassNode.getMethodList()) {
+						FunNode function = (FunNode) fn;
+						if (function.getId().equals(this.id)) {
+							// if method declared in subclass is polymorphic, store type for TypeChecking.
+							methodType = (ArrowType) function.getType();
+							methodDeclared = true;
+							break;
 						}
-						methodDeclared = true;
-						break;
 					}
+					ownerClassNode = ownerClassNode.getSuperClass();
 				}
 			}
 			
@@ -115,7 +115,6 @@ public class MethodCallNode implements Node {
 
 	@Override
 	public Type typeCheck() {
-		ErrorType error = new ErrorType();
 		/*
 		 * To be achieved:
 		 * Check PASSED PARAMETER types match DECLARED parameter types.
@@ -126,29 +125,35 @@ public class MethodCallNode implements Node {
 		 *  old par types Ti <: new par types Ti'
 		 */
 
-		// Case: method is polymorphic.
-		/* if (baseType != null) {
-			// Verify that T' <: T.
-			Type derivedReturnType = derivedType.getReturn();
-			Type baseReturnType = baseType.getReturn();
-			
-			if (!FOOLlib.isSubtype(baseReturnType,derivedReturnType)) {
-				error.addErrorMessage("Derived method " + ownerClass + "." + id + "() must return same type " +
-									  "or subtype of overridden method: " + baseReturnType.toPrint(""));
-				return error;
-			}
-			
-			// Verify old parameters are subtypes of new parameters.
-		} */
-		
-		ClassType classType = null;
-		return new ClassType(id);
+		ArrowType funType=null;
+		 ErrorType error = new ErrorType();
 		 
-		 // TODO: Per fare il type checking ci serve il tipo della classe, pero' in checksemantics
-		 // non lo prendiamo perche' viene usato la classMap in environment e non la ST.
-		 // Una soluzione e' trasformare la classMap in una Symbol Table solo delle classi dove
-		 // conserviamo sia metodi e campi, sia il tipo della classe.
-		 //error.addErrorMessage("Type checking of MethodCallNode not implemented.");
+		 // Siccome il polimorfismo e' stato gia' controllato in classnode, per tutti i metodi
+		 // Ora bisogna fare un semplice controllo sui parametri. Questo controllo ora e' identico a CallNode
+		 // TODO: classe padre per callnode, methodcallnode, constructornode per evitare questo codice ripetuto 3 volte???
+	     if (methodType instanceof ArrowType) {
+	    	 funType=(ArrowType) methodType; 
+	    	 ArrayList<Type> parTypes = funType.getParList();
+	    	 
+	    	 // si controllano numero parametri con quelli passati in input
+	         if ( !(parTypes.size() == parList.size()) ) {
+	        	 error.addErrorMessage("Wrong number of parameters in the invocation of the method: "+varNode.getId()+"."+id +
+	        			 "\n Expected " + parTypes.size() + " but found " + parList.size());
+	        	 return error;
+	         } 
+	         // si controllano tipi parametri con quelli passatiin input
+	         for (int i=0; i<parList.size(); i++) 
+	           if ( !(FOOLlib.isSubtype( (parList.get(i)).typeCheck(), parTypes.get(i)) ) ) {
+	        	   error.addErrorMessage("Wrong type for the "+(i+1)+"-th parameter in the invocation of method: "+varNode.getId()+"."+id);
+	        	   return error;
+	           } 
+	         return funType.getReturn();
+	     }
+
+		 // ALTRIMENTI se non e' ne' funzione, allora errore
+		 error.addErrorMessage("Invocation of a non-function "+id);
+		 return error;
+	 
 	}
 
 	@Override

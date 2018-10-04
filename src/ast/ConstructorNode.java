@@ -70,7 +70,7 @@ public class ConstructorNode implements Node {
 	         return classType;
 		 }
 
-		 // ALTRIMENTI se non e' ne' funzione ne' costruttore, allora errore
+		 // ALTRIMENTI se non e' costruttore, allora errore
 		 error.addErrorMessage("Invocation of 'new "+id + "()' but it's not a constructor.");
 		 return error;
 	 

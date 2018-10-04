@@ -220,11 +220,7 @@ public class ClassNode implements Node {
 	        	   return error;
 	          } 
 	         }
-			
-			
-			
 		}
-		
 		
 		return type;
 	}
