@@ -185,7 +185,7 @@ public class ClassNode implements Node {
 		
 		ErrorType error = new ErrorType();
 		
-		Iterator it = derivedMethodToBaseArrowTypeMap.keySet().iterator();
+		Iterator<FunNode> it = derivedMethodToBaseArrowTypeMap.keySet().iterator();
 
 		while (it.hasNext()) {
 			FunNode derivedMethod = (FunNode) it.next();
@@ -203,7 +203,7 @@ public class ClassNode implements Node {
 				return error;
 			}
 			
-			// Second check each parameter types, is derivedParameter :> baseParameter ?
+			// Second check if the number of parameters is the same
 			
 			if ( !(derivedMethodType.getParList().size() == baseMethodType.getParList().size()) ) {
 	        	 error.addErrorMessage(
@@ -211,13 +211,15 @@ public class ClassNode implements Node {
 	        	 return error;
 	         } 
 			
-	         for (int i=0; i<derivedMethodType.getParList().size(); i++) 
-	           if ( !(FOOLlib.isSubtype( (derivedMethodType.getParList().get(i)).typeCheck(), baseMethodType.getParList().get(i)) ) ) {
+			// Third check each parameter types, is derivedParameter :> baseParameter ?
+	         for (int i=0; i<derivedMethodType.getParList().size(); i++) {
+
+	           if ( !(FOOLlib.isSubtype( (derivedMethodType.getParList().get(i)), baseMethodType.getParList().get(i)) ) ) {
 	        	   error.addErrorMessage("The "+(i+1)+"-th parameter must have same type or super type of the " 
 	        			   +(i+1)+"-th parameter of overridden method: " + baseMethodType.getParList().get(i).toPrint(""));
 	        	   return error;
 	          } 
-			
+	         }
 			
 			
 			
