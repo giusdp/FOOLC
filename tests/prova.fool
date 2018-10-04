@@ -1,6 +1,6 @@
-class P(int x, int y)	{ bool f() true; };
-class B extends P		{ int f() 4; };
-class A extends B		{ int f() 3; };
+class P(int x, int y)	{ bool f(int x) true; };
+class B extends P		{ bool f(bool y) true; };
+class A extends B		{ bool f(int x) true; };
 let 
 	A a = new A();
 in
