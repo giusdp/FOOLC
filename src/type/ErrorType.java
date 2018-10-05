@@ -6,7 +6,7 @@ public class ErrorType extends Type {
 	
 	@Override
 	public String toPrint(String s) {
-		return msg;
+		return s+msg;
 	}
 
 	public void addErrorMessage(String msg) {

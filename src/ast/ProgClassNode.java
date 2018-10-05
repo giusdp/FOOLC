@@ -40,7 +40,7 @@ public class ProgClassNode implements Node {
 		
 		for (Node s : stmList) stmString += s.toPrint(indent + "  ");
 		
-		String let = " Let Declarations\n", in = " IN\n";
+		String let = "\n Let Declarations\n", in = " IN\n";
 		if (decString.equals("")) {
 			let = "";
 			in = "";

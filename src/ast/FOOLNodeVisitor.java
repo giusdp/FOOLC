@@ -199,7 +199,7 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 
 	@Override
 	public Node visitAsmStm(AsmStmContext ctx) {
-		IdNode res = new IdNode(ctx.ID().getText());
+		StmAsmNode res = new StmAsmNode();
 		return res;
 	}
 
@@ -282,9 +282,11 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 			}
 		}
 		
+		// if (ctx.lastexp != null) expressions.add(visit(ctx.lastexp)); lastexp viene gia' preso nel for su ctx.exp()
+		if (ctx.laststm != null) statements.add(visit(ctx.laststm));
+		
 		// Final line of function is either a stm or exp.
 		RuleName returnRule = (ctx.lastexp  == null) ? RuleName.STM : RuleName.EXP;
-		
 		FunNode res = new FunNode(ctx.ID().getText(), returnType, returnRule, parTypes, innerDec, expressions, statements);
 
 		return res;

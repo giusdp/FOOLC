@@ -116,18 +116,27 @@ public class FunNode implements Node {
 
 	public String toPrint(String indent) {
 		String parlstr="";
+		
 		for (Node par:parlist)
 			parlstr+=par.toPrint(indent+"  ");
+		
 		String declstr="";
 		if (declist!=null) 
 			for (Node dec:declist)
 				declstr+=dec.toPrint(indent+"  ");
-		return indent + "Fun: "+ id + " of type " +functionType.toPrint("");
-				/*"Fun:" + id +"\n"
-		+type.toPrint(indent+"  ")
-		+parlstr
-		+declstr
-		+expBody.toPrint(indent+"  "); */
+		
+		String expString="";
+		if (!expsBody.isEmpty()) 
+			for (Node e:expsBody)
+				expString+=e.toPrint(indent+"  ");
+		
+		String stmsString="";
+		if (!stmsBody.isEmpty()) 
+			for (Node s:stmsBody)
+				stmsString+=s.toPrint(indent+"  ");
+		
+		return indent + "Fun: "+ id + " of type " +functionType.toPrint("") +
+				"\n" + indent + parlstr + declstr + expString + stmsString;
 	}
 
 	public Type typeCheck () {
