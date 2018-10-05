@@ -1,1 +1,12 @@
-Cambiare gestione dei branch
+IDNODE null pointer bug quando si accede ai campi di una classe
+da dentro i metodi della classe stessa.
+
+BoolNode
+IFNode
+IntNode
+IntOpsNode
+LogicOpsNode
+PrintNode
+ProgExpNode
+ProgLetInNode
+StmAsmNode

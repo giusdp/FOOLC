@@ -41,9 +41,9 @@ public String toPrint(String indent) {
 		  j = j - 1;
 	  }
 	 
-      if (tmp == null)
+      if (tmp == null) {
           res.add(new SemanticError("Id "+ id +" not declared"));
-      
+      }
       else{
     	  entry = tmp;
     	  nestinglevel = env.getNestLevel();
