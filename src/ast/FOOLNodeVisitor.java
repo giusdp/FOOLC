@@ -36,6 +36,7 @@ import type.ClassType;
 import type.IntType;
 import type.Type;
 import type.VoidType;
+import util.FOOLlib.RuleName;
 
 import static ast.IntOpsNode.IntOpsType.*;
 import static ast.LogicOpsNode.LogicOpsType.*;
@@ -282,14 +283,9 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 		}
 		
 		// Final line of function is either a stm or exp.
-		Node returningNode = null;
-		if (ctx.lastexp  == null) {
-			returningNode = visit(ctx.laststm);
-		} else {
-			returningNode = visit(ctx.lastexp);
-		}
+		RuleName returnRule = (ctx.lastexp  == null) ? RuleName.STM : RuleName.EXP;
 		
-		FunNode res = new FunNode(ctx.ID().getText(), returnType, returningNode, parTypes, innerDec, expressions, statements);
+		FunNode res = new FunNode(ctx.ID().getText(), returnType, returnRule, parTypes, innerDec, expressions, statements);
 
 		return res;
 	}

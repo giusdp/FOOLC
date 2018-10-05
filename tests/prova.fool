@@ -1,4 +1,4 @@
-class P(int x){ int getX() x; };
+class P(int x){ void setX(int y) x = y;};
 
 let 
 	int y =6;

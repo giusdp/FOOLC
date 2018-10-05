@@ -5,6 +5,11 @@ import type.ArrowType;
 import type.Type;
 
 public class FOOLlib {
+
+  public enum RuleName {
+	  EXP,
+	  STM
+  }
   
   private static int labCount=0; 
   
