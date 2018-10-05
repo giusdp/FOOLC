@@ -161,7 +161,6 @@ public class ClassNode implements Node {
 
 						// If the derived method is already present, we update the associated arrowtype of the higher class
 						derivedMethodToBaseArrowTypeMap.put(derivedMethod, (ArrowType) baseMethod.getType());
-						
 					}
 				}
 			}
@@ -192,34 +191,31 @@ public class ClassNode implements Node {
 			ArrowType derivedMethodType = (ArrowType) derivedMethod.getType();
 			ArrowType baseMethodType = derivedMethodToBaseArrowTypeMap.get(derivedMethod);
 			
-			
 			// DO the override type checking
 			error.addErrorMessage("Derived method " + derivedMethod.getId() + " in class " + this.id + ". ");
 				
 			// First check the return type, is derivedReturn <: baseReturn ?
 			if ( !(FOOLlib.isSubtype(derivedMethodType.getReturn(), baseMethodType.getReturn()) ) ) {
-				error.addErrorMessage("Must return same type " +
-						  "or subtype of overridden method: " + baseMethodType.getReturn().toPrint(""));
+				error.addErrorMessage("Must return same type or subtype of overridden method: " +
+									  baseMethodType.getReturn().toPrint(""));
 				return error;
 			}
 			
 			// Second check if the number of parameters is the same
-			
-			if ( !(derivedMethodType.getParList().size() == baseMethodType.getParList().size()) ) {
-	        	 error.addErrorMessage(
-	        			 "Must have same number of parameters of overridden method: " + baseMethodType.getParList().size() );
+			if ( derivedMethodType.getParList().size() != baseMethodType.getParList().size() ) {
+	        	 error.addErrorMessage("Must have same number of parameters of overridden method: " +
+	        			 				baseMethodType.getParList().size() );
 	        	 return error;
 	         } 
 			
 			// Third check each parameter types, is derivedParameter :> baseParameter ?
-	         for (int i=0; i<derivedMethodType.getParList().size(); i++) {
-
-	           if ( !(FOOLlib.isSubtype( (derivedMethodType.getParList().get(i)), baseMethodType.getParList().get(i)) ) ) {
-	        	   error.addErrorMessage("The "+(i+1)+"-th parameter must have same type or super type of the " 
-	        			   +(i+1)+"-th parameter of overridden method: " + baseMethodType.getParList().get(i).toPrint(""));
-	        	   return error;
-	          } 
-	         }
+			for (int i = 0; i < derivedMethodType.getParList().size(); i++) {
+				if ( !(FOOLlib.isSubtype( (derivedMethodType.getParList().get(i)), baseMethodType.getParList().get(i)) ) ) {
+					error.addErrorMessage("The " + (i+1) + "-th parameter must have same type or super type of the " + (i+1) +
+	        			   				  "-th parameter of overridden method: " + baseMethodType.getParList().get(i).toPrint(""));
+					return error;
+				}
+			}
 		}
 		
 		return type;

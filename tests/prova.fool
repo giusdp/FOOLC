@@ -2,6 +2,7 @@ class P(int x, int y)	{ bool f(int x) true; };
 class B extends P		{ bool f(int y) true; };
 class A extends B		{ bool f(int x) true; };
 let 
+	int z = 3;
 	A a = new A();
 in
-	a.f();
+	z = a.f(z);

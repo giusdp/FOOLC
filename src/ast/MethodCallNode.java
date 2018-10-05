@@ -22,20 +22,11 @@ public class MethodCallNode implements Node {
 	private String ownerClass;
 	
 	private Type methodType;
-	
-//	Fields for polymorphic type-checking.
-//	private ArrayList<Type> overwrittenParamTypes;
-//	private ArrowType derivedType;
-//	private ArrowType baseType;
 
 	public MethodCallNode(String m, ArrayList<Node> args, Node obj) {
 		id = m;
 		parList = args;
 		varNode = (IdNode) obj;
-		
-//		overwrittenParamTypes = new ArrayList<Type>();
-//		derivedType = null;
-//		baseType = null;
 	}
 
 	@Override
@@ -120,39 +111,36 @@ public class MethodCallNode implements Node {
 		 * Check PASSED PARAMETER types match DECLARED parameter types.
 		 * check we're calling it on the correct classType X-> done in CheckSemantics.
 		 * check the return type == return type of declaration
-		 * case: f is polymorphic
-		 * 	new return type T' <: old return type T
-		 *  old par types Ti <: new par types Ti'
 		 */
 
-		ArrowType funType=null;
-		 ErrorType error = new ErrorType();
-		 
-		 // Siccome il polimorfismo e' stato gia' controllato in classnode, per tutti i metodi
-		 // Ora bisogna fare un semplice controllo sui parametri. Questo controllo ora e' identico a CallNode
-		 // TODO: classe padre per callnode, methodcallnode, constructornode per evitare questo codice ripetuto 3 volte???
-	     if (methodType instanceof ArrowType) {
-	    	 funType=(ArrowType) methodType; 
-	    	 ArrayList<Type> parTypes = funType.getParList();
-	    	 
-	    	 // si controllano numero parametri con quelli passati in input
-	         if ( !(parTypes.size() == parList.size()) ) {
-	        	 error.addErrorMessage("Wrong number of parameters in the invocation of the method: "+varNode.getId()+"."+id +
-	        			 "\n Expected " + parTypes.size() + " but found " + parList.size());
-	        	 return error;
-	         } 
-	         // si controllano tipi parametri con quelli passatiin input
-	         for (int i=0; i<parList.size(); i++) 
-	           if ( !(FOOLlib.isSubtype( (parList.get(i)).typeCheck(), parTypes.get(i)) ) ) {
-	        	   error.addErrorMessage("Wrong type for the "+(i+1)+"-th parameter in the invocation of method: "+varNode.getId()+"."+id);
-	        	   return error;
-	           } 
-	         return funType.getReturn();
-	     }
+		ArrowType funType = null;
+		ErrorType error = new ErrorType();
+		
+		// Siccome il polimorfismo e' stato gia' controllato in classnode, per tutti i metodi
+		// Ora bisogna fare un semplice controllo sui parametri. Questo controllo ora e' identico a CallNode
+		// TODO: classe padre per callnode, methodcallnode, constructornode per evitare questo codice ripetuto 3 volte???
+		if (methodType instanceof ArrowType) {
+			funType = (ArrowType) methodType; 
+			ArrayList<Type> parTypes = funType.getParList();
 
-		 // ALTRIMENTI se non e' ne' funzione, allora errore
-		 error.addErrorMessage("Invocation of a non-function "+id);
-		 return error;
+			// si controllano numero parametri con quelli passati in input
+			if ( parTypes.size() != parList.size() ) {
+				error.addErrorMessage("Wrong number of parameters in the invocation of the method: "+varNode.getId()+"."+id +
+									  "\nExpected " + parTypes.size() + " but found " + parList.size());
+				return error;
+			}
+			// si controllano tipi parametri con quelli passatiin input
+			for (int i = 0; i < parList.size(); i++) 
+				if ( !(FOOLlib.isSubtype( (parList.get(i)).typeCheck(), parTypes.get(i)) ) ) {
+					error.addErrorMessage("Wrong type for the "+(i+1)+"-th parameter in the invocation of method: "+varNode.getId()+"."+id);
+					return error;
+				}
+			return funType.getReturn();
+		}
+
+		// ALTRIMENTI se non e' ne' funzione, allora errore
+		error.addErrorMessage("Invocation of a non-function " + id);
+		return error;
 	 
 	}
 
