@@ -36,6 +36,7 @@ import type.ClassType;
 import type.IntType;
 import type.Type;
 import type.VoidType;
+import util.FOOLlib.RuleName;
 
 import static ast.IntOpsNode.IntOpsType.*;
 import static ast.LogicOpsNode.LogicOpsType.*;
@@ -82,25 +83,31 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 
 	@Override
 	public Node visitClassdec(ClassdecContext ctx) {
-		// ID(0) è il nome della classe. ID(1) è la superclasse. 
-		// ID(n) serve per accedere ai due ID presenti nella regola
-		ClassNode c = new ClassNode(ctx.ID(0).getText());
-
-		if (ctx.ID(1) != null) {
-			c.setSuperClassName(ctx.ID(1).getText());
-		}
+				
+		ArrayList<Node> fieldList = new ArrayList<>();
+		ArrayList<Node> methodList = new ArrayList<>();
+		
 		
 		// Visita i campi (le variabili dichiarate)
 		for (VardecContext vc : ctx.vardec()) {
 			Type type = (Type) visit(vc.type());
-			c.addField(new ParNode(vc.ID().getText(), type));
+			fieldList.add(new ParNode(vc.ID().getText(), type));
 		}
 
 		// visit all class's methods
 		for (FunContext fc : ctx.fun()) {
 			FunNode f = (FunNode) visit(fc);
-			c.addMethod(f);
+			methodList.add(f);
 		}
+		
+		// ID(0) è il nome della classe. ID(1) è la superclasse. 
+		// ID(n) serve per accedere ai due ID presenti nella regola
+		ClassNode c = new ClassNode(ctx.ID(0).getText(), fieldList, methodList);
+		
+		if (ctx.ID(1) != null) {
+			c.setSuperClassName(ctx.ID(1).getText());
+		}
+		
 		return c;
 	}
 		
@@ -122,16 +129,16 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 	@Override
 	public Node visitNewExp(NewExpContext ctx) {
 		//System.out.println("VISIT NEW");
-		CallNode res;
+		ConstructorNode constr;
 
 		ArrayList<Node> args = new ArrayList<Node>();
 
 		for (ExpContext exp : ctx.exp())
 			args.add(visit(exp));
 
-		res = new CallNode(ctx.ID().getText(), args, true);
+		constr = new ConstructorNode(ctx.ID().getText(), args);
 
-		return res;
+		return constr;
 	}
 
 	@Override
@@ -192,7 +199,7 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 
 	@Override
 	public Node visitAsmStm(AsmStmContext ctx) {
-		IdNode res = new IdNode(ctx.ID().getText());
+		StmAsmNode res = new StmAsmNode();
 		return res;
 	}
 
@@ -275,15 +282,12 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 			}
 		}
 		
-		// Final line of function is either a stm or exp.
-		Node returningNode = null;
-		if (ctx.lastexp  == null) {
-			returningNode = visit(ctx.laststm);
-		} else {
-			returningNode = visit(ctx.lastexp);
-		}
+		// if (ctx.lastexp != null) expressions.add(visit(ctx.lastexp)); lastexp viene gia' preso nel for su ctx.exp()
+		if (ctx.laststm != null) statements.add(visit(ctx.laststm));
 		
-		FunNode res = new FunNode(ctx.ID().getText(), returnType, returningNode, parTypes, innerDec, expressions, statements);
+		// Final line of function is either a stm or exp.
+		RuleName returnRule = (ctx.lastexp  == null) ? RuleName.STM : RuleName.EXP;
+		FunNode res = new FunNode(ctx.ID().getText(), returnType, returnRule, parTypes, innerDec, expressions, statements);
 
 		return res;
 	}
@@ -298,7 +302,10 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 
 		else if (ctx.VOID() != null) return new VoidType();
 
-		else return new ClassType(ctx.getText());
+		else {
+			//System.out.println("VISITTYPE: CLASSTYPE. IN FOOLNODEVISITOR AAAAAAAAAAAAAAAAAAAAAA");
+			return new ClassType(ctx.getText());
+		}
 
 	}
 
@@ -453,7 +460,7 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 			args.add(visit(exp));
 
 		//instantiate the invocation
-		res = new CallNode(ctx.ID().getText(), args, false);
+		res = new CallNode(ctx.ID().getText(), args);
 
 		return res;
 	}

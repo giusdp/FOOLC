@@ -2,12 +2,11 @@ package type;
 
 public class ErrorType extends Type {
 
-	public String msg = "";
+	public String msg = "TypeError: ";
 	
 	@Override
 	public String toPrint(String s) {
-		// TODO Auto-generated method stub
-		return msg;
+		return s+msg;
 	}
 
 	public void addErrorMessage(String msg) {

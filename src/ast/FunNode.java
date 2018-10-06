@@ -6,6 +6,7 @@ import type.ArrowType;
 import type.ErrorType;
 import type.Type;
 import util.FOOLlib;
+import util.FOOLlib.RuleName;
 import util.STEntry;
 import util.Environment;
 import util.SemanticError;
@@ -14,7 +15,7 @@ public class FunNode implements Node {
 
 	private String id;
 	private Type returnType;
-	private Node returnNode;
+	private RuleName returningRule;
 	private ArrayList<Node> parlist;
 	private ArrayList<Node> declist; 
 	private ArrayList<Node> expsBody;
@@ -23,7 +24,7 @@ public class FunNode implements Node {
 
 	public FunNode (String i,
 					Type t,
-					Node lastNode,
+					RuleName rule,
 					ArrayList<Node> parameters,
 					ArrayList<Node> decls,
 					ArrayList<Node> exps,
@@ -34,7 +35,7 @@ public class FunNode implements Node {
 		expsBody = exps;
 		stmsBody = stms;
 		declist = decls;
-		returnNode = lastNode;
+		returningRule = rule;
 		
 		ArrayList<Type> parTypes = new ArrayList<>();
 		for (Node par : parameters) {
@@ -64,9 +65,6 @@ public class FunNode implements Node {
 		HashMap<String,STEntry> currentScope = env.getST().get(env.getNestLevel());
 		STEntry entry = new STEntry(env.getNestLevel(),env.decOffset()); 
 		//separo introducendo "entry"
-
-		//System.out.println("FUN: " + id + " STENTRY: " + entry.getNestLevel() + 
-			//	" offset: " + entry.getOffset());
 
 		if ( currentScope.put(id,entry) != null )
 			res.add(new SemanticError("Function "+ id +" already declared"));
@@ -118,21 +116,29 @@ public class FunNode implements Node {
 
 	public String toPrint(String indent) {
 		String parlstr="";
+		
 		for (Node par:parlist)
 			parlstr+=par.toPrint(indent+"  ");
+		
 		String declstr="";
 		if (declist!=null) 
 			for (Node dec:declist)
 				declstr+=dec.toPrint(indent+"  ");
-		return indent + "Fun: "+ id + " of type " +functionType.toPrint("");
-				/*"Fun:" + id +"\n"
-		+type.toPrint(indent+"  ")
-		+parlstr
-		+declstr
-		+expBody.toPrint(indent+"  "); */
+		
+		String expString="";
+		if (!expsBody.isEmpty()) 
+			for (Node e:expsBody)
+				expString+=e.toPrint(indent+"  ");
+		
+		String stmsString="";
+		if (!stmsBody.isEmpty()) 
+			for (Node s:stmsBody)
+				stmsString+=s.toPrint(indent+"  ");
+		
+		return indent + "Fun: "+ id + " of type " +functionType.toPrint("") +
+				"\n" + indent + parlstr + declstr + expString + stmsString;
 	}
 
-	//valore di ritorno non utilizzato
 	public Type typeCheck () {
 		if (declist!=null) {
 			for (Node dec:declist) {
@@ -140,17 +146,39 @@ public class FunNode implements Node {
 				if (type instanceof ErrorType) return type;
 			}
 		}
-		Type type = returnNode.typeCheck();
-		if(type instanceof ErrorType) {
-			return type;
+		
+		// Dobbiamo controllare che non ci siano errori di tipo anche per tutte
+		// le istruzioni nel corpo della funzione
+		Type type;
+		for(Node stm : stmsBody) {
+			type = stm.typeCheck();
+			if(type instanceof ErrorType) return type;
 		}
-				
-		if ( !(FOOLlib.isSubtype(type, returnType)) ){
+		for (Node exp : expsBody) {
+			type = exp.typeCheck();
+			if(type instanceof ErrorType) return type;
+		}
+		
+		// Controllo del returnNode (in realta' viene gia' fatto quando si controlla il corpo
+		// Pero' ora ci serve proprio il tipo per vedere se e' subtype di return type
+		
+		Node finalNode = null;
+		finalNode = (returningRule == RuleName.EXP)	? expsBody.get(expsBody.size() - 1)
+													: stmsBody.get(stmsBody.size() - 1);
+			
+		Type returnNodeType = finalNode.typeCheck();
+		/* if(returnNodeType instanceof ErrorType) return returnNodeType; */
+		// Non serve vedere se e' instanceof ErrorType perche' se cosi' fosse sarebbe gia' uscito prima al 
+		// controllo del corpo
+		
+		if ( !(FOOLlib.isSubtype(returnNodeType, returnType)) ){
 			ErrorType error = new ErrorType();
 			error.addErrorMessage("Function " + id + " must return: " + returnType.toPrint("") +
-					   "Actually returned: " + returnNode.typeCheck().toPrint(""));
+					   "Actually returned: " + returnNodeType.toPrint(""));
 			return error;
 		}  
+		
+		
 		return returnType;
 	}
 
@@ -166,8 +194,9 @@ public class FunNode implements Node {
 		}
 
 		String popDecl="";
-		if (declist!=null) for (Node dec:declist)
-			popDecl+="pop\n";
+		if (declist!=null) 
+			for (Node dec:declist)
+				popDecl+="pop\n";
 
 		String popParl="";
 		for (Node dec:parlist)

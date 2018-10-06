@@ -6,8 +6,10 @@ import java.util.HashMap;
 import ast.FunNode;
 import type.ArrowType;
 import type.ClassType;
+import type.ErrorType;
 import type.Type;
 import util.Environment;
+import util.FOOLlib;
 import util.STEntry;
 import util.SemanticError;
 
@@ -15,9 +17,11 @@ public class MethodCallNode implements Node {
 	
 	private String id;
 	private ArrayList<Node> parList;
-	private int nestLevel;
+
 	private IdNode varNode;
 	private String ownerClass;
+	
+	private Type methodType;
 
 	public MethodCallNode(String m, ArrayList<Node> args, Node obj) {
 		id = m;
@@ -34,8 +38,7 @@ public class MethodCallNode implements Node {
 
 		// TODO: methodEntry is null at runtime. Causes NullPtrException.
 		// methodEntry is never instantiated here.
-		return indent + "Method Call:" + id + " at nesting level " + nestLevel 
-				+ "\n" + indent + "    from class " + ownerClass + /*methodEntry.toPrint(indent + "  ") +*/ parlstr;
+		return indent + "Method Call:" + id + "\n" + indent + "    from class " + ownerClass + /*methodEntry.toPrint(indent + "  ") +*/ parlstr;
 	}
 	
 	@Override
@@ -52,32 +55,38 @@ public class MethodCallNode implements Node {
 		try {
 			ownerClass = ((ClassType) varNode.getType()).getId(); // Ottendo il nome/tipo della classe
 		
+			ClassNode ownerClassNode = env.getClassMap().get(ownerClass);
 			//Non può succedere in realtà perché quando si va ad instanziare la classe, se non è stata
 			// definita già è errore, quindi molto prima di questo controllo.
-			if (env.getClassMap().get(ownerClass) == null){
+			if (ownerClassNode == null){
 				res.add(new SemanticError("Class "+ ownerClass + " not defined."));
 				return res;
 			}
 			
 			// Verificare che il metodo 'id' esiste in classe 'ownerClass':
 			boolean methodDeclared = false;
-			ClassNode owner = env.getClassMap().get(ownerClass);
-			for (Node fn : owner.getMethodList()) {
+			for (Node fn : ownerClassNode.getMethodList()) {
 				FunNode function = (FunNode) fn;
 				if (function.getId().equals(this.id)) {
+					methodType = (ArrowType) function.getType();
 					methodDeclared = true;
 					break;
 				}
 			}	
 			// Se il metodo non è dichiarato nella 'ownerClass' e la 'ownerClass' estende 
 			// una classe, bisogna controllare che il metodo sia della 'superClass'
-			if (owner.getSuperClassName() != null && !methodDeclared) {
-				for (Node fn : env.getClassMap().get(owner.getSuperClassName()).getMethodList()) {
-					FunNode function = (FunNode) fn;
-					if (function.getId().equals(this.id)) {
-						methodDeclared = true;
-						break;
+			if (!methodDeclared) {
+				while (ownerClassNode.getSuperClass() != null) {
+					for (Node fn : ownerClassNode.getMethodList()) {
+						FunNode function = (FunNode) fn;
+						if (function.getId().equals(this.id)) {
+							// if method declared in subclass is polymorphic, store type for TypeChecking.
+							methodType = (ArrowType) function.getType();
+							methodDeclared = true;
+							break;
+						}
 					}
+					ownerClassNode = ownerClassNode.getSuperClass();
 				}
 			}
 			
@@ -97,16 +106,39 @@ public class MethodCallNode implements Node {
 
 	@Override
 	public Type typeCheck() {
-		// TODO Auto-generated method stub
+		/*
+		 * To be achieved:
+		 */
+
+		ArrowType funType = null;
+		ErrorType error = new ErrorType();
 		
-		if (!(varNode.getType() instanceof ClassType)) {
-			// TODO: Method of detecting error in TypeCheck.
-			// E.g. un ErrorType classe
-			/* res.add(new SemanticError("Var id '" + varNode.getId()
-			+ "' is not an object; cannot invoke method " + id + "."));
-			return res; */
+		// Siccome il polimorfismo e' stato gia' controllato in classnode, per tutti i metodi
+		// Ora bisogna fare un semplice controllo sui parametri. Questo controllo ora e' identico a CallNode
+		// TODO: classe padre per callnode, methodcallnode, constructornode per evitare questo codice ripetuto 3 volte???
+		if (methodType instanceof ArrowType) {
+			funType = (ArrowType) methodType; 
+			ArrayList<Type> parTypes = funType.getParList();
+
+			// si controllano numero parametri con quelli passati in input
+			if ( parTypes.size() != parList.size() ) {
+				error.addErrorMessage("Wrong number of parameters in the invocation of the method: "+varNode.getId()+"."+id +
+									  "\nExpected " + parTypes.size() + " but found " + parList.size());
+				return error;
+			}
+			// si controllano tipi parametri con quelli passatiin input
+			for (int i = 0; i < parList.size(); i++) 
+				if ( !(FOOLlib.isSubtype( (parList.get(i)).typeCheck(), parTypes.get(i)) ) ) {
+					error.addErrorMessage("Wrong type for the "+(i+1)+"-th parameter in the invocation of method: "+varNode.getId()+"."+id);
+					return error;
+				}
+			return funType.getReturn();
 		}
-		return null;
+
+		// ALTRIMENTI se non e' ne' funzione, allora errore
+		error.addErrorMessage("Invocation of a non-function " + id);
+		return error;
+	 
 	}
 
 	@Override

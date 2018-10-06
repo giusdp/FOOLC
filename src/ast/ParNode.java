@@ -21,6 +21,7 @@ public class ParNode implements Node {
   }
   
   public Type getType(){
+	  // TODO: if (type instanceof NULLNODE) return error ??
 	  return type;
   }
   

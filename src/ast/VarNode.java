@@ -70,9 +70,11 @@ public class VarNode implements Node {
 
 	//valore di ritorno non utilizzato
 	public Type typeCheck () {
+		Type expType = exp.typeCheck();
+		if (expType instanceof ErrorType) return expType;
 		if (! (FOOLlib.isSubtype(exp.typeCheck(),type)) ){ 
 			ErrorType error = new ErrorType();
-			error.addErrorMessage("Incompatible value for variable" + id);
+			error.addErrorMessage("Incompatible value for variable: " + id);
 			return error;
 		}     
 		return type;

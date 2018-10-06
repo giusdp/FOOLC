@@ -69,8 +69,8 @@ public class CompilerLauncher {
 		Node ast = visitor.visit(parser.prog()); //generazione AST 
 		
 		if (errorListener.getNumErrors() > 0) {
-			System.out.println("The program was not in the right format."
-					+ " Exiting the compilation process now");
+			System.out.println("\nThe program was not in the right format."
+					+ " Exiting the compilation process now.");
 			System.exit(1);
 		}
 

@@ -7,9 +7,12 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import type.ArrowType;
 import type.ClassType;
+import type.ErrorType;
 import type.Type;
 import util.Environment;
+import util.FOOLlib;
 import util.STEntry;
 import util.SemanticError;
 
@@ -19,12 +22,34 @@ public class ClassNode implements Node {
 	private ArrayList<Node> fieldList = new ArrayList<>();
 	private ArrayList<Node> methodList = new ArrayList<>();
 
+	private ClassType type;
+	
 	// EREDITARIETA
 	private String superClassName;
 	private ClassNode superClass;
 
-	public ClassNode(String name) {
+	// COSTRUTTORE
+	public ClassNode(String name, ArrayList<Node> fieldList, ArrayList<Node> methodList) {
 		this.id = name;
+		this.fieldList = fieldList;
+		this.methodList = methodList;
+		
+		type = new ClassType(id);
+		
+		ArrayList<Type> fieldTypeList = new ArrayList<>();
+		for (Node par : fieldList) {
+			ParNode p = (ParNode) par;
+			fieldTypeList.add(p.getType());
+		}
+		type.setFieldTypeList(fieldTypeList);
+		
+		ArrayList<ArrowType> methodTypeList = new ArrayList<>();
+		for (Node m : methodList) {
+			FunNode f = (FunNode) m;
+			methodTypeList.add((ArrowType) f.getType());
+		}
+		type.setMethodTypeList(methodTypeList);
+		
 	}
 
 	@Override
@@ -63,11 +88,11 @@ public class ClassNode implements Node {
 		//env.offset = -2;
 		
 		// Controllo classe già dichiarata
-		HashMap<String,STEntry> outerScope = env.getST().get(env.getNestLevel());
+		HashMap<String,STEntry> currentScope = env.getST().get(env.getNestLevel());
 
-		STEntry entry = new STEntry(env.getNestLevel(), new ClassType(id), env.decOffset()); 
+		STEntry entry = new STEntry(env.getNestLevel(), type, env.decOffset()); 
 
-		if ( outerScope.put(id, entry) != null ) {
+		if ( currentScope.put(id, entry) != null ) {
 			res.add(new SemanticError("Class "+ id +" is already declared"));
 			return res; // Se la classe è già stata dichiarata allora possiamo fermarci
 		}
@@ -76,7 +101,7 @@ public class ClassNode implements Node {
 		// Controllo super classe dichiarata
 		
 		if (superClassName != null) {
-			if (outerScope.get(superClassName) == null) {
+			if (currentScope.get(superClassName) == null) {
 				res.add(new SemanticError("Super class "+ superClassName +" is not declared"));
 			} else {
 				setSuperClass(env.getClassMap().get(superClassName));
@@ -111,8 +136,89 @@ public class ClassNode implements Node {
 
 	@Override
 	public Type typeCheck() {
-		// TODO Auto-generated method stub
-		return new ClassType(this.id);
+		// Ci sarebbe da controllare il tipo di tutti i campi e di tutti i metodi e della superclasse, se c'e',
+		// per vedere se ci sono errori, e poi se tutto va bene si ritorna il ClassType.
+		// Pero' e' inutile controllare il tipo di Par perche' non dara' mai errori (vedi ParNode per il perche')
+		// La superclasse e' anche inutile controllare perche' gia' ProgClassNode si occupa
+		// del type checking di tutte le classi, quindi direi di controllare solo i tipi dei metodi.
+		
+		// Type-check polymorphic methods.
+		ClassNode superclassIterator = this.getSuperClass();
+		
+		// Organise return types of class methods into array for comparison:
+		
+		// With this map we can keep track of the BASE arrowtype associated with a certain DERIVED function
+		// so later we can get the arrowtype of the derived function and check it against the base function type
+		HashMap<FunNode, ArrowType> derivedMethodToBaseArrowTypeMap = new HashMap<>();
+				
+		while (superclassIterator != null) {
+			for (Node myMethods : this.getMethodList()) {
+				FunNode derivedMethod = (FunNode) myMethods;
+				for (Node baseMethods : superclassIterator.getMethodList()) {
+					FunNode baseMethod = (FunNode) baseMethods;
+					// if method is polymorphic:
+					if (baseMethod.getId().equals(derivedMethod.getId())) {
+
+						// If the derived method is already present, we update the associated arrowtype of the higher class
+						derivedMethodToBaseArrowTypeMap.put(derivedMethod, (ArrowType) baseMethod.getType());
+					}
+				}
+			}
+			superclassIterator = superclassIterator.getSuperClass();
+		}
+		
+		// TODO: controllare tipi dei campi (istanceof NullNode?)
+		Type methodType; 
+		for (Node m : methodList) {
+			FunNode method = (FunNode) m;
+			methodType = method.typeCheck();
+			if (methodType instanceof ErrorType) return methodType; // Return ErrorType se c'e' un errore nei metodi
+		}
+		
+		// Una volta controllato che i metodi vadano bene, bisogna controllare l'overriding dei metodi!
+		// Se c'e' una super classe e ci sono overriding dei metodi, bisogna controllare che sia stato fatto
+		// bene, usando la regola del type checking sull'overriding nelle slides
+		
+		// derivedReturn <: baseReturn 
+		// derivedParameter :> baseParameter
+		
+		ErrorType error = new ErrorType();
+		
+		Iterator<FunNode> it = derivedMethodToBaseArrowTypeMap.keySet().iterator();
+
+		while (it.hasNext()) {
+			FunNode derivedMethod = (FunNode) it.next();
+			ArrowType derivedMethodType = (ArrowType) derivedMethod.getType();
+			ArrowType baseMethodType = derivedMethodToBaseArrowTypeMap.get(derivedMethod);
+			
+			// DO the override type checking
+			error.addErrorMessage("Derived method " + derivedMethod.getId() + " in class " + this.id + ". ");
+				
+			// First check the return type, is derivedReturn <: baseReturn ?
+			if ( !(FOOLlib.isSubtype(derivedMethodType.getReturn(), baseMethodType.getReturn()) ) ) {
+				error.addErrorMessage("Must return same type or subtype of overridden method: " +
+									  baseMethodType.getReturn().toPrint(""));
+				return error;
+			}
+			
+			// Second check if the number of parameters is the same
+			if ( derivedMethodType.getParList().size() != baseMethodType.getParList().size() ) {
+	        	 error.addErrorMessage("Must have same number of parameters of overridden method: " +
+	        			 				baseMethodType.getParList().size() );
+	        	 return error;
+	         } 
+			
+			// Third check each parameter types, is derivedParameter :> baseParameter ?
+			for (int i = 0; i < derivedMethodType.getParList().size(); i++) {
+				if ( !(FOOLlib.isSubtype( (derivedMethodType.getParList().get(i)), baseMethodType.getParList().get(i)) ) ) {
+					error.addErrorMessage("The " + (i+1) + "-th parameter must have same type or super type of the " + (i+1) +
+	        			   				  "-th parameter of overridden method: " + baseMethodType.getParList().get(i).toPrint(""));
+					return error;
+				}
+			}
+		}
+		
+		return type;
 	}
 
 	@Override
@@ -127,13 +233,6 @@ public class ClassNode implements Node {
 
 	public ArrayList<Node> getFieldList() {
 		return fieldList;
-	}
-
-	public void addField(Node node) {
-		fieldList.add(node);
-	}
-	public void addMethod(Node node) {
-		methodList.add(node);
 	}
 
 	public ArrayList<Node> getMethodList() {
@@ -152,5 +251,12 @@ public class ClassNode implements Node {
 		this.superClass = parent;
 	}
 
+	public ClassNode getSuperClass() {
+		return superClass;
+	}
+	
+	public ClassType getClassType() {
+		return type;
+	}
 
 }
