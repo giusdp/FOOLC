@@ -1,6 +1,9 @@
-class P(int x){ void setX(int y) x = 4;};
+class P(int x){ void g(int y) null;};
+class A extends P;
+class B extends A;
 
 let 
-	int y =6;
+	int f(P z) 4;
+	B objB = new B();
 in
-	3;
+	f(objB);

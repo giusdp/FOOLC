@@ -76,11 +76,12 @@ public String toPrint(String indent) {  //
         			 ". \n Expected " + parTypes.size() + " but found " + parList.size());
         	 return error;
          } 
-         for (int i=0; i<parList.size(); i++) 
+         for (int i=0; i<parList.size(); i++) {
            if ( !(FOOLlib.isSubtype( (parList.get(i)).typeCheck(), parTypes.get(i)) ) ) {
         	   error.addErrorMessage("Wrong type for the "+(i+1)+"-th parameter in the invocation of function: "+id);
         	   return error;
            } 
+         }
          return funType.getReturn();
      }
 

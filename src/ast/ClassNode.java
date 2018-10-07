@@ -25,8 +25,8 @@ public class ClassNode implements Node {
 	private ClassType type;
 	
 	// EREDITARIETA
-	private String superClassName;
-	private ClassNode superClass;
+	private String superClassName = null;
+	private ClassNode superClass = null;
 
 	// COSTRUTTORE
 	public ClassNode(String name, ArrayList<Node> fieldList, ArrayList<Node> methodList) {
