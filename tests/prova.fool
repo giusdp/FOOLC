@@ -1,9 +1,3 @@
 class P(int x){ void g(int y) null;};
 class A extends P;
 class B extends A;
-
-let 
-	int f(P z) 4;
-	B objB = new B();
-in
-	f(objB);

@@ -26,18 +26,18 @@ public class FOOLlib {
   //valuta se il tipo "a" è <: al tipo "b"
   public static boolean isSubtype (Type a, Type b) {
 	  if (env == null) {
-		  System.err.println("Error: FOOLlib.env is null. Call setEnv in CompilerLauncher after creating an env.");
+		  System.err.println("Error: FOOLlib.env is null. Call FOOLlib.setEnv in CompilerLauncher after creating an env.");
 		  System.exit(1);
 	  }
 	  
-	  // Se a e b sono tipi primitivi (int e bool e void) si controlla solo se sono uguali.
+	  // Se a e b sono tipi primitivi (int, bool o void) si controlla solo se sono uguali.
 	  if (a instanceof BoolType || a instanceof IntType || a instanceof VoidType) {
 		  return a.getClass().equals(b.getClass()); 		  
 	  }
-	  // Se a e' un ClassType allora si controlla il subtyping tra classi
+	  // Se a e' un ClassType allora si controlla il subtyping fra classi
 	  else if (a instanceof ClassType) {
 		  
-		  if (!(b instanceof ClassType)) return false; // se b non e' una classe non puo' esserci subtyping
+		  if (!(b instanceof ClassType)) return false; // se anche b non e' una classe, non puo' esserci subtyping
 		  
 		  ClassType typeA = (ClassType) a;
 		  ClassType typeB = (ClassType) b;
@@ -51,8 +51,8 @@ public class FOOLlib {
 			  String parent = env.getClassMap().get(typeA.getId()).getSuperClassName();
 			  
 			  while (parent != null) { // sali di livello nell'albero della ereditarieta'
-				  if ((parent).equals(typeB.getId())) return true; // la classe parent e' la stessa classe di b
-				  else parent = env.getClassMap().get(parent).getSuperClassName();
+				  if ((parent).equals(typeB.getId())) return true; // se la classe parent e' la stessa classe di b, c'e' subtyping
+				  else parent = env.getClassMap().get(parent).getSuperClassName(); // altrimenti accedi alla classe padre di a
 			  }
 		  }
 	  }
