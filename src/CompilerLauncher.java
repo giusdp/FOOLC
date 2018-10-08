@@ -13,6 +13,7 @@ import ast.Node;
 import parser.FOOLLexer;
 import parser.FOOLParser;
 import util.Environment;
+import util.FOOLlib;
 import util.SemanticError;
 import util.SyntaxErrorListener;
 import type.ErrorType;
@@ -75,6 +76,7 @@ public class CompilerLauncher {
 		}
 
 		Environment env = new Environment();
+		FOOLlib.setEnv(env);
 		
 		System.out.println("Perfoming Check Semantics...");
 		ArrayList<SemanticError> err = ast.checkSemantics(env);

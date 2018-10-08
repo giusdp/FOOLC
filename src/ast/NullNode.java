@@ -13,7 +13,7 @@ public class NullNode implements Node {
 	@Override
 	public String toPrint(String indent) {
 		// TODO Auto-generated method stub
-		return indent + "NULL";
+		return indent + "NULL\n";
 	}
 
 	@Override
