@@ -221,10 +221,45 @@ public class ClassNode implements Node {
 		return type;
 	}
 
+	public String constructorCodeGeneration() {
+
+		String initFields = "";
+		String popParl = "";
+		int offset = 1;
+		for (Node dec : fieldList) {
+			popParl += "pop\n"; //Pop each parameter/field
+			initFields += "lfp\n" + "push " + offset + "\n" + "add\n" + // Each field is offset away from the FP
+					"lw\n" + "lfp\n" + "push -2\n" + // The heap pointer of the object is -2 from
+					"add\n" + // the FP
+					"lw\n" + "push " + (offset - 1) + "\n" + "add\n" + "sw\n";
+			offset++;
+		}
+
+		String classLabel = id;
+		FOOLlib.putCode(classLabel + ":\n" + "cfp\n" + //setta $fp a $sp; this is the Access Link				
+				"lra\n" + //inserimento return address
+				"mall " + fieldList.size() + "\n" + initFields + "srv\n" + //pop del return value
+				"sra\n" + // pop del return address
+				"pop\n" + // pop di AL
+				popParl + "sfp\n" + // setto $fp a valore del CL; this is the control link
+				"lrv\n" + // risultato della funzione sullo stack
+				"lra\n" + "js\n" // salta a $ra
+		);
+		return "push " + classLabel + "\n";
+		
+	}
+	
 	@Override
 	public String codeGeneration() {
-		// TODO Auto-generated method stub
-		return null;
+		String methods = "";
+		//The string methods is just a list of "push labeln"
+		//The actual code is put by the recursive call of codeGeneration
+		//in the static string of FOOLlib
+		methods += constructorCodeGeneration();
+		for (Node m : methodList) {
+			methods += m.codeGeneration();
+		}
+		return methods;
 	}
 
 	public String getId() {
