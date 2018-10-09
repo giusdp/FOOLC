@@ -1,15 +1,27 @@
 push 0
 ## DATA
 ## VTABLE
-push P
+push A
 halt
 
-P:
+A:
 cfp
 lra
-mall 0
+mall 1
+lfp
+push 1
+add
+lw
+lfp
+push -2
+add
+lw
+push 0
+add
+sw
 srv
 sra
+pop
 pop
 sfp
 lrv

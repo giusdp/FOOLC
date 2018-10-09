@@ -274,7 +274,7 @@ public class ClassNode implements Node {
 			offset++;
 		}
 		
-		FOOLlib.putCode(classLabel + ":\n" + "cfp\n" + //setta $fp a $sp; this is the Access Link				
+		FOOLlib.putCode(classLabel + ":\n" + "cfp\n" + //setta $fp = $sp; this is the Access Link				
 				"lra\n" + //inserimento return address
 				"mall " + fieldList.size() + "\n" + fields + "srv\n" + //pop del return value
 				"sra\n" + // pop del return address
