@@ -22,6 +22,8 @@ public class ClassNode implements Node {
 	private ArrayList<Node> fieldList = new ArrayList<>();
 	private ArrayList<Node> methodList = new ArrayList<>();
 
+	STEntry stEntry;
+	
 	private ClassType type;
 	
 	// EREDITARIETA
@@ -73,15 +75,6 @@ public class ClassNode implements Node {
 	@Override
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
 		
-		/**
-		 * Da verificare:
-		 * - superclasse esiste (se ci sia)
-		 * - classe non è stata ridichiarata
-		 * - chiamare checkSemantics ai campi e alle funzioni
-		 * NON necessari:
-		 * - controllare che funzioni/campi sono già dichiarati (fatto da IdNode etc.)
-		 */
-		
 		//create result list
 		ArrayList<SemanticError> res = new ArrayList<SemanticError>();
 
@@ -90,9 +83,9 @@ public class ClassNode implements Node {
 		// Controllo classe già dichiarata
 		HashMap<String,STEntry> currentScope = env.getST().get(env.getNestLevel());
 
-		STEntry entry = new STEntry(env.getNestLevel(), type, env.decOffset()); 
+		stEntry = new STEntry(env.getNestLevel(), type, env.decOffset()); 
 
-		if ( currentScope.put(id, entry) != null ) {
+		if ( currentScope.put(id, stEntry) != null ) {
 			res.add(new SemanticError("Class "+ id +" is already declared"));
 			return res; // Se la classe è già stata dichiarata allora possiamo fermarci
 		}
@@ -228,24 +221,62 @@ public class ClassNode implements Node {
 		//The string methods is just a list of "push labeln"
 		//The actual code is put by the recursive call of codeGeneration
 		//in the static string 'funCode' of FOOLlib
-		String methods = "";
 		
-		String initFields = "";
+//		String methods = "";
+//		
+//		String initFields = "";
+//		String popParl = "";
+//		int offset = 1;
+//		for (Node dec : fieldList) { // FOR EACH FIELD
+//			popParl += "pop\n"; // ADD A POP
+//			initFields += "lfp\n" + "push " + offset + "\n" + "add\n" + // Each field is offset away from the FP
+//					"lw\n" + "lfp\n" + "push -2\n" + // The heap pointer of the object is -2 from
+//					"add\n" + // the FP
+//					"lw\n" + "push " + (offset - 1) + "\n" + "add\n" + "sw\n";
+//			offset++;
+//		}
+
+
+//		FOOLlib.putCode(classLabel + ":\n" + "cfp\n" + //setta $fp a $sp; this is the Access Link				
+//				"lra\n" + //inserimento return address
+//				"mall " + fieldList.size() + "\n" + initFields + "srv\n" + //pop del return value
+//				"sra\n" + // pop del return address
+//				"pop\n" + // pop di AL
+//				popParl + "sfp\n" + // setto $fp a valore del CL; this is the control link
+//				"lrv\n" + // risultato della funzione sullo stack
+//				"lra\n" + "js\n" // salta a $ra
+//		);
+//		
+//		methods += "push " + classLabel + "\n"; // After creating the code for the class definition 
+		// in FOOLlib.funCode, pushiamo la label della classe
+		
+		// ***** END CLASS DEFINITION *****
+		
+//		
+//		for (Node m : methodList) {
+//			methods += m.codeGeneration(); // For each method (FunNode) 
+//		}
+//		return methods;
+		
+		String classLabel = id;
+		String classDefinitionLabels = "push " + classLabel + "\n";
+		
+		
+		String fields = "";
 		String popParl = "";
 		int offset = 1;
 		for (Node dec : fieldList) { // FOR EACH FIELD
 			popParl += "pop\n"; // ADD A POP
-			initFields += "lfp\n" + "push " + offset + "\n" + "add\n" + // Each field is offset away from the FP
-					"lw\n" + "lfp\n" + "push -2\n" + // The heap pointer of the object is -2 from
-					"add\n" + // the FP
+			fields += "lfp\n" + "push " + offset + "\n" + "add\n" + // Each field is offset away from the FP
+					"lw\n" + "lfp\n" + "push -2\n" + // The heap pointer of the object is -2 from the FP
+					"add\n" + 
 					"lw\n" + "push " + (offset - 1) + "\n" + "add\n" + "sw\n";
 			offset++;
 		}
-
-		String classLabel = id;
+		
 		FOOLlib.putCode(classLabel + ":\n" + "cfp\n" + //setta $fp a $sp; this is the Access Link				
 				"lra\n" + //inserimento return address
-				"mall " + fieldList.size() + "\n" + initFields + "srv\n" + //pop del return value
+				"mall " + fieldList.size() + "\n" + fields + "srv\n" + //pop del return value
 				"sra\n" + // pop del return address
 				"pop\n" + // pop di AL
 				popParl + "sfp\n" + // setto $fp a valore del CL; this is the control link
@@ -253,16 +284,9 @@ public class ClassNode implements Node {
 				"lra\n" + "js\n" // salta a $ra
 		);
 		
-		methods += "push " + classLabel + "\n"; // After creating the code for the class definition 
-		// in FOOLlib.funCode, pushiamo la label della classe
+		 // in FOOLlib.funCode, pushiamo la label della classe
 		
-		// ***** END CLASS DEFINITION *****
-		
-		
-		for (Node m : methodList) {
-			methods += m.codeGeneration(); // For each method (FunNode) 
-		}
-		return methods;
+		return classDefinitionLabels;
 	}
 
 	public String getId() {

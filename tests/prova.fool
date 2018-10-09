@@ -1,3 +1,8 @@
-class P(int x){ void g(int y) null;};
-class A extends P;
-class B extends A;
+class P;
+// class A(int x);
+// class B(int x, int y);
+// class C() { int f() 3;};
+// class D(int x, int y){int f() 4; };
+// class E(int x, int y){int f() 4; bool g() true; };
+// class F extends E;
+// ...

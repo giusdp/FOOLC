@@ -192,6 +192,8 @@ public class FunNode implements Node {
 		for (Node exp : expsBody) {
 			expsCode += exp.codeGeneration();
 		}
+		
+		// TODO stms and exps codegen (careful with the order)
 
 		String popDecl="";
 		if (declist!=null) 

@@ -94,24 +94,26 @@ public String toPrint(String indent) {  //
   }
   
   public String codeGeneration() {
-	    String parCode="";
-	    for (int i=parList.size()-1; i>=0; i--)
+	  
+	    String parCode = "";
+	    for (int i = parList.size() - 1; i >= 0; i--) {
 	    	parCode+=parList.get(i).codeGeneration();
+	    }
 	    
 	    String getAR="";
-		  for (int i=0; i<nestingLevel - entry.getNestLevel(); i++) 
-		    	 getAR+="lw\n";
+		for (int i=0; i<nestingLevel - entry.getNestLevel(); i++) {
+			getAR+="lw\n";
+		}
 	    
-		return "lfp\n"+ //CL
-               parCode+
-               "lfp\n"+getAR+ //setto AL risalendo la catena statica
+		return "lfp\n" + //CL
+               parCode +
+               "lfp\n" + getAR + //setto AL risalendo la catena statica
                // ora recupero l'indirizzo a cui saltare e lo metto sullo stack
-               "push "+entry.getOffset()+"\n"+ //metto offset sullo stack
-		       "lfp\n"+getAR+ //risalgo la catena statica
-			   "add\n"+ 
-               "lw\n"+ //carico sullo stack il valore all'indirizzo ottenuto
+               "push " + entry.getOffset() + "\n" + //metto offset sullo stack
+		       "lfp\n" + getAR + //risalgo la catena statica
+			   "add\n" + 
+               "lw\n"  + //carico sullo stack il valore all'indirizzo ottenuto
 		       "js\n";
   }
 
-    
 }  
