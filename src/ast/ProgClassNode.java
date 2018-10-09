@@ -8,6 +8,7 @@ import type.ErrorType;
 import type.Type;
 import type.VoidType;
 import util.Environment;
+import util.FOOLlib;
 import util.STEntry;
 import util.SemanticError;
 
@@ -127,8 +128,24 @@ public class ProgClassNode implements Node {
 	}
 	@Override
 	public String codeGeneration() {
-		// TODO Auto-generated method stub
-		return null;
+		String classes = "";
+		
+		for (ClassNode c : classList) {
+			classes += "## VTABLE\n" + c.codeGeneration();
+		}
+		
+		if ( ! decList.isEmpty()) {
+			String declCode = "";
+			for (Node dec : decList)
+				declCode += dec.codeGeneration();
+			
+			// TODO pain in the ass exps and stms codegen in right order
+			return "push 0\n" + "## .DATA\n" + classes + "\n## LET\n" + declCode + "\n## IN\n"  /* + exp.codeGeneration()*/
+			+ "halt\n" + FOOLlib.getCode();
+		}
+		
+		return "push 0\n" + "## .DATA\n" + classes + "halt\n" + FOOLlib.getCode();
+		
 	}
 
 
