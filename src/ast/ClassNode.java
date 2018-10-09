@@ -220,14 +220,21 @@ public class ClassNode implements Node {
 		
 		return type;
 	}
-
-	public String constructorCodeGeneration() {
-
+	
+	@Override
+	public String codeGeneration() {
+		// ***** CLASS DEFINITION *****
+		
+		//The string methods is just a list of "push labeln"
+		//The actual code is put by the recursive call of codeGeneration
+		//in the static string 'funCode' of FOOLlib
+		String methods = "";
+		
 		String initFields = "";
 		String popParl = "";
 		int offset = 1;
-		for (Node dec : fieldList) {
-			popParl += "pop\n"; //Pop each parameter/field
+		for (Node dec : fieldList) { // FOR EACH FIELD
+			popParl += "pop\n"; // ADD A POP
 			initFields += "lfp\n" + "push " + offset + "\n" + "add\n" + // Each field is offset away from the FP
 					"lw\n" + "lfp\n" + "push -2\n" + // The heap pointer of the object is -2 from
 					"add\n" + // the FP
@@ -245,19 +252,15 @@ public class ClassNode implements Node {
 				"lrv\n" + // risultato della funzione sullo stack
 				"lra\n" + "js\n" // salta a $ra
 		);
-		return "push " + classLabel + "\n";
 		
-	}
-	
-	@Override
-	public String codeGeneration() {
-		String methods = "";
-		//The string methods is just a list of "push labeln"
-		//The actual code is put by the recursive call of codeGeneration
-		//in the static string of FOOLlib
-		methods += constructorCodeGeneration();
+		methods += "push " + classLabel + "\n"; // After creating the code for the class definition 
+		// in FOOLlib.funCode, pushiamo la label della classe
+		
+		// ***** END CLASS DEFINITION *****
+		
+		
 		for (Node m : methodList) {
-			methods += m.codeGeneration();
+			methods += m.codeGeneration(); // For each method (FunNode) 
 		}
 		return methods;
 	}

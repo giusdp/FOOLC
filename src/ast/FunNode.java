@@ -202,8 +202,8 @@ public class FunNode implements Node {
 		for (Node dec:parlist)
 			popParl+="pop\n";
 
-		String funl=FOOLlib.freshFunLabel(); 
-		FOOLlib.putCode(funl+":\n"+
+		String funLabel=FOOLlib.freshFunLabel(); 
+		FOOLlib.putCode(funLabel+":\n"+
 				"cfp\n"+ //setta $fp a $sp				
 				"lra\n"+ //inserimento return address
 				declCode+ //inserimento dichiarazioni locali
@@ -218,7 +218,7 @@ public class FunNode implements Node {
 				"lra\n"+"js\n" // salta a $ra
 				);
 
-		return "push "+ funl +"\n";
+		return "push "+ funLabel +"\n";
 	}
 
 }  
