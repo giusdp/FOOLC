@@ -1,5 +1,6 @@
 package codegen;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +28,10 @@ public class DispatchTable {
 
 
 	public static List<DTEntry> getDispatchTableOfClass(String classID) {
-        return dispatchTables.get(classID);
+		List<DTEntry> tmp = new ArrayList<>();
+		List<DTEntry> dtList = dispatchTables.get(classID);
+		dtList.forEach(entry -> tmp.add(entry));
+        return tmp;
     }
 
     public static String dispatchTablesCodeGeneration() {
