@@ -5,8 +5,11 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
+import codegen.DTEntry;
+import codegen.DispatchTable;
 import type.ArrowType;
 import type.ClassType;
 import type.ErrorType;
@@ -216,6 +219,26 @@ public class ClassNode implements Node {
 	
 	@Override
 	public String codeGeneration() {
+		// Bisogna creare una nuova dispatch table per la classe
+		// Cioè una entry per DispatchTable.dispatchtables: <classID, List<DTEntry>>
+
+		// className ce l'abbiamo: this.id
+		
+		// Creiamo List<DTEntry>
+		List<DTEntry> dispatchTable = new ArrayList<>();
+		
+		// Se la classe ha superclasse, allora la dispatch table di questa classe è solo 
+		// una estensione di quella della superclasse, altrimenti è una nuova da zero
+		
+        if (superClassName == null) {
+            dispatchTable = new ArrayList<>();
+        }
+        // Altrimenti la copio come base
+        else {
+            dispatchTable = DispatchTable.getDispatchTableOfClass(this.id);
+        }xs 
+		
+		
 		// ***** CLASS DEFINITION *****
 		
 		//The string methods is just a list of "push labeln"

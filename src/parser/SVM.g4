@@ -84,6 +84,9 @@ LOADHP	 : 'lhp' ;	// load heap pointer in the stack
 STOREHP	 : 'shp' ;	// store top into heap pointer
 PRINT	 : 'print' ;	// print top of stack
 HALT	 : 'halt' ;	// stop execution
+NEW      : 'new' ;   // alloca un'area di memoria nello heap
+LOADC    : 'lcode' ; // data la dispatch table di una classe mette sullo stack il codice
+         
 
 COL	 : ':' ;
 LABEL	 : ('a'..'z'|'A'..'Z')('a'..'z' | 'A'..'Z' | '0'..'9')* ;
