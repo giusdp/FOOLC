@@ -20,10 +20,6 @@ import type.ErrorType;
 import type.Type;
 
 /**
- * 
- */
-
-/**
  * @author Giuseppe
  *
  */

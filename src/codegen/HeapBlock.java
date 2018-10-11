@@ -1,5 +1,8 @@
 package codegen;
-
+/**
+ * @author Giuseppe
+ *
+ */
 public class HeapBlock {
 
 	HeapBlock next; // contiene il prossimo blocco libero

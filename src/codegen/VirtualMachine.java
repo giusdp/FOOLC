@@ -3,6 +3,10 @@ package codegen;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+/**
+ * @author Giuseppe
+ *
+ */
 public class VirtualMachine {
 	
 	public static final int START_ADDRESS = 1234;   //indirizzo di partenza
