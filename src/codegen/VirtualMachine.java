@@ -27,7 +27,7 @@ public class VirtualMachine {
     
 
     private Heap heap = new Heap(MEMSIZE);
-    private HashSet<HeapBlock> heapInUso = new HashSet<>();
+    private HashSet<HeapBlock> usedHeapBlocks = new HashSet<>();
     
     
     public VirtualMachine(int[] code) {
