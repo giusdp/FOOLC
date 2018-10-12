@@ -10,7 +10,7 @@ public int lexicalErrors=0;
 
 @parser::members {
       
-    public int[] code = new int[ExecuteVM.CODESIZE];    
+    public int[] code = new int[VirtualMachine.CODESIZE];    
     private int i = 0;
     private HashMap<String,Integer> labelAdd = new HashMap<String,Integer>();
     private HashMap<Integer,String> labelRef = new HashMap<Integer,String>();
@@ -52,6 +52,7 @@ assembly:
 	  | STOREHP         {code[i++] = STOREHP;}   //
 	  | PRINT           {code[i++] = PRINT;}
 	  | HALT            {code[i++] = HALT;}
+	  | NEW 			{code[i++] = NEW;}
 	  )* { for (Integer refAdd: labelRef.keySet()) {
 	              code[refAdd]=labelAdd.get(labelRef.get(refAdd));
 		     } 
@@ -85,7 +86,6 @@ STOREHP	 : 'shp' ;	// store top into heap pointer
 PRINT	 : 'print' ;	// print top of stack
 HALT	 : 'halt' ;	// stop execution
 NEW      : 'new' ;   // alloca un'area di memoria nello heap
-LOADC    : 'lcode' ; // data la dispatch table di una classe mette sullo stack il codice
          
 
 COL	 : ':' ;
