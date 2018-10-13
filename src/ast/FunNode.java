@@ -185,8 +185,9 @@ public class FunNode implements Node {
 	public String codeGeneration() {
 
 		String declCode="";
-		if (declist!=null) for (Node dec:declist)
-			declCode+=dec.codeGeneration();
+		if (declist!=null) 
+			for (Node dec:declist)
+				declCode+=dec.codeGeneration();
 		
 		String expsCode = "";
 		for (Node exp : expsBody) {

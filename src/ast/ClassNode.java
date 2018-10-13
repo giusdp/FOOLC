@@ -222,7 +222,7 @@ public class ClassNode implements Node {
 		// Bisogna creare una nuova dispatch table per la classe
 		// Cioè una entry per DispatchTable.dispatchtables: <classID, List<DTEntry>>
 
-		// className ce l'abbiamo: this.id
+		// abbiamo la className: this.id
 		
 		// Creiamo List<DTEntry>
 		List<DTEntry> dispatchTable = new ArrayList<>();
@@ -236,7 +236,7 @@ public class ClassNode implements Node {
         // Altrimenti la copio come base
         else {
             dispatchTable = DispatchTable.getDispatchTableOfClass(this.id);
-        }xs 
+        }
 		
 		
 		// ***** CLASS DEFINITION *****
