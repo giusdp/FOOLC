@@ -221,7 +221,7 @@ public class FunNode implements Node {
 				"lra\n"+"js\n" // salta a $ra
 				);
 
-		return "push "+ funLabel +"\n";
+		return /*"push "+ */ funLabel +"\n";
 	}
 
 }  

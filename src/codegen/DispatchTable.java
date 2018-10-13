@@ -29,6 +29,10 @@ public class DispatchTable {
 
 	public static List<DTEntry> getDispatchTableOfClass(String classID) {
 		List<DTEntry> tmp = new ArrayList<>();
+		// TODO NullPointer Bug. 
+		// class E{int f() 4; bool g() true; };
+		// class F extends E;
+		// dtList is null in this case and dtList.forEach generates null pointer exception
 		List<DTEntry> dtList = dispatchTables.get(classID);
 		dtList.forEach(entry -> tmp.add(entry));
         return tmp;

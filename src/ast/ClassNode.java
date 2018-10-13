@@ -239,18 +239,18 @@ public class ClassNode implements Node {
         }
         
         //contiene i metodi della superclasse
-        HashMap<String, String> superClassMethodsHashMap = new HashMap<>();
+        HashMap<String, String> superClassMethods = new HashMap<>();
         //aggiungo i metodi della superclasse alla hashmap
         for (DTEntry d : dispatchTable) {
-            superClassMethodsHashMap.put(d.getMethodID(), d.getMethodLabel());
+            superClassMethods.put(d.getMethodID(), d.getMethodLabel());
         }
         
         //contiene i metodi della classe attuale
-        HashMap<String, String> currentClassMethodsHashMap = new HashMap<>();
+        HashMap<String, String> currentClassMethods = new HashMap<>();
         
         for (Node n : methodList) { //aggiungo i metodi della classe attuale
         	FunNode m = (FunNode) n;
-            currentClassMethodsHashMap.put(m.getId(), m.codeGeneration());
+            currentClassMethods.put(m.getId(), m.codeGeneration());
         }
         
         // ***** OVERRIDE DEI METODI NELLA DISPATCH TABLE *****
@@ -258,7 +258,7 @@ public class ClassNode implements Node {
         	
             String oldMethodID = dispatchTable.get(i).getMethodID(); // prende il metodo dalla dispatch table, se presente
             
-            String newMethodCode = currentClassMethodsHashMap.get(oldMethodID); // e lo sostituisce con il metodo proprio della classe
+            String newMethodCode = currentClassMethods.get(oldMethodID); // e lo sostituisce con il metodo proprio della classe
             
             // se l'ID esiste, vuol dire che è stato fatto override e la dispatch table viene aggiornata
             if (newMethodCode != null) {
@@ -273,8 +273,8 @@ public class ClassNode implements Node {
             String currentMethodID = m.getId();
             
             //se la superclasse non ha il metodo che si sta esaminando, lo si aggiunge alla dispatch table.
-            if (superClassMethodsHashMap.get(currentMethodID) == null) {
-                dispatchTable.add(new DTEntry(currentMethodID, currentClassMethodsHashMap.get(currentMethodID)));
+            if (superClassMethods.get(currentMethodID) == null) {
+                dispatchTable.add(new DTEntry(currentMethodID, currentClassMethods.get(currentMethodID)));
             }
         }
 
