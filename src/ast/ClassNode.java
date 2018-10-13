@@ -237,79 +237,50 @@ public class ClassNode implements Node {
         else {
             dispatchTable = DispatchTable.getDispatchTableOfClass(this.id);
         }
-		
-		
-		// ***** CLASS DEFINITION *****
-		
-		//The string methods is just a list of "push labeln"
-		//The actual code is put by the recursive call of codeGeneration
-		//in the static string 'funCode' of FOOLlib
-		
-//		String methods = "";
-//		
-//		String initFields = "";
-//		String popParl = "";
-//		int offset = 1;
-//		for (Node dec : fieldList) { // FOR EACH FIELD
-//			popParl += "pop\n"; // ADD A POP
-//			initFields += "lfp\n" + "push " + offset + "\n" + "add\n" + // Each field is offset away from the FP
-//					"lw\n" + "lfp\n" + "push -2\n" + // The heap pointer of the object is -2 from
-//					"add\n" + // the FP
-//					"lw\n" + "push " + (offset - 1) + "\n" + "add\n" + "sw\n";
-//			offset++;
-//		}
+        
+        //contiene i metodi della superclasse
+        HashMap<String, String> superClassMethodsHashMap = new HashMap<>();
+        //aggiungo i metodi della superclasse alla hashmap
+        for (DTEntry d : dispatchTable) {
+            superClassMethodsHashMap.put(d.getMethodID(), d.getMethodLabel());
+        }
+        
+        //contiene i metodi della classe attuale
+        HashMap<String, String> currentClassMethodsHashMap = new HashMap<>();
+        
+        for (Node n : methodList) { //aggiungo i metodi della classe attuale
+        	FunNode m = (FunNode) n;
+            currentClassMethodsHashMap.put(m.getId(), m.codeGeneration());
+        }
+        
+        // ***** OVERRIDE DEI METODI NELLA DISPATCH TABLE *****
+        for (int i = 0; i < dispatchTable.size(); i++) { 		// Per ogni elemento della dispatch table:
+        	
+            String oldMethodID = dispatchTable.get(i).getMethodID(); // prende il metodo dalla dispatch table, se presente
+            
+            String newMethodCode = currentClassMethodsHashMap.get(oldMethodID); // e lo sostituisce con il metodo proprio della classe
+            
+            // se l'ID esiste, vuol dire che è stato fatto override e la dispatch table viene aggiornata
+            if (newMethodCode != null) {
+                dispatchTable.set(i, new DTEntry(oldMethodID, newMethodCode));
+            }
+        }
+        
+        // Effettivo inserimento nella dispatch table delle informazioni dei metodi di questa classe che non fanno parte della super classe
+        for (Node n : methodList) {
+        	FunNode m = (FunNode) n;
+            
+            String currentMethodID = m.getId();
+            
+            //se la superclasse non ha il metodo che si sta esaminando, lo si aggiunge alla dispatch table.
+            if (superClassMethodsHashMap.get(currentMethodID) == null) {
+                dispatchTable.add(new DTEntry(currentMethodID, currentClassMethodsHashMap.get(currentMethodID)));
+            }
+        }
 
+        DispatchTable.addDispatchTable(this.id, dispatchTable);
 
-//		FOOLlib.putCode(classLabel + ":\n" + "cfp\n" + //setta $fp a $sp; this is the Access Link				
-//				"lra\n" + //inserimento return address
-//				"mall " + fieldList.size() + "\n" + initFields + "srv\n" + //pop del return value
-//				"sra\n" + // pop del return address
-//				"pop\n" + // pop di AL
-//				popParl + "sfp\n" + // setto $fp a valore del CL; this is the control link
-//				"lrv\n" + // risultato della funzione sullo stack
-//				"lra\n" + "js\n" // salta a $ra
-//		);
-//		
-//		methods += "push " + classLabel + "\n"; // After creating the code for the class definition 
-		// in FOOLlib.funCode, pushiamo la label della classe
-		
-		// ***** END CLASS DEFINITION *****
-		
-//		
-//		for (Node m : methodList) {
-//			methods += m.codeGeneration(); // For each method (FunNode) 
-//		}
-//		return methods;
-		
-		String classLabel = id;
-		String classDefinitionLabels = "push " + classLabel + "\n";
-		
-		
-		String fields = "";
-		String popParl = "";
-		int offset = 1;
-		for (Node dec : fieldList) { // FOR EACH FIELD
-			popParl += "pop\n"; // ADD A POP
-			fields += "lfp\n" + "push " + offset + "\n" + "add\n" + // Each field is offset away from the FP
-					"lw\n" + "lfp\n" + "push -2\n" + // The heap pointer of the object is -2 from the FP
-					"add\n" + 
-					"lw\n" + "push " + (offset - 1) + "\n" + "add\n" + "sw\n";
-			offset++;
-		}
-		
-		FOOLlib.putCode(classLabel + ":\n" + "cfp\n" + //setta $fp = $sp; this is the Access Link				
-				"lra\n" + //inserimento return address
-				"mall " + fieldList.size() + "\n" + fields + "srv\n" + //pop del return value
-				"sra\n" + // pop del return address
-				"pop\n" + // pop di AL
-				popParl + "sfp\n" + // setto $fp a valore del CL; this is the control link
-				"lrv\n" + // risultato della funzione sullo stack
-				"lra\n" + "js\n" // salta a $ra
-		);
-		
-		 // in FOOLlib.funCode, pushiamo la label della classe
-		
-		return classDefinitionLabels;
+        return "";
 	}
 
 	public String getId() {

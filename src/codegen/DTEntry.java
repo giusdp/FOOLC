@@ -7,10 +7,16 @@ package codegen;
 
 public class DTEntry {
 
+	private String methodID;
     private String methodLabel;
 
-    public DTEntry(String mLabel) {
+    public DTEntry(String mID, String mLabel) {
+        methodID = mID;
         methodLabel = mLabel;
+    }
+
+    public String getMethodID() {
+        return methodID;
     }
 
     public String getMethodLabel() {
