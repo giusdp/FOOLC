@@ -34,7 +34,7 @@ public class DispatchTable {
         return tmp;
     }
 
-    public static String dispatchTablesCodeGeneration() {
+    public static String codeGeneration() {
     	
     	StringBuilder stringBuilder = new StringBuilder();
 

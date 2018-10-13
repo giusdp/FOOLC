@@ -10,6 +10,7 @@ import org.antlr.v4.runtime.CommonTokenStream;
 
 import ast.FOOLNodeVisitor;
 import ast.Node;
+import codegen.DispatchTable;
 import parser.FOOLLexer;
 import parser.FOOLParser;
 import util.Environment;
@@ -91,11 +92,9 @@ public class CompilerLauncher {
 		System.out.println(ast.toPrint(""));
 
 
-		// TODO da passare l'env al typechecking 
 		System.out.println("Perfoming Type Checking...");
 		Type type = ast.typeCheck(); //type-checking bottom-up 
 
-		
 
 		if (type instanceof ErrorType) {
 			System.out.println("Type Checking FAILED.");
@@ -114,6 +113,7 @@ public class CompilerLauncher {
 			try {
 				// CODE GENERATION  prova.fool.asm
 				String code = ast.codeGeneration();
+	            code += "\n" + DispatchTable.codeGeneration();
 				BufferedWriter out = new BufferedWriter(new FileWriter(fileName + ".asm"));
 				out.write(code);
 				out.close();
