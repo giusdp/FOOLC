@@ -7,14 +7,14 @@ public class HeapBlock {
 
 	HeapBlock next; // contiene il prossimo blocco libero
 
-    private int index; //l'indice di questo blocco
+    private int position; // l'indice di questo blocco
 
-    HeapBlock(int index, HeapBlock nextHeapBlock) {
-        this.index = index;
+    HeapBlock(int position, HeapBlock nextHeapBlock) {
+        this.position = position;
         this.next = nextHeapBlock;
     }
 
-    int getIndex() {
-        return index;
+    int getPointedPosition() {
+        return position;
     }
 }
