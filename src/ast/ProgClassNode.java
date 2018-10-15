@@ -140,11 +140,11 @@ public class ProgClassNode implements Node {
 				declCode += dec.codeGeneration();
 			
 			// TODO pain in the ass exps and stms codegen in right order
-			return "push 0\n" + classes + declCode  /* + exp.codeGeneration()*/
+			return classes + declCode  /* + exp.codeGeneration()*/
 			+ "halt\n" + FOOLlib.getCode();
 		}
 		
-		return "push 0\n" + classes + "halt\n" + FOOLlib.getCode();
+		return classes + "halt\n" + FOOLlib.getCode();
 		
 	}
 

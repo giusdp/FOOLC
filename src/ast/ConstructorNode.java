@@ -12,14 +12,14 @@ import util.SemanticError;
 
 public class ConstructorNode implements Node {
 
-	protected String id;
+	protected String className;
 	protected ArrayList<Node> parList; 
 	private STEntry entry; 
 	private int nestingLevel;
 
 
 	public ConstructorNode(String id, ArrayList<Node> parList) {
-		this.id = id;
+		this.className = id;
 		this.parList = parList;
 	}
 
@@ -28,7 +28,7 @@ public class ConstructorNode implements Node {
 		String parlstr="";
 		for (Node par:parList)
 			parlstr+=par.toPrint(indent + "  ");		
-		return indent+"Constructor for Class: " + id + " at nestlev " + nestingLevel +"\n" 
+		return indent+"Constructor for Class: " + className + " at nestlev " + nestingLevel +"\n" 
 		+entry.toPrint(indent + "  ") + parlstr; 
 	}
 
@@ -56,14 +56,14 @@ public class ConstructorNode implements Node {
 
 			ArrayList<Type> parTypes = classType.getFieldTypeList();
 			if ( !(parTypes.size() == parList.size()) ) {
-				error.addErrorMessage("Wrong number of parameters in the invocation of the constructor for "+id +
+				error.addErrorMessage("Wrong number of parameters in the invocation of the constructor for "+ className +
 						". \n Expected " + parTypes.size() + " but found " + parList.size());
 				return error;
 			} 
 
 			for (int i=0; i<parList.size(); i++) 
 				if ( !(FOOLlib.isSubtype( (parList.get(i)).typeCheck(), parTypes.get(i)) ) ) {
-					error.addErrorMessage("Wrong type for the "+(i+1)+"-th parameter in the invocation of the constructor for "+id);
+					error.addErrorMessage("Wrong type for the "+(i+1)+"-th parameter in the invocation of the constructor for "+ className);
 					return error;
 				} 
 
@@ -71,7 +71,7 @@ public class ConstructorNode implements Node {
 		}
 
 		// ALTRIMENTI se non e' costruttore, allora errore
-		error.addErrorMessage("Invocation of 'new "+id + "()' but it's not a constructor.");
+		error.addErrorMessage("Invocation of 'new "+ className + "()' but it's not a constructor.");
 		return error;
 
 	}
@@ -86,10 +86,10 @@ public class ConstructorNode implements Node {
 		STEntry tmp=null; 
 
 		while (j>=0 && tmp==null)
-			tmp=(env.getST().get(j--)).get(id);
+			tmp=(env.getST().get(j--)).get(className);
 
 		if (tmp==null) {
-			res.add(new SemanticError("Class " + id + " not declared"));
+			res.add(new SemanticError("Class " + className + " not declared"));
 		}
 		else{
 			this.entry = tmp;
@@ -102,28 +102,16 @@ public class ConstructorNode implements Node {
 	}
 
 	
-	// This is the exact same as CallNode. Once again we can have one parent class
-	// for CallNode, ConstructorNode
 	@Override
 	public String codeGeneration() {
 		String parCode = "";
 		for (int i = parList.size() - 1; i >= 0; i--) {
 			parCode+=parList.get(i).codeGeneration();
 		}
-
-		String getAR="";
-		for (int i=0; i<nestingLevel - entry.getNestLevel(); i++) {
-			getAR+="lw\n";
-		}
-
-		return "lfp\n" + //CL
-		parCode +
-		"lfp\n" + getAR + //setto AL risalendo la catena statica
-		// ora recupero l'indirizzo a cui saltare e lo metto sullo stack
-		"push " + entry.getOffset() + "\n" + //metto offset sullo stack
-		"lfp\n" + getAR + //risalgo la catena statica
-		"add\n" + 
-		"lw\n"  + //carico sullo stack il valore all'indirizzo ottenuto
-		"js\n";
+		
+        return parCode
+                + "push " + parList.size() + "\n"
+                + "push " + className + "_class\n"
+                + "new\n";
 	}
 }
