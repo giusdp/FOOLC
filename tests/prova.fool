@@ -1,14 +1,4 @@
-class P;
-class A(int x);
-class B(int x, int y);
-class C { int f() 3;};
-// class D(int x, int y){int f() 4; };
-class E(int x, int y){int f() 4; bool g() true; };
-class F extends E { bool g() false; };
-// ...
-let 
-	A objP = new A(3);
-	B objB = new B(22,44);
-	C objC = new C();
+let
+	bool x = true;
 in
-	4;
+	x = false;

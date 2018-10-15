@@ -199,7 +199,7 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 
 	@Override
 	public Node visitAsmStm(AsmStmContext ctx) {
-		StmAsmNode res = new StmAsmNode();
+		StmAsmNode res = new StmAsmNode(ctx.ID().getText(), visit(ctx.body));
 		return res;
 	}
 
