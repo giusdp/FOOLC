@@ -126,7 +126,7 @@ public class ProgLetInNode implements Node {
 		for (Node s : statements) {
 			stmsCode += s.codeGeneration();
 		}
-		return  "push 0\n"+ declCode + expsCode + stmsCode + "halt\n" + FOOLlib.getCode();
+		return  declCode + expsCode + stmsCode + "halt\n" + FOOLlib.getCode();
 	} 
 
 

@@ -65,6 +65,7 @@ public String toPrint(String indent) {
       String getAR="";
 	  for (int i=0; i< nestinglevel - entry.getNestLevel(); i++) 
 	    	 getAR+="lw\n";
+	  
 	    return "push "+entry.getOffset()+"\n"+ //metto offset sullo stack
 		       "lfp\n"+getAR+ //risalgo la catena statica
 			   "add\n"+ 

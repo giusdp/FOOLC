@@ -5,8 +5,11 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
+import codegen.DTEntry;
+import codegen.DispatchTable;
 import type.ArrowType;
 import type.ClassType;
 import type.ErrorType;
@@ -22,6 +25,8 @@ public class ClassNode implements Node {
 	private ArrayList<Node> fieldList = new ArrayList<>();
 	private ArrayList<Node> methodList = new ArrayList<>();
 
+	STEntry stEntry;
+	
 	private ClassType type;
 	
 	// EREDITARIETA
@@ -73,15 +78,6 @@ public class ClassNode implements Node {
 	@Override
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
 		
-		/**
-		 * Da verificare:
-		 * - superclasse esiste (se ci sia)
-		 * - classe non è stata ridichiarata
-		 * - chiamare checkSemantics ai campi e alle funzioni
-		 * NON necessari:
-		 * - controllare che funzioni/campi sono già dichiarati (fatto da IdNode etc.)
-		 */
-		
 		//create result list
 		ArrayList<SemanticError> res = new ArrayList<SemanticError>();
 
@@ -90,9 +86,9 @@ public class ClassNode implements Node {
 		// Controllo classe già dichiarata
 		HashMap<String,STEntry> currentScope = env.getST().get(env.getNestLevel());
 
-		STEntry entry = new STEntry(env.getNestLevel(), type, env.decOffset()); 
+		stEntry = new STEntry(env.getNestLevel(), type, env.decOffset()); 
 
-		if ( currentScope.put(id, entry) != null ) {
+		if ( currentScope.put(id, stEntry) != null ) {
 			res.add(new SemanticError("Class "+ id +" is already declared"));
 			return res; // Se la classe è già stata dichiarata allora possiamo fermarci
 		}
@@ -220,11 +216,72 @@ public class ClassNode implements Node {
 		
 		return type;
 	}
-
+	
 	@Override
 	public String codeGeneration() {
-		// TODO Auto-generated method stub
-		return null;
+		// Bisogna creare una nuova dispatch table per la classe
+		// Cioè una entry per DispatchTable.dispatchtables: <classID, List<DTEntry>>
+
+		// abbiamo la className: this.id
+		
+		// Creiamo List<DTEntry>
+		List<DTEntry> dispatchTable = new ArrayList<>();
+		
+		// Se la classe ha superclasse, allora la dispatch table di questa classe è solo 
+		// una estensione di quella della superclasse, altrimenti è una nuova da zero
+		
+        if (superClassName == null) {
+            dispatchTable = new ArrayList<>();
+        }
+        // Altrimenti la copio come base
+        else {
+            dispatchTable = DispatchTable.getDispatchTableOfClass(superClassName);
+        }
+        
+        //contiene i metodi della superclasse
+        HashMap<String, String> superClassMethods = new HashMap<>();
+        //aggiungo i metodi della superclasse alla hashmap
+        for (DTEntry d : dispatchTable) {
+            superClassMethods.put(d.getMethodID(), d.getMethodLabel());
+        }
+        
+        //contiene i metodi della classe attuale
+        HashMap<String, String> currentClassMethods = new HashMap<>();
+        
+        for (Node n : methodList) { //aggiungo i metodi della classe attuale
+        	FunNode m = (FunNode) n;
+            currentClassMethods.put(m.getId(), m.codeGeneration());
+        }
+        
+        // ***** OVERRIDE DEI METODI NELLA DISPATCH TABLE *****
+        for (int i = 0; i < dispatchTable.size(); i++) {
+        	
+            String oldMethodID = dispatchTable.get(i).getMethodID();
+            
+            String newMethodCode = currentClassMethods.get(oldMethodID);
+            
+            // Sovrascrive versioni vecchie di funzioni polimorfiche quando
+            // i nomi corrispondono.
+            if (newMethodCode != null) {
+                dispatchTable.set(i, new DTEntry(oldMethodID, newMethodCode));
+            }
+        }
+        
+        // Inserire metodi non-ereditati nella dispatch table.
+        for (Node n : methodList) {
+        	FunNode m = (FunNode) n;
+            
+            String currentMethodID = m.getId();
+            
+            //se la superclasse non ha il metodo che si sta esaminando, lo si aggiunge alla dispatch table.
+            if (superClassMethods.get(currentMethodID) == null) {
+                dispatchTable.add(new DTEntry(currentMethodID, currentClassMethods.get(currentMethodID)));
+            }
+        }
+
+        DispatchTable.addDispatchTable(this.id, dispatchTable);
+
+        return "";
 	}
 
 	public String getId() {
