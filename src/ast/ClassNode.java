@@ -235,7 +235,7 @@ public class ClassNode implements Node {
         }
         // Altrimenti la copio come base
         else {
-            dispatchTable = DispatchTable.getDispatchTableOfClass(this.id);
+            dispatchTable = DispatchTable.getDispatchTableOfClass(superClassName);
         }
         
         //contiene i metodi della superclasse
@@ -254,19 +254,20 @@ public class ClassNode implements Node {
         }
         
         // ***** OVERRIDE DEI METODI NELLA DISPATCH TABLE *****
-        for (int i = 0; i < dispatchTable.size(); i++) { 		// Per ogni elemento della dispatch table:
+        for (int i = 0; i < dispatchTable.size(); i++) {
         	
-            String oldMethodID = dispatchTable.get(i).getMethodID(); // prende il metodo dalla dispatch table, se presente
+            String oldMethodID = dispatchTable.get(i).getMethodID();
             
-            String newMethodCode = currentClassMethods.get(oldMethodID); // e lo sostituisce con il metodo proprio della classe
+            String newMethodCode = currentClassMethods.get(oldMethodID);
             
-            // se l'ID esiste, vuol dire che è stato fatto override e la dispatch table viene aggiornata
+            // Sovrascrive versioni vecchie di funzioni polimorfiche quando
+            // i nomi corrispondono.
             if (newMethodCode != null) {
                 dispatchTable.set(i, new DTEntry(oldMethodID, newMethodCode));
             }
         }
         
-        // Effettivo inserimento nella dispatch table delle informazioni dei metodi di questa classe che non fanno parte della super classe
+        // Inserire metodi non-ereditati nella dispatch table.
         for (Node n : methodList) {
         	FunNode m = (FunNode) n;
             
