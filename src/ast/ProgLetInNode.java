@@ -18,14 +18,25 @@ public class ProgLetInNode implements Node {
 	private ArrayList<Node> statements; // Questa è la lista di statements nel caso in cui
 	// il corpo sono statements. 
 	
+	private ArrayList<Node> fullBody = null;
+	
 	/* takes the list of declarations, the expressions and the statements*/
-	public ProgLetInNode(ArrayList<Node> d, ArrayList<Node> exps, ArrayList<Node> stms) {
+	public ProgLetInNode(ArrayList<Node> d, ArrayList<Node> exps, ArrayList<Node> stms, ArrayList<Node> fullBody) {
 		this.declist = d;
 		this.exps = exps;
 		this.statements= stms;
+		this.fullBody = fullBody;
 	}
 
 	public String toPrint(String indent) {
+
+		// TODO: bodyString can replace expString and stmsString:
+		// prints the body in the correct order, not sorted by exp/stms.
+		String bodyString = "";
+		for (Node stm : fullBody)
+			bodyString += stm.toPrint(indent + "    ");
+		return bodyString;
+		
 		String declString="";
 		for (Node dec:declist)
 			declString+=dec.toPrint(indent+"    ");
@@ -44,7 +55,7 @@ public class ProgLetInNode implements Node {
 		String ex = " Expressions\n  ";
 		if (expString.equals("")) ex = "";
 		
-		String st = " Statements\n   ";
+		String st = " Statements\n  ";
 		if (stmString.equals("")) st = "";
 		
 		return indent+"ProgLetIn\n  " + let 
@@ -112,6 +123,9 @@ public class ProgLetInNode implements Node {
 	}
 
 	public String codeGeneration() {
+		
+		// TODO: Edit the below to incorporate this.fullBody.
+		// This will generate ccode according to correct exp/stm order.
 		String declCode = "";
 		for (Node dec:declist) {
 			declCode += dec.codeGeneration();

@@ -2,3 +2,6 @@ let
 	bool x = true;
 in
 	x = false;
+	1;
+	2;
+	x = true;

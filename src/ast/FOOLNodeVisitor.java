@@ -166,7 +166,7 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 		ArrayList<Node> declarations = new ArrayList<>();
 		ArrayList<Node> expressions = new ArrayList<>();
 		ArrayList<Node> statements = new ArrayList<>();
-		
+		ArrayList<Node> fullBody = new ArrayList<>();
 		
 		//visit all nodes corresponding to declarations inside the let
 		//context and store them in @declarations
@@ -188,7 +188,18 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 			}
 		}
 		
-		res = new ProgLetInNode(declarations, expressions, statements);
+		ctx.children.forEach(node ->
+		{
+			if (node instanceof FOOLParser.StmsContext) {
+				for (StmContext stm : ((FOOLParser.StmsContext) node).stm()) {
+					fullBody.add(visit(stm));
+				}
+			} else if (node instanceof FOOLParser.ExpContext) {
+				fullBody.add(visit( (FOOLParser.ExpContext) node));
+			}
+		});
+				
+		res = new ProgLetInNode(declarations, expressions, statements, fullBody);
 		//build @res accordingly with the result of the visits to its
 		//content
 
