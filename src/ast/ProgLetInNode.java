@@ -35,35 +35,33 @@ public class ProgLetInNode implements Node {
 		String bodyString = "";
 		for (Node stm : fullBody)
 			bodyString += stm.toPrint(indent + "    ");
-		return bodyString;
+//		return bodyString;
 		
 		String declString="";
 		for (Node dec:declist)
 			declString+=dec.toPrint(indent+"    ");
 		
-		String expString="";
-		for (Node e : exps) {
-			expString += e.toPrint(indent + "    ");
-		}
-
-		String stmString="";
-		for (Node stm: statements)
-			stmString+=stm.toPrint(indent+"    ");
+//		String expString="";
+//		for (Node e : exps) {
+//			expString += e.toPrint(indent + "    ");
+//		}
+//
+//		String stmString="";
+//		for (Node stm: statements)
+//			stmString+=stm.toPrint(indent+"    ");
 		
 		String let = "Let Declarations\n", in = "IN\n";
 		
-		String ex = " Expressions\n  ";
-		if (expString.equals("")) ex = "";
-		
-		String st = " Statements\n  ";
-		if (stmString.equals("")) st = "";
+//		String ex = " Expressions\n  ";
+//		if (expString.equals("")) ex = "";
+//		
+//		String st = " Statements\n  ";
+//		if (stmString.equals("")) st = "";
 		
 		return indent+"ProgLetIn\n  " + let 
 			   + declString
-			   + "  " + in + "  " + ex
-			   + expString
-			   + "  " + st + "  " 
-			   + stmString; 
+			   + "  " + in + "  "
+			   + bodyString; 
 	}
 
 	@Override
