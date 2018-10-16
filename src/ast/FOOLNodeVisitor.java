@@ -21,6 +21,7 @@ import parser.FOOLParser.LetInExpContext;
 import parser.FOOLParser.MethodExpContext;
 import parser.FOOLParser.NewExpContext;
 import parser.FOOLParser.NullExpContext;
+import parser.FOOLParser.ProgContext;
 import parser.FOOLParser.SingleExpContext;
 import parser.FOOLParser.StmContext;
 import parser.FOOLParser.StmsContext;
@@ -45,6 +46,23 @@ import java.util.ArrayList;
 
 public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 
+	public ArrayList<Node> getContextBody(ProgContext ctx) {
+		ArrayList<Node> contextBody = new ArrayList<Node>();
+
+		ctx.children.forEach(node ->
+		{
+			if (node instanceof FOOLParser.StmsContext) {
+				for (StmContext stm : ((FOOLParser.StmsContext) node).stm()) {
+					contextBody.add(visit(stm));
+				}
+			} else if (node instanceof FOOLParser.ExpContext) {
+				contextBody.add(visit( (FOOLParser.ExpContext) node));
+			}
+		});
+
+		return contextBody;
+	}
+	
 	// Prog class
 	@Override
 	public Node visitClassExp(ClassExpContext ctx) {
@@ -53,6 +71,7 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 		ArrayList<Node> declarations = new ArrayList<Node>();
 		ArrayList<Node> expressions = new ArrayList<Node>();
 		ArrayList<Node> statements = new ArrayList<Node>();
+		ArrayList<Node> contextBody = new ArrayList<>();
 		
 		// Visita tutte le classi
 		for (ClassdecContext cc : ctx.classdec())
@@ -73,9 +92,10 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 					statements.add(visit(s));	
 				}
 			}
+			contextBody = getContextBody(ctx);
 		}
 
-		return new ProgClassNode(classes, declarations, expressions, statements);
+		return new ProgClassNode(classes, declarations, expressions, statements, contextBody);
 	
 	}
 	
@@ -188,17 +208,8 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 			}
 		}
 		
-		ctx.children.forEach(node ->
-		{
-			if (node instanceof FOOLParser.StmsContext) {
-				for (StmContext stm : ((FOOLParser.StmsContext) node).stm()) {
-					fullBody.add(visit(stm));
-				}
-			} else if (node instanceof FOOLParser.ExpContext) {
-				fullBody.add(visit( (FOOLParser.ExpContext) node));
-			}
-		});
-				
+		fullBody = getContextBody(ctx);
+		
 		res = new ProgLetInNode(declarations, expressions, statements, fullBody);
 		//build @res accordingly with the result of the visits to its
 		//content

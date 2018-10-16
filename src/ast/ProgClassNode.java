@@ -18,42 +18,24 @@ public class ProgClassNode implements Node {
 	private ArrayList<Node> decList;
 	private ArrayList<Node> expList;
 	private ArrayList<Node> stmList;
+	private ArrayList<Node> contextBody;
 	
 	public ProgClassNode(ArrayList<ClassNode> classes,
 						 ArrayList<Node> decs,
 						 ArrayList<Node> exps,
-						 ArrayList<Node> stms) {
+						 ArrayList<Node> stms,
+						 ArrayList<Node> body) {
 		classList = classes;
 		decList = decs;
 		expList = exps;
 		stmList = stms;
+		contextBody = body;
 	}
 	
 	@Override
 	public String toPrint(String indent) {
-		String classesString = "", decString = "", expString = "", stmString = "";
-
-		for (Node d : decList) decString += d.toPrint(indent + "  ");
 		
-		for (ClassNode c : classList) classesString += c.toPrint(indent + "  ");
-		
-		for (Node e : expList) expString += e.toPrint(indent + "  ");
-		
-		for (Node s : stmList) stmString += s.toPrint(indent + "  ");
-		
-		String let = "\n Let Declarations\n", in = " IN\n";
-		if (decString.equals("")) {
-			let = "";
-			in = "";
-		}
-		
-		String ex = " Expressions\n";
-		if (expString.equals("")) ex = "";
-		
-		String st = " Statements\n";
-		if (stmString.equals("")) st = "";
-		
-		return indent + "ProgClassNode\n Classes\n" + classesString + let + decString + in + ex + expString + st + stmString;
+		return FOOLlib.printProgNode(indent, classList, decList, contextBody);
 	}
 	
 	@Override

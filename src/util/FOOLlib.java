@@ -1,5 +1,9 @@
 package util;
 
+import java.util.ArrayList;
+
+import ast.ClassNode;
+import ast.Node;
 import type.BoolType;
 import type.ClassType;
 import type.IntType;
@@ -58,7 +62,32 @@ public class FOOLlib {
 	  }
 	  
 	  return false;
-  } 
+  }
+  
+  //Provides a standardised formatted print for a ProgNode's Let declarations and body.
+  public static String printProgNode(String indent,
+								ArrayList<ClassNode> classList,
+								ArrayList<Node> declarationList,
+								ArrayList<Node> contextBody) {
+	  
+	  String progType = (classList.isEmpty()) ? "ProgLetIn" : "ProgClass";
+	  String let = "Let Declarations\n", in = "IN\n";
+	  String classString = "", declarationString = "", bodyString = "";
+	  
+	  // Popula le stringhe con informazioni sulle classi, dichiarazioni e corpo.
+	  for (ClassNode c : classList) classString += c.toPrint(indent + "    ");
+	  for (Node d : declarationList) declarationString += d.toPrint(indent + "    ");
+	  for (Node b : contextBody) bodyString += b.toPrint(indent + "    ");
+	  
+	  if (!classString.isEmpty()) {
+		  classString = "  Classes\n" + classString;
+	  }
+	  
+	  return indent + progType + "\n" + classString +
+			  "  " + let + declarationString +
+			  "  " + in +
+			  bodyString; 
+  }
   
   public static String freshLabel() { 
 	return "label"+(labCount++);

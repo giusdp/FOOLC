@@ -32,7 +32,7 @@ public class StmAsmNode implements Node {
 
 		// TODO: Double check formatting of statement print.
 		String bodyString = this.asmBody.toPrint("");
-		return indent + "Assign:" + this.variableID + " = " + bodyString + "\n";
+		return indent + "Assign:" + this.variableID + " = " + bodyString;
 	}
 
 	@Override
