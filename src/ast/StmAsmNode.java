@@ -13,42 +13,45 @@ import util.SemanticError;
 
 public class StmAsmNode implements Node {
 
-	private Node AsmBody;
-	private Type AsmType;
+	private Node asmBody;
+	private Type asmType;
 	private String variableID;
 	
-	StmAsmNode(String variableID, Node AsmBody) {
+	private STEntry variableEntry;
+	private int nestinglevel;
+	
+	StmAsmNode(String variableID, Node asmBody) {
 		this.variableID = variableID;
-		this.AsmBody = AsmBody;
+		this.asmBody = asmBody;
 		// settata in CheckSemantics():
-		this.AsmType = null;
+		this.asmType = null;
 	}
 	
 	@Override
 	public String toPrint(String indent) {
 
 		// TODO: Double check formatting of statement print.
-		String bodyString = this.AsmBody.toPrint("");
+		String bodyString = this.asmBody.toPrint("");
 		return indent + "Assign:" + this.variableID + " = " + bodyString + "\n";
 	}
 
 	@Override
 	public Type typeCheck() {
 		
-		Type bodyType = AsmBody.typeCheck();
+		Type bodyType = asmBody.typeCheck();
 		
 		if (bodyType instanceof ErrorType) {
 			return bodyType;
 		}
 
 		// Verifica: type(body) <: type(var).
-		if (! FOOLlib.isSubtype(bodyType, this.AsmType)) {
+		if (! FOOLlib.isSubtype(bodyType, this.asmType)) {
 			ErrorType errorMessage = new ErrorType();
 			errorMessage.addErrorMessage("Type mismatch in assignment to " + this.variableID + ".");
 			return errorMessage;
 		}
 		
-		return this.AsmType;
+		return this.asmType;
 	}
 
 	@Override
@@ -59,18 +62,30 @@ public class StmAsmNode implements Node {
 
 	@Override
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
-
+		
 		ArrayList<SemanticError> res =  new ArrayList<>();
 		
-		HashMap<String,STEntry> currentScope = env.getST().get(env.getNestLevel());
-
-		STEntry variableEntry = currentScope.get(this.variableID);
+		// Preso da IDNode. Controlla se la variabile è nello scope corrente e poi sale di scope in scope se non la trova.
+		int j = env.getNestLevel();
+		  STEntry tmp=null; 
+		  while (j >= 0 && tmp==null) {
+			  tmp = (env.getST().get(j)).get(variableID);
+			  j = j - 1;
+		  }
+		 
+	      if (tmp == null) {
+	          res.add(new SemanticError("Id "+ variableID +" not declared"));
+	      }
+	      else{
+	    	  variableEntry = tmp;
+	    	  nestinglevel = env.getNestLevel();
+	      }
 		
 		// Verifica: la variabile e` dichiarata.
 		if (variableEntry == null) {
 			res.add(new SemanticError("Variable " + this.variableID + " not declared."));
 		} else {
-			this.AsmType = variableEntry.getType();
+			this.asmType = variableEntry.getType();
 		}
 		
 		return res;
