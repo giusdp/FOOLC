@@ -74,16 +74,17 @@ public class FOOLlib {
 	  String let = "Let Declarations\n", in = "IN\n";
 	  String classString = "", declarationString = "", bodyString = "";
 	  
-	  // Popula le stringhe con informazioni sulle classi, dichiarazioni e corpo.
+	  // Popula le stringhe con informazioni sulle classi, dichiarazioni e il corpo.
 	  for (ClassNode c : classList) classString += c.toPrint(indent + "    ");
 	  for (Node d : declarationList) declarationString += d.toPrint(indent + "    ");
 	  for (Node b : contextBody) bodyString += b.toPrint(indent + "    ");
 	  
 	  if (!classString.isEmpty()) {
-		  classString = "  Classes\n" + classString;
+		  classString = "Classes\n" + classString;
 	  }
 	  
-	  return indent + progType + "\n" + classString +
+	  return indent + progType + "\n" +
+			  "  " + classString +
 			  "  " + let + declarationString +
 			  "  " + in +
 			  bodyString; 
