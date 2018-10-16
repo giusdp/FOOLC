@@ -51,7 +51,7 @@ public class StmAsmNode implements Node {
 			return errorMessage;
 		}
 		
-		return this.asmType;
+		return new VoidType();
 	}
 
 	@Override
