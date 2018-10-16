@@ -66,9 +66,9 @@ public class FOOLlib {
   
   //Provides a standardised formatted print for a ProgNode's Let declarations and body.
   public static String printProgNode(String indent,
-								ArrayList<ClassNode> classList,
-								ArrayList<Node> declarationList,
-								ArrayList<Node> contextBody) {
+			ArrayList<ClassNode> classList,
+			ArrayList<Node> declarationList,
+			ArrayList<Node> contextBody) {
 	  
 	  String progType = (classList.isEmpty()) ? "ProgLetIn" : "ProgClass";
 	  String let = "Let Declarations\n", in = "IN\n";

@@ -1,6 +1,8 @@
 push 1
 function0
-halt
+nullpush 1
+push 2
+nullhalt
 
 function0:
 cfp
@@ -14,4 +16,3 @@ lrv
 lra
 js
 
-A_class:

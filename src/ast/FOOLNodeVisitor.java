@@ -95,7 +95,7 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 			contextBody = getContextBody(ctx);
 		}
 
-		return new ProgClassNode(classes, declarations, expressions, statements, contextBody);
+		return new ProgClassNode(classes, declarations, contextBody);
 	
 	}
 	
@@ -210,7 +210,7 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 		
 		fullBody = getContextBody(ctx);
 		
-		res = new ProgLetInNode(declarations, expressions, statements, fullBody);
+		res = new ProgLetInNode(declarations/*, expressions, statements*/, fullBody);
 		//build @res accordingly with the result of the visits to its
 		//content
 

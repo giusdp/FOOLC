@@ -16,19 +16,13 @@ public class ProgClassNode implements Node {
 	
 	private ArrayList<ClassNode> classList;
 	private ArrayList<Node> decList;
-	private ArrayList<Node> expList;
-	private ArrayList<Node> stmList;
 	private ArrayList<Node> contextBody;
 	
 	public ProgClassNode(ArrayList<ClassNode> classes,
 						 ArrayList<Node> decs,
-						 ArrayList<Node> exps,
-						 ArrayList<Node> stms,
 						 ArrayList<Node> body) {
 		classList = classes;
 		decList = decs;
-		expList = exps;
-		stmList = stms;
 		contextBody = body;
 	}
 	
@@ -67,12 +61,8 @@ public class ProgClassNode implements Node {
 			res.addAll(n.checkSemantics(env));
 
 		// Controlla l'espressione fuori 
-		for (Node e : expList) {
-			res.addAll(e.checkSemantics(env));
-		}
-
-		for (Node s : stmList) {
-			res.addAll(s.checkSemantics(env));
+		for (Node stm : contextBody) {
+			res.addAll(stm.checkSemantics(env));
 		}
 		// Lascia lo scope
 		env.getST().remove(env.decNestLevel());
@@ -97,12 +87,8 @@ public class ProgClassNode implements Node {
 			type = dec.typeCheck();
 			if (type instanceof ErrorType) return type;
 		}
-		for (Node e : expList) {
-			type = e.typeCheck();
-			if (type instanceof ErrorType) return type;
-		}
-		for(Node s : stmList) {
-			type = s.typeCheck();
+		for (Node stm : contextBody) {
+			type = stm.typeCheck();
 			if (type instanceof ErrorType) return type;
 		}
 		
@@ -120,10 +106,13 @@ public class ProgClassNode implements Node {
 			String declCode = "";
 			for (Node dec : decList)
 				declCode += dec.codeGeneration();
+		
+			String bodyCode = "";
+			for (Node stm : contextBody)
+				bodyCode +=  stm.codeGeneration();
 			
-			// TODO pain in the ass exps and stms codegen in right order
-			return classes + declCode  /* + exp.codeGeneration()*/
-			+ "halt\n" + FOOLlib.getCode();
+			return classes + declCode + bodyCode + "halt\n" +
+				FOOLlib.getCode();
 		}
 		
 		return classes + "halt\n" + FOOLlib.getCode();
