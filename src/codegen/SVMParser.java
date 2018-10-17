@@ -25,9 +25,9 @@ public class SVMParser extends Parser {
 		STORERV=16, LOADFP=17, STOREFP=18, COPYFP=19, LOADHP=20, STOREHP=21, PRINT=22, 
 		HALT=23, NEW=24, COL=25, LABEL=26, NUMBER=27, WHITESP=28, ERR=29;
 	public static final int
-		RULE_assembly = 0;
+		RULE_assembly = 0, RULE_instructions = 1;
 	public static final String[] ruleNames = {
-		"assembly"
+		"assembly", "instructions"
 	};
 
 	private static final String[] _LITERAL_NAMES = {
@@ -100,115 +100,11 @@ public class SVMParser extends Parser {
 		_interp = new ParserATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
 	public static class AssemblyContext extends ParserRuleContext {
-		public Token n;
-		public Token l;
-		public List<TerminalNode> PUSH() { return getTokens(SVMParser.PUSH); }
-		public TerminalNode PUSH(int i) {
-			return getToken(SVMParser.PUSH, i);
+		public List<InstructionsContext> instructions() {
+			return getRuleContexts(InstructionsContext.class);
 		}
-		public List<TerminalNode> POP() { return getTokens(SVMParser.POP); }
-		public TerminalNode POP(int i) {
-			return getToken(SVMParser.POP, i);
-		}
-		public List<TerminalNode> ADD() { return getTokens(SVMParser.ADD); }
-		public TerminalNode ADD(int i) {
-			return getToken(SVMParser.ADD, i);
-		}
-		public List<TerminalNode> SUB() { return getTokens(SVMParser.SUB); }
-		public TerminalNode SUB(int i) {
-			return getToken(SVMParser.SUB, i);
-		}
-		public List<TerminalNode> MULT() { return getTokens(SVMParser.MULT); }
-		public TerminalNode MULT(int i) {
-			return getToken(SVMParser.MULT, i);
-		}
-		public List<TerminalNode> DIV() { return getTokens(SVMParser.DIV); }
-		public TerminalNode DIV(int i) {
-			return getToken(SVMParser.DIV, i);
-		}
-		public List<TerminalNode> STOREW() { return getTokens(SVMParser.STOREW); }
-		public TerminalNode STOREW(int i) {
-			return getToken(SVMParser.STOREW, i);
-		}
-		public List<TerminalNode> LOADW() { return getTokens(SVMParser.LOADW); }
-		public TerminalNode LOADW(int i) {
-			return getToken(SVMParser.LOADW, i);
-		}
-		public List<TerminalNode> COL() { return getTokens(SVMParser.COL); }
-		public TerminalNode COL(int i) {
-			return getToken(SVMParser.COL, i);
-		}
-		public List<TerminalNode> BRANCH() { return getTokens(SVMParser.BRANCH); }
-		public TerminalNode BRANCH(int i) {
-			return getToken(SVMParser.BRANCH, i);
-		}
-		public List<TerminalNode> BRANCHEQ() { return getTokens(SVMParser.BRANCHEQ); }
-		public TerminalNode BRANCHEQ(int i) {
-			return getToken(SVMParser.BRANCHEQ, i);
-		}
-		public List<TerminalNode> BRANCHLESSEQ() { return getTokens(SVMParser.BRANCHLESSEQ); }
-		public TerminalNode BRANCHLESSEQ(int i) {
-			return getToken(SVMParser.BRANCHLESSEQ, i);
-		}
-		public List<TerminalNode> JS() { return getTokens(SVMParser.JS); }
-		public TerminalNode JS(int i) {
-			return getToken(SVMParser.JS, i);
-		}
-		public List<TerminalNode> LOADRA() { return getTokens(SVMParser.LOADRA); }
-		public TerminalNode LOADRA(int i) {
-			return getToken(SVMParser.LOADRA, i);
-		}
-		public List<TerminalNode> STORERA() { return getTokens(SVMParser.STORERA); }
-		public TerminalNode STORERA(int i) {
-			return getToken(SVMParser.STORERA, i);
-		}
-		public List<TerminalNode> LOADRV() { return getTokens(SVMParser.LOADRV); }
-		public TerminalNode LOADRV(int i) {
-			return getToken(SVMParser.LOADRV, i);
-		}
-		public List<TerminalNode> STORERV() { return getTokens(SVMParser.STORERV); }
-		public TerminalNode STORERV(int i) {
-			return getToken(SVMParser.STORERV, i);
-		}
-		public List<TerminalNode> LOADFP() { return getTokens(SVMParser.LOADFP); }
-		public TerminalNode LOADFP(int i) {
-			return getToken(SVMParser.LOADFP, i);
-		}
-		public List<TerminalNode> STOREFP() { return getTokens(SVMParser.STOREFP); }
-		public TerminalNode STOREFP(int i) {
-			return getToken(SVMParser.STOREFP, i);
-		}
-		public List<TerminalNode> COPYFP() { return getTokens(SVMParser.COPYFP); }
-		public TerminalNode COPYFP(int i) {
-			return getToken(SVMParser.COPYFP, i);
-		}
-		public List<TerminalNode> LOADHP() { return getTokens(SVMParser.LOADHP); }
-		public TerminalNode LOADHP(int i) {
-			return getToken(SVMParser.LOADHP, i);
-		}
-		public List<TerminalNode> STOREHP() { return getTokens(SVMParser.STOREHP); }
-		public TerminalNode STOREHP(int i) {
-			return getToken(SVMParser.STOREHP, i);
-		}
-		public List<TerminalNode> PRINT() { return getTokens(SVMParser.PRINT); }
-		public TerminalNode PRINT(int i) {
-			return getToken(SVMParser.PRINT, i);
-		}
-		public List<TerminalNode> HALT() { return getTokens(SVMParser.HALT); }
-		public TerminalNode HALT(int i) {
-			return getToken(SVMParser.HALT, i);
-		}
-		public List<TerminalNode> NEW() { return getTokens(SVMParser.NEW); }
-		public TerminalNode NEW(int i) {
-			return getToken(SVMParser.NEW, i);
-		}
-		public List<TerminalNode> NUMBER() { return getTokens(SVMParser.NUMBER); }
-		public TerminalNode NUMBER(int i) {
-			return getToken(SVMParser.NUMBER, i);
-		}
-		public List<TerminalNode> LABEL() { return getTokens(SVMParser.LABEL); }
-		public TerminalNode LABEL(int i) {
-			return getToken(SVMParser.LABEL, i);
+		public InstructionsContext instructions(int i) {
+			return getRuleContext(InstructionsContext.class,i);
 		}
 		public AssemblyContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -228,185 +124,17 @@ public class SVMParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(36);
+			setState(7);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << PUSH) | (1L << POP) | (1L << ADD) | (1L << SUB) | (1L << MULT) | (1L << DIV) | (1L << STOREW) | (1L << LOADW) | (1L << BRANCH) | (1L << BRANCHEQ) | (1L << BRANCHLESSEQ) | (1L << JS) | (1L << LOADRA) | (1L << STORERA) | (1L << LOADRV) | (1L << STORERV) | (1L << LOADFP) | (1L << STOREFP) | (1L << COPYFP) | (1L << LOADHP) | (1L << STOREHP) | (1L << PRINT) | (1L << HALT) | (1L << NEW) | (1L << LABEL))) != 0)) {
 				{
-				setState(34);
-				_errHandler.sync(this);
-				switch ( getInterpreter().adaptivePredict(_input,0,_ctx) ) {
-				case 1:
-					{
-					setState(2);
-					match(PUSH);
-					setState(3);
-					((AssemblyContext)_localctx).n = match(NUMBER);
-					}
-					break;
-				case 2:
-					{
-					setState(4);
-					match(PUSH);
-					setState(5);
-					((AssemblyContext)_localctx).l = match(LABEL);
-					}
-					break;
-				case 3:
-					{
-					setState(6);
-					match(POP);
-					}
-					break;
-				case 4:
-					{
-					setState(7);
-					match(ADD);
-					}
-					break;
-				case 5:
-					{
-					setState(8);
-					match(SUB);
-					}
-					break;
-				case 6:
-					{
-					setState(9);
-					match(MULT);
-					}
-					break;
-				case 7:
-					{
-					setState(10);
-					match(DIV);
-					}
-					break;
-				case 8:
-					{
-					setState(11);
-					match(STOREW);
-					}
-					break;
-				case 9:
-					{
-					setState(12);
-					match(LOADW);
-					}
-					break;
-				case 10:
-					{
-					setState(13);
-					((AssemblyContext)_localctx).l = match(LABEL);
-					setState(14);
-					match(COL);
-					}
-					break;
-				case 11:
-					{
-					setState(15);
-					match(BRANCH);
-					setState(16);
-					((AssemblyContext)_localctx).l = match(LABEL);
-					}
-					break;
-				case 12:
-					{
-					setState(17);
-					match(BRANCHEQ);
-					setState(18);
-					((AssemblyContext)_localctx).l = match(LABEL);
-					}
-					break;
-				case 13:
-					{
-					setState(19);
-					match(BRANCHLESSEQ);
-					setState(20);
-					((AssemblyContext)_localctx).l = match(LABEL);
-					}
-					break;
-				case 14:
-					{
-					setState(21);
-					match(JS);
-					}
-					break;
-				case 15:
-					{
-					setState(22);
-					match(LOADRA);
-					}
-					break;
-				case 16:
-					{
-					setState(23);
-					match(STORERA);
-					}
-					break;
-				case 17:
-					{
-					setState(24);
-					match(LOADRV);
-					}
-					break;
-				case 18:
-					{
-					setState(25);
-					match(STORERV);
-					}
-					break;
-				case 19:
-					{
-					setState(26);
-					match(LOADFP);
-					}
-					break;
-				case 20:
-					{
-					setState(27);
-					match(STOREFP);
-					}
-					break;
-				case 21:
-					{
-					setState(28);
-					match(COPYFP);
-					}
-					break;
-				case 22:
-					{
-					setState(29);
-					match(LOADHP);
-					}
-					break;
-				case 23:
-					{
-					setState(30);
-					match(STOREHP);
-					}
-					break;
-				case 24:
-					{
-					setState(31);
-					match(PRINT);
-					}
-					break;
-				case 25:
-					{
-					setState(32);
-					match(HALT);
-					}
-					break;
-				case 26:
-					{
-					setState(33);
-					match(NEW);
-					}
-					break;
+				{
+				setState(4);
+				instructions();
 				}
 				}
-				setState(38);
+				setState(9);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -423,22 +151,521 @@ public class SVMParser extends Parser {
 		return _localctx;
 	}
 
+	public static class InstructionsContext extends ParserRuleContext {
+		public InstructionsContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_instructions; }
+	 
+		public InstructionsContext() { }
+		public void copyFrom(InstructionsContext ctx) {
+			super.copyFrom(ctx);
+		}
+	}
+	public static class BranchEqualContext extends InstructionsContext {
+		public Token l;
+		public TerminalNode BRANCHEQ() { return getToken(SVMParser.BRANCHEQ, 0); }
+		public TerminalNode LABEL() { return getToken(SVMParser.LABEL, 0); }
+		public BranchEqualContext(InstructionsContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitBranchEqual(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class LoadRAContext extends InstructionsContext {
+		public TerminalNode LOADRA() { return getToken(SVMParser.LOADRA, 0); }
+		public LoadRAContext(InstructionsContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitLoadRA(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class StoreRaContext extends InstructionsContext {
+		public TerminalNode STORERA() { return getToken(SVMParser.STORERA, 0); }
+		public StoreRaContext(InstructionsContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitStoreRa(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class SubContext extends InstructionsContext {
+		public TerminalNode SUB() { return getToken(SVMParser.SUB, 0); }
+		public SubContext(InstructionsContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitSub(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class StoreWContext extends InstructionsContext {
+		public TerminalNode STOREW() { return getToken(SVMParser.STOREW, 0); }
+		public StoreWContext(InstructionsContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitStoreW(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class MultContext extends InstructionsContext {
+		public TerminalNode MULT() { return getToken(SVMParser.MULT, 0); }
+		public MultContext(InstructionsContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitMult(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class JsContext extends InstructionsContext {
+		public TerminalNode JS() { return getToken(SVMParser.JS, 0); }
+		public JsContext(InstructionsContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitJs(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class BranchContext extends InstructionsContext {
+		public Token l;
+		public TerminalNode BRANCH() { return getToken(SVMParser.BRANCH, 0); }
+		public TerminalNode LABEL() { return getToken(SVMParser.LABEL, 0); }
+		public BranchContext(InstructionsContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitBranch(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class BranchLessEqualContext extends InstructionsContext {
+		public Token l;
+		public TerminalNode BRANCHLESSEQ() { return getToken(SVMParser.BRANCHLESSEQ, 0); }
+		public TerminalNode LABEL() { return getToken(SVMParser.LABEL, 0); }
+		public BranchLessEqualContext(InstructionsContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitBranchLessEqual(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class PopContext extends InstructionsContext {
+		public TerminalNode POP() { return getToken(SVMParser.POP, 0); }
+		public PopContext(InstructionsContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitPop(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class DivContext extends InstructionsContext {
+		public TerminalNode DIV() { return getToken(SVMParser.DIV, 0); }
+		public DivContext(InstructionsContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitDiv(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class LoadWContext extends InstructionsContext {
+		public TerminalNode LOADW() { return getToken(SVMParser.LOADW, 0); }
+		public LoadWContext(InstructionsContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitLoadW(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class StoreRVContext extends InstructionsContext {
+		public TerminalNode STORERV() { return getToken(SVMParser.STORERV, 0); }
+		public StoreRVContext(InstructionsContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitStoreRV(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class PushNumberContext extends InstructionsContext {
+		public Token n;
+		public TerminalNode PUSH() { return getToken(SVMParser.PUSH, 0); }
+		public TerminalNode NUMBER() { return getToken(SVMParser.NUMBER, 0); }
+		public PushNumberContext(InstructionsContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitPushNumber(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class StoreHPContext extends InstructionsContext {
+		public TerminalNode STOREHP() { return getToken(SVMParser.STOREHP, 0); }
+		public StoreHPContext(InstructionsContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitStoreHP(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class StoreFPContext extends InstructionsContext {
+		public TerminalNode STOREFP() { return getToken(SVMParser.STOREFP, 0); }
+		public StoreFPContext(InstructionsContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitStoreFP(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class AddContext extends InstructionsContext {
+		public TerminalNode ADD() { return getToken(SVMParser.ADD, 0); }
+		public AddContext(InstructionsContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitAdd(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class PushLabelContext extends InstructionsContext {
+		public Token l;
+		public TerminalNode PUSH() { return getToken(SVMParser.PUSH, 0); }
+		public TerminalNode LABEL() { return getToken(SVMParser.LABEL, 0); }
+		public PushLabelContext(InstructionsContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitPushLabel(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class NewContext extends InstructionsContext {
+		public TerminalNode NEW() { return getToken(SVMParser.NEW, 0); }
+		public NewContext(InstructionsContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitNew(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class LoadFPContext extends InstructionsContext {
+		public TerminalNode LOADFP() { return getToken(SVMParser.LOADFP, 0); }
+		public LoadFPContext(InstructionsContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitLoadFP(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class LabelContext extends InstructionsContext {
+		public Token l;
+		public TerminalNode COL() { return getToken(SVMParser.COL, 0); }
+		public TerminalNode LABEL() { return getToken(SVMParser.LABEL, 0); }
+		public LabelContext(InstructionsContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitLabel(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class HaltContext extends InstructionsContext {
+		public TerminalNode HALT() { return getToken(SVMParser.HALT, 0); }
+		public HaltContext(InstructionsContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitHalt(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class PrintContext extends InstructionsContext {
+		public TerminalNode PRINT() { return getToken(SVMParser.PRINT, 0); }
+		public PrintContext(InstructionsContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitPrint(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class LoadHPContext extends InstructionsContext {
+		public TerminalNode LOADHP() { return getToken(SVMParser.LOADHP, 0); }
+		public LoadHPContext(InstructionsContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitLoadHP(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class LoadRVContext extends InstructionsContext {
+		public TerminalNode LOADRV() { return getToken(SVMParser.LOADRV, 0); }
+		public LoadRVContext(InstructionsContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitLoadRV(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class CopyFPContext extends InstructionsContext {
+		public TerminalNode COPYFP() { return getToken(SVMParser.COPYFP, 0); }
+		public CopyFPContext(InstructionsContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitCopyFP(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final InstructionsContext instructions() throws RecognitionException {
+		InstructionsContext _localctx = new InstructionsContext(_ctx, getState());
+		enterRule(_localctx, 2, RULE_instructions);
+		try {
+			setState(42);
+			_errHandler.sync(this);
+			switch ( getInterpreter().adaptivePredict(_input,1,_ctx) ) {
+			case 1:
+				_localctx = new PushNumberContext(_localctx);
+				enterOuterAlt(_localctx, 1);
+				{
+				setState(10);
+				match(PUSH);
+				setState(11);
+				((PushNumberContext)_localctx).n = match(NUMBER);
+				}
+				break;
+			case 2:
+				_localctx = new PushLabelContext(_localctx);
+				enterOuterAlt(_localctx, 2);
+				{
+				setState(12);
+				match(PUSH);
+				setState(13);
+				((PushLabelContext)_localctx).l = match(LABEL);
+				}
+				break;
+			case 3:
+				_localctx = new PopContext(_localctx);
+				enterOuterAlt(_localctx, 3);
+				{
+				setState(14);
+				match(POP);
+				}
+				break;
+			case 4:
+				_localctx = new AddContext(_localctx);
+				enterOuterAlt(_localctx, 4);
+				{
+				setState(15);
+				match(ADD);
+				}
+				break;
+			case 5:
+				_localctx = new SubContext(_localctx);
+				enterOuterAlt(_localctx, 5);
+				{
+				setState(16);
+				match(SUB);
+				}
+				break;
+			case 6:
+				_localctx = new MultContext(_localctx);
+				enterOuterAlt(_localctx, 6);
+				{
+				setState(17);
+				match(MULT);
+				}
+				break;
+			case 7:
+				_localctx = new DivContext(_localctx);
+				enterOuterAlt(_localctx, 7);
+				{
+				setState(18);
+				match(DIV);
+				}
+				break;
+			case 8:
+				_localctx = new StoreWContext(_localctx);
+				enterOuterAlt(_localctx, 8);
+				{
+				setState(19);
+				match(STOREW);
+				}
+				break;
+			case 9:
+				_localctx = new LoadWContext(_localctx);
+				enterOuterAlt(_localctx, 9);
+				{
+				setState(20);
+				match(LOADW);
+				}
+				break;
+			case 10:
+				_localctx = new LabelContext(_localctx);
+				enterOuterAlt(_localctx, 10);
+				{
+				setState(21);
+				((LabelContext)_localctx).l = match(LABEL);
+				setState(22);
+				match(COL);
+				}
+				break;
+			case 11:
+				_localctx = new BranchContext(_localctx);
+				enterOuterAlt(_localctx, 11);
+				{
+				setState(23);
+				match(BRANCH);
+				setState(24);
+				((BranchContext)_localctx).l = match(LABEL);
+				}
+				break;
+			case 12:
+				_localctx = new BranchEqualContext(_localctx);
+				enterOuterAlt(_localctx, 12);
+				{
+				setState(25);
+				match(BRANCHEQ);
+				setState(26);
+				((BranchEqualContext)_localctx).l = match(LABEL);
+				}
+				break;
+			case 13:
+				_localctx = new BranchLessEqualContext(_localctx);
+				enterOuterAlt(_localctx, 13);
+				{
+				setState(27);
+				match(BRANCHLESSEQ);
+				setState(28);
+				((BranchLessEqualContext)_localctx).l = match(LABEL);
+				}
+				break;
+			case 14:
+				_localctx = new JsContext(_localctx);
+				enterOuterAlt(_localctx, 14);
+				{
+				setState(29);
+				match(JS);
+				}
+				break;
+			case 15:
+				_localctx = new LoadRAContext(_localctx);
+				enterOuterAlt(_localctx, 15);
+				{
+				setState(30);
+				match(LOADRA);
+				}
+				break;
+			case 16:
+				_localctx = new StoreRaContext(_localctx);
+				enterOuterAlt(_localctx, 16);
+				{
+				setState(31);
+				match(STORERA);
+				}
+				break;
+			case 17:
+				_localctx = new LoadRVContext(_localctx);
+				enterOuterAlt(_localctx, 17);
+				{
+				setState(32);
+				match(LOADRV);
+				}
+				break;
+			case 18:
+				_localctx = new StoreRVContext(_localctx);
+				enterOuterAlt(_localctx, 18);
+				{
+				setState(33);
+				match(STORERV);
+				}
+				break;
+			case 19:
+				_localctx = new LoadFPContext(_localctx);
+				enterOuterAlt(_localctx, 19);
+				{
+				setState(34);
+				match(LOADFP);
+				}
+				break;
+			case 20:
+				_localctx = new StoreFPContext(_localctx);
+				enterOuterAlt(_localctx, 20);
+				{
+				setState(35);
+				match(STOREFP);
+				}
+				break;
+			case 21:
+				_localctx = new CopyFPContext(_localctx);
+				enterOuterAlt(_localctx, 21);
+				{
+				setState(36);
+				match(COPYFP);
+				}
+				break;
+			case 22:
+				_localctx = new LoadHPContext(_localctx);
+				enterOuterAlt(_localctx, 22);
+				{
+				setState(37);
+				match(LOADHP);
+				}
+				break;
+			case 23:
+				_localctx = new StoreHPContext(_localctx);
+				enterOuterAlt(_localctx, 23);
+				{
+				setState(38);
+				match(STOREHP);
+				}
+				break;
+			case 24:
+				_localctx = new PrintContext(_localctx);
+				enterOuterAlt(_localctx, 24);
+				{
+				setState(39);
+				match(PRINT);
+				}
+				break;
+			case 25:
+				_localctx = new HaltContext(_localctx);
+				enterOuterAlt(_localctx, 25);
+				{
+				setState(40);
+				match(HALT);
+				}
+				break;
+			case 26:
+				_localctx = new NewContext(_localctx);
+				enterOuterAlt(_localctx, 26);
+				{
+				setState(41);
+				match(NEW);
+				}
+				break;
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
 	public static final String _serializedATN =
-		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\37*\4\2\t\2\3\2\3"+
-		"\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2"+
-		"\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\7\2%\n\2\f\2\16\2"+
-		"(\13\2\3\2\2\2\3\2\2\2B\2&\3\2\2\2\4\5\7\3\2\2\5%\7\35\2\2\6\7\7\3\2\2"+
-		"\7%\7\34\2\2\b%\7\4\2\2\t%\7\5\2\2\n%\7\6\2\2\13%\7\7\2\2\f%\7\b\2\2\r"+
-		"%\7\t\2\2\16%\7\n\2\2\17\20\7\34\2\2\20%\7\33\2\2\21\22\7\13\2\2\22%\7"+
-		"\34\2\2\23\24\7\f\2\2\24%\7\34\2\2\25\26\7\r\2\2\26%\7\34\2\2\27%\7\16"+
-		"\2\2\30%\7\17\2\2\31%\7\20\2\2\32%\7\21\2\2\33%\7\22\2\2\34%\7\23\2\2"+
-		"\35%\7\24\2\2\36%\7\25\2\2\37%\7\26\2\2 %\7\27\2\2!%\7\30\2\2\"%\7\31"+
-		"\2\2#%\7\32\2\2$\4\3\2\2\2$\6\3\2\2\2$\b\3\2\2\2$\t\3\2\2\2$\n\3\2\2\2"+
-		"$\13\3\2\2\2$\f\3\2\2\2$\r\3\2\2\2$\16\3\2\2\2$\17\3\2\2\2$\21\3\2\2\2"+
-		"$\23\3\2\2\2$\25\3\2\2\2$\27\3\2\2\2$\30\3\2\2\2$\31\3\2\2\2$\32\3\2\2"+
-		"\2$\33\3\2\2\2$\34\3\2\2\2$\35\3\2\2\2$\36\3\2\2\2$\37\3\2\2\2$ \3\2\2"+
-		"\2$!\3\2\2\2$\"\3\2\2\2$#\3\2\2\2%(\3\2\2\2&$\3\2\2\2&\'\3\2\2\2\'\3\3"+
-		"\2\2\2(&\3\2\2\2\4$&";
+		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\37/\4\2\t\2\4\3\t"+
+		"\3\3\2\7\2\b\n\2\f\2\16\2\13\13\2\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3"+
+		"\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3"+
+		"\3\3\3\3\3\3\3\3\3\3\3\5\3-\n\3\3\3\2\2\4\2\4\2\2F\2\t\3\2\2\2\4,\3\2"+
+		"\2\2\6\b\5\4\3\2\7\6\3\2\2\2\b\13\3\2\2\2\t\7\3\2\2\2\t\n\3\2\2\2\n\3"+
+		"\3\2\2\2\13\t\3\2\2\2\f\r\7\3\2\2\r-\7\35\2\2\16\17\7\3\2\2\17-\7\34\2"+
+		"\2\20-\7\4\2\2\21-\7\5\2\2\22-\7\6\2\2\23-\7\7\2\2\24-\7\b\2\2\25-\7\t"+
+		"\2\2\26-\7\n\2\2\27\30\7\34\2\2\30-\7\33\2\2\31\32\7\13\2\2\32-\7\34\2"+
+		"\2\33\34\7\f\2\2\34-\7\34\2\2\35\36\7\r\2\2\36-\7\34\2\2\37-\7\16\2\2"+
+		" -\7\17\2\2!-\7\20\2\2\"-\7\21\2\2#-\7\22\2\2$-\7\23\2\2%-\7\24\2\2&-"+
+		"\7\25\2\2\'-\7\26\2\2(-\7\27\2\2)-\7\30\2\2*-\7\31\2\2+-\7\32\2\2,\f\3"+
+		"\2\2\2,\16\3\2\2\2,\20\3\2\2\2,\21\3\2\2\2,\22\3\2\2\2,\23\3\2\2\2,\24"+
+		"\3\2\2\2,\25\3\2\2\2,\26\3\2\2\2,\27\3\2\2\2,\31\3\2\2\2,\33\3\2\2\2,"+
+		"\35\3\2\2\2,\37\3\2\2\2, \3\2\2\2,!\3\2\2\2,\"\3\2\2\2,#\3\2\2\2,$\3\2"+
+		"\2\2,%\3\2\2\2,&\3\2\2\2,\'\3\2\2\2,(\3\2\2\2,)\3\2\2\2,*\3\2\2\2,+\3"+
+		"\2\2\2-\5\3\2\2\2\4\t,";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

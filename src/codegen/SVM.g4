@@ -20,35 +20,34 @@ public int lexicalErrors=0;
 /*------------------------------------------------------------------
  * PARSER RULES
  *------------------------------------------------------------------*/
-  
-assembly: 
-    ( PUSH n=NUMBER
-	  | PUSH l=LABEL     
-	  | POP
-	  | ADD
-	  | SUB
-	  | MULT
-	  | DIV
-	  | STOREW
-	  | LOADW
-	  | l=LABEL COL
-	  | BRANCH l=LABEL
-	  | BRANCHEQ l=LABEL
-	  | BRANCHLESSEQ l=LABEL
-	  | JS
-	  | LOADRA          
-	  | STORERA         
-	  | LOADRV      
-	  | STORERV        
-	  | LOADFP          
-	  | STOREFP        
-	  | COPYFP        
-	  | LOADHP        
-	  | STOREHP         
-	  | PRINT           
-	  | HALT           
-	  | NEW 			
-	  )* 
+assembly: (instructions)*;
+instructions: 
+      PUSH n=NUMBER 			#pushNumber
+	  | PUSH l=LABEL     		#pushLabel
+	  | POP						#pop
+	  | ADD						#add
+	  | SUB						#sub
+	  | MULT					#mult
+	  | DIV						#div
+	  | STOREW					#storeW
+	  | LOADW					#loadW
+	  | l=LABEL COL				#label
+	  | BRANCH l=LABEL			#branch
+	  | BRANCHEQ l=LABEL		#branchEqual
+	  | BRANCHLESSEQ l=LABEL	#branchLessEqual
+	  | JS						#js
+	  | LOADRA          		#loadRA
+	  | STORERA         		#storeRa
+	  | LOADRV      			#loadRV
+	  | STORERV        			#storeRV
+	  | LOADFP          		#loadFP
+	  | STOREFP        			#storeFP
+	  | COPYFP        			#copyFP
+	  | LOADHP        			#loadHP
+	  | STOREHP         		#storeHP
+	  | PRINT           		#print
+	  | HALT           			#halt
+	  | NEW 					#new
 	  ;
  	 
 /*------------------------------------------------------------------
