@@ -34,8 +34,6 @@ public class VirtualMachine {
         this.code = code;
       }
 
-    
-
     public void cpu() throws Exception {
       while ( true ) {
         int bytecode = code[ip++]; // fetch

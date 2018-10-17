@@ -1,9 +1,1 @@
-//class A;
-let
-	bool x = true;
-	void f(int y) x = true;
-in
-	x = false;
-	1;
-	2;
-	x = true;
+1;

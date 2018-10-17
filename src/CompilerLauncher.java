@@ -11,6 +11,9 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import ast.FOOLNodeVisitor;
 import ast.Node;
 import codegen.DispatchTable;
+import codegen.SVMLexer;
+import codegen.SVMParser;
+import codegen.VirtualMachine;
 import parser.FOOLLexer;
 import parser.FOOLParser;
 import util.Environment;
@@ -67,7 +70,7 @@ public class CompilerLauncher {
 		Node ast = visitor.visit(parser.prog()); //generazione AST 
 		
 		if (errorListener.getNumErrors() > 0) {
-			System.out.println("\nThe program was not in the right format."
+			System.err.println("\nThe program was not in the right format."
 					+ " Exiting the compilation process now.");
 			System.exit(1);
 		}
@@ -79,10 +82,10 @@ public class CompilerLauncher {
 		ArrayList<SemanticError> err = ast.checkSemantics(env);
 		
 		if (err.size() > 0) {
-			System.out.println("Check Semantics FAILED");
-			System.out.println("You had: " + err.size() + " error(s):");
+			System.err.println("Check Semantics FAILED");
+			System.err.println("You had: " + err.size() + " error(s):");
 			for (SemanticError e : err) {
-				System.out.println("\t" + e);				
+				System.err.println("\t" + e);				
 			}
 			System.exit(1);
 		}
@@ -97,8 +100,8 @@ public class CompilerLauncher {
 
 
 		if (type instanceof ErrorType) {
-			System.out.println("Type Checking FAILED.");
-			System.out.println(type.toPrint("  "));
+			System.err.println("Type Checking FAILED.");
+			System.err.println(type.toPrint("  "));
 			System.exit(2);
 		} 
 		else {
@@ -106,7 +109,7 @@ public class CompilerLauncher {
 		}
 
 		if (!doCodeGen) {
-			System.out.println("Code generation disabled!");
+			System.err.println("Code generation disabled!");
 		}
 		else {
 
@@ -131,7 +134,51 @@ public class CompilerLauncher {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		
+		FileInputStream inputSVMStream = null;
+		try {
+			inputStream = new FileInputStream(fileName+".asm");
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.err.println("\nERROR. No file found with the name " + fileName+".asm");
+			System.exit(1);
+		}
 
+		ANTLRInputStream inputSVM = null;
+		try {
+			input = new ANTLRInputStream(inputStream);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.exit(2);
+		}
+
+        SVMLexer lexerSVM = new SVMLexer(inputSVM);
+        CommonTokenStream tokensSVM = new CommonTokenStream(lexerSVM);
+        SVMParser parserSVM = new SVMParser(tokensSVM);
+        parserSVM.removeErrorListeners();
+        parserSVM.addErrorListener(errorListener);
+        
+        // TODO Implement visitor pattern for svm
+        parserSVM.assembly();
+
+        if (errorListener.getNumErrors() > 0) {
+			System.err.println("\nThe SVM program was not in the right format."
+					+ " Exiting the compilation process now.");
+			System.exit(1);
+		}
+        
+        int[] bytecode = parserSVM.code;
+        VirtualMachine vm = new VirtualMachine(bytecode);
+
+        try {
+			vm.cpu();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			System.err.println("Errore in esecuzione virtual machine");
+		}
 
 	}
 
