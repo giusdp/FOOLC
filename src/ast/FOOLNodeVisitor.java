@@ -69,8 +69,8 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 
 		ArrayList<ClassNode> classes = new ArrayList<ClassNode>();
 		ArrayList<Node> declarations = new ArrayList<Node>();
-		ArrayList<Node> expressions = new ArrayList<Node>();
-		ArrayList<Node> statements = new ArrayList<Node>();
+//		ArrayList<Node> expressions = new ArrayList<Node>();
+//		ArrayList<Node> statements = new ArrayList<Node>();
 		ArrayList<Node> contextBody = new ArrayList<>();
 		
 		// Visita tutte le classi
@@ -83,15 +83,15 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 			for (DecContext dc : ctx.let().dec())
 				declarations.add(visit(dc));
 			
-			for (ExpContext e : ctx.exp())
-				expressions.add(visit(e));
-			
-			for (StmsContext stm : ctx.stms()) {
-				//System.out.println(dc.toString());
-				for (StmContext s : stm.stm()) {
-					statements.add(visit(s));	
-				}
-			}
+//			for (ExpContext e : ctx.exp())
+//				expressions.add(visit(e));
+//			
+//			for (StmsContext stm : ctx.stms()) {
+//				//System.out.println(dc.toString());
+//				for (StmContext s : stm.stm()) {
+//					statements.add(visit(s));	
+//				}
+//			}
 			contextBody = getContextBody(ctx);
 		}
 
@@ -148,7 +148,6 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 
 	@Override
 	public Node visitNewExp(NewExpContext ctx) {
-		//System.out.println("VISIT NEW");
 		ConstructorNode constr;
 
 		ArrayList<Node> args = new ArrayList<Node>();
@@ -163,8 +162,6 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 
 	@Override
 	public Node visitNullExp(NullExpContext ctx) {
-		// TODO Auto-generated method stub
-		//System.out.println("VISIT NULL");
 		return new NullNode();
 	}
 
@@ -184,8 +181,8 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 
 		//list of declarations, exps and stms in @res
 		ArrayList<Node> declarations = new ArrayList<>();
-		ArrayList<Node> expressions = new ArrayList<>();
-		ArrayList<Node> statements = new ArrayList<>();
+//		ArrayList<Node> expressions = new ArrayList<>();
+//		ArrayList<Node> statements = new ArrayList<>();
 		ArrayList<Node> fullBody = new ArrayList<>();
 		
 		//visit all nodes corresponding to declarations inside the let
@@ -199,14 +196,14 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 		}
 
 		//visit exp and stms context
-		for (ExpContext exp : ctx.exp()) {
-			expressions.add(visit(exp));
-		}
-		for (StmsContext stm : ctx.stms()) {
-			for (StmContext s : stm.stm()) {
-				statements.add(visit(s));	
-			}
-		}
+//		for (ExpContext exp : ctx.exp()) {
+//			expressions.add(visit(exp));
+//		}
+//		for (StmsContext stm : ctx.stms()) {
+//			for (StmContext s : stm.stm()) {
+//				statements.add(visit(s));	
+//			}
+//		}
 		
 		fullBody = getContextBody(ctx);
 		
@@ -229,7 +226,6 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 	@Override
 	public Node visitIfStm(IfStmContext ctx) {
 
-		//System.out.println("VISIT IF STM");
 		//create the resulting node
 		IfNode ifnode = null;
 
@@ -251,7 +247,6 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 
 	@Override
 	public Node visitVarasm(VarasmContext ctx) {
-		//System.out.println("VISIT VAR ASM");
 		//declare the result node
 		VarNode result;
 
@@ -317,7 +312,6 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 	@Override
 	public Node visitType(TypeContext ctx) {
 
-		//System.out.println("VISIT TYPE");
 		if (ctx.INT() != null) return new IntType();
 
 		else if (ctx.BOOL() != null) return new BoolType();
@@ -334,7 +328,6 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 	@Override
 	public Node visitExp(ExpContext ctx) {
 
-		//System.out.println("VISIT EXP");
 		//check whether this is a simple or binary expression
 		//notice here the necessity of having named elements in the grammar
 		if (ctx.right == null) {
@@ -351,7 +344,6 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 	@Override
 	public Node visitTerm(TermContext ctx) {
 
-		//System.out.println("VISIT TERM");
 		//check whether this is a simple or binary expression
 		//notice here the necessity of having named elements in the grammar
 		if (ctx.right == null) {
@@ -368,7 +360,6 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 	@Override
 	public Node visitFactor(FactorContext ctx) {
 
-		//System.out.println("VISIT FACTOR");
 		//check whether this is a simple or binary expression
 		//notice here the necessity of having named elements in the grammar
 		if (ctx.right == null) {
@@ -399,7 +390,6 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 	@Override
 	public Node visitIntVal(IntValContext ctx) {
 
-		//System.out.println("VISIT INT VAL");
 		// notice that this method is not actually a rule but a named production #intVal
 
 		// ProgNode -> exp -> term -> factor -> IntNode
@@ -412,7 +402,6 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 	@Override
 	public Node visitBoolVal(BoolValContext ctx) {
 
-		//System.out.println("VISIT BOOL VAL");
 		//there is no need to perform a check here, the lexer ensures this text is a boolean
 		boolean res = false;
 		if (ctx.getText().startsWith("not")) {
@@ -439,7 +428,6 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 	@Override
 	public Node visitIfExp(IfExpContext ctx) {
 
-		//System.out.println("VISIT IF EXP");
 		//create the resulting node
 		IfNode res;
 
@@ -462,14 +450,12 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 	@Override
 	public Node visitVarExp(VarExpContext ctx) {
 
-		//System.out.println("VISIT VAR EXP");
 		return new IdNode(ctx.ID().getText());
 	}
 
 	@Override
 	public Node visitFunExp(FunExpContext ctx) {
 
-		//System.out.println("VISIT FUN EXP");
 		//this corresponds to a function invocation
 
 		//declare the result
