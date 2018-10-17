@@ -138,7 +138,7 @@ public class CompilerLauncher {
 		
 		FileInputStream inputSVMStream = null;
 		try {
-			inputStream = new FileInputStream(fileName+".asm");
+			inputSVMStream = new FileInputStream(fileName+".asm");
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -148,7 +148,7 @@ public class CompilerLauncher {
 
 		ANTLRInputStream inputSVM = null;
 		try {
-			input = new ANTLRInputStream(inputStream);
+			input = new ANTLRInputStream(inputSVMStream);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -180,6 +180,12 @@ public class CompilerLauncher {
 			System.err.println("Errore in esecuzione virtual machine");
 		}
 
+        try {
+        	inputSVMStream.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

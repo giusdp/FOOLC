@@ -228,12 +228,12 @@ public class SVMParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(62);
+			setState(36);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << PUSH) | (1L << POP) | (1L << ADD) | (1L << SUB) | (1L << MULT) | (1L << DIV) | (1L << STOREW) | (1L << LOADW) | (1L << BRANCH) | (1L << BRANCHEQ) | (1L << BRANCHLESSEQ) | (1L << JS) | (1L << LOADRA) | (1L << STORERA) | (1L << LOADRV) | (1L << STORERV) | (1L << LOADFP) | (1L << STOREFP) | (1L << COPYFP) | (1L << LOADHP) | (1L << STOREHP) | (1L << PRINT) | (1L << HALT) | (1L << NEW) | (1L << LABEL))) != 0)) {
 				{
-				setState(60);
+				setState(34);
 				_errHandler.sync(this);
 				switch ( getInterpreter().adaptivePredict(_input,0,_ctx) ) {
 				case 1:
@@ -242,209 +242,174 @@ public class SVMParser extends Parser {
 					match(PUSH);
 					setState(3);
 					((AssemblyContext)_localctx).n = match(NUMBER);
-					code[i++] = PUSH; 
-								                 code[i++] = Integer.parseInt((((AssemblyContext)_localctx).n!=null?((AssemblyContext)_localctx).n.getText():null));
 					}
 					break;
 				case 2:
 					{
-					setState(5);
+					setState(4);
 					match(PUSH);
-					setState(6);
+					setState(5);
 					((AssemblyContext)_localctx).l = match(LABEL);
-					code[i++] = PUSH; //
-						    		             labelRef.put(i++,(((AssemblyContext)_localctx).l!=null?((AssemblyContext)_localctx).l.getText():null));
 					}
 					break;
 				case 3:
 					{
-					setState(8);
+					setState(6);
 					match(POP);
-					code[i++] = POP;
 					}
 					break;
 				case 4:
 					{
-					setState(10);
+					setState(7);
 					match(ADD);
-					code[i++] = ADD;
 					}
 					break;
 				case 5:
 					{
-					setState(12);
+					setState(8);
 					match(SUB);
-					code[i++] = SUB;
 					}
 					break;
 				case 6:
 					{
-					setState(14);
+					setState(9);
 					match(MULT);
-					code[i++] = MULT;
 					}
 					break;
 				case 7:
 					{
-					setState(16);
+					setState(10);
 					match(DIV);
-					code[i++] = DIV;
 					}
 					break;
 				case 8:
 					{
-					setState(18);
+					setState(11);
 					match(STOREW);
-					code[i++] = STOREW;
 					}
 					break;
 				case 9:
 					{
-					setState(20);
+					setState(12);
 					match(LOADW);
-					code[i++] = LOADW;
 					}
 					break;
 				case 10:
 					{
-					setState(22);
+					setState(13);
 					((AssemblyContext)_localctx).l = match(LABEL);
-					setState(23);
+					setState(14);
 					match(COL);
-					labelAdd.put((((AssemblyContext)_localctx).l!=null?((AssemblyContext)_localctx).l.getText():null),i);
 					}
 					break;
 				case 11:
 					{
-					setState(25);
+					setState(15);
 					match(BRANCH);
-					setState(26);
+					setState(16);
 					((AssemblyContext)_localctx).l = match(LABEL);
-					code[i++] = BRANCH;
-					                       labelRef.put(i++,(((AssemblyContext)_localctx).l!=null?((AssemblyContext)_localctx).l.getText():null));
 					}
 					break;
 				case 12:
 					{
-					setState(28);
+					setState(17);
 					match(BRANCHEQ);
-					setState(29);
+					setState(18);
 					((AssemblyContext)_localctx).l = match(LABEL);
-					code[i++] = BRANCHEQ; //
-					                        labelRef.put(i++,(((AssemblyContext)_localctx).l!=null?((AssemblyContext)_localctx).l.getText():null));
 					}
 					break;
 				case 13:
 					{
-					setState(31);
+					setState(19);
 					match(BRANCHLESSEQ);
-					setState(32);
+					setState(20);
 					((AssemblyContext)_localctx).l = match(LABEL);
-					code[i++] = BRANCHLESSEQ;
-					                          labelRef.put(i++,(((AssemblyContext)_localctx).l!=null?((AssemblyContext)_localctx).l.getText():null));
 					}
 					break;
 				case 14:
 					{
-					setState(34);
+					setState(21);
 					match(JS);
-					code[i++] = JS;
 					}
 					break;
 				case 15:
 					{
-					setState(36);
+					setState(22);
 					match(LOADRA);
-					code[i++] = LOADRA;
 					}
 					break;
 				case 16:
 					{
-					setState(38);
+					setState(23);
 					match(STORERA);
-					code[i++] = STORERA;
 					}
 					break;
 				case 17:
 					{
-					setState(40);
+					setState(24);
 					match(LOADRV);
-					code[i++] = LOADRV;
 					}
 					break;
 				case 18:
 					{
-					setState(42);
+					setState(25);
 					match(STORERV);
-					code[i++] = STORERV;
 					}
 					break;
 				case 19:
 					{
-					setState(44);
+					setState(26);
 					match(LOADFP);
-					code[i++] = LOADFP;
 					}
 					break;
 				case 20:
 					{
-					setState(46);
+					setState(27);
 					match(STOREFP);
-					code[i++] = STOREFP;
 					}
 					break;
 				case 21:
 					{
-					setState(48);
+					setState(28);
 					match(COPYFP);
-					code[i++] = COPYFP;
 					}
 					break;
 				case 22:
 					{
-					setState(50);
+					setState(29);
 					match(LOADHP);
-					code[i++] = LOADHP;
 					}
 					break;
 				case 23:
 					{
-					setState(52);
+					setState(30);
 					match(STOREHP);
-					code[i++] = STOREHP;
 					}
 					break;
 				case 24:
 					{
-					setState(54);
+					setState(31);
 					match(PRINT);
-					code[i++] = PRINT;
 					}
 					break;
 				case 25:
 					{
-					setState(56);
+					setState(32);
 					match(HALT);
-					code[i++] = HALT;
 					}
 					break;
 				case 26:
 					{
-					setState(58);
+					setState(33);
 					match(NEW);
-					code[i++] = NEW;
 					}
 					break;
 				}
 				}
-				setState(64);
+				setState(38);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			 for (Integer refAdd: labelRef.keySet()) {
-				              code[refAdd]=labelAdd.get(labelRef.get(refAdd));
-					     } 
-					   
 			}
 		}
 		catch (RecognitionException re) {
@@ -459,27 +424,21 @@ public class SVMParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\37F\4\2\t\2\3\2\3"+
+		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\37*\4\2\t\2\3\2\3"+
 		"\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2"+
-		"\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3"+
-		"\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2"+
-		"\3\2\3\2\3\2\3\2\7\2?\n\2\f\2\16\2B\13\2\3\2\3\2\3\2\2\2\3\2\2\2^\2@\3"+
-		"\2\2\2\4\5\7\3\2\2\5\6\7\35\2\2\6?\b\2\1\2\7\b\7\3\2\2\b\t\7\34\2\2\t"+
-		"?\b\2\1\2\n\13\7\4\2\2\13?\b\2\1\2\f\r\7\5\2\2\r?\b\2\1\2\16\17\7\6\2"+
-		"\2\17?\b\2\1\2\20\21\7\7\2\2\21?\b\2\1\2\22\23\7\b\2\2\23?\b\2\1\2\24"+
-		"\25\7\t\2\2\25?\b\2\1\2\26\27\7\n\2\2\27?\b\2\1\2\30\31\7\34\2\2\31\32"+
-		"\7\33\2\2\32?\b\2\1\2\33\34\7\13\2\2\34\35\7\34\2\2\35?\b\2\1\2\36\37"+
-		"\7\f\2\2\37 \7\34\2\2 ?\b\2\1\2!\"\7\r\2\2\"#\7\34\2\2#?\b\2\1\2$%\7\16"+
-		"\2\2%?\b\2\1\2&\'\7\17\2\2\'?\b\2\1\2()\7\20\2\2)?\b\2\1\2*+\7\21\2\2"+
-		"+?\b\2\1\2,-\7\22\2\2-?\b\2\1\2./\7\23\2\2/?\b\2\1\2\60\61\7\24\2\2\61"+
-		"?\b\2\1\2\62\63\7\25\2\2\63?\b\2\1\2\64\65\7\26\2\2\65?\b\2\1\2\66\67"+
-		"\7\27\2\2\67?\b\2\1\289\7\30\2\29?\b\2\1\2:;\7\31\2\2;?\b\2\1\2<=\7\32"+
-		"\2\2=?\b\2\1\2>\4\3\2\2\2>\7\3\2\2\2>\n\3\2\2\2>\f\3\2\2\2>\16\3\2\2\2"+
-		">\20\3\2\2\2>\22\3\2\2\2>\24\3\2\2\2>\26\3\2\2\2>\30\3\2\2\2>\33\3\2\2"+
-		"\2>\36\3\2\2\2>!\3\2\2\2>$\3\2\2\2>&\3\2\2\2>(\3\2\2\2>*\3\2\2\2>,\3\2"+
-		"\2\2>.\3\2\2\2>\60\3\2\2\2>\62\3\2\2\2>\64\3\2\2\2>\66\3\2\2\2>8\3\2\2"+
-		"\2>:\3\2\2\2><\3\2\2\2?B\3\2\2\2@>\3\2\2\2@A\3\2\2\2AC\3\2\2\2B@\3\2\2"+
-		"\2CD\b\2\1\2D\3\3\2\2\2\4>@";
+		"\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\7\2%\n\2\f\2\16\2"+
+		"(\13\2\3\2\2\2\3\2\2\2B\2&\3\2\2\2\4\5\7\3\2\2\5%\7\35\2\2\6\7\7\3\2\2"+
+		"\7%\7\34\2\2\b%\7\4\2\2\t%\7\5\2\2\n%\7\6\2\2\13%\7\7\2\2\f%\7\b\2\2\r"+
+		"%\7\t\2\2\16%\7\n\2\2\17\20\7\34\2\2\20%\7\33\2\2\21\22\7\13\2\2\22%\7"+
+		"\34\2\2\23\24\7\f\2\2\24%\7\34\2\2\25\26\7\r\2\2\26%\7\34\2\2\27%\7\16"+
+		"\2\2\30%\7\17\2\2\31%\7\20\2\2\32%\7\21\2\2\33%\7\22\2\2\34%\7\23\2\2"+
+		"\35%\7\24\2\2\36%\7\25\2\2\37%\7\26\2\2 %\7\27\2\2!%\7\30\2\2\"%\7\31"+
+		"\2\2#%\7\32\2\2$\4\3\2\2\2$\6\3\2\2\2$\b\3\2\2\2$\t\3\2\2\2$\n\3\2\2\2"+
+		"$\13\3\2\2\2$\f\3\2\2\2$\r\3\2\2\2$\16\3\2\2\2$\17\3\2\2\2$\21\3\2\2\2"+
+		"$\23\3\2\2\2$\25\3\2\2\2$\27\3\2\2\2$\30\3\2\2\2$\31\3\2\2\2$\32\3\2\2"+
+		"\2$\33\3\2\2\2$\34\3\2\2\2$\35\3\2\2\2$\36\3\2\2\2$\37\3\2\2\2$ \3\2\2"+
+		"\2$!\3\2\2\2$\"\3\2\2\2$#\3\2\2\2%(\3\2\2\2&$\3\2\2\2&\'\3\2\2\2\'\3\3"+
+		"\2\2\2(&\3\2\2\2\4$&";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

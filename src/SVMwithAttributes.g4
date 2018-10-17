@@ -22,34 +22,41 @@ public int lexicalErrors=0;
  *------------------------------------------------------------------*/
   
 assembly: 
-    ( PUSH n=NUMBER
-	  | PUSH l=LABEL     
-	  | POP
-	  | ADD
-	  | SUB
-	  | MULT
-	  | DIV
-	  | STOREW
-	  | LOADW
-	  | l=LABEL COL
-	  | BRANCH l=LABEL
-	  | BRANCHEQ l=LABEL
-	  | BRANCHLESSEQ l=LABEL
-	  | JS
-	  | LOADRA          
-	  | STORERA         
-	  | LOADRV      
-	  | STORERV        
-	  | LOADFP          
-	  | STOREFP        
-	  | COPYFP        
-	  | LOADHP        
-	  | STOREHP         
-	  | PRINT           
-	  | HALT           
-	  | NEW 			
-	  )* 
-	  ;
+    ( PUSH n=NUMBER   {code[i++] = PUSH; 
+			                 code[i++] = Integer.parseInt($n.text);}
+	  | PUSH l=LABEL    {code[i++] = PUSH; //
+	    		             labelRef.put(i++,$l.text);} 		     
+	  | POP		    {code[i++] = POP;}	
+	  | ADD		    {code[i++] = ADD;}
+	  | SUB		    {code[i++] = SUB;}
+	  | MULT	    {code[i++] = MULT;}
+	  | DIV		    {code[i++] = DIV;}
+	  | STOREW	  {code[i++] = STOREW;} //
+	  | LOADW           {code[i++] = LOADW;} //
+	  | l=LABEL COL     {labelAdd.put($l.text,i);}
+	  | BRANCH l=LABEL  {code[i++] = BRANCH;
+                       labelRef.put(i++,$l.text);}
+	  | BRANCHEQ l=LABEL {code[i++] = BRANCHEQ; //
+                        labelRef.put(i++,$l.text);}
+	  | BRANCHLESSEQ l=LABEL {code[i++] = BRANCHLESSEQ;
+                          labelRef.put(i++,$l.text);}
+	  | JS              {code[i++] = JS;}		     //
+	  | LOADRA          {code[i++] = LOADRA;}    //
+	  | STORERA         {code[i++] = STORERA;}   //
+	  | LOADRV          {code[i++] = LOADRV;}   //
+	  | STORERV         {code[i++] = STORERV;}    //
+	  | LOADFP          {code[i++] = LOADFP;}   //
+	  | STOREFP         {code[i++] = STOREFP;}   //
+	  | COPYFP          {code[i++] = COPYFP;}   //
+	  | LOADHP          {code[i++] = LOADHP;}   //
+	  | STOREHP         {code[i++] = STOREHP;}   //
+	  | PRINT           {code[i++] = PRINT;}
+	  | HALT            {code[i++] = HALT;}
+	  | NEW 			{code[i++] = NEW;}
+	  )* { for (Integer refAdd: labelRef.keySet()) {
+	              code[refAdd]=labelAdd.get(labelRef.get(refAdd));
+		     } 
+		   } ;
  	 
 /*------------------------------------------------------------------
  * LEXER RULES
