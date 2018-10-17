@@ -78,21 +78,23 @@ public class ProgClassNode implements Node {
 		//       ripetute di typeCheck() e l'if.
 		//       e.g. checkForErrors(ArrayList<Node>), e pure
 		//            checkForErrors(ArrayList< ArrayList<Node> >).
-		Type type;
+		
+		Type type = new VoidType(); // Default value
+		
 		for (ClassNode cl : classList) {
 			type = cl.typeCheck();
 			if (type instanceof ErrorType) return type;
 		}
-		for (Node dec : decList) {
-			type = dec.typeCheck();
+		for (Node declaration : decList) {
+			type = declaration.typeCheck();
 			if (type instanceof ErrorType) return type;
 		}
-		for (Node stm : contextBody) {
-			type = stm.typeCheck();
+		for (Node instruction : contextBody) {
+			type = instruction.typeCheck();
 			if (type instanceof ErrorType) return type;
 		}
 		
-		return new VoidType();
+		return type; // The type of the program is the type of the last instruction (the returned expression)
 	}
 	@Override
 	public String codeGeneration() {

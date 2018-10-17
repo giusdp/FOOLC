@@ -58,18 +58,18 @@ public class ProgLetInNode implements Node {
 	}
 
 	public Type typeCheck () {
-		Type type;
+		Type type = new VoidType(); // Default value
 		
-		for (Node dec : this.declist) {
-			type = dec.typeCheck();
+		for (Node declaration : this.declist) {
+			type = declaration.typeCheck();
 			if (type instanceof ErrorType) return type;
 		}
-		for (Node stm : this.contextBody) {
-			type = stm.typeCheck();
+		for (Node instruction : this.contextBody) {
+			type = instruction.typeCheck();
 			if (type instanceof ErrorType) return type;			
 		}
 		
-		return new VoidType();
+		return type; // The type of the "let in" program is the type of the last instruction (the returned expression)
 	}
 
 	public String codeGeneration() {
