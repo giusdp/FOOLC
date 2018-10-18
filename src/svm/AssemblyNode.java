@@ -8,6 +8,8 @@ public class AssemblyNode {
 	private String label; // If it's a push or some instruction with labels we store it here
 	private int number; // if it's a push number we store it here
 	
+	private int codeIndex;
+	
 	public AssemblyNode(int instr) {
 		this.instruction = instr;
 	}
@@ -32,6 +34,15 @@ public class AssemblyNode {
 		this.number = number;
 	}
 
+	public int getCodeIndex() {
+		return codeIndex;
+	}
+
+	public void setCodeIndex(int codeIndex) {
+		this.codeIndex = codeIndex;
+	}
+
+	
 	
 	
 	

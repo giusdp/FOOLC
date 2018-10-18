@@ -1,21 +1,7 @@
 grammar SVM;
 
-@header {
-import java.util.HashMap; 
-import codegen.VirtualMachine;
-}
-
 @lexer::members {
 public int lexicalErrors=0;
-}
-
-@parser::members {
-      
-    public int[] code = new int[VirtualMachine.CODESIZE];    
-    private int i = 0;
-    private HashMap<String,Integer> labelAdd = new HashMap<String,Integer>();
-    private HashMap<Integer,String> labelRef = new HashMap<Integer,String>();
-        
 }
 
 /*------------------------------------------------------------------
