@@ -1,7 +1,8 @@
 // Generated from SVM.g4 by ANTLR 4.6
-package codegen;
+package svm;
 
-import java.util.HashMap;
+import java.util.HashMap; 
+import codegen.VirtualMachine;
 
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;

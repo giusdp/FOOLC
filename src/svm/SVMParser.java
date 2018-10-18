@@ -1,7 +1,8 @@
 // Generated from SVM.g4 by ANTLR 4.6
-package codegen;
+package svm;
 
-import java.util.HashMap;
+import java.util.HashMap; 
+import codegen.VirtualMachine;
 
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
@@ -25,9 +26,9 @@ public class SVMParser extends Parser {
 		STORERV=16, LOADFP=17, STOREFP=18, COPYFP=19, LOADHP=20, STOREHP=21, PRINT=22, 
 		HALT=23, NEW=24, COL=25, LABEL=26, NUMBER=27, WHITESP=28, ERR=29;
 	public static final int
-		RULE_assembly = 0, RULE_instructions = 1;
+		RULE_assembly = 0, RULE_instruction = 1;
 	public static final String[] ruleNames = {
-		"assembly", "instructions"
+		"assembly", "instruction"
 	};
 
 	private static final String[] _LITERAL_NAMES = {
@@ -100,11 +101,11 @@ public class SVMParser extends Parser {
 		_interp = new ParserATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
 	public static class AssemblyContext extends ParserRuleContext {
-		public List<InstructionsContext> instructions() {
-			return getRuleContexts(InstructionsContext.class);
+		public List<InstructionContext> instruction() {
+			return getRuleContexts(InstructionContext.class);
 		}
-		public InstructionsContext instructions(int i) {
-			return getRuleContext(InstructionsContext.class,i);
+		public InstructionContext instruction(int i) {
+			return getRuleContext(InstructionContext.class,i);
 		}
 		public AssemblyContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -131,7 +132,7 @@ public class SVMParser extends Parser {
 				{
 				{
 				setState(4);
-				instructions();
+				instruction();
 				}
 				}
 				setState(9);
@@ -151,257 +152,257 @@ public class SVMParser extends Parser {
 		return _localctx;
 	}
 
-	public static class InstructionsContext extends ParserRuleContext {
-		public InstructionsContext(ParserRuleContext parent, int invokingState) {
+	public static class InstructionContext extends ParserRuleContext {
+		public InstructionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_instructions; }
+		@Override public int getRuleIndex() { return RULE_instruction; }
 	 
-		public InstructionsContext() { }
-		public void copyFrom(InstructionsContext ctx) {
+		public InstructionContext() { }
+		public void copyFrom(InstructionContext ctx) {
 			super.copyFrom(ctx);
 		}
 	}
-	public static class BranchEqualContext extends InstructionsContext {
+	public static class BranchEqualContext extends InstructionContext {
 		public Token l;
 		public TerminalNode BRANCHEQ() { return getToken(SVMParser.BRANCHEQ, 0); }
 		public TerminalNode LABEL() { return getToken(SVMParser.LABEL, 0); }
-		public BranchEqualContext(InstructionsContext ctx) { copyFrom(ctx); }
+		public BranchEqualContext(InstructionContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitBranchEqual(this);
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class LoadRAContext extends InstructionsContext {
+	public static class LoadRAContext extends InstructionContext {
 		public TerminalNode LOADRA() { return getToken(SVMParser.LOADRA, 0); }
-		public LoadRAContext(InstructionsContext ctx) { copyFrom(ctx); }
+		public LoadRAContext(InstructionContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitLoadRA(this);
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class StoreRaContext extends InstructionsContext {
+	public static class StoreRaContext extends InstructionContext {
 		public TerminalNode STORERA() { return getToken(SVMParser.STORERA, 0); }
-		public StoreRaContext(InstructionsContext ctx) { copyFrom(ctx); }
+		public StoreRaContext(InstructionContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitStoreRa(this);
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class SubContext extends InstructionsContext {
+	public static class SubContext extends InstructionContext {
 		public TerminalNode SUB() { return getToken(SVMParser.SUB, 0); }
-		public SubContext(InstructionsContext ctx) { copyFrom(ctx); }
+		public SubContext(InstructionContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitSub(this);
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class StoreWContext extends InstructionsContext {
+	public static class StoreWContext extends InstructionContext {
 		public TerminalNode STOREW() { return getToken(SVMParser.STOREW, 0); }
-		public StoreWContext(InstructionsContext ctx) { copyFrom(ctx); }
+		public StoreWContext(InstructionContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitStoreW(this);
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class MultContext extends InstructionsContext {
+	public static class MultContext extends InstructionContext {
 		public TerminalNode MULT() { return getToken(SVMParser.MULT, 0); }
-		public MultContext(InstructionsContext ctx) { copyFrom(ctx); }
+		public MultContext(InstructionContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitMult(this);
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class JsContext extends InstructionsContext {
+	public static class JsContext extends InstructionContext {
 		public TerminalNode JS() { return getToken(SVMParser.JS, 0); }
-		public JsContext(InstructionsContext ctx) { copyFrom(ctx); }
+		public JsContext(InstructionContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitJs(this);
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class BranchContext extends InstructionsContext {
+	public static class BranchContext extends InstructionContext {
 		public Token l;
 		public TerminalNode BRANCH() { return getToken(SVMParser.BRANCH, 0); }
 		public TerminalNode LABEL() { return getToken(SVMParser.LABEL, 0); }
-		public BranchContext(InstructionsContext ctx) { copyFrom(ctx); }
+		public BranchContext(InstructionContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitBranch(this);
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class BranchLessEqualContext extends InstructionsContext {
+	public static class BranchLessEqualContext extends InstructionContext {
 		public Token l;
 		public TerminalNode BRANCHLESSEQ() { return getToken(SVMParser.BRANCHLESSEQ, 0); }
 		public TerminalNode LABEL() { return getToken(SVMParser.LABEL, 0); }
-		public BranchLessEqualContext(InstructionsContext ctx) { copyFrom(ctx); }
+		public BranchLessEqualContext(InstructionContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitBranchLessEqual(this);
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class PopContext extends InstructionsContext {
+	public static class PopContext extends InstructionContext {
 		public TerminalNode POP() { return getToken(SVMParser.POP, 0); }
-		public PopContext(InstructionsContext ctx) { copyFrom(ctx); }
+		public PopContext(InstructionContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitPop(this);
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class DivContext extends InstructionsContext {
+	public static class DivContext extends InstructionContext {
 		public TerminalNode DIV() { return getToken(SVMParser.DIV, 0); }
-		public DivContext(InstructionsContext ctx) { copyFrom(ctx); }
+		public DivContext(InstructionContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitDiv(this);
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class LoadWContext extends InstructionsContext {
+	public static class LoadWContext extends InstructionContext {
 		public TerminalNode LOADW() { return getToken(SVMParser.LOADW, 0); }
-		public LoadWContext(InstructionsContext ctx) { copyFrom(ctx); }
+		public LoadWContext(InstructionContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitLoadW(this);
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class StoreRVContext extends InstructionsContext {
+	public static class StoreRVContext extends InstructionContext {
 		public TerminalNode STORERV() { return getToken(SVMParser.STORERV, 0); }
-		public StoreRVContext(InstructionsContext ctx) { copyFrom(ctx); }
+		public StoreRVContext(InstructionContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitStoreRV(this);
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class PushNumberContext extends InstructionsContext {
+	public static class PushNumberContext extends InstructionContext {
 		public Token n;
 		public TerminalNode PUSH() { return getToken(SVMParser.PUSH, 0); }
 		public TerminalNode NUMBER() { return getToken(SVMParser.NUMBER, 0); }
-		public PushNumberContext(InstructionsContext ctx) { copyFrom(ctx); }
+		public PushNumberContext(InstructionContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitPushNumber(this);
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class StoreHPContext extends InstructionsContext {
+	public static class StoreHPContext extends InstructionContext {
 		public TerminalNode STOREHP() { return getToken(SVMParser.STOREHP, 0); }
-		public StoreHPContext(InstructionsContext ctx) { copyFrom(ctx); }
+		public StoreHPContext(InstructionContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitStoreHP(this);
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class StoreFPContext extends InstructionsContext {
+	public static class StoreFPContext extends InstructionContext {
 		public TerminalNode STOREFP() { return getToken(SVMParser.STOREFP, 0); }
-		public StoreFPContext(InstructionsContext ctx) { copyFrom(ctx); }
+		public StoreFPContext(InstructionContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitStoreFP(this);
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class AddContext extends InstructionsContext {
+	public static class AddContext extends InstructionContext {
 		public TerminalNode ADD() { return getToken(SVMParser.ADD, 0); }
-		public AddContext(InstructionsContext ctx) { copyFrom(ctx); }
+		public AddContext(InstructionContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitAdd(this);
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class PushLabelContext extends InstructionsContext {
+	public static class PushLabelContext extends InstructionContext {
 		public Token l;
 		public TerminalNode PUSH() { return getToken(SVMParser.PUSH, 0); }
 		public TerminalNode LABEL() { return getToken(SVMParser.LABEL, 0); }
-		public PushLabelContext(InstructionsContext ctx) { copyFrom(ctx); }
+		public PushLabelContext(InstructionContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitPushLabel(this);
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class NewContext extends InstructionsContext {
+	public static class NewContext extends InstructionContext {
 		public TerminalNode NEW() { return getToken(SVMParser.NEW, 0); }
-		public NewContext(InstructionsContext ctx) { copyFrom(ctx); }
+		public NewContext(InstructionContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitNew(this);
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class LoadFPContext extends InstructionsContext {
+	public static class LoadFPContext extends InstructionContext {
 		public TerminalNode LOADFP() { return getToken(SVMParser.LOADFP, 0); }
-		public LoadFPContext(InstructionsContext ctx) { copyFrom(ctx); }
+		public LoadFPContext(InstructionContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitLoadFP(this);
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class LabelContext extends InstructionsContext {
+	public static class LabelContext extends InstructionContext {
 		public Token l;
 		public TerminalNode COL() { return getToken(SVMParser.COL, 0); }
 		public TerminalNode LABEL() { return getToken(SVMParser.LABEL, 0); }
-		public LabelContext(InstructionsContext ctx) { copyFrom(ctx); }
+		public LabelContext(InstructionContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitLabel(this);
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class HaltContext extends InstructionsContext {
+	public static class HaltContext extends InstructionContext {
 		public TerminalNode HALT() { return getToken(SVMParser.HALT, 0); }
-		public HaltContext(InstructionsContext ctx) { copyFrom(ctx); }
+		public HaltContext(InstructionContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitHalt(this);
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class PrintContext extends InstructionsContext {
+	public static class PrintContext extends InstructionContext {
 		public TerminalNode PRINT() { return getToken(SVMParser.PRINT, 0); }
-		public PrintContext(InstructionsContext ctx) { copyFrom(ctx); }
+		public PrintContext(InstructionContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitPrint(this);
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class LoadHPContext extends InstructionsContext {
+	public static class LoadHPContext extends InstructionContext {
 		public TerminalNode LOADHP() { return getToken(SVMParser.LOADHP, 0); }
-		public LoadHPContext(InstructionsContext ctx) { copyFrom(ctx); }
+		public LoadHPContext(InstructionContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitLoadHP(this);
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class LoadRVContext extends InstructionsContext {
+	public static class LoadRVContext extends InstructionContext {
 		public TerminalNode LOADRV() { return getToken(SVMParser.LOADRV, 0); }
-		public LoadRVContext(InstructionsContext ctx) { copyFrom(ctx); }
+		public LoadRVContext(InstructionContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitLoadRV(this);
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class CopyFPContext extends InstructionsContext {
+	public static class CopyFPContext extends InstructionContext {
 		public TerminalNode COPYFP() { return getToken(SVMParser.COPYFP, 0); }
-		public CopyFPContext(InstructionsContext ctx) { copyFrom(ctx); }
+		public CopyFPContext(InstructionContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitCopyFP(this);
@@ -409,9 +410,9 @@ public class SVMParser extends Parser {
 		}
 	}
 
-	public final InstructionsContext instructions() throws RecognitionException {
-		InstructionsContext _localctx = new InstructionsContext(_ctx, getState());
-		enterRule(_localctx, 2, RULE_instructions);
+	public final InstructionContext instruction() throws RecognitionException {
+		InstructionContext _localctx = new InstructionContext(_ctx, getState());
+		enterRule(_localctx, 2, RULE_instruction);
 		try {
 			setState(42);
 			_errHandler.sync(this);

@@ -1,7 +1,8 @@
 grammar SVM;
 
 @header {
-import java.util.HashMap;
+import java.util.HashMap; 
+import codegen.VirtualMachine;
 }
 
 @lexer::members {
@@ -20,8 +21,8 @@ public int lexicalErrors=0;
 /*------------------------------------------------------------------
  * PARSER RULES
  *------------------------------------------------------------------*/
-assembly: (instructions)*;
-instructions: 
+assembly: (instruction)*;
+instruction: 
       PUSH n=NUMBER 			#pushNumber
 	  | PUSH l=LABEL     		#pushLabel
 	  | POP						#pop

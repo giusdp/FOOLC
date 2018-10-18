@@ -1,39 +1,51 @@
 package svm;
 
-import codegen.SVMBaseVisitor;
-import codegen.SVMParser.AddContext;
-import codegen.SVMParser.AssemblyContext;
-import codegen.SVMParser.BranchContext;
-import codegen.SVMParser.BranchEqualContext;
-import codegen.SVMParser.BranchLessEqualContext;
-import codegen.SVMParser.CopyFPContext;
-import codegen.SVMParser.DivContext;
-import codegen.SVMParser.HaltContext;
-import codegen.SVMParser.JsContext;
-import codegen.SVMParser.LabelContext;
-import codegen.SVMParser.LoadFPContext;
-import codegen.SVMParser.LoadHPContext;
-import codegen.SVMParser.LoadRAContext;
-import codegen.SVMParser.LoadRVContext;
-import codegen.SVMParser.LoadWContext;
-import codegen.SVMParser.MultContext;
-import codegen.SVMParser.NewContext;
-import codegen.SVMParser.PopContext;
-import codegen.SVMParser.PrintContext;
-import codegen.SVMParser.PushLabelContext;
-import codegen.SVMParser.PushNumberContext;
-import codegen.SVMParser.StoreFPContext;
-import codegen.SVMParser.StoreHPContext;
-import codegen.SVMParser.StoreRVContext;
-import codegen.SVMParser.StoreRaContext;
-import codegen.SVMParser.StoreWContext;
-import codegen.SVMParser.SubContext;
+import java.util.ArrayList;
+import java.util.List;
+
+import svm.SVMParser.AddContext;
+import svm.SVMParser.AssemblyContext;
+import svm.SVMParser.BranchContext;
+import svm.SVMParser.BranchEqualContext;
+import svm.SVMParser.BranchLessEqualContext;
+import svm.SVMParser.CopyFPContext;
+import svm.SVMParser.DivContext;
+import svm.SVMParser.HaltContext;
+import svm.SVMParser.InstructionContext;
+import svm.SVMParser.JsContext;
+import svm.SVMParser.LabelContext;
+import svm.SVMParser.LoadFPContext;
+import svm.SVMParser.LoadHPContext;
+import svm.SVMParser.LoadRAContext;
+import svm.SVMParser.LoadRVContext;
+import svm.SVMParser.LoadWContext;
+import svm.SVMParser.MultContext;
+import svm.SVMParser.NewContext;
+import svm.SVMParser.PopContext;
+import svm.SVMParser.PrintContext;
+import svm.SVMParser.PushLabelContext;
+import svm.SVMParser.PushNumberContext;
+import svm.SVMParser.StoreFPContext;
+import svm.SVMParser.StoreHPContext;
+import svm.SVMParser.StoreRVContext;
+import svm.SVMParser.StoreRaContext;
+import svm.SVMParser.StoreWContext;
+import svm.SVMParser.SubContext;
 
 public class AssemblyVisitor extends SVMBaseVisitor<AssemblyNode> {
 
+	
+	public List<AssemblyNode> buildCodeList(AssemblyContext ctx) {
+		List<AssemblyNode> assemblyNodes = new ArrayList<>();
+		for (InstructionContext instrCtx : ctx.instruction()) {
+			assemblyNodes.add(visit(instrCtx));
+		}
+		return assemblyNodes;
+	}
+
 	@Override
 	public AssemblyNode visitPushNumber(PushNumberContext ctx) {
-		// TODO Auto-generated method stub
+		System.out.println(ctx.PUSH().getText());
 		return super.visitPushNumber(ctx);
 	}
 

@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -11,11 +12,13 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import ast.FOOLNodeVisitor;
 import ast.Node;
 import codegen.DispatchTable;
-import codegen.SVMLexer;
-import codegen.SVMParser;
 import codegen.VirtualMachine;
 import parser.FOOLLexer;
 import parser.FOOLParser;
+import svm.AssemblyNode;
+import svm.AssemblyVisitor;
+import svm.SVMLexer;
+import svm.SVMParser;
 import util.Environment;
 import util.FOOLlib;
 import util.SemanticError;
@@ -136,6 +139,8 @@ public class CompilerLauncher {
 		}
 		
 		
+		//************ LETTURA ED ESECUZIONE CODICE SVM *****************
+		
 		FileInputStream inputSVMStream = null;
 		try {
 			inputSVMStream = new FileInputStream(fileName+".asm");
@@ -148,7 +153,7 @@ public class CompilerLauncher {
 
 		ANTLRInputStream inputSVM = null;
 		try {
-			input = new ANTLRInputStream(inputSVMStream);
+			inputSVM = new ANTLRInputStream(inputSVMStream);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -162,23 +167,25 @@ public class CompilerLauncher {
         parserSVM.addErrorListener(errorListener);
         
         // TODO Implement visitor pattern for svm
-        parserSVM.assembly();
-
-        if (errorListener.getNumErrors() > 0) {
-			System.err.println("\nThe SVM program was not in the right format."
-					+ " Exiting the compilation process now.");
-			System.exit(1);
-		}
+        AssemblyVisitor assemblyVisitor = new AssemblyVisitor();
+		List<AssemblyNode> assembly = assemblyVisitor.buildCodeList(parserSVM.assembly()); //generazione lista delle istruzioni assemblu
         
-        int[] bytecode = parserSVM.code;
-        VirtualMachine vm = new VirtualMachine(bytecode);
 
-        try {
-			vm.cpu();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			System.err.println("Errore in esecuzione virtual machine");
-		}
+//        if (errorListener.getNumErrors() > 0) {
+//			System.err.println("\nThe SVM program was not in the right format."
+//					+ " Exiting the compilation process now.");
+//			System.exit(1);
+//		}
+//        
+//        int[] bytecode = parserSVM.code;
+//        VirtualMachine vm = new VirtualMachine(bytecode);
+//
+//        try {
+//			vm.cpu();
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			System.err.println("Errore in esecuzione virtual machine");
+//		}
 
         try {
         	inputSVMStream.close();
