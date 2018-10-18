@@ -170,7 +170,9 @@ public class CompilerLauncher {
         AssemblyVisitor assemblyVisitor = new AssemblyVisitor();
 		List<AssemblyNode> assembly = assemblyVisitor.buildCodeList(parserSVM.assembly()); //generazione lista delle istruzioni assemblu
         
-
+		for (AssemblyNode an : assembly) {
+			System.out.println(an.getInstruction());
+		}
 //        if (errorListener.getNumErrors() > 0) {
 //			System.err.println("\nThe SVM program was not in the right format."
 //					+ " Exiting the compilation process now.");

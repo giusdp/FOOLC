@@ -45,8 +45,9 @@ public class AssemblyVisitor extends SVMBaseVisitor<AssemblyNode> {
 
 	@Override
 	public AssemblyNode visitPushNumber(PushNumberContext ctx) {
-		System.out.println(ctx.PUSH().getText());
-		return super.visitPushNumber(ctx);
+		AssemblyNode an = new AssemblyNode(SVMParser.PUSH);
+		an.setNumber(Integer.parseInt(ctx.n.getText())); // Qui si setta il numero che viene pushato
+		return an;
 	}
 
 	@Override
@@ -189,8 +190,7 @@ public class AssemblyVisitor extends SVMBaseVisitor<AssemblyNode> {
 
 	@Override
 	public AssemblyNode visitHalt(HaltContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitHalt(ctx);
+		return new AssemblyNode(SVMParser.HALT);
 	}
 
 	@Override
