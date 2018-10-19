@@ -170,24 +170,25 @@ public class CompilerLauncher {
         AssemblyVisitor assemblyVisitor = new AssemblyVisitor();
 		List<AssemblyNode> assembly = assemblyVisitor.buildCodeList(parserSVM.assembly()); //generazione lista delle istruzioni assemblu
         
-		for (AssemblyNode an : assembly) {
-			System.out.println(an.getInstruction());
+//		for (AssemblyNode an : assembly) {
+//			System.out.println(an.getInstruction());
+//		}
+		
+        if (errorListener.getNumErrors() > 0) {
+			System.err.println("\nThe SVM program was not in the right format."
+					+ " Exiting the compilation process now.");
+			System.exit(1);
 		}
-//        if (errorListener.getNumErrors() > 0) {
-//			System.err.println("\nThe SVM program was not in the right format."
-//					+ " Exiting the compilation process now.");
-//			System.exit(1);
-//		}
-//        
-//        int[] bytecode = parserSVM.code;
-//        VirtualMachine vm = new VirtualMachine(bytecode);
-//
-//        try {
-//			vm.cpu();
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			System.err.println("Errore in esecuzione virtual machine");
-//		}
+
+        VirtualMachine vm = new VirtualMachine(assembly);
+
+        try {
+			vm.cpu();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			System.err.println("Compiler Launcher: Errore in esecuzione virtual machine");
+			e.printStackTrace();
+		}
 
         try {
         	inputSVMStream.close();

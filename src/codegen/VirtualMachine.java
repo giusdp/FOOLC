@@ -2,7 +2,9 @@ package codegen;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
+import svm.AssemblyNode;
 import svm.SVMParser;
 
 /**
@@ -15,7 +17,8 @@ public class VirtualMachine {
 	public static final int CODESIZE = 10000;
     public static final int MEMSIZE = 10000;
     
-    private int[] code;
+    private List<AssemblyNode> code;
+    //private int[] code;
     private int[] memory = new int[MEMSIZE];
     
     private int ip = 0;
@@ -26,24 +29,22 @@ public class VirtualMachine {
     private int ra;           
     private int rv;
     
-    
-
     private Heap heap = new Heap(MEMSIZE);
     private HashSet<HeapBlock> usedHeapBlocks = new HashSet<>();
     
     
-    public VirtualMachine(int[] code) {
+    public VirtualMachine(List<AssemblyNode> code) {
         this.code = code;
       }
 
     public void cpu() throws Exception {
       while ( true ) {
-        int bytecode = code[ip++]; // fetch
+        AssemblyNode bytecode = code.get(ip); // fetch
         int v1,v2;
         int address;
-        switch ( bytecode ) {
+        switch ( bytecode.getInstruction() ) {
           case SVMParser.PUSH:
-            push( code[ip++] );
+            push( code.get(ip++).getNumber() );
             break;
           case SVMParser.POP:
             pop();
@@ -76,17 +77,17 @@ public class VirtualMachine {
             push(memory[pop()]);
             break;
           case SVMParser.BRANCH : 
-            address = code[ip];
+            address = code.get(ip).getNumber();
             ip = address;
             break;
           case SVMParser.BRANCHEQ : //
-            address = code[ip++];
+            address = code.get(ip++).getNumber();
             v1=pop();
             v2=pop();
             if (v2 == v1) ip = address;
             break;
           case SVMParser.BRANCHLESSEQ :
-            address = code[ip++];
+            address = code.get(ip++).getNumber();
             v1=pop();
             v2=pop();
             if (v2 <= v1) ip = address;

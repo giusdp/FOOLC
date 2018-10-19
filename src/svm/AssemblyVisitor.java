@@ -51,7 +51,7 @@ public class AssemblyVisitor extends SVMBaseVisitor<AssemblyNode> {
 		labelRef.keySet().forEach(labelPushLocation -> {
 			String labelName = labelRef.get(labelPushLocation);
 			Integer indexToLabelCall = labelAdd.get(labelName);
-			assemblyNodes.get(labelPushLocation).setCodeIndex(indexToLabelCall);
+			assemblyNodes.get(labelPushLocation).setNumber(indexToLabelCall);
 		});
 		
 		return assemblyNodes;
