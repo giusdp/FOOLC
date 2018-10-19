@@ -41,15 +41,18 @@ public class AssemblyVisitor extends SVMBaseVisitor<AssemblyNode> {
 	
 	public List<AssemblyNode> buildCodeList(AssemblyContext ctx) {
 		List<AssemblyNode> assemblyNodes = new ArrayList<>();
-		for (InstructionContext instrCtx : ctx.instruction()) {
+		
+		ctx.instruction().forEach(instrCtx -> {
 			codeIndex++;
 			assemblyNodes.add(visit(instrCtx));
-		}
+		});
 		
-		// TODO Non l'ho capita sta cosa (preso da SVMwithAttributes, codice della regola assembly)
-		for (Integer labelReference: labelRef.keySet()) {
-			assemblyNodes.get(labelReference).setCodeIndex(labelAdd.get(labelRef.get(labelReference)));
-	     } 
+		// Link intruction that pushes label with instruction that defines label
+		labelRef.keySet().forEach(labelPushLocation -> {
+			String labelName = labelRef.get(labelPushLocation);
+			Integer indexToLabelCall = labelAdd.get(labelName);
+			assemblyNodes.get(labelPushLocation).setCodeIndex(indexToLabelCall);
+		});
 		
 		return assemblyNodes;
 	}
