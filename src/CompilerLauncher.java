@@ -128,7 +128,7 @@ public class CompilerLauncher {
 				System.exit(-1);
 			}
 			System.out.println("Code generated: " + fileName+".asm");
-
+			System.out.println();
 		}
 
 		try {
@@ -169,7 +169,8 @@ public class CompilerLauncher {
         // TODO Implement visitor pattern for svm
         AssemblyVisitor assemblyVisitor = new AssemblyVisitor();
 		List<AssemblyNode> assembly = assemblyVisitor.buildCodeList(parserSVM.assembly()); //generazione lista delle istruzioni assemblu
-        
+
+//		System.out.println("Token identifiers");
 //		for (AssemblyNode an : assembly) {
 //			System.out.println(an.getInstruction());
 //		}

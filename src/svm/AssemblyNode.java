@@ -3,27 +3,28 @@ package svm;
 public class AssemblyNode {
 
 	//TODO Un assembly node rappresenta una istruzione svm
-	private int instruction; // int representing an instruction, from antlr
+	private int instructionID; // int representing an instruction, from antlr
 	
-	private String label; // If it's a push or some instruction with labels we store it here
+	private int labelAddress; // If it's a push or some instruction with labels we store it here
 	private int number; // if it's a push number we store it here
 	
 	private int codeIndex;
 	
 	public AssemblyNode(int instr) {
-		this.instruction = instr;
+		this.instructionID = instr;
 	}
 
-	public int getInstruction() {
-		return instruction;
+	public int getInstructionID() {
+		return instructionID;
 	}
 
-	public String getLabel() {
-		return label;
+	public int getLabelAddress() {
+		return labelAddress;
 	}
 
-	public void setLabel(String label) {
-		this.label = label;
+	// Se si puo' fare jumping a questa istruzione, allora si setta l'indirizzo della label per fare jumping
+	public void setLabelAddress(int label) {
+		this.labelAddress = label;
 	}
 
 	public int getNumber() {

@@ -51,7 +51,7 @@ public class AssemblyVisitor extends SVMBaseVisitor<AssemblyNode> {
 		labelRef.keySet().forEach(labelPushLocation -> {
 			String labelName = labelRef.get(labelPushLocation);
 			Integer indexToLabelCall = labelAdd.get(labelName);
-			assemblyNodes.get(labelPushLocation).setNumber(indexToLabelCall);
+			assemblyNodes.get(labelPushLocation).setLabelAddress(indexToLabelCall);
 		});
 		
 		return assemblyNodes;
@@ -68,7 +68,6 @@ public class AssemblyVisitor extends SVMBaseVisitor<AssemblyNode> {
 	@Override
 	public AssemblyNode visitPushLabel(PushLabelContext ctx) {
 		AssemblyNode an = new AssemblyNode(SVMParser.PUSH);
-		an.setLabel(ctx.l.getText()); // Qui si setta la label pushata
 		labelRef.put(codeIndex, ctx.l.getText()); // La salvo nella label references map
 		an.setCodeIndex(codeIndex);
 		return an;
@@ -126,7 +125,6 @@ public class AssemblyVisitor extends SVMBaseVisitor<AssemblyNode> {
 	@Override
 	public AssemblyNode visitLabel(LabelContext ctx) {
 		AssemblyNode an = new AssemblyNode(SVMParser.LABEL);
-		an.setLabel(ctx.l.getText()); // Qui si setta la label
 		labelAdd.put(ctx.l.getText(), codeIndex);
 		an.setCodeIndex(codeIndex);
 		return an;
@@ -135,7 +133,6 @@ public class AssemblyVisitor extends SVMBaseVisitor<AssemblyNode> {
 	@Override
 	public AssemblyNode visitBranch(BranchContext ctx) {
 		AssemblyNode an = new AssemblyNode(SVMParser.BRANCH);
-		an.setLabel(ctx.l.getText()); // Qui si setta la label
 		labelRef.put(codeIndex, ctx.l.getText());
 		an.setCodeIndex(codeIndex);
 		return an;
@@ -144,7 +141,6 @@ public class AssemblyVisitor extends SVMBaseVisitor<AssemblyNode> {
 	@Override
 	public AssemblyNode visitBranchEqual(BranchEqualContext ctx) {
         AssemblyNode an = new AssemblyNode(SVMParser.BRANCHEQ);
-		an.setLabel(ctx.l.getText()); // Qui si setta la label
 		labelRef.put(codeIndex, ctx.l.getText());
 		an.setCodeIndex(codeIndex);
 		return an;
@@ -153,7 +149,6 @@ public class AssemblyVisitor extends SVMBaseVisitor<AssemblyNode> {
 	@Override
 	public AssemblyNode visitBranchLessEqual(BranchLessEqualContext ctx) {
 		AssemblyNode an = new AssemblyNode(SVMParser.BRANCHLESSEQ);
-		an.setLabel(ctx.l.getText()); // Qui si setta la label
 		labelRef.put(codeIndex, ctx.l.getText());
 		an.setCodeIndex(codeIndex);
 		return an;
