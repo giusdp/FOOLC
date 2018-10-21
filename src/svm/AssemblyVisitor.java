@@ -64,231 +64,181 @@ public class AssemblyVisitor extends SVMBaseVisitor<AssemblyNode> {
 
 	@Override
 	public AssemblyNode visitPushNumber(PushNumberContext ctx) {
-		AssemblyNode an = new AssemblyNode(SVMParser.PUSH);
+		AssemblyNode an = new AssemblyNode(SVMParser.PUSH, codeIndex);
 		an.setNumber(Integer.parseInt(ctx.n.getText())); // Qui si setta il numero che viene pushato
-		an.setCodeIndex(codeIndex);
 		return an;
 	}
 
 	@Override
 	public AssemblyNode visitPushLabel(PushLabelContext ctx) {
-		AssemblyNode an = new AssemblyNode(SVMParser.PUSH);
+		AssemblyNode an = new AssemblyNode(SVMParser.PUSH, codeIndex);
 		labelRef.put(codeIndex, ctx.l.getText()); // La salvo nella label references map
-		an.setCodeIndex(codeIndex);
 		return an;
 	}
 
 	@Override
 	public AssemblyNode visitPop(PopContext ctx) {
-		AssemblyNode an = new AssemblyNode(SVMParser.POP);
-		an.setCodeIndex(codeIndex);
-		return an;
+		return new AssemblyNode(SVMParser.POP, codeIndex);
 	}
 
 	@Override
 	public AssemblyNode visitAdd(AddContext ctx) {
-		AssemblyNode an = new AssemblyNode(SVMParser.ADD);
-		an.setCodeIndex(codeIndex);
-		return an;
+		return new AssemblyNode(SVMParser.ADD, codeIndex);
+		
 	}
 
 	@Override
 	public AssemblyNode visitSub(SubContext ctx) {
-		AssemblyNode an = new AssemblyNode(SVMParser.SUB);
-		an.setCodeIndex(codeIndex);
-		return an;
+		return new AssemblyNode(SVMParser.SUB, codeIndex);
 	}
 
 	@Override
 	public AssemblyNode visitMult(MultContext ctx) {
-		AssemblyNode an = new AssemblyNode(SVMParser.MULT);
-		an.setCodeIndex(codeIndex);
-		return an;
+		return new AssemblyNode(SVMParser.MULT, codeIndex);
 	}
 
 	@Override
 	public AssemblyNode visitDiv(DivContext ctx) {
-		AssemblyNode an = new AssemblyNode(SVMParser.DIV);
-		an.setCodeIndex(codeIndex);
-		return an;
+		return new AssemblyNode(SVMParser.DIV, codeIndex);
 	}
 
 	@Override
 	public AssemblyNode visitStoreW(StoreWContext ctx) {
-		AssemblyNode an = new AssemblyNode(SVMParser.STOREW);
-		an.setCodeIndex(codeIndex);
-		return an;
+		return new AssemblyNode(SVMParser.STOREW, codeIndex);
 	}
 
 	@Override
 	public AssemblyNode visitLoadW(LoadWContext ctx) {
-		AssemblyNode an = new AssemblyNode(SVMParser.LOADW);
-		an.setCodeIndex(codeIndex);
-		return an;
+		return new AssemblyNode(SVMParser.LOADW, codeIndex);
 	}
 
 	@Override
 	public AssemblyNode visitLabel(LabelContext ctx) {
-		AssemblyNode an = new AssemblyNode(SVMParser.LABEL);
+		AssemblyNode an = new AssemblyNode(SVMParser.LABEL, codeIndex);
 		labelAdd.put(ctx.l.getText(), codeIndex);
-		an.setCodeIndex(codeIndex);
 		return an;
 	}
 
 	@Override
 	public AssemblyNode visitBranch(BranchContext ctx) {
-		AssemblyNode an = new AssemblyNode(SVMParser.BRANCH);
+		AssemblyNode an = new AssemblyNode(SVMParser.BRANCH, codeIndex);
 		labelRef.put(codeIndex, ctx.l.getText());
-		an.setCodeIndex(codeIndex);
 		return an;
 	}
 
 	@Override
 	public AssemblyNode visitBranchEqual(BranchEqualContext ctx) {
-        AssemblyNode an = new AssemblyNode(SVMParser.BRANCHEQ);
+        AssemblyNode an = new AssemblyNode(SVMParser.BRANCHEQ, codeIndex);
 		labelRef.put(codeIndex, ctx.l.getText());
-		an.setCodeIndex(codeIndex);
 		return an;
 	}
 
 	@Override
 	public AssemblyNode visitBranchLessEqual(BranchLessEqualContext ctx) {
-		AssemblyNode an = new AssemblyNode(SVMParser.BRANCHLESSEQ);
+		AssemblyNode an = new AssemblyNode(SVMParser.BRANCHLESSEQ, codeIndex);
 		labelRef.put(codeIndex, ctx.l.getText());
-		an.setCodeIndex(codeIndex);
 		return an;
 	}
 	
 
 	@Override
 	public AssemblyNode visitBranchLess(BranchLessContext ctx) {
-		AssemblyNode an = new AssemblyNode(SVMParser.BRANCHLESS);
+		AssemblyNode an = new AssemblyNode(SVMParser.BRANCHLESS, codeIndex);
 		labelRef.put(codeIndex, ctx.l.getText());
-		an.setCodeIndex(codeIndex);
 		return an;
 	}
 
 	@Override
 	public AssemblyNode visitBranchGreaterEqual(BranchGreaterEqualContext ctx) {
-		AssemblyNode an = new AssemblyNode(SVMParser.BRANCHGREATEREQ);
+		AssemblyNode an = new AssemblyNode(SVMParser.BRANCHGREATEREQ, codeIndex);
 		labelRef.put(codeIndex, ctx.l.getText());
-		an.setCodeIndex(codeIndex);
 		return an;
 	}
 
 	@Override
 	public AssemblyNode visitBranchGreater(BranchGreaterContext ctx) {
-		AssemblyNode an = new AssemblyNode(SVMParser.BRANCHGREATER);
+		AssemblyNode an = new AssemblyNode(SVMParser.BRANCHGREATER, codeIndex);
 		labelRef.put(codeIndex, ctx.l.getText());
-		an.setCodeIndex(codeIndex);
 		return an;
 	}
 
 	@Override
 	public AssemblyNode visitBranchAnd(BranchAndContext ctx) {
-		AssemblyNode an = new AssemblyNode(SVMParser.AND);
+		AssemblyNode an = new AssemblyNode(SVMParser.AND, codeIndex);
 		labelRef.put(codeIndex, ctx.l.getText());
-		an.setCodeIndex(codeIndex);
 		return an;
 	}
 
 	@Override
 	public AssemblyNode visitBranchOr(BranchOrContext ctx) {
-		AssemblyNode an = new AssemblyNode(SVMParser.OR);
+		AssemblyNode an = new AssemblyNode(SVMParser.OR, codeIndex);
 		labelRef.put(codeIndex, ctx.l.getText());
-		an.setCodeIndex(codeIndex);
 		return an;
 	}
 
 	@Override
 	public AssemblyNode visitJs(JsContext ctx) {
-		AssemblyNode an = new AssemblyNode(SVMParser.JS);
-		an.setCodeIndex(codeIndex);
-		return an;
+		return new AssemblyNode(SVMParser.JS, codeIndex);
 	}
 
 	@Override
 	public AssemblyNode visitLoadRA(LoadRAContext ctx) {
-		AssemblyNode an = new AssemblyNode(SVMParser.LOADRA);
-		an.setCodeIndex(codeIndex);
-		return an;
+		return new AssemblyNode(SVMParser.LOADRA, codeIndex);
 	}
 
 	@Override
 	public AssemblyNode visitStoreRa(StoreRaContext ctx) {
-		AssemblyNode an = new AssemblyNode(SVMParser.STORERA);
-		an.setCodeIndex(codeIndex);
-		return an;
+		return new AssemblyNode(SVMParser.STORERA, codeIndex);
 	}
 
 	@Override
 	public AssemblyNode visitLoadRV(LoadRVContext ctx) {
-		AssemblyNode an = new AssemblyNode(SVMParser.LOADRV);
-		an.setCodeIndex(codeIndex);
-		return an;
+		return new AssemblyNode(SVMParser.LOADRV, codeIndex);
 	}
 
 	@Override
 	public AssemblyNode visitStoreRV(StoreRVContext ctx) {
-		AssemblyNode an = new AssemblyNode(SVMParser.STORERV);
-		an.setCodeIndex(codeIndex);
-		return an;
+		return new AssemblyNode(SVMParser.STORERV, codeIndex);
 	}
 
 	@Override
 	public AssemblyNode visitLoadFP(LoadFPContext ctx) {
-		AssemblyNode an = new AssemblyNode(SVMParser.LOADFP);
-		an.setCodeIndex(codeIndex);
-		return an;
+		return new AssemblyNode(SVMParser.LOADFP, codeIndex);
 	}
 
 	@Override
 	public AssemblyNode visitStoreFP(StoreFPContext ctx) {
-		AssemblyNode an = new AssemblyNode(SVMParser.STOREFP);
-		an.setCodeIndex(codeIndex);
-		return an;
+		return new AssemblyNode(SVMParser.STOREFP, codeIndex);
 	}
 
 	@Override
 	public AssemblyNode visitCopyFP(CopyFPContext ctx) {
-		AssemblyNode an = new AssemblyNode(SVMParser.COPYFP);
-		an.setCodeIndex(codeIndex);
-		return an;
+		return new AssemblyNode(SVMParser.COPYFP, codeIndex);
 	}
 
 	@Override
 	public AssemblyNode visitLoadHP(LoadHPContext ctx) {
-		AssemblyNode an = new AssemblyNode(SVMParser.LOADHP);
-		an.setCodeIndex(codeIndex);
-		return an;
+		return new AssemblyNode(SVMParser.LOADHP, codeIndex);
 	}
 
 	@Override
 	public AssemblyNode visitStoreHP(StoreHPContext ctx) {
-		AssemblyNode an = new AssemblyNode(SVMParser.STOREHP);
-		an.setCodeIndex(codeIndex);
-		return an;
+		return new AssemblyNode(SVMParser.STOREHP, codeIndex);
 	}
 
 	@Override
 	public AssemblyNode visitPrint(PrintContext ctx) {
-		AssemblyNode an = new AssemblyNode(SVMParser.PRINT);
-		an.setCodeIndex(codeIndex);
-		return an;
+		return new AssemblyNode(SVMParser.PRINT, codeIndex);
 	}
 
 	@Override
 	public AssemblyNode visitHalt(HaltContext ctx) {
-		AssemblyNode an = new AssemblyNode(SVMParser.HALT);
-		an.setCodeIndex(codeIndex);
-		return an;
+		return new AssemblyNode(SVMParser.HALT, codeIndex);
 	}
 
 	@Override
 	public AssemblyNode visitNew(NewContext ctx) {
-		AssemblyNode an = new AssemblyNode(SVMParser.NEW);
-		an.setCodeIndex(codeIndex);
-		return an;
+		return new AssemblyNode(SVMParser.NEW, codeIndex);
 	}
 
 	

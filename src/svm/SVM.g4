@@ -25,8 +25,8 @@ instruction:
 	  | BRANCHLESS l=LABEL		#branchLess
 	  | BRANCHGREATEREQ l=LABEL	#branchGreaterEqual
 	  | BRANCHGREATER l=LABEL	#branchGreater
-	  | AND 				#branchAnd
-	  | OR 				#branchOr
+	  | AND l=LABEL				#branchAnd
+	  | OR l=LABEL				#branchOr
 	  | JS						#js
 	  | LOADRA          		#loadRA
 	  | STORERA         		#storeRa
@@ -60,8 +60,8 @@ BRANCHLESSEQ:'bleq' ;	// jump to label if top <= next
 BRANCHLESS:'bl' ;	// jump to label if top < next
 BRANCHGREATEREQ:'bgeq' ;	// jump to label if top >= next
 BRANCHGREATER:'bg' ;	// jump to label if top > next
-AND: 'and' ; // boolean and on the top two values in the stack
-OR: 'or' ;  // boolean or on the top two values in the stack
+AND: 'and' ; // jump to label if top && next
+OR: 'or' ;  // jump to label if top or next
 JS	 : 'js' ;	// jump to instruction pointed by top of stack and store next instruction in ra
 LOADRA	 : 'lra' ;	// load from ra
 STORERA  : 'sra' ;	// store top into ra	 

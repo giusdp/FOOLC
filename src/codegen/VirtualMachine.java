@@ -132,7 +132,7 @@ public class VirtualMachine {
 				break;
 			case SVMParser.BRANCHGREATER:
 				address = code.get(ip).getLabelAddress(); // si usa code.get(ip) perche' in ip c'e' l'istruzione
-														// successiva con il giusto address
+															// successiva con il giusto address
 				v1 = pop();
 				v2 = pop();
 				System.out.println("BG " + v2 + " " + v1 + ", label to instruction " + address);
@@ -142,16 +142,26 @@ public class VirtualMachine {
 					System.out.println("False, not jumping there");
 				break;
 			case SVMParser.AND: 
+				address = code.get(ip).getLabelAddress(); // si usa code.get(ip) perche' in ip c'e' l'istruzione
+															// successiva con il giusto address
 				v1 = pop();
 				v2 = pop();
-				if (v1 == 1 && v2 == 1) push(1);
-				else push(0);
+				System.out.println("AND " + v2 + " " + v1 + ", label to instruction " + address);
+				if (v1 == 1 && v2 == 1)
+					ip = address;
+				else
+					System.out.println("False, not jumping there");
 				break;
-			case SVMParser.OR: //
+			case SVMParser.OR: 
+				address = code.get(ip).getLabelAddress(); // si usa code.get(ip) perche' in ip c'e' l'istruzione
+															// successiva con il giusto address
 				v1 = pop();
 				v2 = pop();
-				if (v1 == 1 || v2 == 1) push(1);
-				else push(0);
+				System.out.println("OR " + v2 + " " + v1 + ", label to instruction " + address);
+				if (v1 == 1 || v2 == 1)
+					ip = address;
+				else
+					System.out.println("False, not jumping there");
 				break;
 			case SVMParser.JS: //
 				address = pop();
@@ -244,6 +254,7 @@ public class VirtualMachine {
 				break;
 
 			case SVMParser.HALT:
+				System.out.println("HALT!");
 				return;
 			}
 		}

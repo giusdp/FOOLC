@@ -10,8 +10,9 @@ public class AssemblyNode {
 	
 	private int codeIndex;
 	
-	public AssemblyNode(int instr) {
+	public AssemblyNode(int instr, int codeIndex) {
 		this.instructionID = instr;
+		this.codeIndex = codeIndex;
 	}
 
 	public int getInstructionID() {
