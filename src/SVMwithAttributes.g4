@@ -1,4 +1,4 @@
-grammar SVM;
+grammar SVMwithAttributes;
 
 @header {
 import java.util.HashMap;

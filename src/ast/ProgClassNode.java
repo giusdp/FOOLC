@@ -16,44 +16,20 @@ public class ProgClassNode implements Node {
 	
 	private ArrayList<ClassNode> classList;
 	private ArrayList<Node> decList;
-	private ArrayList<Node> expList;
-	private ArrayList<Node> stmList;
+	private ArrayList<Node> contextBody;
 	
 	public ProgClassNode(ArrayList<ClassNode> classes,
 						 ArrayList<Node> decs,
-						 ArrayList<Node> exps,
-						 ArrayList<Node> stms) {
+						 ArrayList<Node> body) {
 		classList = classes;
 		decList = decs;
-		expList = exps;
-		stmList = stms;
+		contextBody = body;
 	}
 	
 	@Override
 	public String toPrint(String indent) {
-		String classesString = "", decString = "", expString = "", stmString = "";
-
-		for (Node d : decList) decString += d.toPrint(indent + "  ");
 		
-		for (ClassNode c : classList) classesString += c.toPrint(indent + "  ");
-		
-		for (Node e : expList) expString += e.toPrint(indent + "  ");
-		
-		for (Node s : stmList) stmString += s.toPrint(indent + "  ");
-		
-		String let = "\n Let Declarations\n", in = " IN\n";
-		if (decString.equals("")) {
-			let = "";
-			in = "";
-		}
-		
-		String ex = " Expressions\n";
-		if (expString.equals("")) ex = "";
-		
-		String st = " Statements\n";
-		if (stmString.equals("")) st = "";
-		
-		return indent + "ProgClassNode\n Classes\n" + classesString + let + decString + in + ex + expString + st + stmString;
+		return FOOLlib.printProgNode(indent, classList, decList, contextBody);
 	}
 	
 	@Override
@@ -85,12 +61,8 @@ public class ProgClassNode implements Node {
 			res.addAll(n.checkSemantics(env));
 
 		// Controlla l'espressione fuori 
-		for (Node e : expList) {
-			res.addAll(e.checkSemantics(env));
-		}
-
-		for (Node s : stmList) {
-			res.addAll(s.checkSemantics(env));
+		for (Node stm : contextBody) {
+			res.addAll(stm.checkSemantics(env));
 		}
 		// Lascia lo scope
 		env.getST().remove(env.decNestLevel());
@@ -106,25 +78,23 @@ public class ProgClassNode implements Node {
 		//       ripetute di typeCheck() e l'if.
 		//       e.g. checkForErrors(ArrayList<Node>), e pure
 		//            checkForErrors(ArrayList< ArrayList<Node> >).
-		Type type;
+		
+		Type type = new VoidType(); // Default value
+		
 		for (ClassNode cl : classList) {
 			type = cl.typeCheck();
 			if (type instanceof ErrorType) return type;
 		}
-		for (Node dec : decList) {
-			type = dec.typeCheck();
+		for (Node declaration : decList) {
+			type = declaration.typeCheck();
 			if (type instanceof ErrorType) return type;
 		}
-		for (Node e : expList) {
-			type = e.typeCheck();
-			if (type instanceof ErrorType) return type;
-		}
-		for(Node s : stmList) {
-			type = s.typeCheck();
+		for (Node instruction : contextBody) {
+			type = instruction.typeCheck();
 			if (type instanceof ErrorType) return type;
 		}
 		
-		return new VoidType();
+		return type; // The type of the program is the type of the last instruction (the returned expression)
 	}
 	@Override
 	public String codeGeneration() {
@@ -138,10 +108,13 @@ public class ProgClassNode implements Node {
 			String declCode = "";
 			for (Node dec : decList)
 				declCode += dec.codeGeneration();
+		
+			String bodyCode = "";
+			for (Node stm : contextBody)
+				bodyCode +=  stm.codeGeneration();
 			
-			// TODO pain in the ass exps and stms codegen in right order
-			return classes + declCode  /* + exp.codeGeneration()*/
-			+ "halt\n" + FOOLlib.getCode();
+			return classes + declCode + bodyCode + "halt\n" +
+				FOOLlib.getCode();
 		}
 		
 		return classes + "halt\n" + FOOLlib.getCode();

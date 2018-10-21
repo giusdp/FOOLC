@@ -136,7 +136,7 @@ public class FunNode implements Node {
 				stmsString+=s.toPrint(indent+"  ");
 		
 		return indent + "Fun: "+ id + " of type " +functionType.toPrint("") +
-				"\n" + indent + parlstr + declstr + expString + stmsString;
+				"\n" + parlstr + declstr + expString + stmsString;
 	}
 
 	public Type typeCheck () {

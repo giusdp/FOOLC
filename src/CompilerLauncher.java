@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -11,8 +12,13 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import ast.FOOLNodeVisitor;
 import ast.Node;
 import codegen.DispatchTable;
+import codegen.VirtualMachine;
 import parser.FOOLLexer;
 import parser.FOOLParser;
+import svm.AssemblyNode;
+import svm.AssemblyVisitor;
+import svm.SVMLexer;
+import svm.SVMParser;
 import util.Environment;
 import util.FOOLlib;
 import util.SemanticError;
@@ -67,7 +73,7 @@ public class CompilerLauncher {
 		Node ast = visitor.visit(parser.prog()); //generazione AST 
 		
 		if (errorListener.getNumErrors() > 0) {
-			System.out.println("\nThe program was not in the right format."
+			System.err.println("\nThe program was not in the right format."
 					+ " Exiting the compilation process now.");
 			System.exit(1);
 		}
@@ -79,10 +85,10 @@ public class CompilerLauncher {
 		ArrayList<SemanticError> err = ast.checkSemantics(env);
 		
 		if (err.size() > 0) {
-			System.out.println("Check Semantics FAILED");
-			System.out.println("You had: " + err.size() + " error(s):");
+			System.err.println("Check Semantics FAILED");
+			System.err.println("You had: " + err.size() + " error(s):");
 			for (SemanticError e : err) {
-				System.out.println("\t" + e);				
+				System.err.println("\t" + e);				
 			}
 			System.exit(1);
 		}
@@ -97,8 +103,8 @@ public class CompilerLauncher {
 
 
 		if (type instanceof ErrorType) {
-			System.out.println("Type Checking FAILED.");
-			System.out.println(type.toPrint("  "));
+			System.err.println("Type Checking FAILED.");
+			System.err.println(type.toPrint("  "));
 			System.exit(2);
 		} 
 		else {
@@ -106,7 +112,7 @@ public class CompilerLauncher {
 		}
 
 		if (!doCodeGen) {
-			System.out.println("Code generation disabled!");
+			System.err.println("Code generation disabled!");
 		}
 		else {
 
@@ -122,7 +128,7 @@ public class CompilerLauncher {
 				System.exit(-1);
 			}
 			System.out.println("Code generated: " + fileName+".asm");
-
+			System.out.println();
 		}
 
 		try {
@@ -131,8 +137,66 @@ public class CompilerLauncher {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		
+		//************ LETTURA ED ESECUZIONE CODICE SVM *****************
+		
+		FileInputStream inputSVMStream = null;
+		try {
+			inputSVMStream = new FileInputStream(fileName+".asm");
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.err.println("\nERROR. No file found with the name " + fileName+".asm");
+			System.exit(1);
+		}
 
+		ANTLRInputStream inputSVM = null;
+		try {
+			inputSVM = new ANTLRInputStream(inputSVMStream);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.exit(2);
+		}
 
+        SVMLexer lexerSVM = new SVMLexer(inputSVM);
+        CommonTokenStream tokensSVM = new CommonTokenStream(lexerSVM);
+        SVMParser parserSVM = new SVMParser(tokensSVM);
+        parserSVM.removeErrorListeners();
+        parserSVM.addErrorListener(errorListener);
+        
+        // TODO Implement visitor pattern for svm
+        AssemblyVisitor assemblyVisitor = new AssemblyVisitor();
+		List<AssemblyNode> assembly = assemblyVisitor.buildCodeList(parserSVM.assembly()); //generazione lista delle istruzioni assemblu
+
+//		System.out.println("Token identifiers");
+//		for (AssemblyNode an : assembly) {
+//			System.out.println(an.getInstruction());
+//		}
+		
+        if (errorListener.getNumErrors() > 0) {
+			System.err.println("\nThe SVM program was not in the right format."
+					+ " Exiting the compilation process now.");
+			System.exit(1);
+		}
+
+        VirtualMachine vm = new VirtualMachine(assembly);
+
+        try {
+			vm.cpu();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			System.err.println("Compiler Launcher: Errore in esecuzione virtual machine");
+			e.printStackTrace();
+		}
+
+        try {
+        	inputSVMStream.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }
