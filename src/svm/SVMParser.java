@@ -288,9 +288,7 @@ public class SVMParser extends Parser {
 		}
 	}
 	public static class BranchAndContext extends InstructionContext {
-		public Token l;
 		public TerminalNode AND() { return getToken(SVMParser.AND, 0); }
-		public TerminalNode LABEL() { return getToken(SVMParser.LABEL, 0); }
 		public BranchAndContext(InstructionContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
@@ -299,9 +297,7 @@ public class SVMParser extends Parser {
 		}
 	}
 	public static class BranchOrContext extends InstructionContext {
-		public Token l;
 		public TerminalNode OR() { return getToken(SVMParser.OR, 0); }
-		public TerminalNode LABEL() { return getToken(SVMParser.LABEL, 0); }
 		public BranchOrContext(InstructionContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
@@ -459,7 +455,7 @@ public class SVMParser extends Parser {
 		InstructionContext _localctx = new InstructionContext(_ctx, getState());
 		enterRule(_localctx, 2, RULE_instruction);
 		try {
-			setState(52);
+			setState(50);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,1,_ctx) ) {
 			case 1:
@@ -614,25 +610,21 @@ public class SVMParser extends Parser {
 				{
 				setState(35);
 				match(AND);
-				setState(36);
-				((BranchAndContext)_localctx).l = match(LABEL);
 				}
 				break;
 			case 18:
 				_localctx = new BranchOrContext(_localctx);
 				enterOuterAlt(_localctx, 18);
 				{
-				setState(37);
+				setState(36);
 				match(OR);
-				setState(38);
-				((BranchOrContext)_localctx).l = match(LABEL);
 				}
 				break;
 			case 19:
 				_localctx = new JsContext(_localctx);
 				enterOuterAlt(_localctx, 19);
 				{
-				setState(39);
+				setState(37);
 				match(JS);
 				}
 				break;
@@ -640,7 +632,7 @@ public class SVMParser extends Parser {
 				_localctx = new LoadRAContext(_localctx);
 				enterOuterAlt(_localctx, 20);
 				{
-				setState(40);
+				setState(38);
 				match(LOADRA);
 				}
 				break;
@@ -648,7 +640,7 @@ public class SVMParser extends Parser {
 				_localctx = new StoreRaContext(_localctx);
 				enterOuterAlt(_localctx, 21);
 				{
-				setState(41);
+				setState(39);
 				match(STORERA);
 				}
 				break;
@@ -656,7 +648,7 @@ public class SVMParser extends Parser {
 				_localctx = new LoadRVContext(_localctx);
 				enterOuterAlt(_localctx, 22);
 				{
-				setState(42);
+				setState(40);
 				match(LOADRV);
 				}
 				break;
@@ -664,7 +656,7 @@ public class SVMParser extends Parser {
 				_localctx = new StoreRVContext(_localctx);
 				enterOuterAlt(_localctx, 23);
 				{
-				setState(43);
+				setState(41);
 				match(STORERV);
 				}
 				break;
@@ -672,7 +664,7 @@ public class SVMParser extends Parser {
 				_localctx = new LoadFPContext(_localctx);
 				enterOuterAlt(_localctx, 24);
 				{
-				setState(44);
+				setState(42);
 				match(LOADFP);
 				}
 				break;
@@ -680,7 +672,7 @@ public class SVMParser extends Parser {
 				_localctx = new StoreFPContext(_localctx);
 				enterOuterAlt(_localctx, 25);
 				{
-				setState(45);
+				setState(43);
 				match(STOREFP);
 				}
 				break;
@@ -688,7 +680,7 @@ public class SVMParser extends Parser {
 				_localctx = new CopyFPContext(_localctx);
 				enterOuterAlt(_localctx, 26);
 				{
-				setState(46);
+				setState(44);
 				match(COPYFP);
 				}
 				break;
@@ -696,7 +688,7 @@ public class SVMParser extends Parser {
 				_localctx = new LoadHPContext(_localctx);
 				enterOuterAlt(_localctx, 27);
 				{
-				setState(47);
+				setState(45);
 				match(LOADHP);
 				}
 				break;
@@ -704,7 +696,7 @@ public class SVMParser extends Parser {
 				_localctx = new StoreHPContext(_localctx);
 				enterOuterAlt(_localctx, 28);
 				{
-				setState(48);
+				setState(46);
 				match(STOREHP);
 				}
 				break;
@@ -712,7 +704,7 @@ public class SVMParser extends Parser {
 				_localctx = new PrintContext(_localctx);
 				enterOuterAlt(_localctx, 29);
 				{
-				setState(49);
+				setState(47);
 				match(PRINT);
 				}
 				break;
@@ -720,7 +712,7 @@ public class SVMParser extends Parser {
 				_localctx = new HaltContext(_localctx);
 				enterOuterAlt(_localctx, 30);
 				{
-				setState(50);
+				setState(48);
 				match(HALT);
 				}
 				break;
@@ -728,7 +720,7 @@ public class SVMParser extends Parser {
 				_localctx = new NewContext(_localctx);
 				enterOuterAlt(_localctx, 31);
 				{
-				setState(51);
+				setState(49);
 				match(NEW);
 				}
 				break;
@@ -746,26 +738,26 @@ public class SVMParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3$9\4\2\t\2\4\3\t\3"+
-		"\3\2\7\2\b\n\2\f\2\16\2\13\13\2\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3"+
+		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3$\67\4\2\t\2\4\3\t"+
+		"\3\3\2\7\2\b\n\2\f\2\16\2\13\13\2\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3"+
 		"\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3"+
-		"\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\5\3\67\n"+
-		"\3\3\3\2\2\4\2\4\2\2U\2\t\3\2\2\2\4\66\3\2\2\2\6\b\5\4\3\2\7\6\3\2\2\2"+
-		"\b\13\3\2\2\2\t\7\3\2\2\2\t\n\3\2\2\2\n\3\3\2\2\2\13\t\3\2\2\2\f\r\7\3"+
-		"\2\2\r\67\7\"\2\2\16\17\7\3\2\2\17\67\7!\2\2\20\67\7\4\2\2\21\67\7\5\2"+
-		"\2\22\67\7\6\2\2\23\67\7\7\2\2\24\67\7\b\2\2\25\67\7\t\2\2\26\67\7\n\2"+
-		"\2\27\30\7!\2\2\30\67\7 \2\2\31\32\7\13\2\2\32\67\7!\2\2\33\34\7\f\2\2"+
-		"\34\67\7!\2\2\35\36\7\r\2\2\36\67\7!\2\2\37 \7\16\2\2 \67\7!\2\2!\"\7"+
-		"\17\2\2\"\67\7!\2\2#$\7\20\2\2$\67\7!\2\2%&\7\21\2\2&\67\7!\2\2\'(\7\22"+
-		"\2\2(\67\7!\2\2)\67\7\23\2\2*\67\7\24\2\2+\67\7\25\2\2,\67\7\26\2\2-\67"+
-		"\7\27\2\2.\67\7\30\2\2/\67\7\31\2\2\60\67\7\32\2\2\61\67\7\33\2\2\62\67"+
-		"\7\34\2\2\63\67\7\35\2\2\64\67\7\36\2\2\65\67\7\37\2\2\66\f\3\2\2\2\66"+
-		"\16\3\2\2\2\66\20\3\2\2\2\66\21\3\2\2\2\66\22\3\2\2\2\66\23\3\2\2\2\66"+
-		"\24\3\2\2\2\66\25\3\2\2\2\66\26\3\2\2\2\66\27\3\2\2\2\66\31\3\2\2\2\66"+
-		"\33\3\2\2\2\66\35\3\2\2\2\66\37\3\2\2\2\66!\3\2\2\2\66#\3\2\2\2\66%\3"+
-		"\2\2\2\66\'\3\2\2\2\66)\3\2\2\2\66*\3\2\2\2\66+\3\2\2\2\66,\3\2\2\2\66"+
-		"-\3\2\2\2\66.\3\2\2\2\66/\3\2\2\2\66\60\3\2\2\2\66\61\3\2\2\2\66\62\3"+
-		"\2\2\2\66\63\3\2\2\2\66\64\3\2\2\2\66\65\3\2\2\2\67\5\3\2\2\2\4\t\66";
+		"\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\5\3\65\n\3\3\3"+
+		"\2\2\4\2\4\2\2S\2\t\3\2\2\2\4\64\3\2\2\2\6\b\5\4\3\2\7\6\3\2\2\2\b\13"+
+		"\3\2\2\2\t\7\3\2\2\2\t\n\3\2\2\2\n\3\3\2\2\2\13\t\3\2\2\2\f\r\7\3\2\2"+
+		"\r\65\7\"\2\2\16\17\7\3\2\2\17\65\7!\2\2\20\65\7\4\2\2\21\65\7\5\2\2\22"+
+		"\65\7\6\2\2\23\65\7\7\2\2\24\65\7\b\2\2\25\65\7\t\2\2\26\65\7\n\2\2\27"+
+		"\30\7!\2\2\30\65\7 \2\2\31\32\7\13\2\2\32\65\7!\2\2\33\34\7\f\2\2\34\65"+
+		"\7!\2\2\35\36\7\r\2\2\36\65\7!\2\2\37 \7\16\2\2 \65\7!\2\2!\"\7\17\2\2"+
+		"\"\65\7!\2\2#$\7\20\2\2$\65\7!\2\2%\65\7\21\2\2&\65\7\22\2\2\'\65\7\23"+
+		"\2\2(\65\7\24\2\2)\65\7\25\2\2*\65\7\26\2\2+\65\7\27\2\2,\65\7\30\2\2"+
+		"-\65\7\31\2\2.\65\7\32\2\2/\65\7\33\2\2\60\65\7\34\2\2\61\65\7\35\2\2"+
+		"\62\65\7\36\2\2\63\65\7\37\2\2\64\f\3\2\2\2\64\16\3\2\2\2\64\20\3\2\2"+
+		"\2\64\21\3\2\2\2\64\22\3\2\2\2\64\23\3\2\2\2\64\24\3\2\2\2\64\25\3\2\2"+
+		"\2\64\26\3\2\2\2\64\27\3\2\2\2\64\31\3\2\2\2\64\33\3\2\2\2\64\35\3\2\2"+
+		"\2\64\37\3\2\2\2\64!\3\2\2\2\64#\3\2\2\2\64%\3\2\2\2\64&\3\2\2\2\64\'"+
+		"\3\2\2\2\64(\3\2\2\2\64)\3\2\2\2\64*\3\2\2\2\64+\3\2\2\2\64,\3\2\2\2\64"+
+		"-\3\2\2\2\64.\3\2\2\2\64/\3\2\2\2\64\60\3\2\2\2\64\61\3\2\2\2\64\62\3"+
+		"\2\2\2\64\63\3\2\2\2\65\5\3\2\2\2\4\t\64";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {
