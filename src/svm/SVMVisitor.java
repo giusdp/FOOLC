@@ -1,9 +1,5 @@
 // Generated from SVM.g4 by ANTLR 4.6
 package svm;
-
-import java.util.HashMap; 
-import codegen.VirtualMachine;
-
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 /**
@@ -111,6 +107,41 @@ public interface SVMVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitBranchLessEqual(SVMParser.BranchLessEqualContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code branchLess}
+	 * labeled alternative in {@link SVMParser#instruction}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBranchLess(SVMParser.BranchLessContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code branchGreaterEqual}
+	 * labeled alternative in {@link SVMParser#instruction}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBranchGreaterEqual(SVMParser.BranchGreaterEqualContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code branchGreater}
+	 * labeled alternative in {@link SVMParser#instruction}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBranchGreater(SVMParser.BranchGreaterContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code branchAnd}
+	 * labeled alternative in {@link SVMParser#instruction}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBranchAnd(SVMParser.BranchAndContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code branchOr}
+	 * labeled alternative in {@link SVMParser#instruction}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBranchOr(SVMParser.BranchOrContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code js}
 	 * labeled alternative in {@link SVMParser#instruction}.

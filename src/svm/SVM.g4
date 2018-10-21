@@ -22,6 +22,11 @@ instruction:
 	  | BRANCH l=LABEL			#branch
 	  | BRANCHEQ l=LABEL		#branchEqual
 	  | BRANCHLESSEQ l=LABEL	#branchLessEqual
+	  | BRANCHLESS l=LABEL		#branchLess
+	  | BRANCHGREATEREQ l=LABEL	#branchGreaterEqual
+	  | BRANCHGREATER l=LABEL	#branchGreater
+	  | AND l=LABEL				#branchAnd
+	  | OR l=LABEL				#branchOr
 	  | JS						#js
 	  | LOADRA          		#loadRA
 	  | STORERA         		#storeRa
@@ -52,6 +57,11 @@ LOADW	 : 'lw' ;	// load a value from the memory cell pointed by top
 BRANCH	 : 'b' ;	// jump to label
 BRANCHEQ : 'beq' ;	// jump to label if top == next
 BRANCHLESSEQ:'bleq' ;	// jump to label if top <= next
+BRANCHLESS:'bl' ;	// jump to label if top < next
+BRANCHGREATEREQ:'bgeq' ;	// jump to label if top >= next
+BRANCHGREATER:'bg' ;	// jump to label if top > next
+AND: 'and' ; // jump to label if top && next
+OR: 'or' ;  // jump to label if top or next
 JS	 : 'js' ;	// jump to instruction pointed by top of stack and store next instruction in ra
 LOADRA	 : 'lra' ;	// load from ra
 STORERA  : 'sra' ;	// store top into ra	 
