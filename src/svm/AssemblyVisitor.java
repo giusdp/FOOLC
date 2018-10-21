@@ -6,9 +6,14 @@ import java.util.List;
 
 import svm.SVMParser.AddContext;
 import svm.SVMParser.AssemblyContext;
+import svm.SVMParser.BranchAndContext;
 import svm.SVMParser.BranchContext;
 import svm.SVMParser.BranchEqualContext;
+import svm.SVMParser.BranchGreaterContext;
+import svm.SVMParser.BranchGreaterEqualContext;
+import svm.SVMParser.BranchLessContext;
 import svm.SVMParser.BranchLessEqualContext;
+import svm.SVMParser.BranchOrContext;
 import svm.SVMParser.CopyFPContext;
 import svm.SVMParser.DivContext;
 import svm.SVMParser.HaltContext;
@@ -149,6 +154,47 @@ public class AssemblyVisitor extends SVMBaseVisitor<AssemblyNode> {
 	@Override
 	public AssemblyNode visitBranchLessEqual(BranchLessEqualContext ctx) {
 		AssemblyNode an = new AssemblyNode(SVMParser.BRANCHLESSEQ);
+		labelRef.put(codeIndex, ctx.l.getText());
+		an.setCodeIndex(codeIndex);
+		return an;
+	}
+	
+
+	@Override
+	public AssemblyNode visitBranchLess(BranchLessContext ctx) {
+		AssemblyNode an = new AssemblyNode(SVMParser.BRANCHLESS);
+		labelRef.put(codeIndex, ctx.l.getText());
+		an.setCodeIndex(codeIndex);
+		return an;
+	}
+
+	@Override
+	public AssemblyNode visitBranchGreaterEqual(BranchGreaterEqualContext ctx) {
+		AssemblyNode an = new AssemblyNode(SVMParser.BRANCHGREATEREQ);
+		labelRef.put(codeIndex, ctx.l.getText());
+		an.setCodeIndex(codeIndex);
+		return an;
+	}
+
+	@Override
+	public AssemblyNode visitBranchGreater(BranchGreaterContext ctx) {
+		AssemblyNode an = new AssemblyNode(SVMParser.BRANCHGREATER);
+		labelRef.put(codeIndex, ctx.l.getText());
+		an.setCodeIndex(codeIndex);
+		return an;
+	}
+
+	@Override
+	public AssemblyNode visitBranchAnd(BranchAndContext ctx) {
+		AssemblyNode an = new AssemblyNode(SVMParser.AND);
+		labelRef.put(codeIndex, ctx.l.getText());
+		an.setCodeIndex(codeIndex);
+		return an;
+	}
+
+	@Override
+	public AssemblyNode visitBranchOr(BranchOrContext ctx) {
+		AssemblyNode an = new AssemblyNode(SVMParser.OR);
 		labelRef.put(codeIndex, ctx.l.getText());
 		an.setCodeIndex(codeIndex);
 		return an;
