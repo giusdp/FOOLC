@@ -1,1 +1,4 @@
-if (true && false) then {3} else {44};
+let
+	int x = 4;
+in
+	x;

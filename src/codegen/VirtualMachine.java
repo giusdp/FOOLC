@@ -6,7 +6,6 @@ import java.util.List;
 
 import svm.AssemblyNode;
 import svm.SVMParser;
-
 /**
  * @author Giuseppe
  *
@@ -72,11 +71,11 @@ public class VirtualMachine {
 				break;
 			case SVMParser.STOREW: //
 				address = pop();
-				memory[address] = pop();
-				break;
+                setMemory(address, pop());
+                break;
 			case SVMParser.LOADW: //
-				push(memory[pop()]);
-				break;
+				push(getMemory(pop()));
+                break;
 			case SVMParser.LABEL:
 				System.out.println("Label instruction, nothing to do");
 				break;
@@ -269,6 +268,15 @@ public class VirtualMachine {
 		memory[location] = value;
 	}
 
+	//prende il valore contenuto all'indirizzo passato
+    private int getMemory(int address) throws Exception {
+        int location = address;
+        if (location < 0 || location >= MEMSIZE) {
+            throw new Exception("Segmentation Fault Error");
+        }
+        return memory[location];
+    }
+	
 	private int pop() {
 		return memory[sp++];
 	}
