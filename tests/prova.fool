@@ -1,4 +1,1 @@
-let
-	int f() 5;
-in
-	f();
+true&&false;

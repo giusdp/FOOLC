@@ -1,16 +1,10 @@
-push function0
-push 5
+push 1
+push 0
+and label0
+push 0
+b label1
+label0:
+push 1
+label1:
 halt
-
-function0:
-cfp
-lra
-push 5
-srv
-sra
-pop
-sfp
-lrv
-lra
-js
 

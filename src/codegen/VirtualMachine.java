@@ -92,7 +92,7 @@ public class VirtualMachine {
 				ip = address;
 				break;
 			case SVMParser.BRANCHEQ: //
-				address = code.get(ip).getLabelAddress(); // si usa code.get(ip) perche' in ip c'e' l'istruzione
+				address = instruction.getLabelAddress(); // si usa code.get(ip) perche' in ip c'e' l'istruzione
 															// successiva con il giusto address
 				v1 = pop();
 				v2 = pop();
@@ -147,7 +147,7 @@ public class VirtualMachine {
 					System.out.println("False, not jumping there");
 				break;
 			case SVMParser.AND: 
-				address = code.get(ip).getLabelAddress(); // si usa code.get(ip) perche' in ip c'e' l'istruzione
+				address = instruction.getLabelAddress(); // si usa code.get(ip) perche' in ip c'e' l'istruzione
 															// successiva con il giusto address
 				v1 = pop();
 				v2 = pop();

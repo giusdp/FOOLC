@@ -28,7 +28,7 @@ public class AssemblyNode {
 	// Se si puo' fare jumping a questa istruzione, allora si setta l'indirizzo
 	// della label per fare jumping
 	public void setLabelAddress(int label) {
-		withLabel = false;
+		withLabel = true;
 		this.labelAddress = label;
 	}
 
