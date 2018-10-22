@@ -86,14 +86,12 @@ public class VirtualMachine {
 				System.out.println("Label instruction, nothing to do");
 				break;
 			case SVMParser.BRANCH:
-				address = code.get(ip).getLabelAddress(); // si usa code.get(ip) e non bytecode perche' in ip c'e'
-				// l'istruzione successiva con il giusto address
+				address = instruction.getLabelAddress();
 				System.out.println("Branch to " + address);
 				ip = address;
 				break;
 			case SVMParser.BRANCHEQ: //
-				address = instruction.getLabelAddress(); // si usa code.get(ip) perche' in ip c'e' l'istruzione
-															// successiva con il giusto address
+				address = instruction.getLabelAddress(); 
 				v1 = pop();
 				v2 = pop();
 				System.out.println("BEQ " + v1 + " " + v2 + ", label to instruction " + address);
@@ -103,8 +101,7 @@ public class VirtualMachine {
 					System.out.println("False, not jumping there");
 				break;
 			case SVMParser.BRANCHLESSEQ:
-				address = code.get(ip).getLabelAddress(); // si usa code.get(ip) perche' in ip c'e' l'istruzione
-															// successiva con il giusto address
+				address = instruction.getLabelAddress(); 
 				v1 = pop();
 				v2 = pop();
 				System.out.println("BLEQ " + v2 + " " + v1 + ", label to instruction " + address);
@@ -114,8 +111,7 @@ public class VirtualMachine {
 					System.out.println("False, not jumping there");
 				break;
 			case SVMParser.BRANCHLESS:
-				address = code.get(ip).getLabelAddress(); // si usa code.get(ip) perche' in ip c'e' l'istruzione
-															// successiva con il giusto address
+				address = instruction.getLabelAddress(); 
 				v1 = pop();
 				v2 = pop();
 				System.out.println("BL " + v2 + " " + v1 + ", label to instruction " + address);
@@ -125,8 +121,7 @@ public class VirtualMachine {
 					System.out.println("False, not jumping there");
 				break;
 			case SVMParser.BRANCHGREATEREQ:
-				address = code.get(ip).getLabelAddress(); // si usa code.get(ip) perche' in ip c'e' l'istruzione
-															// successiva con il giusto address
+				address = instruction.getLabelAddress(); 
 				v1 = pop();
 				v2 = pop();
 				System.out.println("BGEQ " + v2 + " " + v1 + ", label to instruction " + address);
@@ -136,8 +131,7 @@ public class VirtualMachine {
 					System.out.println("False, not jumping there");
 				break;
 			case SVMParser.BRANCHGREATER:
-				address = code.get(ip).getLabelAddress(); // si usa code.get(ip) perche' in ip c'e' l'istruzione
-															// successiva con il giusto address
+				address = instruction.getLabelAddress(); 
 				v1 = pop();
 				v2 = pop();
 				System.out.println("BG " + v2 + " " + v1 + ", label to instruction " + address);
@@ -147,8 +141,7 @@ public class VirtualMachine {
 					System.out.println("False, not jumping there");
 				break;
 			case SVMParser.AND: 
-				address = instruction.getLabelAddress(); // si usa code.get(ip) perche' in ip c'e' l'istruzione
-															// successiva con il giusto address
+				address = instruction.getLabelAddress(); 
 				v1 = pop();
 				v2 = pop();
 				System.out.println("AND " + v2 + " " + v1 + ", label to instruction " + address);
@@ -158,8 +151,7 @@ public class VirtualMachine {
 					System.out.println("False, not jumping there");
 				break;
 			case SVMParser.OR: 
-				address = code.get(ip).getLabelAddress(); // si usa code.get(ip) perche' in ip c'e' l'istruzione
-															// successiva con il giusto address
+				address = instruction.getLabelAddress(); 
 				v1 = pop();
 				v2 = pop();
 				System.out.println("OR " + v2 + " " + v1 + ", label to instruction " + address);

@@ -1,10 +1,22 @@
-push 1
-push 0
-and label0
-push 0
-b label1
-label0:
-push 1
-label1:
+push function0
+lfp
+lfp
+push -1
+lfp
+add
+lw
+js
 halt
+
+function0:
+cfp
+lra
+push 4
+srv
+sra
+pop
+sfp
+lrv
+lra
+js
 
