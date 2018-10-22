@@ -43,8 +43,14 @@ public class VirtualMachine {
 			int address;
 			switch (instruction.getInstructionID()) {
 			case SVMParser.PUSH:
-				System.out.println("push " + instruction.getNumber());
-				push(instruction.getNumber());
+				if (instruction.isWithLabel()) {
+					System.out.println("push " + instruction.getLabelAddress());
+					push(instruction.getLabelAddress());
+				}
+				else {
+					System.out.println("push " + instruction.getNumber());
+					push(instruction.getNumber());
+				}
 				break;
 			case SVMParser.POP:
 				pop();

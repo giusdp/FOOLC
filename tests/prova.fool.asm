@@ -1,5 +1,5 @@
 push function0
-push 345
+push 5
 halt
 
 function0:
