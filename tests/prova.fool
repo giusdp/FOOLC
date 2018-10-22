@@ -1,4 +1,4 @@
 let
-	int x = 4;
+	int f() 5;
 in
-	x;
+	345;

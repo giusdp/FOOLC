@@ -1,9 +1,5 @@
 grammar SVM;
 
-@lexer::members {
-public int lexicalErrors=0;
-}
-
 /*------------------------------------------------------------------
  * PARSER RULES
  *------------------------------------------------------------------*/
@@ -46,7 +42,7 @@ instruction:
  * LEXER RULES
  *------------------------------------------------------------------*/
  
-PUSH  	 : 'push' ; 	// pushes constant in the stack
+PUSH : 'push' ; 	// pushes constant in the stack
 POP	 : 'pop' ; 	// pops from stack
 ADD	 : 'add' ;  	// add two values from the stack
 SUB	 : 'sub' ;	// add two values from the stack
@@ -83,5 +79,5 @@ NUMBER	 : '0' | ('-')?(('1'..'9')('0'..'9')*) ;
 
 WHITESP  : ( '\t' | ' ' | '\r' | '\n' )+   -> channel(HIDDEN);
 
-ERR   	 : . { System.err.println("Invalid char: "+ getText()); lexicalErrors++;  } -> channel(HIDDEN); 
+
 
