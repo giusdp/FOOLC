@@ -11,7 +11,7 @@
 
 \title{Report del Progetto di Compilatori e Interpreti}
 \date{Data di Consegna}
-\author{Giuseppe De Palma XXXXXX, Eduart Uzeir XXXXXX\\ Domenico Coriale XXXXXX e Andrew Memma XXXXXX\\
+\author{Giuseppe De Palma 0000854846, Andrew Memma XXXXXX\\
 \\Corso di Laurea Magistrale in Informatica 2017/2018}
 \begin{document}
 
@@ -20,11 +20,11 @@
 \tableofcontents
 
 \chapter{Introduzione}
-Il lavoro presentato riguarda un compilatore per un semplice linguaggio di programmazione imperativo: FOOL. Il progetto è parte dell'esame del corso ``Compilatori e Intepreti'' della Magistrale in Informatica, Università di Bologna. Il lavoro è stato svolto da 4 studenti del suddetto corso nel periodo estivo del 2018.\\
+Il lavoro presentato riguarda un compilatore per un semplice linguaggio di programmazione ad oggetti: FOOL. Il progetto è parte dell'esame del corso ``Compilatori e Intepreti'' della Magistrale in Informatica, Università di Bologna. Il lavoro è stato svolto da 2 studenti del suddetto corso.\\
 
 L'obiettivo di tale progetto è volto allo studio dello sviluppo e funzionamento dei compilatori. Partendo dal testo di un programma scritto in FOOL, il compilatore lo analizza sia per ricavarne le informazioni necessarie per generare codice eseguibile, sia per controllarne la correttezza. Si fa uso di diverse tecniche per cercare errori nei programmi (a tempo di compilazione). In particolare, il linguaggio si avvale di un semplice sistema di tipi e il compilatore esegue un controllo di tipi statico che permette di segnalare all'utente errori di tipo. Con questo controllo si ha il vantaggio di evitare i cosiddetti errori \textit{untrapped} e una parte degli errori \textit{trapped}, cioè l'insieme degli errori ``proibiti''.\footnote{Distinguiamo due generi di errore in un programma: errori \textit{trapped}, ovvero quelli che provocano il fallimento della computazione, e gli errori	\textit{untrapped}, che non	presentano sintomi immediatamente visibili, e sono perciò più insidiosi. Al primo tipo appartengono, ad esempio, la divisione per zero o un accesso proibito alla memoria; al secondo la lettura erronea di una porzione non significativa della memoria.}\\
 
-FOOL non è l'unico linguaggio utilizzato, infatti il compilatore deve generare del codice eseguibile (da un elaboratore) partendo da un programma scritto in FOOL. Questo nuovo codice è scritto in un linguaggio \textit{assembly} per una \textit{stack machine} con registri (SVM, che sta per Stack Virtual Machine). Anch'esso usato per scopi accademici, senza un reale utilizzo pratico. Ha istruzioni per alcuni calcoli aritmentici, gestione dello \textit{stack} e salti condizionati, in accordo con le estensioni fatte a FOOL, anche il linguaggio della SVM è stato arricchito.
+FOOL non è l'unico linguaggio utilizzato, infatti il compilatore deve generare del codice eseguibile (da un elaboratore) partendo da un programma scritto in FOOL. Questo nuovo codice è scritto in un linguaggio \textit{assembly} per una \textit{stack virtual machine} con registri (SVM), il quale offre istruzioni per alcuni calcoli aritmentici, per gestione di \textit{stack} e \textit{heap} e salti condizionati. In accordo con le estensioni fatte a FOOL, anche il linguaggio SVM è stato arricchito.
 
 \section{Outline}
 Nei capitoli successivi è presentato in modo approfondito il progetto e le sue caratteristiche principali. Nel capitolo successivo viene descritta la struttura del compilatore e come utilizzarlo e una breve analisi sulle diverse parti che lo costituiscono. Il capitolo 3 discute la grammatica del linguaggio e come da questa si ricavino le informazioni per proseguire con la compilazione. Nel capitolo 4 è discussa l'analisi semantica, di particolare importanza è la sezione del \textit{type checking}. Prima di concludere è descritta, nel capitolo 5, la generazione del codice \textit{assembly}.
@@ -34,7 +34,7 @@ Il compilatore è stato sviluppato nel linguaggio di programmazione Java, utiliz
 
 \textbf{Parlare della struttura del progetto, dei nodi etc.}
 
-\section{Utilizzo}
+\section{Istruzioni Per l'Utilizzo}
 Si spiega con dettaglio come lanciare e utilizzare il progetto.
 
 \chapter{Sintassi}
