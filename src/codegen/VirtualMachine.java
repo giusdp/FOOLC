@@ -44,7 +44,7 @@ public class VirtualMachine {
 			switch (instruction.getInstructionID()) {
 			case SVMParser.PUSH:
 				if (instruction.isWithLabel()) {
-					System.out.println("push " + instruction.getLabelAddress());
+					System.out.println("push label address: " + instruction.getLabelAddress());
 					push(instruction.getLabelAddress());
 				}
 				else {
@@ -53,34 +53,42 @@ public class VirtualMachine {
 				}
 				break;
 			case SVMParser.POP:
+				System.out.println("pop");
 				pop();
 				break;
 			case SVMParser.ADD:
 				v1 = pop();
 				v2 = pop();
+				System.out.println("add " + v1 + " " + v2);
 				push(v2 + v1);
 				break;
 			case SVMParser.MULT:
 				v1 = pop();
 				v2 = pop();
+				System.out.println("mult " + v1 + " " + v2);
 				push(v2 * v1);
 				break;
 			case SVMParser.DIV:
 				v1 = pop();
 				v2 = pop();
+				System.out.println("div " + v1 + " " + v2);
 				push(v2 / v1);
 				break;
 			case SVMParser.SUB:
 				v1 = pop();
 				v2 = pop();
+				System.out.println("sub " + v1 + " " + v2);
 				push(v2 - v1);
 				break;
 			case SVMParser.STOREW: //
 				address = pop();
+				System.out.println("sw " + address);
                 setMemory(address, pop());
                 break;
 			case SVMParser.LOADW: //
-				push(getMemory(pop()));
+				address = pop();
+				System.out.println("lw " + address);
+				push(getMemory(address));
                 break;
 			case SVMParser.LABEL:
 				System.out.println("Label instruction, nothing to do");
@@ -164,33 +172,43 @@ public class VirtualMachine {
 				address = pop();
 				ra = ip;
 				ip = address;
+				System.out.println("js " + address);
 				break;
 			case SVMParser.STORERA: //
 				ra = pop();
+				System.out.println("sra");
 				break;
 			case SVMParser.LOADRA: //
 				push(ra);
+				System.out.println("lra");
 				break;
 			case SVMParser.STORERV: //
 				rv = pop();
+				System.out.println("srv");
 				break;
 			case SVMParser.LOADRV: //
 				push(rv);
+				System.out.println("lrv");
 				break;
 			case SVMParser.LOADFP: //
+				System.out.println("lfp");
 				push(fp);
 				break;
 			case SVMParser.STOREFP: //
 				fp = pop();
+				System.out.println("sfp");
 				break;
 			case SVMParser.COPYFP: //
+				System.out.println("cfp");
 				fp = sp;
 				break;
 			case SVMParser.STOREHP: //
 				hp = pop();
+				System.out.println("shp");
 				break;
 			case SVMParser.LOADHP: //
 				push(hp);
+				System.out.println("lhp");
 				break;
 			case SVMParser.PRINT:
 				System.out.println((sp < MEMSIZE) ? memory[sp] : "Empty stack!");
