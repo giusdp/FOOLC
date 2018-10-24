@@ -43,13 +43,13 @@ public class AssemblyVisitor extends SVMBaseVisitor<AssemblyNode> {
 	private HashMap<String,Integer> labelAdd = new HashMap<String,Integer>();
     private HashMap<Integer,String> labelRef = new HashMap<Integer,String>();
     private int codeIndex = 0;
+    List<AssemblyNode> assemblyNodes = new ArrayList<>();
 	
 	public List<AssemblyNode> buildCodeList(AssemblyContext ctx) {
-		List<AssemblyNode> assemblyNodes = new ArrayList<>();
 		
 		ctx.instruction().forEach(instrCtx -> {
-			codeIndex++;
 			assemblyNodes.add(visit(instrCtx));
+			codeIndex++;
 		});
 		
 		// Link intruction that pushes label with instruction that defines label
@@ -112,31 +112,35 @@ public class AssemblyVisitor extends SVMBaseVisitor<AssemblyNode> {
 		return new AssemblyNode(SVMParser.LOADW, codeIndex);
 	}
 
+	
+	// Perchè assemblyNodes.size() in Label e nei branch?
+	// Perchè le istruzioni partono da 1 e non da 0, assemblyNodes.size() è equivalente a fare codeIndex+1
+	
 	@Override
 	public AssemblyNode visitLabel(LabelContext ctx) {
 		AssemblyNode an = new AssemblyNode(SVMParser.LABEL, codeIndex);
-		labelAdd.put(ctx.l.getText(), codeIndex);
+		labelAdd.put(ctx.l.getText(), assemblyNodes.size());
 		return an;
 	}
 
 	@Override
 	public AssemblyNode visitBranch(BranchContext ctx) {
 		AssemblyNode an = new AssemblyNode(SVMParser.BRANCH, codeIndex);
-		labelRef.put(codeIndex, ctx.l.getText());
+		labelRef.put(assemblyNodes.size(), ctx.l.getText());
 		return an;
 	}
 
 	@Override
 	public AssemblyNode visitBranchEqual(BranchEqualContext ctx) {
         AssemblyNode an = new AssemblyNode(SVMParser.BRANCHEQ, codeIndex);
-		labelRef.put(codeIndex, ctx.l.getText());
+		labelRef.put(assemblyNodes.size(), ctx.l.getText());
 		return an;
 	}
 
 	@Override
 	public AssemblyNode visitBranchLessEqual(BranchLessEqualContext ctx) {
 		AssemblyNode an = new AssemblyNode(SVMParser.BRANCHLESSEQ, codeIndex);
-		labelRef.put(codeIndex, ctx.l.getText());
+		labelRef.put(assemblyNodes.size(), ctx.l.getText());
 		return an;
 	}
 	
@@ -144,35 +148,35 @@ public class AssemblyVisitor extends SVMBaseVisitor<AssemblyNode> {
 	@Override
 	public AssemblyNode visitBranchLess(BranchLessContext ctx) {
 		AssemblyNode an = new AssemblyNode(SVMParser.BRANCHLESS, codeIndex);
-		labelRef.put(codeIndex, ctx.l.getText());
+		labelRef.put(assemblyNodes.size(), ctx.l.getText());
 		return an;
 	}
 
 	@Override
 	public AssemblyNode visitBranchGreaterEqual(BranchGreaterEqualContext ctx) {
 		AssemblyNode an = new AssemblyNode(SVMParser.BRANCHGREATEREQ, codeIndex);
-		labelRef.put(codeIndex, ctx.l.getText());
+		labelRef.put(assemblyNodes.size(), ctx.l.getText());
 		return an;
 	}
 
 	@Override
 	public AssemblyNode visitBranchGreater(BranchGreaterContext ctx) {
 		AssemblyNode an = new AssemblyNode(SVMParser.BRANCHGREATER, codeIndex);
-		labelRef.put(codeIndex, ctx.l.getText());
+		labelRef.put(assemblyNodes.size(), ctx.l.getText());
 		return an;
 	}
 
 	@Override
 	public AssemblyNode visitBranchAnd(BranchAndContext ctx) {
 		AssemblyNode an = new AssemblyNode(SVMParser.AND, codeIndex);
-		labelRef.put(codeIndex, ctx.l.getText());
+		labelRef.put(assemblyNodes.size(), ctx.l.getText());
 		return an;
 	}
 
 	@Override
 	public AssemblyNode visitBranchOr(BranchOrContext ctx) {
 		AssemblyNode an = new AssemblyNode(SVMParser.OR, codeIndex);
-		labelRef.put(codeIndex, ctx.l.getText());
+		labelRef.put(assemblyNodes.size(), ctx.l.getText());
 		return an;
 	}
 

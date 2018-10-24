@@ -1,1 +1,4 @@
-if (true && false) then {3} else {44};
+let 
+int min(int x, int y) if (x < y) then {x} else {y}; 
+in
+min(41,42);
