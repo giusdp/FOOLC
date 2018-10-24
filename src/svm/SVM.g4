@@ -74,7 +74,7 @@ NEW      : 'new' ;   // alloca un'area di memoria nello heap
          
 
 COL	 : ':' ;
-LABEL	 : ('a'..'z'|'A'..'Z')('a'..'z' | 'A'..'Z' | '0'..'9')* ;
+LABEL	 : ('a'..'z'|'A'..'Z')('a'..'z' | 'A'..'Z' | '0'..'9' | '_')* ;
 NUMBER	 : '0' | ('-')?(('1'..'9')('0'..'9')*) ;
 
 WHITESP  : ( '\t' | ' ' | '\r' | '\n' )+   -> channel(HIDDEN);

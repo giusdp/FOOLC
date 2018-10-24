@@ -1,4 +1,1 @@
-let 
-    bool f ( int x, int y, bool b) (x < y) && b;
-in
-    f (4, 5, true);
+class A;

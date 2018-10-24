@@ -11,8 +11,8 @@ import org.antlr.v4.runtime.CommonTokenStream;
 
 import ast.FOOLNodeVisitor;
 import ast.Node;
-import codegen.DispatchTable;
-import codegen.VirtualMachine;
+import codeexecution.DispatchTable;
+import codeexecution.VirtualMachine;
 import parser.FOOLLexer;
 import parser.FOOLParser;
 import svm.AssemblyNode;

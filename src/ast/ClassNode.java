@@ -8,8 +8,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import codegen.DTEntry;
-import codegen.DispatchTable;
+import codeexecution.DTEntry;
+import codeexecution.DispatchTable;
 import type.ArrowType;
 import type.ClassType;
 import type.ErrorType;
