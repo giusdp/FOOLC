@@ -1,4 +1,4 @@
 let 
-int min(int x, int y) if (x < y) then {x} else {y}; 
+    bool f ( int x, int y, bool b) (x < y) && b;
 in
-min(41,42);
+    f (4, 5, true);

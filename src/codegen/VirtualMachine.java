@@ -191,8 +191,8 @@ public class VirtualMachine {
 				System.out.println("lrv");
 				break;
 			case SVMParser.LOADFP: //
-				System.out.println("lfp");
 				push(fp);
+				System.out.println("lfp");
 				break;
 			case SVMParser.STOREFP: //
 				fp = pop();
