@@ -219,6 +219,8 @@ public class VirtualMachine {
 				// table), il numero di campi e i loro valori
 				// dall'ultimo al primo.
 
+				System.out.println("new");
+				
 				int dispatchTableAddress = pop();
 				int fieldNumber = pop();
 				int[] fieldValues = new int[fieldNumber];

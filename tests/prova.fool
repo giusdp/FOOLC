@@ -1,1 +1,8 @@
-class A;
+class A(int x, bool b){ int getX() x; };
+
+let 
+	A objA = new A(118, false);
+	int f() 4;
+in 
+	f();
+	//objA.getX();
