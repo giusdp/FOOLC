@@ -80,13 +80,11 @@ public class ClassNode implements Node {
 		
 		//create result list
 		ArrayList<SemanticError> res = new ArrayList<SemanticError>();
-
-		//env.offset = -2;
 		
 		// Controllo classe già dichiarata
 		HashMap<String,STEntry> currentScope = env.getST().get(env.getNestLevel());
 
-		stEntry = new STEntry(env.getNestLevel(), type, env.decOffset()); 
+		stEntry = new STEntry(env.getNestLevel(), type, env.decClassOffset()); 
 
 		if ( currentScope.put(id, stEntry) != null ) {
 			res.add(new SemanticError("Class "+ id +" is already declared"));

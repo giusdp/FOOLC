@@ -1,17 +1,9 @@
-push 0
 push 118
-push 2
+push 1
 push A_class
 new
 push function1
-lfp
-lfp
-push -3
-lfp
-add
-lw
-js
-halt
+nullhalt
 
 function0:
 cfp

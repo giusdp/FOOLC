@@ -35,7 +35,10 @@ public class ProgClassNode implements Node {
 	@Override
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
 		env.incNestLevel(); // porto il nesting level a 0
-		//env.setClassOffset(-2);
+		
+		//env.setOffset(-1); // Bisogna settare il primo offset a -1 così quando si accede ad una variabile prendendo
+		// l'offset, si inizia da 9999 invece che da MEMSIZE=10000, dato che l'array memory va da 0 a 9999
+
 
 		// Creo una nuova hashmap e la aggiugno alla symbol table
 		HashMap<String, STEntry> hm = new HashMap<String, STEntry>();
