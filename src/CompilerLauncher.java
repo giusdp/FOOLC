@@ -93,9 +93,10 @@ public class CompilerLauncher {
 			System.exit(1);
 		}
 		System.out.println("Check Semantics ok!");
+		System.out.println();
 
-		System.out.println("Visualizing AST...");
-		System.out.println(ast.toPrint(""));
+//		System.out.println("Visualizing AST...");
+//		System.out.println(ast.toPrint(""));
 
 
 		System.out.println("Perfoming Type Checking...");

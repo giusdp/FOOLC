@@ -21,6 +21,9 @@ public class MethodCallNode implements Node {
 	private IdNode varNode;
 	private String ownerClass;
 	
+	private STEntry entry; 
+	private int nestingLevel;
+	
 	private Type methodType;
 
 	public MethodCallNode(String m, ArrayList<Node> args, Node obj) {
@@ -45,6 +48,8 @@ public class MethodCallNode implements Node {
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
 		
 		ArrayList<SemanticError> res = new ArrayList<SemanticError>();
+		
+		nestingLevel = env.getNestLevel(); // Otteniamo il nesting level "a tempo di invocazione"
 		
 		res.addAll(varNode.checkSemantics(env));
 		
@@ -143,7 +148,47 @@ public class MethodCallNode implements Node {
 
 	@Override
 	public String codeGeneration() {
-		return null;
+
+//
+//        return
+//                "lfp\n"                                  // pusho frame pointer e parametri
+//                        + parameterCode
+//                        + "push " + objectOffset + "\n"         // pusho l'offset logico dell'oggetto (dispatch table)
+//                        + "lfp\n"
+//                        + getActivationRecord                                 //pusho access link (lw consecutivamente)
+//                        // così si potrà risalire la catena statica
+//                        + "add\n"                               // $fp + offset
+//                        + "lw\n"                                // pusho indirizzo di memoria in cui si trova
+//                        // l'indirizzo della dispatch table
+//                        + "copy\n"                              // copio
+//                        + "lw\n"                                // pusho l'indirizzo della dispatch table
+//                        + "push " + (methodOffset - 1) + "\n"   // pusho l'offset di dove si trova metodo rispetto
+//                        // all'inizio della dispatch table
+//                        + "add" + "\n"                          // dispatch_table_start + offset
+//                        + "loadc\n"                             // pusho il codice del metodo
+//                        + "js\n";                               // jump all'istruzione dove e' definito il metodo e
+//        // salvo $ra
+    
+		
+		 String parCode = "";
+		    for (int i = parList.size() - 1; i >= 0; i--) {
+		    	parCode+=parList.get(i).codeGeneration();
+		    }
+		    
+		    String getAR="";
+			for (int i=0; i< nestingLevel - entry.getNestLevel(); i++) {
+				getAR+="lw\n";
+			}
+		    
+			return "lfp\n" + //CL
+	               parCode +
+	               "lfp\n" + getAR + //setto AL risalendo la catena statica
+	               // ora recupero l'indirizzo a cui saltare e lo metto sullo stack
+	               "push " + entry.getOffset() + "\n" + //metto offset sullo stack
+			       "lfp\n" + getAR + //risalgo la catena statica
+				   "add\n" + 
+	               "lw\n"  + //carico sullo stack il valore all'indirizzo ottenuto
+			       "js\n";
 	}
 
 }
