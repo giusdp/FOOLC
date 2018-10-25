@@ -1,12 +1,9 @@
 package ast;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import codeexecution.DTEntry;
 import codeexecution.DispatchTable;
@@ -255,7 +252,9 @@ public class ClassNode implements Node {
         
         for (Node n : methodList) { //aggiungo i metodi della classe attuale
         	FunNode m = (FunNode) n;
-            currentClassMethods.put(m.getId(), m.codeGeneration());
+            currentClassMethods.put(m.getId(), m.codeGeneration().split(" ", 2)[1] ); // Splitto la stringa ritornata togliendo la prima parola
+            // Fun node mette un push davanti la label
+            // qui tocca toglierlo che non ci deve essere
         }
         
         // ***** OVERRIDE DEI METODI NELLA DISPATCH TABLE *****

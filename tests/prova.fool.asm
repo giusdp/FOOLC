@@ -17,4 +17,4 @@ lra
 js
 
 A_class:
-push function0
+function0

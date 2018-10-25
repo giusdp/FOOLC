@@ -107,6 +107,7 @@ public class ProgClassNode implements Node {
 			classes += c.codeGeneration();
 		}
 		
+		// Se è solo un file di dichiarazioni di classi salta la code generation del let in
 		if ( ! decList.isEmpty()) {
 			String declCode = "";
 			for (Node dec : decList)
