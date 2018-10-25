@@ -1,4 +1,22 @@
+## LET
+
+push 312
+push 1
+push A_class
+new
+
+## IN
+
+lfp
+lfp
+push 0
+lfp
+add
+lw
+js
 halt
+
+## Functions code and Dispatch Table
 
 function0:
 cfp

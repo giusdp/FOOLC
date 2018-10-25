@@ -1,8 +1,8 @@
 class A(int x){ int getX() x; };
 
-//let 
-	//A objA = new A(118);
+let 
+	A objA = new A(312);
 	//int f() 4;
-//in 
+in 
 	//f();
-	//objA.getX();
+	objA.getX();

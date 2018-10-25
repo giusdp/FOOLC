@@ -21,7 +21,7 @@ public class SVMParser extends Parser {
 		BRANCHEQ=10, BRANCHLESSEQ=11, BRANCHLESS=12, BRANCHGREATEREQ=13, BRANCHGREATER=14, 
 		AND=15, OR=16, JS=17, LOADRA=18, STORERA=19, LOADRV=20, STORERV=21, LOADFP=22, 
 		STOREFP=23, COPYFP=24, LOADHP=25, STOREHP=26, PRINT=27, HALT=28, NEW=29, 
-		COL=30, LABEL=31, NUMBER=32, WHITESP=33;
+		COL=30, LABEL=31, NUMBER=32, LINECOMENTS=33, WHITESP=34;
 	public static final int
 		RULE_assembly = 0, RULE_instruction = 1;
 	public static final String[] ruleNames = {
@@ -39,7 +39,7 @@ public class SVMParser extends Parser {
 		"BRANCHEQ", "BRANCHLESSEQ", "BRANCHLESS", "BRANCHGREATEREQ", "BRANCHGREATER", 
 		"AND", "OR", "JS", "LOADRA", "STORERA", "LOADRV", "STORERV", "LOADFP", 
 		"STOREFP", "COPYFP", "LOADHP", "STOREHP", "PRINT", "HALT", "NEW", "COL", 
-		"LABEL", "NUMBER", "WHITESP"
+		"LABEL", "NUMBER", "LINECOMENTS", "WHITESP"
 	};
 	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
 
@@ -764,7 +764,7 @@ public class SVMParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3#:\4\2\t\2\4\3\t\3"+
+		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3$:\4\2\t\2\4\3\t\3"+
 		"\3\2\7\2\b\n\2\f\2\16\2\13\13\2\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3"+
 		"\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3"+
 		"\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\5\38"+

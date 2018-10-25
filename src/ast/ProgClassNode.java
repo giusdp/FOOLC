@@ -101,10 +101,10 @@ public class ProgClassNode implements Node {
 	}
 	@Override
 	public String codeGeneration() {
-		String classes = "";
 		
 		for (ClassNode c : classList) {
-			classes += c.codeGeneration();
+			c.codeGeneration();  // La code generation delle classi ritorna stringa vuota quindi non serve. 
+			// Piuttosto popola la stringa in FOOLlib con le dispatch tables.
 		}
 		
 		// Se è solo un file di dichiarazioni di classi salta la code generation del let in
@@ -117,11 +117,11 @@ public class ProgClassNode implements Node {
 			for (Node stm : contextBody)
 				bodyCode +=  stm.codeGeneration();
 			
-			return classes + declCode + bodyCode + "halt\n" +
+			return "## LET\n\n" + declCode + "\n## IN\n\n" + bodyCode + "halt\n\n" + "## Functions code and Dispatch Table\n" +
 				FOOLlib.getCode();
 		}
 		
-		return classes + "halt\n" + FOOLlib.getCode();
+		return "halt\n" + FOOLlib.getCode();
 		
 	}
 
