@@ -15,6 +15,7 @@ instruction:
 	  | STOREW					#storeW
 	  | LOADW					#loadW
 	  | l=LABEL COL				#label
+	  | l=LABEL                 #dispatchLabel
 	  | BRANCH l=LABEL			#branch
 	  | BRANCHEQ l=LABEL		#branchEqual
 	  | BRANCHLESSEQ l=LABEL	#branchLessEqual

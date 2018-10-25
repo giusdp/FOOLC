@@ -87,6 +87,13 @@ public interface SVMVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitLabel(SVMParser.LabelContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code dispatchLabel}
+	 * labeled alternative in {@link SVMParser#instruction}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDispatchLabel(SVMParser.DispatchLabelContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code branch}
 	 * labeled alternative in {@link SVMParser#instruction}.
 	 * @param ctx the parse tree

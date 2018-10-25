@@ -365,6 +365,16 @@ public class SVMParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
+	public static class DispatchLabelContext extends InstructionContext {
+		public Token l;
+		public TerminalNode LABEL() { return getToken(SVMParser.LABEL, 0); }
+		public DispatchLabelContext(InstructionContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitDispatchLabel(this);
+			else return visitor.visitChildren(this);
+		}
+	}
 	public static class BranchGreaterEqualContext extends InstructionContext {
 		public Token l;
 		public TerminalNode BRANCHGREATEREQ() { return getToken(SVMParser.BRANCHGREATEREQ, 0); }
@@ -459,7 +469,7 @@ public class SVMParser extends Parser {
 		InstructionContext _localctx = new InstructionContext(_ctx, getState());
 		enterRule(_localctx, 2, RULE_instruction);
 		try {
-			setState(52);
+			setState(53);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,1,_ctx) ) {
 			case 1:
@@ -549,186 +559,194 @@ public class SVMParser extends Parser {
 				}
 				break;
 			case 11:
-				_localctx = new BranchContext(_localctx);
+				_localctx = new DispatchLabelContext(_localctx);
 				enterOuterAlt(_localctx, 11);
 				{
 				setState(23);
-				match(BRANCH);
-				setState(24);
-				((BranchContext)_localctx).l = match(LABEL);
+				((DispatchLabelContext)_localctx).l = match(LABEL);
 				}
 				break;
 			case 12:
-				_localctx = new BranchEqualContext(_localctx);
+				_localctx = new BranchContext(_localctx);
 				enterOuterAlt(_localctx, 12);
 				{
+				setState(24);
+				match(BRANCH);
 				setState(25);
-				match(BRANCHEQ);
-				setState(26);
-				((BranchEqualContext)_localctx).l = match(LABEL);
+				((BranchContext)_localctx).l = match(LABEL);
 				}
 				break;
 			case 13:
-				_localctx = new BranchLessEqualContext(_localctx);
+				_localctx = new BranchEqualContext(_localctx);
 				enterOuterAlt(_localctx, 13);
 				{
+				setState(26);
+				match(BRANCHEQ);
 				setState(27);
-				match(BRANCHLESSEQ);
-				setState(28);
-				((BranchLessEqualContext)_localctx).l = match(LABEL);
+				((BranchEqualContext)_localctx).l = match(LABEL);
 				}
 				break;
 			case 14:
-				_localctx = new BranchLessContext(_localctx);
+				_localctx = new BranchLessEqualContext(_localctx);
 				enterOuterAlt(_localctx, 14);
 				{
+				setState(28);
+				match(BRANCHLESSEQ);
 				setState(29);
-				match(BRANCHLESS);
-				setState(30);
-				((BranchLessContext)_localctx).l = match(LABEL);
+				((BranchLessEqualContext)_localctx).l = match(LABEL);
 				}
 				break;
 			case 15:
-				_localctx = new BranchGreaterEqualContext(_localctx);
+				_localctx = new BranchLessContext(_localctx);
 				enterOuterAlt(_localctx, 15);
 				{
+				setState(30);
+				match(BRANCHLESS);
 				setState(31);
-				match(BRANCHGREATEREQ);
-				setState(32);
-				((BranchGreaterEqualContext)_localctx).l = match(LABEL);
+				((BranchLessContext)_localctx).l = match(LABEL);
 				}
 				break;
 			case 16:
-				_localctx = new BranchGreaterContext(_localctx);
+				_localctx = new BranchGreaterEqualContext(_localctx);
 				enterOuterAlt(_localctx, 16);
 				{
+				setState(32);
+				match(BRANCHGREATEREQ);
 				setState(33);
-				match(BRANCHGREATER);
-				setState(34);
-				((BranchGreaterContext)_localctx).l = match(LABEL);
+				((BranchGreaterEqualContext)_localctx).l = match(LABEL);
 				}
 				break;
 			case 17:
-				_localctx = new BranchAndContext(_localctx);
+				_localctx = new BranchGreaterContext(_localctx);
 				enterOuterAlt(_localctx, 17);
 				{
+				setState(34);
+				match(BRANCHGREATER);
 				setState(35);
-				match(AND);
-				setState(36);
-				((BranchAndContext)_localctx).l = match(LABEL);
+				((BranchGreaterContext)_localctx).l = match(LABEL);
 				}
 				break;
 			case 18:
-				_localctx = new BranchOrContext(_localctx);
+				_localctx = new BranchAndContext(_localctx);
 				enterOuterAlt(_localctx, 18);
 				{
+				setState(36);
+				match(AND);
 				setState(37);
-				match(OR);
-				setState(38);
-				((BranchOrContext)_localctx).l = match(LABEL);
+				((BranchAndContext)_localctx).l = match(LABEL);
 				}
 				break;
 			case 19:
-				_localctx = new JsContext(_localctx);
+				_localctx = new BranchOrContext(_localctx);
 				enterOuterAlt(_localctx, 19);
 				{
+				setState(38);
+				match(OR);
 				setState(39);
-				match(JS);
+				((BranchOrContext)_localctx).l = match(LABEL);
 				}
 				break;
 			case 20:
-				_localctx = new LoadRAContext(_localctx);
+				_localctx = new JsContext(_localctx);
 				enterOuterAlt(_localctx, 20);
 				{
 				setState(40);
-				match(LOADRA);
+				match(JS);
 				}
 				break;
 			case 21:
-				_localctx = new StoreRaContext(_localctx);
+				_localctx = new LoadRAContext(_localctx);
 				enterOuterAlt(_localctx, 21);
 				{
 				setState(41);
-				match(STORERA);
+				match(LOADRA);
 				}
 				break;
 			case 22:
-				_localctx = new LoadRVContext(_localctx);
+				_localctx = new StoreRaContext(_localctx);
 				enterOuterAlt(_localctx, 22);
 				{
 				setState(42);
-				match(LOADRV);
+				match(STORERA);
 				}
 				break;
 			case 23:
-				_localctx = new StoreRVContext(_localctx);
+				_localctx = new LoadRVContext(_localctx);
 				enterOuterAlt(_localctx, 23);
 				{
 				setState(43);
-				match(STORERV);
+				match(LOADRV);
 				}
 				break;
 			case 24:
-				_localctx = new LoadFPContext(_localctx);
+				_localctx = new StoreRVContext(_localctx);
 				enterOuterAlt(_localctx, 24);
 				{
 				setState(44);
-				match(LOADFP);
+				match(STORERV);
 				}
 				break;
 			case 25:
-				_localctx = new StoreFPContext(_localctx);
+				_localctx = new LoadFPContext(_localctx);
 				enterOuterAlt(_localctx, 25);
 				{
 				setState(45);
-				match(STOREFP);
+				match(LOADFP);
 				}
 				break;
 			case 26:
-				_localctx = new CopyFPContext(_localctx);
+				_localctx = new StoreFPContext(_localctx);
 				enterOuterAlt(_localctx, 26);
 				{
 				setState(46);
-				match(COPYFP);
+				match(STOREFP);
 				}
 				break;
 			case 27:
-				_localctx = new LoadHPContext(_localctx);
+				_localctx = new CopyFPContext(_localctx);
 				enterOuterAlt(_localctx, 27);
 				{
 				setState(47);
-				match(LOADHP);
+				match(COPYFP);
 				}
 				break;
 			case 28:
-				_localctx = new StoreHPContext(_localctx);
+				_localctx = new LoadHPContext(_localctx);
 				enterOuterAlt(_localctx, 28);
 				{
 				setState(48);
-				match(STOREHP);
+				match(LOADHP);
 				}
 				break;
 			case 29:
-				_localctx = new PrintContext(_localctx);
+				_localctx = new StoreHPContext(_localctx);
 				enterOuterAlt(_localctx, 29);
 				{
 				setState(49);
-				match(PRINT);
+				match(STOREHP);
 				}
 				break;
 			case 30:
-				_localctx = new HaltContext(_localctx);
+				_localctx = new PrintContext(_localctx);
 				enterOuterAlt(_localctx, 30);
 				{
 				setState(50);
-				match(HALT);
+				match(PRINT);
 				}
 				break;
 			case 31:
-				_localctx = new NewContext(_localctx);
+				_localctx = new HaltContext(_localctx);
 				enterOuterAlt(_localctx, 31);
 				{
 				setState(51);
+				match(HALT);
+				}
+				break;
+			case 32:
+				_localctx = new NewContext(_localctx);
+				enterOuterAlt(_localctx, 32);
+				{
+				setState(52);
 				match(NEW);
 				}
 				break;
@@ -746,26 +764,26 @@ public class SVMParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3#9\4\2\t\2\4\3\t\3"+
+		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3#:\4\2\t\2\4\3\t\3"+
 		"\3\2\7\2\b\n\2\f\2\16\2\13\13\2\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3"+
 		"\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3"+
-		"\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\5\3\67\n"+
-		"\3\3\3\2\2\4\2\4\2\2U\2\t\3\2\2\2\4\66\3\2\2\2\6\b\5\4\3\2\7\6\3\2\2\2"+
-		"\b\13\3\2\2\2\t\7\3\2\2\2\t\n\3\2\2\2\n\3\3\2\2\2\13\t\3\2\2\2\f\r\7\3"+
-		"\2\2\r\67\7\"\2\2\16\17\7\3\2\2\17\67\7!\2\2\20\67\7\4\2\2\21\67\7\5\2"+
-		"\2\22\67\7\6\2\2\23\67\7\7\2\2\24\67\7\b\2\2\25\67\7\t\2\2\26\67\7\n\2"+
-		"\2\27\30\7!\2\2\30\67\7 \2\2\31\32\7\13\2\2\32\67\7!\2\2\33\34\7\f\2\2"+
-		"\34\67\7!\2\2\35\36\7\r\2\2\36\67\7!\2\2\37 \7\16\2\2 \67\7!\2\2!\"\7"+
-		"\17\2\2\"\67\7!\2\2#$\7\20\2\2$\67\7!\2\2%&\7\21\2\2&\67\7!\2\2\'(\7\22"+
-		"\2\2(\67\7!\2\2)\67\7\23\2\2*\67\7\24\2\2+\67\7\25\2\2,\67\7\26\2\2-\67"+
-		"\7\27\2\2.\67\7\30\2\2/\67\7\31\2\2\60\67\7\32\2\2\61\67\7\33\2\2\62\67"+
-		"\7\34\2\2\63\67\7\35\2\2\64\67\7\36\2\2\65\67\7\37\2\2\66\f\3\2\2\2\66"+
-		"\16\3\2\2\2\66\20\3\2\2\2\66\21\3\2\2\2\66\22\3\2\2\2\66\23\3\2\2\2\66"+
-		"\24\3\2\2\2\66\25\3\2\2\2\66\26\3\2\2\2\66\27\3\2\2\2\66\31\3\2\2\2\66"+
-		"\33\3\2\2\2\66\35\3\2\2\2\66\37\3\2\2\2\66!\3\2\2\2\66#\3\2\2\2\66%\3"+
-		"\2\2\2\66\'\3\2\2\2\66)\3\2\2\2\66*\3\2\2\2\66+\3\2\2\2\66,\3\2\2\2\66"+
-		"-\3\2\2\2\66.\3\2\2\2\66/\3\2\2\2\66\60\3\2\2\2\66\61\3\2\2\2\66\62\3"+
-		"\2\2\2\66\63\3\2\2\2\66\64\3\2\2\2\66\65\3\2\2\2\67\5\3\2\2\2\4\t\66";
+		"\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\5\38"+
+		"\n\3\3\3\2\2\4\2\4\2\2W\2\t\3\2\2\2\4\67\3\2\2\2\6\b\5\4\3\2\7\6\3\2\2"+
+		"\2\b\13\3\2\2\2\t\7\3\2\2\2\t\n\3\2\2\2\n\3\3\2\2\2\13\t\3\2\2\2\f\r\7"+
+		"\3\2\2\r8\7\"\2\2\16\17\7\3\2\2\178\7!\2\2\208\7\4\2\2\218\7\5\2\2\22"+
+		"8\7\6\2\2\238\7\7\2\2\248\7\b\2\2\258\7\t\2\2\268\7\n\2\2\27\30\7!\2\2"+
+		"\308\7 \2\2\318\7!\2\2\32\33\7\13\2\2\338\7!\2\2\34\35\7\f\2\2\358\7!"+
+		"\2\2\36\37\7\r\2\2\378\7!\2\2 !\7\16\2\2!8\7!\2\2\"#\7\17\2\2#8\7!\2\2"+
+		"$%\7\20\2\2%8\7!\2\2&\'\7\21\2\2\'8\7!\2\2()\7\22\2\2)8\7!\2\2*8\7\23"+
+		"\2\2+8\7\24\2\2,8\7\25\2\2-8\7\26\2\2.8\7\27\2\2/8\7\30\2\2\608\7\31\2"+
+		"\2\618\7\32\2\2\628\7\33\2\2\638\7\34\2\2\648\7\35\2\2\658\7\36\2\2\66"+
+		"8\7\37\2\2\67\f\3\2\2\2\67\16\3\2\2\2\67\20\3\2\2\2\67\21\3\2\2\2\67\22"+
+		"\3\2\2\2\67\23\3\2\2\2\67\24\3\2\2\2\67\25\3\2\2\2\67\26\3\2\2\2\67\27"+
+		"\3\2\2\2\67\31\3\2\2\2\67\32\3\2\2\2\67\34\3\2\2\2\67\36\3\2\2\2\67 \3"+
+		"\2\2\2\67\"\3\2\2\2\67$\3\2\2\2\67&\3\2\2\2\67(\3\2\2\2\67*\3\2\2\2\67"+
+		"+\3\2\2\2\67,\3\2\2\2\67-\3\2\2\2\67.\3\2\2\2\67/\3\2\2\2\67\60\3\2\2"+
+		"\2\67\61\3\2\2\2\67\62\3\2\2\2\67\63\3\2\2\2\67\64\3\2\2\2\67\65\3\2\2"+
+		"\2\67\66\3\2\2\28\5\3\2\2\2\4\t\67";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

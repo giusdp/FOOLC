@@ -48,14 +48,12 @@ public class MethodCallNode implements Node {
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
 		
 		ArrayList<SemanticError> res = new ArrayList<SemanticError>();
-		
-		nestingLevel = env.getNestLevel(); // Otteniamo il nesting level "a tempo di invocazione"
-		
+				
 		res.addAll(varNode.checkSemantics(env));
 		
 		// Dopo i controlli preliminari sulla variabile usata. 
 		// Si cerca la definizione del metodo nell'hashmap dei metodi
-		// Siccome la sintassi è un metodo di una classe, la variabile dovrebbe essere una classe
+		// Siccome  metodo di una classe, la variabile dovrebbe essere una classe
 		// Se non lo è si intercetta l'eccezione e si da un Semantic Error
 		try {
 			ownerClass = ((ClassType) varNode.getType()).getId(); // Ottendo il nome/tipo della classe
@@ -99,13 +97,15 @@ public class MethodCallNode implements Node {
 				res.add(new SemanticError("Method "+ id + " in class " + ownerClass + " is not defined."));
 				return res;
 			}
+			
+			nestingLevel = env.getNestLevel(); // Otteniamo il nesting level "a tempo di invocazione"
+			entry = ownerClassNode.stEntry;
 		}
 		catch (ClassCastException e) {
 			// TODO: Però questo è un controllo di tipi, si dovrebbe fare nel type check non qui
 			res.add(new SemanticError("Var " + varNode.getId() + " is not ClassType, instead it's " + varNode.getType().toPrint("")));
 		}
 		
-	
 		return res;
 	}
 

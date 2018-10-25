@@ -15,6 +15,7 @@ import svm.SVMParser.BranchLessContext;
 import svm.SVMParser.BranchLessEqualContext;
 import svm.SVMParser.BranchOrContext;
 import svm.SVMParser.CopyFPContext;
+import svm.SVMParser.DispatchLabelContext;
 import svm.SVMParser.DivContext;
 import svm.SVMParser.HaltContext;
 import svm.SVMParser.InstructionContext;
@@ -120,6 +121,15 @@ public class AssemblyVisitor extends SVMBaseVisitor<AssemblyNode> {
 	public AssemblyNode visitLabel(LabelContext ctx) {
 		AssemblyNode an = new AssemblyNode(SVMParser.LABEL, codeIndex);
 		labelAdd.put(ctx.l.getText(), assemblyNodes.size());
+		return an;
+	}
+	
+	
+
+	@Override
+	public AssemblyNode visitDispatchLabel(DispatchLabelContext ctx) {
+		AssemblyNode an = new AssemblyNode(SVMParser.LABEL, codeIndex);
+		labelRef.put(assemblyNodes.size(), ctx.l.getText());
 		return an;
 	}
 

@@ -25,7 +25,7 @@ public class ClassNode implements Node {
 	private ArrayList<Node> fieldList = new ArrayList<>();
 	private ArrayList<Node> methodList = new ArrayList<>();
 
-	STEntry stEntry;
+	public STEntry stEntry;
 	
 	private ClassType type;
 	
