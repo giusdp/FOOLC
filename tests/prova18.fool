@@ -1,1 +1,7 @@
-1;
+(
+    ((true && false) || (true && not false))
+                    &&
+    ( ( 1 < 2 ) || (3 == 4))
+);
+
+//TRUE

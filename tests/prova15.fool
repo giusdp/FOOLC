@@ -1,1 +1,8 @@
-1;
+let
+	int addTil50(int x, int y) 
+		let 
+		    int z = x+y; 
+		in 
+		    if (z <= 50) then {z} else {50};
+in
+    addTil50(48, -1);

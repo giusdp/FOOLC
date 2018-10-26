@@ -1,1 +1,8 @@
-1;
+//ShouldBe STError
+let
+    int x  = 1;
+
+in
+    x.f();
+
+//Il metodo f è invocato da un tipo che non è un oggetto

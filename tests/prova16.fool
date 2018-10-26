@@ -1,1 +1,12 @@
-1;
+//ShouldBe TypeError
+let
+    int y = 1 + 2;
+    bool f(int a, int b)
+        let
+            int x = b;
+        in
+            x == y;
+in
+    if(f(y,8)) then { false } else { 10 };
+
+//Tipi incompatibili nei rami then ed else

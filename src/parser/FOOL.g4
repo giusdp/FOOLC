@@ -46,7 +46,7 @@ stm    : ID ASM body=exp																#AsmStm
 
 stms   : ( stm SEMIC )+ ;
 
-value  : INTEGER          #intVal
+value  : (MINUS)? INTEGER          #intVal
        | (NOT)? ( TRUE | FALSE ) #boolVal
        | LPAR exp RPAR    #baseExp
        | IF cond=exp THEN CLPAR thenBranch=exp CRPAR ELSE CLPAR elseBranch=exp CRPAR  #ifExp
@@ -108,7 +108,7 @@ NULL    : 'null';
 
 //Numbers
 fragment DIGIT : '0'..'9';    
-INTEGER        : (MINUS)?DIGIT+;
+INTEGER        : DIGIT+;
 
 //IDs
 fragment CHAR  : 'a'..'z' |'A'..'Z' ;

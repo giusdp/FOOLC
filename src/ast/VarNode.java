@@ -35,8 +35,6 @@ public class VarNode implements Node {
 		//separo introducendo "entry"
 		STEntry entry = new STEntry(env.getNestLevel(), type, env.decOffset()); 
 		
-		//System.out.println("VAR: " + id + " STENTRY: " + entry.getNestLevel() + 
-			//	"\ntype: " + entry.getType().toPrint("") + " offset: " + entry.getOffset());
 		boolean varClass = false;
 		if (type instanceof ClassType) {
 			varClass = true;

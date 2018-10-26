@@ -191,7 +191,6 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 		//because of the use of * or + in the grammar
 		//antlr detects this is a group and therefore returns a list
 		for (DecContext dc : ctx.let().dec()) {
-			//System.out.println(dc.toString());
 			declarations.add(visit(dc));
 		}
 
@@ -319,7 +318,6 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 		else if (ctx.VOID() != null) return new VoidType();
 
 		else {
-			//System.out.println("VISITTYPE: CLASSTYPE. IN FOOLNODEVISITOR AAAAAAAAAAAAAAAAAAAAAA");
 			return new ClassType(ctx.getText());
 		}
 

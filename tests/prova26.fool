@@ -1,1 +1,11 @@
-1;
+//ShouldBe STError
+let
+    int a = 3;
+    int f(int x)
+        let
+            int x  = x;
+        in
+            x;
+in
+    f(a);
+//Variabile 'pluto' già dichiarata!
