@@ -242,4 +242,11 @@ public class SVMBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements SV
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public T visitNew(SVMParser.NewContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitLoadMethod(SVMParser.LoadMethodContext ctx) { return visitChildren(ctx); }
 }

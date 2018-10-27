@@ -37,6 +37,7 @@ instruction:
 	  | PRINT           		#print
 	  | HALT           			#halt
 	  | NEW 					#new
+	  | LOADMETHOD				#loadMethod
 	  ;
  	 
 /*------------------------------------------------------------------
@@ -72,6 +73,8 @@ STOREHP	 : 'shp' ;	// store top into heap pointer
 PRINT	 : 'print' ;	// print top of stack
 HALT	 : 'halt' ;	// stop execution
 NEW      : 'new' ;   // alloca un'area di memoria nello heap
+LOADMETHOD: 'lm' ; // Carica sullo stack l'indirizzo del primo metodo 
+					// della classe, il cui indirizzo è al top dello stack
          
 
 COL	 : ':' ;

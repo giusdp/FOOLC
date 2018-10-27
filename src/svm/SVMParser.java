@@ -21,7 +21,7 @@ public class SVMParser extends Parser {
 		BRANCHEQ=10, BRANCHLESSEQ=11, BRANCHLESS=12, BRANCHGREATEREQ=13, BRANCHGREATER=14, 
 		AND=15, OR=16, JS=17, LOADRA=18, STORERA=19, LOADRV=20, STORERV=21, LOADFP=22, 
 		STOREFP=23, COPYFP=24, LOADHP=25, STOREHP=26, PRINT=27, HALT=28, NEW=29, 
-		COL=30, LABEL=31, NUMBER=32, LINECOMENTS=33, WHITESP=34;
+		LOADMETHOD=30, COL=31, LABEL=32, NUMBER=33, LINECOMENTS=34, WHITESP=35;
 	public static final int
 		RULE_assembly = 0, RULE_instruction = 1;
 	public static final String[] ruleNames = {
@@ -32,14 +32,14 @@ public class SVMParser extends Parser {
 		null, "'push'", "'pop'", "'add'", "'sub'", "'mult'", "'div'", "'sw'", 
 		"'lw'", "'b'", "'beq'", "'bleq'", "'bl'", "'bgeq'", "'bg'", "'and'", "'or'", 
 		"'js'", "'lra'", "'sra'", "'lrv'", "'srv'", "'lfp'", "'sfp'", "'cfp'", 
-		"'lhp'", "'shp'", "'print'", "'halt'", "'new'", "':'"
+		"'lhp'", "'shp'", "'print'", "'halt'", "'new'", "'lm'", "':'"
 	};
 	private static final String[] _SYMBOLIC_NAMES = {
 		null, "PUSH", "POP", "ADD", "SUB", "MULT", "DIV", "STOREW", "LOADW", "BRANCH", 
 		"BRANCHEQ", "BRANCHLESSEQ", "BRANCHLESS", "BRANCHGREATEREQ", "BRANCHGREATER", 
 		"AND", "OR", "JS", "LOADRA", "STORERA", "LOADRV", "STORERV", "LOADFP", 
-		"STOREFP", "COPYFP", "LOADHP", "STOREHP", "PRINT", "HALT", "NEW", "COL", 
-		"LABEL", "NUMBER", "LINECOMENTS", "WHITESP"
+		"STOREFP", "COPYFP", "LOADHP", "STOREHP", "PRINT", "HALT", "NEW", "LOADMETHOD", 
+		"COL", "LABEL", "NUMBER", "LINECOMENTS", "WHITESP"
 	};
 	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
 
@@ -118,7 +118,7 @@ public class SVMParser extends Parser {
 			setState(7);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << PUSH) | (1L << POP) | (1L << ADD) | (1L << SUB) | (1L << MULT) | (1L << DIV) | (1L << STOREW) | (1L << LOADW) | (1L << BRANCH) | (1L << BRANCHEQ) | (1L << BRANCHLESSEQ) | (1L << BRANCHLESS) | (1L << BRANCHGREATEREQ) | (1L << BRANCHGREATER) | (1L << AND) | (1L << OR) | (1L << JS) | (1L << LOADRA) | (1L << STORERA) | (1L << LOADRV) | (1L << STORERV) | (1L << LOADFP) | (1L << STOREFP) | (1L << COPYFP) | (1L << LOADHP) | (1L << STOREHP) | (1L << PRINT) | (1L << HALT) | (1L << NEW) | (1L << LABEL))) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << PUSH) | (1L << POP) | (1L << ADD) | (1L << SUB) | (1L << MULT) | (1L << DIV) | (1L << STOREW) | (1L << LOADW) | (1L << BRANCH) | (1L << BRANCHEQ) | (1L << BRANCHLESSEQ) | (1L << BRANCHLESS) | (1L << BRANCHGREATEREQ) | (1L << BRANCHGREATER) | (1L << AND) | (1L << OR) | (1L << JS) | (1L << LOADRA) | (1L << STORERA) | (1L << LOADRV) | (1L << STORERV) | (1L << LOADFP) | (1L << STOREFP) | (1L << COPYFP) | (1L << LOADHP) | (1L << STOREHP) | (1L << PRINT) | (1L << HALT) | (1L << NEW) | (1L << LOADMETHOD) | (1L << LABEL))) != 0)) {
 				{
 				{
 				setState(4);
@@ -426,6 +426,15 @@ public class SVMParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
+	public static class LoadMethodContext extends InstructionContext {
+		public TerminalNode LOADMETHOD() { return getToken(SVMParser.LOADMETHOD, 0); }
+		public LoadMethodContext(InstructionContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitLoadMethod(this);
+			else return visitor.visitChildren(this);
+		}
+	}
 	public static class BranchLessContext extends InstructionContext {
 		public Token l;
 		public TerminalNode BRANCHLESS() { return getToken(SVMParser.BRANCHLESS, 0); }
@@ -469,7 +478,7 @@ public class SVMParser extends Parser {
 		InstructionContext _localctx = new InstructionContext(_ctx, getState());
 		enterRule(_localctx, 2, RULE_instruction);
 		try {
-			setState(53);
+			setState(54);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,1,_ctx) ) {
 			case 1:
@@ -750,6 +759,14 @@ public class SVMParser extends Parser {
 				match(NEW);
 				}
 				break;
+			case 33:
+				_localctx = new LoadMethodContext(_localctx);
+				enterOuterAlt(_localctx, 33);
+				{
+				setState(53);
+				match(LOADMETHOD);
+				}
+				break;
 			}
 		}
 		catch (RecognitionException re) {
@@ -764,26 +781,26 @@ public class SVMParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3$:\4\2\t\2\4\3\t\3"+
+		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3%;\4\2\t\2\4\3\t\3"+
 		"\3\2\7\2\b\n\2\f\2\16\2\13\13\2\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3"+
 		"\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3"+
-		"\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\5\38"+
-		"\n\3\3\3\2\2\4\2\4\2\2W\2\t\3\2\2\2\4\67\3\2\2\2\6\b\5\4\3\2\7\6\3\2\2"+
-		"\2\b\13\3\2\2\2\t\7\3\2\2\2\t\n\3\2\2\2\n\3\3\2\2\2\13\t\3\2\2\2\f\r\7"+
-		"\3\2\2\r8\7\"\2\2\16\17\7\3\2\2\178\7!\2\2\208\7\4\2\2\218\7\5\2\2\22"+
-		"8\7\6\2\2\238\7\7\2\2\248\7\b\2\2\258\7\t\2\2\268\7\n\2\2\27\30\7!\2\2"+
-		"\308\7 \2\2\318\7!\2\2\32\33\7\13\2\2\338\7!\2\2\34\35\7\f\2\2\358\7!"+
-		"\2\2\36\37\7\r\2\2\378\7!\2\2 !\7\16\2\2!8\7!\2\2\"#\7\17\2\2#8\7!\2\2"+
-		"$%\7\20\2\2%8\7!\2\2&\'\7\21\2\2\'8\7!\2\2()\7\22\2\2)8\7!\2\2*8\7\23"+
-		"\2\2+8\7\24\2\2,8\7\25\2\2-8\7\26\2\2.8\7\27\2\2/8\7\30\2\2\608\7\31\2"+
-		"\2\618\7\32\2\2\628\7\33\2\2\638\7\34\2\2\648\7\35\2\2\658\7\36\2\2\66"+
-		"8\7\37\2\2\67\f\3\2\2\2\67\16\3\2\2\2\67\20\3\2\2\2\67\21\3\2\2\2\67\22"+
-		"\3\2\2\2\67\23\3\2\2\2\67\24\3\2\2\2\67\25\3\2\2\2\67\26\3\2\2\2\67\27"+
-		"\3\2\2\2\67\31\3\2\2\2\67\32\3\2\2\2\67\34\3\2\2\2\67\36\3\2\2\2\67 \3"+
-		"\2\2\2\67\"\3\2\2\2\67$\3\2\2\2\67&\3\2\2\2\67(\3\2\2\2\67*\3\2\2\2\67"+
-		"+\3\2\2\2\67,\3\2\2\2\67-\3\2\2\2\67.\3\2\2\2\67/\3\2\2\2\67\60\3\2\2"+
-		"\2\67\61\3\2\2\2\67\62\3\2\2\2\67\63\3\2\2\2\67\64\3\2\2\2\67\65\3\2\2"+
-		"\2\67\66\3\2\2\28\5\3\2\2\2\4\t\67";
+		"\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\5"+
+		"\39\n\3\3\3\2\2\4\2\4\2\2Y\2\t\3\2\2\2\48\3\2\2\2\6\b\5\4\3\2\7\6\3\2"+
+		"\2\2\b\13\3\2\2\2\t\7\3\2\2\2\t\n\3\2\2\2\n\3\3\2\2\2\13\t\3\2\2\2\f\r"+
+		"\7\3\2\2\r9\7#\2\2\16\17\7\3\2\2\179\7\"\2\2\209\7\4\2\2\219\7\5\2\2\22"+
+		"9\7\6\2\2\239\7\7\2\2\249\7\b\2\2\259\7\t\2\2\269\7\n\2\2\27\30\7\"\2"+
+		"\2\309\7!\2\2\319\7\"\2\2\32\33\7\13\2\2\339\7\"\2\2\34\35\7\f\2\2\35"+
+		"9\7\"\2\2\36\37\7\r\2\2\379\7\"\2\2 !\7\16\2\2!9\7\"\2\2\"#\7\17\2\2#"+
+		"9\7\"\2\2$%\7\20\2\2%9\7\"\2\2&\'\7\21\2\2\'9\7\"\2\2()\7\22\2\2)9\7\""+
+		"\2\2*9\7\23\2\2+9\7\24\2\2,9\7\25\2\2-9\7\26\2\2.9\7\27\2\2/9\7\30\2\2"+
+		"\609\7\31\2\2\619\7\32\2\2\629\7\33\2\2\639\7\34\2\2\649\7\35\2\2\659"+
+		"\7\36\2\2\669\7\37\2\2\679\7 \2\28\f\3\2\2\28\16\3\2\2\28\20\3\2\2\28"+
+		"\21\3\2\2\28\22\3\2\2\28\23\3\2\2\28\24\3\2\2\28\25\3\2\2\28\26\3\2\2"+
+		"\28\27\3\2\2\28\31\3\2\2\28\32\3\2\2\28\34\3\2\2\28\36\3\2\2\28 \3\2\2"+
+		"\28\"\3\2\2\28$\3\2\2\28&\3\2\2\28(\3\2\2\28*\3\2\2\28+\3\2\2\28,\3\2"+
+		"\2\28-\3\2\2\28.\3\2\2\28/\3\2\2\28\60\3\2\2\28\61\3\2\2\28\62\3\2\2\2"+
+		"8\63\3\2\2\28\64\3\2\2\28\65\3\2\2\28\66\3\2\2\28\67\3\2\2\29\5\3\2\2"+
+		"\2\4\t8";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

@@ -23,6 +23,7 @@ import svm.SVMParser.JsContext;
 import svm.SVMParser.LabelContext;
 import svm.SVMParser.LoadFPContext;
 import svm.SVMParser.LoadHPContext;
+import svm.SVMParser.LoadMethodContext;
 import svm.SVMParser.LoadRAContext;
 import svm.SVMParser.LoadRVContext;
 import svm.SVMParser.LoadWContext;
@@ -253,6 +254,11 @@ public class AssemblyVisitor extends SVMBaseVisitor<AssemblyNode> {
 	@Override
 	public AssemblyNode visitNew(NewContext ctx) {
 		return new AssemblyNode(SVMParser.NEW, codeIndex);
+	}
+
+	@Override
+	public AssemblyNode visitLoadMethod(LoadMethodContext ctx) {
+		return new AssemblyNode(SVMParser.LOADMETHOD, codeIndex);
 	}
 
 	

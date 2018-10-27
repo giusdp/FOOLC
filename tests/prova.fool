@@ -1,8 +1,6 @@
-//ShouldBe TypeError
-let
-    int x  = 1;
+class A(int x){ int getX() x; };
 
+let 
+	A objA = new A(118);
 in
-    x.f();
-
-//Il metodo f è invocato da un tipo che non è un oggetto
+	objA.getX();
