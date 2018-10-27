@@ -264,7 +264,7 @@ public class AssemblyVisitor extends SVMBaseVisitor<AssemblyNode> {
 
 	@Override
 	public AssemblyNode visitDuplicateTop(DuplicateTopContext ctx) {
-		return new AssemblyNode(SVMParser.LOADMETHOD, codeIndex);
+		return new AssemblyNode(SVMParser.DUPLICATETOP, codeIndex);
 	}
 
 	
