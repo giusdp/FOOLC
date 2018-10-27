@@ -275,7 +275,10 @@ public class VirtualMachine {
                 push(code.get(classAddress+1).getLabelAddress()); // primo metodo della classe
                 System.out.println("lm " + classAddress);
 				break;
-
+				
+			case SVMParser.DUPLICATETOP:
+				push(getMemory(sp));
+				break;
 			case SVMParser.HALT:
 				System.out.println("HALT!");
 				return;
@@ -283,22 +286,20 @@ public class VirtualMachine {
 		}
 	}
 
-	// setta il valore passato all'indirizzo passato
+	/** Inserisce il valore value in memoria all'indirizzo address. */
 	private void setMemory(int address, int value) throws Exception {
-		int location = address;
-		if (location < 0 || location >= MEMSIZE) {
+		if (address < 0 || address >= MEMSIZE) {
 			throw new Exception("Segmentation Fault Error");
 		}
-		memory[location] = value;
+		memory[address] = value;
 	}
 
-	//prende il valore contenuto all'indirizzo passato
+	/** Legge e restituisce il valore contenuto all'indirizzo address, non toglie il valore dalla memoria. */
     private int getMemory(int address) throws Exception {
-        int location = address;
-        if (location < 0 || location >= MEMSIZE) {
+        if (address < 0 || address >= MEMSIZE) {
             throw new Exception("Segmentation Fault Error");
         }
-        int m =	memory[location];
+        int m =	memory[address];
         return m;
     }
 	
