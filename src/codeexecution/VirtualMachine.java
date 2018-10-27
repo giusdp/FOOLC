@@ -269,6 +269,12 @@ public class VirtualMachine {
 				// collector se lo facciamo
 
 				break;
+				
+			case SVMParser.LOADMETHOD:
+				int classAddress = pop();
+                push(code.get(classAddress+1).getLabelAddress()); // primo metodo della classe
+                System.out.println("lm " + classAddress);
+				break;
 
 			case SVMParser.HALT:
 				System.out.println("HALT!");
@@ -292,7 +298,8 @@ public class VirtualMachine {
         if (location < 0 || location >= MEMSIZE) {
             throw new Exception("Segmentation Fault Error");
         }
-        return memory[location];
+        int m =	memory[location];
+        return m;
     }
 	
 	private int pop() {

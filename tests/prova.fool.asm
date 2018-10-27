@@ -9,10 +9,12 @@ new
 
 lfp
 lfp
-push 0
+push -1
 lfp
 add
 lw
+lw
+lm
 js
 halt
 

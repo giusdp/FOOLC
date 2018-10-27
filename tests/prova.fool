@@ -2,5 +2,7 @@ class A(int x){ int getX() x; };
 
 let 
 	A objA = new A(118);
+	//int f() 5;
 in
 	objA.getX();
+	//f();

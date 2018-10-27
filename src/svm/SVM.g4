@@ -72,9 +72,15 @@ LOADHP	 : 'lhp' ;	// load heap pointer in the stack
 STOREHP	 : 'shp' ;	// store top into heap pointer
 PRINT	 : 'print' ;	// print top of stack
 HALT	 : 'halt' ;	// stop execution
+
+// Object stuff
 NEW      : 'new' ;   // alloca un'area di memoria nello heap
+// Methods stuff
 LOADMETHOD: 'lm' ; // Carica sullo stack l'indirizzo del primo metodo 
 					// della classe, il cui indirizzo è al top dello stack
+DUPLICATETOP: 'ctop'; // Fa una copia del top dello stack e lo inserisce. Serve per accedere alla dispatch table
+						// perché per accedere ad un metodo di un oggetto si usa l'indirizzo nella dispatch table
+						// e c'è bisogno di duplicarlo cosi poi si può usare per continuare ad accedere all'oggetto (e.g. per usare i campi nel metodo)
          
 
 COL	 : ':' ;

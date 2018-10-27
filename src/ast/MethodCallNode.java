@@ -170,9 +170,9 @@ public class MethodCallNode implements Node {
 //        // salvo $ra
     
 		
-		 String parCode = "";
+		 String parametersCodeString = "";
 		    for (int i = parList.size() - 1; i >= 0; i--) {
-		    	parCode+=parList.get(i).codeGeneration();
+		    	parametersCodeString+=parList.get(i).codeGeneration();
 		    }
 		    
 		    String getAR="";
@@ -181,13 +181,15 @@ public class MethodCallNode implements Node {
 			}
 		    
 			return "lfp\n" + //CL
-	               parCode +
+					parametersCodeString +
 	               "lfp\n" + getAR + //setto AL risalendo la catena statica
 	               // ora recupero l'indirizzo a cui saltare e lo metto sullo stack
 	               "push " + entry.getOffset() + "\n" + //metto offset sullo stack
 			       "lfp\n" + getAR + //risalgo la catena statica
 				   "add\n" + 
 	               "lw\n"  + //carico sullo stack il valore all'indirizzo ottenuto
+				   "lw\n" +
+				   "lm\n" +
 			       "js\n";
 	}
 
