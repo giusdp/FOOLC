@@ -272,7 +272,7 @@ public class VirtualMachine {
 				
 			case SVMParser.LOADMETHOD:
 				int classAddress = pop();
-                push(code.get(classAddress+1).getLabelAddress()); // primo metodo della classe
+                push(code.get(classAddress).getLabelAddress()); // primo metodo della classe
                 System.out.println("lm " + classAddress);
 				break;
 				

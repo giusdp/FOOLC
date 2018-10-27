@@ -187,8 +187,10 @@ public class MethodCallNode implements Node {
 	               "push " + entry.getOffset() + "\n" + //metto offset sullo stack
 			       "lfp\n" + getAR + //risalgo la catena statica
 				   "add\n" + 
-	               "lw\n"  + //carico sullo stack il valore all'indirizzo ottenuto
-				   "lw\n" +
+	               "lw\n"  + //carico sullo stack il valore all'indirizzo ottenuto (della classe all'heap)
+				   "ctop\n"+ // Duplicando ora il top, duplico l'indirizzo della classe che punta all'heap. 
+				   			//cosi' sara' il top dello stack all'esecuzione del metodo
+				   "lw\n" + 
 				   "lm\n" +
 			       "js\n";
 	}
