@@ -124,21 +124,15 @@ public class CompilerLauncher {
 				BufferedWriter out = new BufferedWriter(new FileWriter(fileName + ".asm"));
 				out.write(code);
 				out.close();
+				System.out.println("Code generated: " + fileName+".asm");
+				System.out.println();
+				
+				inputStream.close();
 			} catch (IOException e) {
 				System.out.println(e.toString());
 				System.exit(-1);
 			}
-			System.out.println("Code generated: " + fileName+".asm");
-			System.out.println();
-		}
-
-		try {
-			inputStream.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+		}		
 		
 		//************ LETTURA ED ESECUZIONE CODICE SVM *****************
 		
@@ -179,19 +173,20 @@ public class CompilerLauncher {
         if (errorListener.getNumErrors() > 0) {
 			System.err.println("\nThe SVM program was not in the right format."
 					+ " Exiting the compilation process now.");
-			System.exit(1);
 		}
+        else {
 
-        VirtualMachine vm = new VirtualMachine(assembly);
-
-        try {
-			vm.cpu();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			System.err.println("Compiler Launcher: Errore in esecuzione virtual machine");
-			e.printStackTrace();
-		}
-
+	        VirtualMachine vm = new VirtualMachine(assembly);
+	
+	        try {
+				vm.cpu();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				System.err.println("Compiler Launcher: Errore in esecuzione virtual machine");
+				System.err.println(e.getMessage());
+			}
+        }
+        
         try {
         	inputSVMStream.close();
 		} catch (IOException e) {
