@@ -38,6 +38,7 @@ instruction:
 	  | HALT           			#halt
 	  | NEW 					#new
 	  | LOADMETHOD				#loadMethod
+	  | DUPLICATETOP			#duplicateTop
 	  ;
  	 
 /*------------------------------------------------------------------

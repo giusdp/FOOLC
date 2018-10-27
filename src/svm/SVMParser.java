@@ -119,7 +119,7 @@ public class SVMParser extends Parser {
 			setState(7);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << PUSH) | (1L << POP) | (1L << ADD) | (1L << SUB) | (1L << MULT) | (1L << DIV) | (1L << STOREW) | (1L << LOADW) | (1L << BRANCH) | (1L << BRANCHEQ) | (1L << BRANCHLESSEQ) | (1L << BRANCHLESS) | (1L << BRANCHGREATEREQ) | (1L << BRANCHGREATER) | (1L << AND) | (1L << OR) | (1L << JS) | (1L << LOADRA) | (1L << STORERA) | (1L << LOADRV) | (1L << STORERV) | (1L << LOADFP) | (1L << STOREFP) | (1L << COPYFP) | (1L << LOADHP) | (1L << STOREHP) | (1L << PRINT) | (1L << HALT) | (1L << NEW) | (1L << LOADMETHOD) | (1L << LABEL))) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << PUSH) | (1L << POP) | (1L << ADD) | (1L << SUB) | (1L << MULT) | (1L << DIV) | (1L << STOREW) | (1L << LOADW) | (1L << BRANCH) | (1L << BRANCHEQ) | (1L << BRANCHLESSEQ) | (1L << BRANCHLESS) | (1L << BRANCHGREATEREQ) | (1L << BRANCHGREATER) | (1L << AND) | (1L << OR) | (1L << JS) | (1L << LOADRA) | (1L << STORERA) | (1L << LOADRV) | (1L << STORERV) | (1L << LOADFP) | (1L << STOREFP) | (1L << COPYFP) | (1L << LOADHP) | (1L << STOREHP) | (1L << PRINT) | (1L << HALT) | (1L << NEW) | (1L << LOADMETHOD) | (1L << DUPLICATETOP) | (1L << LABEL))) != 0)) {
 				{
 				{
 				setState(4);
@@ -398,6 +398,15 @@ public class SVMParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
+	public static class DuplicateTopContext extends InstructionContext {
+		public TerminalNode DUPLICATETOP() { return getToken(SVMParser.DUPLICATETOP, 0); }
+		public DuplicateTopContext(InstructionContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitDuplicateTop(this);
+			else return visitor.visitChildren(this);
+		}
+	}
 	public static class HaltContext extends InstructionContext {
 		public TerminalNode HALT() { return getToken(SVMParser.HALT, 0); }
 		public HaltContext(InstructionContext ctx) { copyFrom(ctx); }
@@ -479,7 +488,7 @@ public class SVMParser extends Parser {
 		InstructionContext _localctx = new InstructionContext(_ctx, getState());
 		enterRule(_localctx, 2, RULE_instruction);
 		try {
-			setState(54);
+			setState(55);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,1,_ctx) ) {
 			case 1:
@@ -768,6 +777,14 @@ public class SVMParser extends Parser {
 				match(LOADMETHOD);
 				}
 				break;
+			case 34:
+				_localctx = new DuplicateTopContext(_localctx);
+				enterOuterAlt(_localctx, 34);
+				{
+				setState(54);
+				match(DUPLICATETOP);
+				}
+				break;
 			}
 		}
 		catch (RecognitionException re) {
@@ -782,25 +799,26 @@ public class SVMParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3&;\4\2\t\2\4\3\t\3"+
+		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3&<\4\2\t\2\4\3\t\3"+
 		"\3\2\7\2\b\n\2\f\2\16\2\13\13\2\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3"+
 		"\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3"+
-		"\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\5"+
-		"\39\n\3\3\3\2\2\4\2\4\2\2Y\2\t\3\2\2\2\48\3\2\2\2\6\b\5\4\3\2\7\6\3\2"+
-		"\2\2\b\13\3\2\2\2\t\7\3\2\2\2\t\n\3\2\2\2\n\3\3\2\2\2\13\t\3\2\2\2\f\r"+
-		"\7\3\2\2\r9\7$\2\2\16\17\7\3\2\2\179\7#\2\2\209\7\4\2\2\219\7\5\2\2\22"+
-		"9\7\6\2\2\239\7\7\2\2\249\7\b\2\2\259\7\t\2\2\269\7\n\2\2\27\30\7#\2\2"+
-		"\309\7\"\2\2\319\7#\2\2\32\33\7\13\2\2\339\7#\2\2\34\35\7\f\2\2\359\7"+
-		"#\2\2\36\37\7\r\2\2\379\7#\2\2 !\7\16\2\2!9\7#\2\2\"#\7\17\2\2#9\7#\2"+
-		"\2$%\7\20\2\2%9\7#\2\2&\'\7\21\2\2\'9\7#\2\2()\7\22\2\2)9\7#\2\2*9\7\23"+
-		"\2\2+9\7\24\2\2,9\7\25\2\2-9\7\26\2\2.9\7\27\2\2/9\7\30\2\2\609\7\31\2"+
-		"\2\619\7\32\2\2\629\7\33\2\2\639\7\34\2\2\649\7\35\2\2\659\7\36\2\2\66"+
-		"9\7\37\2\2\679\7 \2\28\f\3\2\2\28\16\3\2\2\28\20\3\2\2\28\21\3\2\2\28"+
-		"\22\3\2\2\28\23\3\2\2\28\24\3\2\2\28\25\3\2\2\28\26\3\2\2\28\27\3\2\2"+
-		"\28\31\3\2\2\28\32\3\2\2\28\34\3\2\2\28\36\3\2\2\28 \3\2\2\28\"\3\2\2"+
-		"\28$\3\2\2\28&\3\2\2\28(\3\2\2\28*\3\2\2\28+\3\2\2\28,\3\2\2\28-\3\2\2"+
-		"\28.\3\2\2\28/\3\2\2\28\60\3\2\2\28\61\3\2\2\28\62\3\2\2\28\63\3\2\2\2"+
-		"8\64\3\2\2\28\65\3\2\2\28\66\3\2\2\28\67\3\2\2\29\5\3\2\2\2\4\t8";
+		"\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3"+
+		"\3\5\3:\n\3\3\3\2\2\4\2\4\2\2[\2\t\3\2\2\2\49\3\2\2\2\6\b\5\4\3\2\7\6"+
+		"\3\2\2\2\b\13\3\2\2\2\t\7\3\2\2\2\t\n\3\2\2\2\n\3\3\2\2\2\13\t\3\2\2\2"+
+		"\f\r\7\3\2\2\r:\7$\2\2\16\17\7\3\2\2\17:\7#\2\2\20:\7\4\2\2\21:\7\5\2"+
+		"\2\22:\7\6\2\2\23:\7\7\2\2\24:\7\b\2\2\25:\7\t\2\2\26:\7\n\2\2\27\30\7"+
+		"#\2\2\30:\7\"\2\2\31:\7#\2\2\32\33\7\13\2\2\33:\7#\2\2\34\35\7\f\2\2\35"+
+		":\7#\2\2\36\37\7\r\2\2\37:\7#\2\2 !\7\16\2\2!:\7#\2\2\"#\7\17\2\2#:\7"+
+		"#\2\2$%\7\20\2\2%:\7#\2\2&\'\7\21\2\2\':\7#\2\2()\7\22\2\2):\7#\2\2*:"+
+		"\7\23\2\2+:\7\24\2\2,:\7\25\2\2-:\7\26\2\2.:\7\27\2\2/:\7\30\2\2\60:\7"+
+		"\31\2\2\61:\7\32\2\2\62:\7\33\2\2\63:\7\34\2\2\64:\7\35\2\2\65:\7\36\2"+
+		"\2\66:\7\37\2\2\67:\7 \2\28:\7!\2\29\f\3\2\2\29\16\3\2\2\29\20\3\2\2\2"+
+		"9\21\3\2\2\29\22\3\2\2\29\23\3\2\2\29\24\3\2\2\29\25\3\2\2\29\26\3\2\2"+
+		"\29\27\3\2\2\29\31\3\2\2\29\32\3\2\2\29\34\3\2\2\29\36\3\2\2\29 \3\2\2"+
+		"\29\"\3\2\2\29$\3\2\2\29&\3\2\2\29(\3\2\2\29*\3\2\2\29+\3\2\2\29,\3\2"+
+		"\2\29-\3\2\2\29.\3\2\2\29/\3\2\2\29\60\3\2\2\29\61\3\2\2\29\62\3\2\2\2"+
+		"9\63\3\2\2\29\64\3\2\2\29\65\3\2\2\29\66\3\2\2\29\67\3\2\2\298\3\2\2\2"+
+		":\5\3\2\2\2\4\t9";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

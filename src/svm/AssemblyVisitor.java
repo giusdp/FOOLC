@@ -17,6 +17,7 @@ import svm.SVMParser.BranchOrContext;
 import svm.SVMParser.CopyFPContext;
 import svm.SVMParser.DispatchLabelContext;
 import svm.SVMParser.DivContext;
+import svm.SVMParser.DuplicateTopContext;
 import svm.SVMParser.HaltContext;
 import svm.SVMParser.InstructionContext;
 import svm.SVMParser.JsContext;
@@ -261,9 +262,12 @@ public class AssemblyVisitor extends SVMBaseVisitor<AssemblyNode> {
 		return new AssemblyNode(SVMParser.LOADMETHOD, codeIndex);
 	}
 
+	@Override
+	public AssemblyNode visitDuplicateTop(DuplicateTopContext ctx) {
+		return new AssemblyNode(SVMParser.LOADMETHOD, codeIndex);
+	}
+
 	
-
-
 	
 	
 }
