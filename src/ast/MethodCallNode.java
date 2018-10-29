@@ -131,7 +131,7 @@ public class MethodCallNode implements Node {
 									  "\nExpected " + parTypes.size() + " but found " + parList.size());
 				return error;
 			}
-			// si controllano tipi parametri con quelli passatiin input
+			// si controllano tipi parametri con quelli passati in input
 			for (int i = 0; i < parList.size(); i++) 
 				if ( !(FOOLlib.isSubtype( (parList.get(i)).typeCheck(), parTypes.get(i)) ) ) {
 					error.addErrorMessage("Wrong type for the "+(i+1)+"-th parameter in the invocation of method: "+varNode.getId()+"."+id);
