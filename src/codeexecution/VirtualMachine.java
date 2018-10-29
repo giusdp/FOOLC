@@ -1,4 +1,4 @@
-package codegen;
+package codeexecution;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -191,8 +191,8 @@ public class VirtualMachine {
 				System.out.println("lrv");
 				break;
 			case SVMParser.LOADFP: //
-				System.out.println("lfp");
 				push(fp);
+				System.out.println("lfp");
 				break;
 			case SVMParser.STOREFP: //
 				fp = pop();
@@ -219,6 +219,8 @@ public class VirtualMachine {
 				// table), il numero di campi e i loro valori
 				// dall'ultimo al primo.
 
+				System.out.println("new");
+				
 				int dispatchTableAddress = pop();
 				int fieldNumber = pop();
 				int[] fieldValues = new int[fieldNumber];
@@ -267,7 +269,17 @@ public class VirtualMachine {
 				// collector se lo facciamo
 
 				break;
-
+				
+			case SVMParser.LOADMETHOD:
+				int methodAddress = pop();
+                push(code.get(methodAddress).getLabelAddress()); // primo metodo della classe
+                System.out.println("lm " + methodAddress);
+				break;
+				
+			case SVMParser.DUPLICATETOP:
+				push(getMemory(sp));
+				System.out.println("ctop " + getMemory(sp));
+				break;
 			case SVMParser.HALT:
 				System.out.println("HALT!");
 				return;
@@ -275,22 +287,21 @@ public class VirtualMachine {
 		}
 	}
 
-	// setta il valore passato all'indirizzo passato
+	/** Inserisce il valore value in memoria all'indirizzo address. */
 	private void setMemory(int address, int value) throws Exception {
-		int location = address;
-		if (location < 0 || location >= MEMSIZE) {
+		if (address < 0 || address >= MEMSIZE) {
 			throw new Exception("Segmentation Fault Error");
 		}
-		memory[location] = value;
+		memory[address] = value;
 	}
 
-	//prende il valore contenuto all'indirizzo passato
+	/** Legge e restituisce il valore contenuto all'indirizzo address, non toglie il valore dalla memoria. */
     private int getMemory(int address) throws Exception {
-        int location = address;
-        if (location < 0 || location >= MEMSIZE) {
+        if (address < 0 || address >= MEMSIZE) {
             throw new Exception("Segmentation Fault Error");
         }
-        return memory[location];
+        int m =	memory[address];
+        return m;
     }
 	
 	private int pop() {

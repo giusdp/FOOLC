@@ -15,13 +15,16 @@ import svm.SVMParser.BranchLessContext;
 import svm.SVMParser.BranchLessEqualContext;
 import svm.SVMParser.BranchOrContext;
 import svm.SVMParser.CopyFPContext;
+import svm.SVMParser.DispatchLabelContext;
 import svm.SVMParser.DivContext;
+import svm.SVMParser.DuplicateTopContext;
 import svm.SVMParser.HaltContext;
 import svm.SVMParser.InstructionContext;
 import svm.SVMParser.JsContext;
 import svm.SVMParser.LabelContext;
 import svm.SVMParser.LoadFPContext;
 import svm.SVMParser.LoadHPContext;
+import svm.SVMParser.LoadMethodContext;
 import svm.SVMParser.LoadRAContext;
 import svm.SVMParser.LoadRVContext;
 import svm.SVMParser.LoadWContext;
@@ -120,6 +123,15 @@ public class AssemblyVisitor extends SVMBaseVisitor<AssemblyNode> {
 	public AssemblyNode visitLabel(LabelContext ctx) {
 		AssemblyNode an = new AssemblyNode(SVMParser.LABEL, codeIndex);
 		labelAdd.put(ctx.l.getText(), assemblyNodes.size());
+		return an;
+	}
+	
+	
+
+	@Override
+	public AssemblyNode visitDispatchLabel(DispatchLabelContext ctx) {
+		AssemblyNode an = new AssemblyNode(SVMParser.LABEL, codeIndex);
+		labelRef.put(assemblyNodes.size(), ctx.l.getText());
 		return an;
 	}
 
@@ -245,9 +257,17 @@ public class AssemblyVisitor extends SVMBaseVisitor<AssemblyNode> {
 		return new AssemblyNode(SVMParser.NEW, codeIndex);
 	}
 
+	@Override
+	public AssemblyNode visitLoadMethod(LoadMethodContext ctx) {
+		return new AssemblyNode(SVMParser.LOADMETHOD, codeIndex);
+	}
+
+	@Override
+	public AssemblyNode visitDuplicateTop(DuplicateTopContext ctx) {
+		return new AssemblyNode(SVMParser.DUPLICATETOP, codeIndex);
+	}
+
 	
-
-
 	
 	
 }

@@ -11,8 +11,8 @@ import org.antlr.v4.runtime.CommonTokenStream;
 
 import ast.FOOLNodeVisitor;
 import ast.Node;
-import codegen.DispatchTable;
-import codegen.VirtualMachine;
+import codeexecution.DispatchTable;
+import codeexecution.VirtualMachine;
 import parser.FOOLLexer;
 import parser.FOOLParser;
 import svm.AssemblyNode;
@@ -93,9 +93,10 @@ public class CompilerLauncher {
 			System.exit(1);
 		}
 		System.out.println("Check Semantics ok!");
+		System.out.println();
 
-		System.out.println("Visualizing AST...");
-		System.out.println(ast.toPrint(""));
+//		System.out.println("Visualizing AST...");
+//		System.out.println(ast.toPrint(""));
 
 
 		System.out.println("Perfoming Type Checking...");
@@ -123,79 +124,74 @@ public class CompilerLauncher {
 				BufferedWriter out = new BufferedWriter(new FileWriter(fileName + ".asm"));
 				out.write(code);
 				out.close();
+				System.out.println("Code generated: " + fileName+".asm");
+				System.out.println();
+				
+				inputStream.close();
 			} catch (IOException e) {
 				System.out.println(e.toString());
 				System.exit(-1);
 			}
-			System.out.println("Code generated: " + fileName+".asm");
-			System.out.println();
-		}
-
-		try {
-			inputStream.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+			
+			//************ LETTURA ED ESECUZIONE CODICE SVM *****************
+			
+			FileInputStream inputSVMStream = null;
+			try {
+				inputSVMStream = new FileInputStream(fileName+".asm");
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				System.err.println("\nERROR. No file found with the name " + fileName+".asm");
+				System.exit(1);
+			}
+	
+			ANTLRInputStream inputSVM = null;
+			try {
+				inputSVM = new ANTLRInputStream(inputSVMStream);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				System.exit(2);
+			}
+	
+	        SVMLexer lexerSVM = new SVMLexer(inputSVM);
+	        CommonTokenStream tokensSVM = new CommonTokenStream(lexerSVM);
+	        SVMParser parserSVM = new SVMParser(tokensSVM);
+	        parserSVM.removeErrorListeners();
+	        parserSVM.addErrorListener(errorListener);
+	        
+	        // TODO Implement visitor pattern for svm
+	        AssemblyVisitor assemblyVisitor = new AssemblyVisitor();
+			List<AssemblyNode> assembly = assemblyVisitor.buildCodeList(parserSVM.assembly()); //generazione lista delle istruzioni assemblu
+	
+	//		System.out.println("Token identifiers");
+	//		for (AssemblyNode an : assembly) {
+	//			System.out.println(an.getInstruction());
+	//		}
+			
+	        if (errorListener.getNumErrors() > 0) {
+				System.err.println("\nThe SVM program was not in the right format."
+						+ " Exiting the compilation process now.");
+			}
+	        else {
+	
+		        VirtualMachine vm = new VirtualMachine(assembly);
 		
-		
-		//************ LETTURA ED ESECUZIONE CODICE SVM *****************
-		
-		FileInputStream inputSVMStream = null;
-		try {
-			inputSVMStream = new FileInputStream(fileName+".asm");
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			System.err.println("\nERROR. No file found with the name " + fileName+".asm");
-			System.exit(1);
-		}
-
-		ANTLRInputStream inputSVM = null;
-		try {
-			inputSVM = new ANTLRInputStream(inputSVMStream);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			System.exit(2);
-		}
-
-        SVMLexer lexerSVM = new SVMLexer(inputSVM);
-        CommonTokenStream tokensSVM = new CommonTokenStream(lexerSVM);
-        SVMParser parserSVM = new SVMParser(tokensSVM);
-        parserSVM.removeErrorListeners();
-        parserSVM.addErrorListener(errorListener);
-        
-        // TODO Implement visitor pattern for svm
-        AssemblyVisitor assemblyVisitor = new AssemblyVisitor();
-		List<AssemblyNode> assembly = assemblyVisitor.buildCodeList(parserSVM.assembly()); //generazione lista delle istruzioni assemblu
-
-//		System.out.println("Token identifiers");
-//		for (AssemblyNode an : assembly) {
-//			System.out.println(an.getInstruction());
-//		}
-		
-        if (errorListener.getNumErrors() > 0) {
-			System.err.println("\nThe SVM program was not in the right format."
-					+ " Exiting the compilation process now.");
-			System.exit(1);
-		}
-
-        VirtualMachine vm = new VirtualMachine(assembly);
-
-        try {
-			vm.cpu();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			System.err.println("Compiler Launcher: Errore in esecuzione virtual machine");
-			e.printStackTrace();
-		}
-
-        try {
-        	inputSVMStream.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		        try {
+					vm.cpu();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					System.err.println("Compiler Launcher: Errore in esecuzione virtual machine");
+					System.err.println(e.getMessage());
+				}
+	        }
+	        
+	        try {
+	        	inputSVMStream.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 

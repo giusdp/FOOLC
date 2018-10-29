@@ -1,0 +1,4 @@
+let 
+	bool g() true;
+in
+	g();

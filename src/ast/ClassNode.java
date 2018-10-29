@@ -1,15 +1,13 @@
 package ast;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
-import codegen.DTEntry;
-import codegen.DispatchTable;
+import codeexecution.DTEntry;
+import codeexecution.DispatchTable;
 import type.ArrowType;
 import type.ClassType;
 import type.ErrorType;
@@ -25,14 +23,17 @@ public class ClassNode implements Node {
 	private ArrayList<Node> fieldList = new ArrayList<>();
 	private ArrayList<Node> methodList = new ArrayList<>();
 
-	STEntry stEntry;
+	public STEntry stEntry;
 	
 	private ClassType type;
 	
 	// EREDITARIETA
 	private String superClassName = null;
 	private ClassNode superClass = null;
-
+	
+	// Offset dei metodi nella classe. id metodo -> offset dispatch table
+	private Map<String, Integer> methodsDTOffsets = new HashMap<>();
+	
 	// COSTRUTTORE
 	public ClassNode(String name, ArrayList<Node> fieldList, ArrayList<Node> methodList) {
 		this.id = name;
@@ -40,6 +41,15 @@ public class ClassNode implements Node {
 		this.methodList = methodList;
 		
 		type = new ClassType(id);
+		int dtOffset = 1; // Parte da 1, perchè a 0 c'e' l'indirizzo della classe
+		// e per accedere alle funzioni si fa indirizzoClasse + dtOffset
+		// Esempio:
+		/*
+		 * class_A:		<---- dtOffset = 0
+		 * function0	<---- dtOffset = 1
+		 * function1 	<---- dtOffset = 2
+		 * 
+		 */
 		
 		ArrayList<Type> fieldTypeList = new ArrayList<>();
 		for (Node par : fieldList) {
@@ -52,6 +62,7 @@ public class ClassNode implements Node {
 		for (Node m : methodList) {
 			FunNode f = (FunNode) m;
 			methodTypeList.add((ArrowType) f.getType());
+			methodsDTOffsets.put(f.getId(), dtOffset++);
 		}
 		type.setMethodTypeList(methodTypeList);
 		
@@ -80,13 +91,11 @@ public class ClassNode implements Node {
 		
 		//create result list
 		ArrayList<SemanticError> res = new ArrayList<SemanticError>();
-
-		//env.offset = -2;
 		
 		// Controllo classe già dichiarata
 		HashMap<String,STEntry> currentScope = env.getST().get(env.getNestLevel());
 
-		stEntry = new STEntry(env.getNestLevel(), type, env.decOffset()); 
+		stEntry = new STEntry(env.getNestLevel(), type, env.decClassOffset()); 
 
 		if ( currentScope.put(id, stEntry) != null ) {
 			res.add(new SemanticError("Class "+ id +" is already declared"));
@@ -257,7 +266,9 @@ public class ClassNode implements Node {
         
         for (Node n : methodList) { //aggiungo i metodi della classe attuale
         	FunNode m = (FunNode) n;
-            currentClassMethods.put(m.getId(), m.codeGeneration());
+            currentClassMethods.put(m.getId(), m.codeGeneration().split(" ", 2)[1] ); // Splitto la stringa ritornata togliendo la prima parola
+            // Fun node mette un push davanti la label
+            // qui tocca toglierlo che non ci deve essere
         }
         
         // ***** OVERRIDE DEI METODI NELLA DISPATCH TABLE *****
@@ -323,4 +334,7 @@ public class ClassNode implements Node {
 		return type;
 	}
 
+	public int getMethodDTOffset(String methodID) {
+		return methodsDTOffsets.get(methodID);
+	}
 }

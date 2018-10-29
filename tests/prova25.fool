@@ -1,0 +1,14 @@
+//ShouldBe StackOverFlow
+let
+    int f(int x)
+        if(x>50)
+            then { get() }
+            else { g(x-1) };
+
+    int g(int x) f(x);
+    int get() 20;
+
+in
+    g(20);
+
+//StackOverflow: il caso x>50 non si verifica mai

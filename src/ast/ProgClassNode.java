@@ -35,7 +35,11 @@ public class ProgClassNode implements Node {
 	@Override
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
 		env.incNestLevel(); // porto il nesting level a 0
-		//env.setClassOffset(-2);
+		
+		env.setOffset(-1); // Bisogna settare il primo offset a -1 così quando si accede ad una variabile prendendo
+		// l'offset, si inizia da 9999 invece che da MEMSIZE=10000, dato che l'array memory va da 0 a 9999
+		env.setClassOffset(-1);
+		env.setMethodOffset(-1);
 
 		// Creo una nuova hashmap e la aggiugno alla symbol table
 		HashMap<String, STEntry> hm = new HashMap<String, STEntry>();
@@ -61,8 +65,8 @@ public class ProgClassNode implements Node {
 			res.addAll(n.checkSemantics(env));
 
 		// Controlla l'espressione fuori 
-		for (Node stm : contextBody) {
-			res.addAll(stm.checkSemantics(env));
+		for (Node instruction : contextBody) {
+			res.addAll(instruction.checkSemantics(env));
 		}
 		// Lascia lo scope
 		env.getST().remove(env.decNestLevel());
@@ -98,12 +102,13 @@ public class ProgClassNode implements Node {
 	}
 	@Override
 	public String codeGeneration() {
-		String classes = "";
 		
 		for (ClassNode c : classList) {
-			classes += c.codeGeneration();
+			c.codeGeneration();  // La code generation delle classi ritorna stringa vuota quindi non serve. 
+			// Piuttosto popola la stringa in FOOLlib con le dispatch tables.
 		}
 		
+		// Se è solo un file di dichiarazioni di classi salta la code generation del let in
 		if ( ! decList.isEmpty()) {
 			String declCode = "";
 			for (Node dec : decList)
@@ -113,11 +118,11 @@ public class ProgClassNode implements Node {
 			for (Node stm : contextBody)
 				bodyCode +=  stm.codeGeneration();
 			
-			return classes + declCode + bodyCode + "halt\n" +
+			return "## LET\n\n" + declCode + "\n## IN\n\n" + bodyCode + "halt\n\n" + "## Functions code and Dispatch Table\n" +
 				FOOLlib.getCode();
 		}
 		
-		return classes + "halt\n" + FOOLlib.getCode();
+		return "halt\n" + FOOLlib.getCode();
 		
 	}
 

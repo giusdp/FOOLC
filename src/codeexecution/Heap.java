@@ -1,4 +1,4 @@
-package codegen;
+package codeexecution;
 
 public class Heap {
 
@@ -24,7 +24,7 @@ public class Heap {
 
         if (heapSize < size) throw new Exception("HeapError: Heap Overflow");
 
-        HeapBlock res = this.head; //testa del blocco da allocare sarà restituita.
+        HeapBlock res = this.head; //testa del blocco da allocare sarï¿½ restituita.
 
 
         HeapBlock lastItem = head;

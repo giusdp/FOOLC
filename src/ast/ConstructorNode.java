@@ -50,8 +50,8 @@ public class ConstructorNode implements Node {
 			// Bisogna controllare che i tipi degli argomenti (parList) siano subtype dei campi della classe
 			// I campi della classe sono da considerarsi come parametri
 
-			for (int i=0; i<classType.getFieldTypeList().size(); i++) 
-				System.out.println(classType.getFieldTypeList().get(i).toPrint(""));
+//			for (int i=0; i<classType.getFieldTypeList().size(); i++) 
+//				System.out.println(classType.getFieldTypeList().get(i).toPrint(""));
 
 
 			ArrayList<Type> parTypes = classType.getFieldTypeList();

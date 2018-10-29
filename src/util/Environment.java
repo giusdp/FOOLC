@@ -12,6 +12,8 @@ public class Environment {
 	
 	private int nestingLevel;
 	private int offset;
+	private int classOffset; // Offset dedicato per le classi e i loro metodi
+	private int methodOffset;
 
 	private HashMap<String, ClassNode> classMap = new HashMap<>();
 	
@@ -55,6 +57,32 @@ public class Environment {
 	public HashMap<String, ClassNode> getClassMap() {
 		return classMap;
 	}
+
+	public int incrClassOffset() {
+		return classOffset++;
+	}
+	
+	public int decClassOffset() {
+		return classOffset--;
+	}
+
+	public void setClassOffset(int classOffset) {
+		this.classOffset = classOffset;
+	}
+	
+	public int incrMethodOffset() {
+		return methodOffset++;
+	}
+	
+	public int decMethodOffset() {
+		return methodOffset--;
+	}
+
+	public void setMethodOffset(int methodOffset) {
+		this.methodOffset = methodOffset;
+	}
+	
+	
 	
 
 	//livello ambiente con dichiarazioni piu' esterno è 0 (prima posizione ArrayList) 

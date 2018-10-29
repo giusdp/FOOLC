@@ -1,4 +1,4 @@
 let 
-int min(int x, int y) if (x < y) then {x} else {y}; 
+	int f() 4;
 in
-min(41,42);
+	f();

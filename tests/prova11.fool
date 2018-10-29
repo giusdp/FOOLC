@@ -1,0 +1,5 @@
+let 
+	int x = 5;
+	bool b = true;
+int 
+	b;

@@ -21,6 +21,10 @@ public class MethodCallNode implements Node {
 	private IdNode varNode;
 	private String ownerClass;
 	
+	private STEntry ownerClassEntry; 
+	private int dtOffset;
+	private int nestingLevel;
+	
 	private Type methodType;
 
 	public MethodCallNode(String m, ArrayList<Node> args, Node obj) {
@@ -45,12 +49,13 @@ public class MethodCallNode implements Node {
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
 		
 		ArrayList<SemanticError> res = new ArrayList<SemanticError>();
-		
+				
 		res.addAll(varNode.checkSemantics(env));
+		if (!res.isEmpty()) return res;
 		
 		// Dopo i controlli preliminari sulla variabile usata. 
 		// Si cerca la definizione del metodo nell'hashmap dei metodi
-		// Siccome la sintassi è un metodo di una classe, la variabile dovrebbe essere una classe
+		// Siccome  metodo di una classe, la variabile dovrebbe essere una classe
 		// Se non lo è si intercetta l'eccezione e si da un Semantic Error
 		try {
 			ownerClass = ((ClassType) varNode.getType()).getId(); // Ottendo il nome/tipo della classe
@@ -94,13 +99,16 @@ public class MethodCallNode implements Node {
 				res.add(new SemanticError("Method "+ id + " in class " + ownerClass + " is not defined."));
 				return res;
 			}
+			
+			nestingLevel = env.getNestLevel(); // Otteniamo il nesting level "a tempo di invocazione"
+			ownerClassEntry = ownerClassNode.stEntry;
+			dtOffset = ownerClassNode.getMethodDTOffset(this.id);
 		}
 		catch (ClassCastException e) {
 			// TODO: Però questo è un controllo di tipi, si dovrebbe fare nel type check non qui
 			res.add(new SemanticError("Var " + varNode.getId() + " is not ClassType, instead it's " + varNode.getType().toPrint("")));
 		}
 		
-	
 		return res;
 	}
 
@@ -126,7 +134,7 @@ public class MethodCallNode implements Node {
 									  "\nExpected " + parTypes.size() + " but found " + parList.size());
 				return error;
 			}
-			// si controllano tipi parametri con quelli passatiin input
+			// si controllano tipi parametri con quelli passati in input
 			for (int i = 0; i < parList.size(); i++) 
 				if ( !(FOOLlib.isSubtype( (parList.get(i)).typeCheck(), parTypes.get(i)) ) ) {
 					error.addErrorMessage("Wrong type for the "+(i+1)+"-th parameter in the invocation of method: "+varNode.getId()+"."+id);
@@ -143,7 +151,52 @@ public class MethodCallNode implements Node {
 
 	@Override
 	public String codeGeneration() {
-		return null;
+
+//
+//        return
+//                "lfp\n"                                  // pusho frame pointer e parametri
+//                        + parameterCode
+//                        + "push " + objectOffset + "\n"         // pusho l'offset logico dell'oggetto (dispatch table)
+//                        + "lfp\n"
+//                        + getActivationRecord                                 //pusho access link (lw consecutivamente)
+//                        // così si potrà risalire la catena statica
+//                        + "add\n"                               // $fp + offset
+//                        + "lw\n"                                // pusho indirizzo di memoria in cui si trova
+//                        // l'indirizzo della dispatch table
+//                        + "copy\n"                              // copio
+//                        + "lw\n"                                // pusho l'indirizzo della dispatch table
+//                        + "push " + (methodOffset - 1) + "\n"   // pusho l'offset di dove si trova metodo rispetto
+//                        // all'inizio della dispatch table
+//                        + "add" + "\n"                          // dispatch_table_start + offset
+//                        + "loadc\n"                             // pusho il codice del metodo
+//                        + "js\n";                               // jump all'istruzione dove e' definito il metodo e
+//        // salvo $ra
+    
+		
+		 String parametersCodeString = "";
+		    for (int i = parList.size() - 1; i >= 0; i--) {
+		    	parametersCodeString+=parList.get(i).codeGeneration();
+		    }
+		    
+		    String getAR="";
+			for (int i=0; i< nestingLevel - ownerClassEntry.getNestLevel(); i++) {
+				getAR+="lw\n";
+			}
+		    
+			return "lfp\n" + //CL
+					parametersCodeString +
+					"push " + ownerClassEntry.getOffset() + "\n" + //metto offset sullo stack
+			       "lfp\n" + 
+					getAR +
+				   "add\n" + 
+	               "lw\n"  + //carico sullo stack il valore all'indirizzo ottenuto (della classe all'heap)
+				   "cts\n"+ // Duplicando ora il top, duplico l'indirizzo della classe che punta all'heap. 
+				   			//cosi' sara' il top dello stack all'esecuzione del metodo
+				   "lw\n" + 
+				   "push " + dtOffset + "\n"+
+				   "add\n"+
+				   "lm\n" +
+			       "js\n";
 	}
 
 }
