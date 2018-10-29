@@ -4,5 +4,5 @@ let
 	//A objA = new A(118, 811);
 	int f(int z) z;
 in
-	//objA.getX(7);
-	f(7);
+	objA.getX(7);
+	//f(7);

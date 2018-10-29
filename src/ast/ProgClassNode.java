@@ -65,8 +65,8 @@ public class ProgClassNode implements Node {
 			res.addAll(n.checkSemantics(env));
 
 		// Controlla l'espressione fuori 
-		for (Node stm : contextBody) {
-			res.addAll(stm.checkSemantics(env));
+		for (Node instruction : contextBody) {
+			res.addAll(instruction.checkSemantics(env));
 		}
 		// Lascia lo scope
 		env.getST().remove(env.decNestLevel());

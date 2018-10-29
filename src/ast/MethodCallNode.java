@@ -50,6 +50,7 @@ public class MethodCallNode implements Node {
 		ArrayList<SemanticError> res = new ArrayList<SemanticError>();
 				
 		res.addAll(varNode.checkSemantics(env));
+		if (!res.isEmpty()) return res;
 		
 		// Dopo i controlli preliminari sulla variabile usata. 
 		// Si cerca la definizione del metodo nell'hashmap dei metodi
