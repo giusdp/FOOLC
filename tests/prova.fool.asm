@@ -1,22 +1,16 @@
 ## LET
 
-push 811
-push 118
-push 2
-push A_class
-new
+push function2
 
 ## IN
 
 lfp
+push 7
 lfp
 push -1
 lfp
 add
 lw
-ctop
-lw
-lm
 js
 halt
 
@@ -27,7 +21,6 @@ cfp
 lra
 push 1
 lfp
-lw
 add
 lw
 srv
@@ -49,6 +42,22 @@ add
 lw
 srv
 sra
+pop
+sfp
+lrv
+lra
+js
+
+function2:
+cfp
+lra
+push 1
+lfp
+add
+lw
+srv
+sra
+pop
 pop
 sfp
 lrv

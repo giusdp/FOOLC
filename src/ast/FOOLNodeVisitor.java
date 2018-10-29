@@ -117,6 +117,7 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 		// visit all class's methods
 		for (FunContext fc : ctx.fun()) {
 			FunNode f = (FunNode) visit(fc);
+			f.setMethod(true); // In questo caso la funzione è un metodo
 			methodList.add(f);
 		}
 		

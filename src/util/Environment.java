@@ -13,6 +13,7 @@ public class Environment {
 	private int nestingLevel;
 	private int offset;
 	private int classOffset; // Offset dedicato per le classi e i loro metodi
+	private int methodOffset;
 
 	private HashMap<String, ClassNode> classMap = new HashMap<>();
 	
@@ -67,6 +68,18 @@ public class Environment {
 
 	public void setClassOffset(int classOffset) {
 		this.classOffset = classOffset;
+	}
+	
+	public int incrMethodOffset() {
+		return methodOffset++;
+	}
+	
+	public int decMethodOffset() {
+		return methodOffset--;
+	}
+
+	public void setMethodOffset(int methodOffset) {
+		this.methodOffset = methodOffset;
 	}
 	
 	

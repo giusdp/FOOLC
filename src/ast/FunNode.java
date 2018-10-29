@@ -21,6 +21,8 @@ public class FunNode implements Node {
 	private ArrayList<Node> expsBody;
 	private ArrayList<Node> stmsBody;
 	private ArrowType functionType;
+	
+	private boolean isMethod = false;
 
 	public FunNode (String i,
 					Type t,
@@ -63,8 +65,14 @@ public class FunNode implements Node {
 
 		//env.offset = -2;
 		HashMap<String,STEntry> currentScope = env.getST().get(env.getNestLevel());
-		STEntry entry = new STEntry(env.getNestLevel(),env.decOffset()); 
-		//separo introducendo "entry"
+		
+		// Problema con il decOffset qui. Se questo è un metodo di una classe, l'offset dovrebbe
+		// essere inerente alla classe e non all'offset di tutto l'environment. 
+		// Quindi è stato introdotto methodOffset
+		STEntry entry;
+		if (isMethod)  entry = new STEntry(env.getNestLevel(), env.decMethodOffset()); 
+		else entry = new STEntry(env.getNestLevel(), env.decOffset()); 
+		
 
 		if ( currentScope.put(id,entry) != null )
 			res.add(new SemanticError("Function "+ id +" already declared"));
@@ -223,5 +231,15 @@ public class FunNode implements Node {
 
 		return "push " + funLabel +"\n";
 	}
+
+	public boolean isMethod() {
+		return isMethod;
+	}
+
+	public void setMethod(boolean isMethod) {
+		this.isMethod = isMethod;
+	}
+	
+	
 
 }  
