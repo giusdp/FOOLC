@@ -1,8 +1,8 @@
-class A(int x, int y){ int getX(int z) z; int getY() y;};
+class A(int x){ int getX(int z) z;};
 
 let 
-	//A objA = new A(118, 811);
-	int f(int z) z;
+	A objA = new A(118);
+	//int f(int z) z;
 in
-	objA.getX(7);
+	objA.getX(19);
 	//f(7);

@@ -189,7 +189,7 @@ public class MethodCallNode implements Node {
 			       "lfp\n" + getAR + //risalgo la catena statica
 				   "add\n" + 
 	               "lw\n"  + //carico sullo stack il valore all'indirizzo ottenuto (della classe all'heap)
-				   "ctop\n"+ // Duplicando ora il top, duplico l'indirizzo della classe che punta all'heap. 
+				   "cts\n"+ // Duplicando ora il top, duplico l'indirizzo della classe che punta all'heap. 
 				   			//cosi' sara' il top dello stack all'esecuzione del metodo
 				   "lw\n" + 
 				   "lm\n" +

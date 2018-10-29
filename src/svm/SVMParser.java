@@ -33,7 +33,7 @@ public class SVMParser extends Parser {
 		null, "'push'", "'pop'", "'add'", "'sub'", "'mult'", "'div'", "'sw'", 
 		"'lw'", "'b'", "'beq'", "'bleq'", "'bl'", "'bgeq'", "'bg'", "'and'", "'or'", 
 		"'js'", "'lra'", "'sra'", "'lrv'", "'srv'", "'lfp'", "'sfp'", "'cfp'", 
-		"'lhp'", "'shp'", "'print'", "'halt'", "'new'", "'lm'", "'ctop'", "':'"
+		"'lhp'", "'shp'", "'print'", "'halt'", "'new'", "'lm'", "'cts'", "':'"
 	};
 	private static final String[] _SYMBOLIC_NAMES = {
 		null, "PUSH", "POP", "ADD", "SUB", "MULT", "DIV", "STOREW", "LOADW", "BRANCH", 

@@ -64,5 +64,5 @@ WHITESP=36
 'halt'=28
 'new'=29
 'lm'=30
-'ctop'=31
+'cts'=31
 ':'=32
