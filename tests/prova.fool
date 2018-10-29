@@ -1,8 +1,4 @@
-class A(int x, int y){ int getX() x; int getY() y; int sum() x+y;};
-
 let 
-	A objA = new A(118, 2);
-	//int f(int z) z;
+	int f() 4;
 in
-	objA.sum();
-	//f(7);
+	f();

@@ -44,9 +44,11 @@ import static ast.LogicOpsNode.LogicOpsType.*;
 
 import java.util.ArrayList;
 
+import org.antlr.v4.runtime.ParserRuleContext;
+
 public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 
-	public ArrayList<Node> getContextBody(ProgContext ctx) {
+	public ArrayList<Node> getContextBody(ParserRuleContext ctx) {
 		ArrayList<Node> contextBody = new ArrayList<Node>();
 
 		ctx.children.forEach(node ->
@@ -182,34 +184,16 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 
 		//list of declarations, exps and stms in @res
 		ArrayList<Node> declarations = new ArrayList<>();
-//		ArrayList<Node> expressions = new ArrayList<>();
-//		ArrayList<Node> statements = new ArrayList<>();
 		ArrayList<Node> fullBody = new ArrayList<>();
 		
-		//visit all nodes corresponding to declarations inside the let
-		//context and store them in @declarations
-		//notice that the ctx.let().dec() method returns a list, this is
-		//because of the use of * or + in the grammar
-		//antlr detects this is a group and therefore returns a list
 		for (DecContext dc : ctx.let().dec()) {
 			declarations.add(visit(dc));
 		}
-
-		//visit exp and stms context
-//		for (ExpContext exp : ctx.exp()) {
-//			expressions.add(visit(exp));
-//		}
-//		for (StmsContext stm : ctx.stms()) {
-//			for (StmContext s : stm.stm()) {
-//				statements.add(visit(s));	
-//			}
-//		}
 		
 		fullBody = getContextBody(ctx);
 		
-		res = new ProgLetInNode(declarations/*, expressions, statements*/, fullBody);
-		//build @res accordingly with the result of the visits to its
-		//content
+		res = new ProgLetInNode(declarations, fullBody);
+		//build @res accordingly with the result of the visits to its content
 
 		return res;
 	}
@@ -287,24 +271,14 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 				innerDec.add(visit(dc));
 		}
 
-		ArrayList<Node> statements = new ArrayList<Node>();
-		ArrayList<Node> expressions = new ArrayList<Node>();
+		ArrayList<Node> fullBody = new ArrayList<>();
+		fullBody = getContextBody(ctx);
 		
-		for (ExpContext exp : ctx.exp()) {
-			expressions.add(visit(exp));
-		}
-		for (StmsContext stm : ctx.stms()) {
-			for (StmContext s : stm.stm()) {
-				statements.add(visit(s));	
-			}
-		}
-		
-		// if (ctx.lastexp != null) expressions.add(visit(ctx.lastexp)); lastexp viene gia' preso nel for su ctx.exp()
-		if (ctx.laststm != null) statements.add(visit(ctx.laststm));
-		
-		// Final line of function is either a stm or exp.
-		RuleName returnRule = (ctx.lastexp  == null) ? RuleName.STM : RuleName.EXP;
-		FunNode res = new FunNode(ctx.ID().getText(), returnType, returnRule, parTypes, innerDec, expressions, statements);
+		FunNode res = new FunNode(ctx.ID().getText(), 
+				returnType, 
+				parTypes, 
+				innerDec, 
+				fullBody);
 
 		return res;
 	}

@@ -15,29 +15,23 @@ public class FunNode implements Node {
 
 	private String id;
 	private Type returnType;
-	private RuleName returningRule;
 	private ArrayList<Node> parlist;
 	private ArrayList<Node> declist; 
-	private ArrayList<Node> expsBody;
-	private ArrayList<Node> stmsBody;
+	private ArrayList<Node> body;
 	private ArrowType functionType;
 	
 	private boolean isMethod = false;
 
 	public FunNode (String i,
 					Type t,
-					RuleName rule,
 					ArrayList<Node> parameters,
 					ArrayList<Node> decls,
-					ArrayList<Node> exps,
-					ArrayList<Node> stms) {
+					ArrayList<Node> body) {
 		id=i;
 		returnType=t;
 		parlist = parameters;
-		expsBody = exps;
-		stmsBody = stms;
+		this.body = body;
 		declist = decls;
-		returningRule = rule;
 		
 		ArrayList<Type> parTypes = new ArrayList<>();
 		for (Node par : parameters) {
@@ -103,18 +97,15 @@ public class FunNode implements Node {
 			//check semantics in the dec list
 			if(declist.size() > 0){
 				env.setOffset(-2);
-				System.out.println("DEC SIZE > 0");
+				//System.out.println("DEC SIZE > 0");
 				//if there are children then check semantics for every child and save the results
 				for(Node n : declist)
 					res.addAll(n.checkSemantics(env));
 			}
 
 			// Check semantics for function statements and expressions.
-			for(Node s : stmsBody) {
-				res.addAll(s.checkSemantics(env));
-			}
-			for (Node funExp : expsBody) {
-				res.addAll(funExp.checkSemantics(env));	
+			for(Node instr : body) {
+				res.addAll(instr.checkSemantics(env));
 			}
 			// Close scope.
 			env.getST().remove(env.decNestLevel());
@@ -135,18 +126,13 @@ public class FunNode implements Node {
 			for (Node dec:declist)
 				declstr+=dec.toPrint(indent+"  ");
 		
-		String expString="";
-		if (!expsBody.isEmpty()) 
-			for (Node e:expsBody)
-				expString+=e.toPrint(indent+"  ");
-		
-		String stmsString="";
-		if (!stmsBody.isEmpty()) 
-			for (Node s:stmsBody)
-				stmsString+=s.toPrint(indent+"  ");
+		String instrString="";
+		if (!body.isEmpty()) 
+			for (Node s:body)
+				instrString+=s.toPrint(indent+"  ");
 		
 		return indent + "Fun: "+ id + " of type " +functionType.toPrint("") +
-				"\n" + parlstr + declstr + expString + stmsString;
+				"\n" + parlstr + declstr + instrString;
 	}
 
 	public Type typeCheck () {
@@ -160,11 +146,7 @@ public class FunNode implements Node {
 		// Dobbiamo controllare che non ci siano errori di tipo anche per tutte
 		// le istruzioni nel corpo della funzione
 		Type type;
-		for(Node stm : stmsBody) {
-			type = stm.typeCheck();
-			if(type instanceof ErrorType) return type;
-		}
-		for (Node exp : expsBody) {
+		for (Node exp : body) {
 			type = exp.typeCheck();
 			if(type instanceof ErrorType) return type;
 		}
@@ -172,9 +154,7 @@ public class FunNode implements Node {
 		// Controllo del returnNode (in realta' viene gia' fatto quando si controlla il corpo
 		// Pero' ora ci serve proprio il tipo per vedere se e' subtype di return type
 		
-		Node finalNode = null;
-		finalNode = (returningRule == RuleName.EXP)	? expsBody.get(expsBody.size() - 1)
-													: stmsBody.get(stmsBody.size() - 1);
+		Node finalNode = body.get(body.size() - 1);
 			
 		Type returnNodeType = finalNode.typeCheck();
 		/* if(returnNodeType instanceof ErrorType) return returnNodeType; */
@@ -199,9 +179,9 @@ public class FunNode implements Node {
 			for (Node dec:declist)
 				declCode+=dec.codeGeneration();
 		
-		String expsCode = "";
-		for (Node exp : expsBody) {
-			expsCode += exp.codeGeneration();
+		String bodyCodeString = "";
+		for (Node exp : body) {
+			bodyCodeString += exp.codeGeneration();
 		}
 		
 		// TODO stms and exps codegen (careful with the order)
@@ -220,7 +200,7 @@ public class FunNode implements Node {
 				"cfp\n"+ //setta $fp a $sp				
 				"lra\n"+ //inserimento return address
 				declCode+ //inserimento dichiarazioni locali
-				expsCode+
+				bodyCodeString +
 				"srv\n"+ //pop del return value
 				popDecl+
 				"sra\n"+ // pop del return address
