@@ -271,9 +271,9 @@ public class VirtualMachine {
 				break;
 				
 			case SVMParser.LOADMETHOD:
-				int classAddress = pop();
-                push(code.get(classAddress+1).getLabelAddress()); // primo metodo della classe
-                System.out.println("lm " + classAddress);
+				int methodAddress = pop();
+                push(code.get(methodAddress).getLabelAddress()); // primo metodo della classe
+                System.out.println("lm " + methodAddress);
 				break;
 				
 			case SVMParser.DUPLICATETOP:

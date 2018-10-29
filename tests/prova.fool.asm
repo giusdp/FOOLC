@@ -1,6 +1,6 @@
 ## LET
 
-push 811
+push 2
 push 118
 push 2
 push A_class
@@ -15,7 +15,7 @@ add
 lw
 cts
 lw
-push 1
+push 3
 add
 lm
 js
@@ -55,6 +55,29 @@ lrv
 lra
 js
 
+function2:
+cfp
+lra
+push 1
+lfp
+lw
+add
+lw
+push 2
+lfp
+lw
+add
+lw
+add
+srv
+sra
+pop
+sfp
+lrv
+lra
+js
+
 A_class:
 function0
 function1
+function2

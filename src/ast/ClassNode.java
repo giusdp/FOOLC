@@ -41,7 +41,15 @@ public class ClassNode implements Node {
 		this.methodList = methodList;
 		
 		type = new ClassType(id);
-		int dtOffset = 0;
+		int dtOffset = 1; // Parte da 1, perchè a 0 c'e' l'indirizzo della classe
+		// e per accedere alle funzioni si fa indirizzoClasse + dtOffset
+		// Esempio:
+		/*
+		 * class_A:		<---- dtOffset = 0
+		 * function0	<---- dtOffset = 1
+		 * function1 	<---- dtOffset = 2
+		 * 
+		 */
 		
 		ArrayList<Type> fieldTypeList = new ArrayList<>();
 		for (Node par : fieldList) {
