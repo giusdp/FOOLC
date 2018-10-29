@@ -9,12 +9,10 @@ new
 
 lfp
 push 19
-lfp
 push -1
 lfp
 add
 lw
-cts
 lw
 lm
 js

@@ -21,7 +21,7 @@ public class MethodCallNode implements Node {
 	private IdNode varNode;
 	private String ownerClass;
 	
-	private STEntry entry; 
+	private STEntry ownerClassEntry; 
 	private int nestingLevel;
 	
 	private Type methodType;
@@ -100,7 +100,7 @@ public class MethodCallNode implements Node {
 			}
 			
 			nestingLevel = env.getNestLevel(); // Otteniamo il nesting level "a tempo di invocazione"
-			entry = ownerClassNode.stEntry;
+			ownerClassEntry = ownerClassNode.stEntry;
 		}
 		catch (ClassCastException e) {
 			// TODO: Però questo è un controllo di tipi, si dovrebbe fare nel type check non qui
@@ -177,16 +177,15 @@ public class MethodCallNode implements Node {
 		    }
 		    
 		    String getAR="";
-			for (int i=0; i< nestingLevel - entry.getNestLevel(); i++) {
+			for (int i=0; i< nestingLevel - ownerClassEntry.getNestLevel(); i++) {
 				getAR+="lw\n";
 			}
 		    
 			return "lfp\n" + //CL
 					parametersCodeString +
-	               "lfp\n" + getAR + //setto AL risalendo la catena statica
-	               // ora recupero l'indirizzo a cui saltare e lo metto sullo stack
-	               "push " + entry.getOffset() + "\n" + //metto offset sullo stack
-			       "lfp\n" + getAR + //risalgo la catena statica
+					"push " + ownerClassEntry.getOffset() + "\n" + //metto offset sullo stack
+			       "lfp\n" + 
+					getAR +
 				   "add\n" + 
 	               "lw\n"  + //carico sullo stack il valore all'indirizzo ottenuto (della classe all'heap)
 				   "cts\n"+ // Duplicando ora il top, duplico l'indirizzo della classe che punta all'heap. 
