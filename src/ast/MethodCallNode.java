@@ -22,6 +22,7 @@ public class MethodCallNode implements Node {
 	private String ownerClass;
 	
 	private STEntry ownerClassEntry; 
+	private int dtOffset;
 	private int nestingLevel;
 	
 	private Type methodType;
@@ -101,6 +102,7 @@ public class MethodCallNode implements Node {
 			
 			nestingLevel = env.getNestLevel(); // Otteniamo il nesting level "a tempo di invocazione"
 			ownerClassEntry = ownerClassNode.stEntry;
+			dtOffset = ownerClassNode.getMethodDTOffset(this.id);
 		}
 		catch (ClassCastException e) {
 			// TODO: Però questo è un controllo di tipi, si dovrebbe fare nel type check non qui
@@ -191,6 +193,8 @@ public class MethodCallNode implements Node {
 				   "cts\n"+ // Duplicando ora il top, duplico l'indirizzo della classe che punta all'heap. 
 				   			//cosi' sara' il top dello stack all'esecuzione del metodo
 				   "lw\n" + 
+				   "push " + dtOffset + "\n"+
+				   "add\n"+
 				   "lm\n" +
 			       "js\n";
 	}

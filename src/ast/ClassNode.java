@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import codeexecution.DTEntry;
 import codeexecution.DispatchTable;
@@ -29,7 +30,10 @@ public class ClassNode implements Node {
 	// EREDITARIETA
 	private String superClassName = null;
 	private ClassNode superClass = null;
-
+	
+	// Offset dei metodi nella classe. id metodo -> offset dispatch table
+	private Map<String, Integer> methodsDTOffsets = new HashMap<>();
+	
 	// COSTRUTTORE
 	public ClassNode(String name, ArrayList<Node> fieldList, ArrayList<Node> methodList) {
 		this.id = name;
@@ -37,6 +41,7 @@ public class ClassNode implements Node {
 		this.methodList = methodList;
 		
 		type = new ClassType(id);
+		int dtOffset = 0;
 		
 		ArrayList<Type> fieldTypeList = new ArrayList<>();
 		for (Node par : fieldList) {
@@ -49,6 +54,7 @@ public class ClassNode implements Node {
 		for (Node m : methodList) {
 			FunNode f = (FunNode) m;
 			methodTypeList.add((ArrowType) f.getType());
+			methodsDTOffsets.put(f.getId(), dtOffset++);
 		}
 		type.setMethodTypeList(methodTypeList);
 		
@@ -320,4 +326,7 @@ public class ClassNode implements Node {
 		return type;
 	}
 
+	public int getMethodDTOffset(String methodID) {
+		return methodsDTOffsets.get(methodID);
+	}
 }

@@ -75,7 +75,9 @@ public class FunNode implements Node {
 		
 
 		if ( currentScope.put(id,entry) != null )
-			res.add(new SemanticError("Function "+ id +" already declared"));
+			res.add(new SemanticError("Error for " 
+					+ (isMethod ? "method " : "function ")+ id
+					+ ". ID " +id + " already in use."));
 		else{
 			//creare una nuova hashmap per la symTable
 			env.incNestLevel();
