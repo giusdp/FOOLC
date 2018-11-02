@@ -1,4 +1,1 @@
-let 
-	int f() 4;
-in
-	f();
+if true then {4} else {6};
