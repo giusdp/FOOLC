@@ -44,6 +44,12 @@ public interface FOOLVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitLet(FOOLParser.LetContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link FOOLParser#letVar}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLetVar(FOOLParser.LetVarContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link FOOLParser#vardec}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

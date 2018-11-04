@@ -1,9 +1,10 @@
 let
     int z()
         let
-            int g() 113;
+            int g = 113;
         in
-            g();
+            g;
+            
     int f() z();
 in
     f();

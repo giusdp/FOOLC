@@ -13,11 +13,13 @@ classdec  : CLASS ID (EXTENDS ID)? (LPAR vardec (COMMA vardec)* RPAR)? (CLPAR (f
 
 let    : LET (dec)+ IN ;
 
+letVar : LET (varasm)+ IN ;
+
 vardec : type ID ;
 
 varasm : vardec ASM exp SEMIC ;
 
-fun    : type ID LPAR ( vardec ( COMMA vardec)* )? RPAR (let)?
+fun    : type ID LPAR ( vardec ( COMMA vardec)* )? RPAR (letVar)?
 		 (exp SEMIC|stms)* (lastexp=exp SEMIC | laststm=stm SEMIC) ;
 
 dec    : varasm  #varAssignment
