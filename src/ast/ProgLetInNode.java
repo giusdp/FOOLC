@@ -36,8 +36,8 @@ public class ProgLetInNode implements Node {
 		//declare resulting list
 		ArrayList<SemanticError> res = new ArrayList<>();
 
-		env.setOffset(-1); // Bisogna settare il primo offset a -1 così quando si accede ad una variabile prendendo
-		// l'offset, si inizia da 9999 invece che da MEMSIZE=10000, dato che l'array memory va da 0 a 9999
+		env.setOffset(-2); 
+        env.setFunctionOffset(-1);
 
 		//check semantics in the dec list
         res.addAll(FOOLlib.processCheckSemanticsDecs(this.declist, env));

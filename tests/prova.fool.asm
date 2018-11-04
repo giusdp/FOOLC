@@ -7,7 +7,7 @@ push function1
 
 lfp
 lfp
-push -3
+push -2
 lfp
 add
 lw

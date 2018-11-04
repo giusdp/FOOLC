@@ -13,8 +13,10 @@ public class Environment {
 	
 	private int nestingLevel;
 	private int offset;
-	private int classOffset; // Offset dedicato per le classi e i loro metodi
-	private int methodOffset;
+	private int classOffset; // Offset dedicato per le classi
+    private int methodOffset;
+    private int functionOffset;
+
 
 	private HashMap<String, ClassNode> classMap = new HashMap<>();
 	static private ArrayList<FunNode> declaredFunctions = new ArrayList<>();
@@ -60,10 +62,6 @@ public class Environment {
 		return classMap;
 	}
 
-	public int incrClassOffset() {
-		return classOffset++;
-	}
-	
 	public int decClassOffset() {
 		return classOffset--;
 	}
@@ -71,18 +69,22 @@ public class Environment {
 	public void setClassOffset(int classOffset) {
 		this.classOffset = classOffset;
 	}
-	
-	public int incrMethodOffset() {
-		return methodOffset++;
-	}
-	
-	public int decMethodOffset() {
-		return methodOffset--;
-	}
 
-	public void setMethodOffset(int methodOffset) {
-		this.methodOffset = methodOffset;
-	}
+    public int decMethodOffset() {
+        return methodOffset--;
+    }
+
+    public void setMethodOffset(int methodOffset) {
+        this.methodOffset = methodOffset;
+    }
+
+    public int decFunctionffset() {
+        return functionOffset--;
+    }
+
+    public void setFunctionOffset(int functionOffset) {
+        this.functionOffset = functionOffset;
+    }
 
     public static ArrayList<FunNode> getDeclaredFunctions() {
         return declaredFunctions;
