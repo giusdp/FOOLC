@@ -36,7 +36,7 @@ public class ProgLetInNode implements Node {
 		//declare resulting list
 		ArrayList<SemanticError> res = new ArrayList<>();
 
-		env.setOffset(-2); 
+		env.setOffset(-2);
         env.setFunctionOffset(-1);
 
 		//check semantics in the dec list

@@ -18,11 +18,15 @@ function0:
 cfp
 lra
 push 113
-push -2
+push 114
+push 115
+push -3
 lfp
 add
 lw
 srv
+pop
+pop
 pop
 sra
 pop
@@ -34,6 +38,7 @@ js
 function1:
 cfp
 lra
+push 117
 lfp
 lfp
 lw
@@ -44,6 +49,7 @@ add
 lw
 js
 srv
+pop
 sra
 pop
 sfp

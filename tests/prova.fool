@@ -2,9 +2,11 @@ let
     int z()
         let
             int g = 113;
+            int h = 114;
+            int f = 115;
         in
-            g;
+            h;
 
-    int f() z();
+    int f() let int s = 117; in z();
 in
     f();

@@ -57,7 +57,6 @@ public class FunNode implements Node {
 		//create result list
 		ArrayList<SemanticError> res = new ArrayList<>();
 
-		//env.offset = -2;
 		HashMap<String,STEntry> currentScope = env.getST().get(env.getNestLevel());
 		
 		// Problema con il decOffset qui. Se questo è un metodo di una classe, l'offset dovrebbe
@@ -95,7 +94,8 @@ public class FunNode implements Node {
 
 			//check semantics in the dec list
 			if(declist.size() > 0){
-				//if there are children then check semantics for every child and save the results
+                env.setOffset(-2); // reset the offset to the starting value because we are in a new scope
+                //if there are children then check semantics for every child and save the results
 				FOOLlib.processCheckSemanticsDecs(declist, env);
 			}
 
