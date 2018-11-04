@@ -3,7 +3,7 @@ grammar FOOL;
 /*------------------------------------------------------------------
  * PARSER RULES
  *------------------------------------------------------------------*/
-  
+
 prog   : exp SEMIC                                                  #singleExp
        | let ( exp SEMIC | stms )+                                  #letInExp
        | (classdec)+ ( let ( exp SEMIC | stms )+ )?                 #classExp

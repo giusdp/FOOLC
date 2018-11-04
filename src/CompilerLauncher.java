@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.antlr.v4.runtime.ANTLRErrorListener;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 
@@ -52,33 +53,33 @@ public class CompilerLauncher {
 		ANTLRInputStream input = null;
 		try {
 			input = new ANTLRInputStream(inputStream);
-		} catch (IOException e) {
+            inputStream.close();
+        } catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			System.exit(2);
 		}
 
+
+        SyntaxErrorListener errorListener = new SyntaxErrorListener();
+
 		FOOLLexer lexer = new FOOLLexer(input);
+        lexer.removeErrorListeners();
+        lexer.addErrorListener(errorListener);
 
-		CommonTokenStream tokens = new CommonTokenStream(lexer);
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
 
-		SyntaxErrorListener errorListener = new SyntaxErrorListener();
 		FOOLParser parser = new FOOLParser(tokens);
 		parser.removeErrorListeners();
 		parser.addErrorListener(errorListener);
 
+        // GENERAZIONE AST
+        FOOLNodeVisitor visitor = new FOOLNodeVisitor();
+        Node ast = visitor.visit(parser.prog()); //generazione AST
 
-		// GENERAZIONE AST
-		FOOLNodeVisitor visitor = new FOOLNodeVisitor();
-		Node ast = visitor.visit(parser.prog()); //generazione AST 
-		
-		if (errorListener.getNumErrors() > 0) {
-			System.err.println("\nThe program was not in the right format."
-					+ " Exiting the compilation process now.");
-			System.exit(1);
-		}
 
-		Environment env = new Environment();
+
+        Environment env = new Environment();
 		FOOLlib.setEnv(env);
 		
 		System.out.println("Perfoming Check Semantics...");
@@ -127,9 +128,8 @@ public class CompilerLauncher {
 				System.out.println("Code generated: " + fileName+".asm");
 				System.out.println();
 				
-				inputStream.close();
 			} catch (IOException e) {
-				System.out.println(e.toString());
+				System.err.println(e.toString());
 				System.exit(-1);
 			}
 			

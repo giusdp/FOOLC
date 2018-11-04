@@ -1,22 +1,10 @@
-push function0
-lfp
-lfp
-push -1
-lfp
-add
-lw
-js
-halt
-
-function0:
-cfp
-lra
+push 1
+push 1
+beq label0
+push 6
+b label1
+label0:
 push 4
-srv
-sra
-pop
-sfp
-lrv
-lra
-js
+label1:
+halt
 
