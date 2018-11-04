@@ -17,7 +17,7 @@ public class Environment {
 	private int methodOffset;
 
 	private HashMap<String, ClassNode> classMap = new HashMap<>();
-	private ArrayList<FunNode> declaredFunctions = new ArrayList<>();
+	static private ArrayList<FunNode> declaredFunctions = new ArrayList<>();
 	
 	public Environment() {
 		nestingLevel = -1;
@@ -84,11 +84,11 @@ public class Environment {
 		this.methodOffset = methodOffset;
 	}
 
-    public ArrayList<FunNode> getDeclaredFunctions() {
+    public static ArrayList<FunNode> getDeclaredFunctions() {
         return declaredFunctions;
     }
 
-    public FunNode getFunctionById(String id){
+    public static FunNode getFunctionById(String id){
         // Reversed for each on the declared functions. It's reversed to respect the scopes, the function in the most
         // nested scope is the last one inserted in the list, so it should be the first one returned.
         // The first functions inserted is the one in the most external scope, so it should be the last one returned.

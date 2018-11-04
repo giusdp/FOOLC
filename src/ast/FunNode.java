@@ -1,15 +1,14 @@
 package ast;
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import type.ArrowType;
 import type.ErrorType;
 import type.Type;
-import util.FOOLlib;
-import util.FOOLlib.RuleName;
-import util.STEntry;
 import util.Environment;
+import util.FOOLlib;
+import util.STEntry;
 import util.SemanticError;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class FunNode implements Node {
 
@@ -19,6 +18,7 @@ public class FunNode implements Node {
 	private ArrayList<Node> declist; 
 	private ArrayList<Node> body;
 	private ArrowType functionType;
+	private STEntry entry;
 	
 	private boolean isMethod = false;
 
@@ -55,7 +55,7 @@ public class FunNode implements Node {
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
 
 		//create result list
-		ArrayList<SemanticError> res = new ArrayList<SemanticError>();
+		ArrayList<SemanticError> res = new ArrayList<>();
 
 		//env.offset = -2;
 		HashMap<String,STEntry> currentScope = env.getST().get(env.getNestLevel());
@@ -63,7 +63,6 @@ public class FunNode implements Node {
 		// Problema con il decOffset qui. Se questo è un metodo di una classe, l'offset dovrebbe
 		// essere inerente alla classe e non all'offset di tutto l'environment. 
 		// Quindi è stato introdotto methodOffset
-		STEntry entry;
 		if (isMethod)  entry = new STEntry(env.getNestLevel(), env.decMethodOffset()); 
 		else entry = new STEntry(env.getNestLevel(), env.decOffset());
 
@@ -75,10 +74,10 @@ public class FunNode implements Node {
 		else{
 			//creare una nuova hashmap per la symTable
 			env.incNestLevel();
-			HashMap<String,STEntry> nuovoScope = new HashMap<String,STEntry> ();
+			HashMap<String,STEntry> nuovoScope = new HashMap<>();
 			env.getST().add(nuovoScope);
 
-			ArrayList<Type> parTypes = new ArrayList<Type>();
+			ArrayList<Type> parTypes = new ArrayList<>();
 			int paroffset=1;
 
 			//check args
@@ -222,6 +221,9 @@ public class FunNode implements Node {
 		this.isMethod = isMethod;
 	}
 	
-	
+
+	public STEntry getEntry(){
+	    return entry;
+    }
 
 }  

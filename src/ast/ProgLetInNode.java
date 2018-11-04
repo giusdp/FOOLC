@@ -48,7 +48,7 @@ public class ProgLetInNode implements Node {
 			    // Separo il caso in cui è una fun node così da poter gestire chiamate di funzioni dichiarate dopo.
                 // Inserisco la funzione con una stentry provvisoria per posticipare la valutazione vera della funzione.
                 env.getST().get(env.getNestLevel()).put(((FunNode) dec).getId(), new STEntry());
-                env.getDeclaredFunctions().add((FunNode) dec);
+                Environment.getDeclaredFunctions().add((FunNode) dec);
                 funDecs.add((FunNode) dec);
             }
             else {
@@ -89,17 +89,18 @@ public class ProgLetInNode implements Node {
 		
 		// TODO: more rigorous testing needed to ensure codeGen works.
 		
-		String declCode = "";
+		StringBuilder declCode = new StringBuilder();
 		for (Node dec : this.declist) {
-			declCode += dec.codeGeneration();
+			declCode.append(dec.codeGeneration());
 		}
 		
-		String bodyCode = "";
+		StringBuilder bodyCode = new StringBuilder();
 		for (Node stm : this.contextBody) {
-			bodyCode += stm.codeGeneration();
+			bodyCode.append(stm.codeGeneration());
 		}
-		return  declCode + bodyCode + "halt\n" + FOOLlib.getCode();
-	} 
+
+        return "## LET\n\n" + declCode.toString() + "\n## IN\n\n" + bodyCode.toString() + "halt\n" + FOOLlib.getCode();
+	}
 
 
 

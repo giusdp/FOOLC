@@ -78,8 +78,7 @@ public class ProgClassNode implements Node {
 	@Override
 	public Type typeCheck() {
 		
-		// TODO: se c'è tempo, fare refactoring delle chiamate
-		//       ripetute di typeCheck() e l'if.
+		// TODO: se c'è tempo, fare refactoring delle chiamate ripetute di typeCheck() e l'if.
 		//       e.g. checkForErrors(ArrayList<Node>), e pure
 		//            checkForErrors(ArrayList< ArrayList<Node> >).
 		
@@ -110,15 +109,15 @@ public class ProgClassNode implements Node {
 		
 		// Se è solo un file di dichiarazioni di classi salta la code generation del let in
 		if ( ! decList.isEmpty()) {
-			String declCode = "";
+			StringBuilder declCode = new StringBuilder();
 			for (Node dec : decList)
-				declCode += dec.codeGeneration();
+				declCode.append(dec.codeGeneration());
 		
-			String bodyCode = "";
+			StringBuilder bodyCode = new StringBuilder();
 			for (Node stm : contextBody)
-				bodyCode +=  stm.codeGeneration();
+				bodyCode.append(stm.codeGeneration());
 			
-			return "## LET\n\n" + declCode + "\n## IN\n\n" + bodyCode + "halt\n\n" + "## Functions code and Dispatch Table\n" +
+			return "## LET\n\n" + declCode.toString() + "\n## IN\n\n" + bodyCode.toString() + "halt\n\n" + "## Functions code and Dispatch Table\n" +
 				FOOLlib.getCode();
 		}
 		

@@ -7,11 +7,12 @@ public class STEntry {
 	private int nestingLevel;
 	private Type type;
 	private int offset;
-	private boolean toBeEvaluated = false;
+	private boolean toBeEvaluated;
 
 	public STEntry(int nestingLevel, int os) {
 		this.nestingLevel = nestingLevel;
 		offset = os;
+		toBeEvaluated = false;
 	}
 
 	public STEntry(int nestingLevel, Type t, int os) {

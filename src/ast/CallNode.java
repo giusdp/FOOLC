@@ -17,7 +17,6 @@ public class CallNode implements Node {
     private STEntry entry;
     private ArrayList<Node> parList;
     private int nestingLevel;
-    private boolean isConstructorCall = false;
 
     public CallNode(String text, ArrayList<Node> args) {
         id = text;
@@ -29,12 +28,12 @@ public class CallNode implements Node {
     }
 
     public String toPrint(String indent) {  //
-        String parlstr = "";
+        StringBuilder parlstr = new StringBuilder();
         for (Node par : parList)
-            parlstr += par.toPrint(indent + "  ");
+            parlstr.append(par.toPrint(indent + "  "));
         return indent + "Call: " + id + " at nestlev " + nestingLevel + "\n"
                 + entry.toPrint(indent + "  ")
-                + parlstr;
+                + parlstr.toString();
     }
 
     @Override
@@ -63,13 +62,21 @@ public class CallNode implements Node {
     }
 
     public Type typeCheck() {
-        ArrowType funType;
+
         ErrorType error = new ErrorType();
-        Type entryType = entry.getType();
+
+        Type entryType;
+        if (entry.isToBeEvaluated()) {
+            FunNode f = Environment.getFunctionById(id);
+            entry = f != null ? f.getEntry() : null;
+            entryType = f != null ? f.getType() : null;
+        } else {
+            entryType = entry.getType();
+        }
 
         // Se l'invocazione e' di una normale funzione, allora il type sara' un arrowtype e il typechecking si fa su questo
         if (entryType instanceof ArrowType) {
-            funType = (ArrowType) entryType;
+            ArrowType funType = (ArrowType) entryType;
             ArrayList<Type> parTypes = funType.getParList();
             if (!(parTypes.size() == parList.size())) {
                 error.addErrorMessage("Wrong number of parameters in the invocation of function: " + id +
@@ -94,19 +101,19 @@ public class CallNode implements Node {
 
     public String codeGeneration() {
 
-        String parCode = "";
+        StringBuilder parCode = new StringBuilder();
         for (int i = parList.size() - 1; i >= 0; i--) {
-            parCode += parList.get(i).codeGeneration();
+            parCode.append(parList.get(i).codeGeneration());
         }
 
-        String getAR = "";
+        StringBuilder getAR = new StringBuilder();
         for (int i = 0; i < nestingLevel - entry.getNestLevel(); i++) {
-            getAR += "lw\n";
+            getAR.append("lw\n");
         }
 
         return "lfp\n" + //CL
-                parCode +
-                "lfp\n" + getAR + //setto AL risalendo la catena statica
+                parCode.toString() +
+                "lfp\n" + getAR.toString() + //setto AL risalendo la catena statica
                 // ora recupero l'indirizzo a cui saltare e lo metto sullo stack
                 "push " + entry.getOffset() + "\n" + //metto offset sullo stack
                 "lfp\n" + getAR + //risalgo la catena statica
