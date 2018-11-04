@@ -37,7 +37,7 @@ js
 function1:
 cfp
 lra
-push 3
+push 4
 srv
 sra
 pop

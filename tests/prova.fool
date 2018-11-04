@@ -1,9 +1,5 @@
 let
-    int f()
-        let
-            int g() h();
-            int h() 3;
-         in
-            g();
+    int f() g();
+    int g() 4;
 in
     f();
