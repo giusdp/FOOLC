@@ -1,13 +1,13 @@
 ## LET
 
-push function0
 push function1
+push function2
 
 ## IN
 
 lfp
 lfp
-push -1
+push -3
 lfp
 add
 lw
@@ -17,15 +17,7 @@ halt
 function0:
 cfp
 lra
-lfp
-lfp
-lw
-push -2
-lfp
-lw
-add
-lw
-js
+push 113
 srv
 sra
 pop
@@ -37,7 +29,35 @@ js
 function1:
 cfp
 lra
-push 4
+push function0
+lfp
+lfp
+push -2
+lfp
+add
+lw
+js
+srv
+pop
+sra
+pop
+sfp
+lrv
+lra
+js
+
+function2:
+cfp
+lra
+lfp
+lfp
+lw
+push -1
+lfp
+lw
+add
+lw
+js
 srv
 sra
 pop

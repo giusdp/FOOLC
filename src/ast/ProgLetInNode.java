@@ -65,7 +65,8 @@ public class ProgLetInNode implements Node {
 			type = instruction.typeCheck();
 			if (type instanceof ErrorType) return type;			
 		}
-		
+
+		Environment.printDF();
 		return type; // The type of the "let in" program is the type of the last instruction (the returned expression)
 	}
 

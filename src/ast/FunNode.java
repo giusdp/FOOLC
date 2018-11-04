@@ -95,11 +95,8 @@ public class FunNode implements Node {
 
 			//check semantics in the dec list
 			if(declist.size() > 0){
-				env.setOffset(-2);
-				//System.out.println("DEC SIZE > 0");
 				//if there are children then check semantics for every child and save the results
-				for(Node n : declist)
-					res.addAll(n.checkSemantics(env));
+				FOOLlib.processCheckSemanticsDecs(declist, env);
 			}
 
 			// Check semantics for function statements and expressions.
@@ -115,23 +112,23 @@ public class FunNode implements Node {
 	}
 
 	public String toPrint(String indent) {
-		String parlstr="";
+		StringBuilder parlstr= new StringBuilder();
 		
 		for (Node par:parlist)
-			parlstr+=par.toPrint(indent+"  ");
+			parlstr.append(par.toPrint(indent + "  "));
 		
-		String declstr="";
+		StringBuilder declstr= new StringBuilder();
 		if (declist!=null) 
 			for (Node dec:declist)
-				declstr+=dec.toPrint(indent+"  ");
+				declstr.append(dec.toPrint(indent + "  "));
 		
-		String instrString="";
+		StringBuilder instrString= new StringBuilder();
 		if (!body.isEmpty()) 
 			for (Node s:body)
-				instrString+=s.toPrint(indent+"  ");
+				instrString.append(s.toPrint(indent + "  "));
 		
 		return indent + "Fun: "+ id + " of type " +functionType.toPrint("") +
-				"\n" + parlstr + declstr + instrString;
+				"\n" + parlstr.toString() + declstr.toString() + instrString.toString();
 	}
 
 	public Type typeCheck () {
@@ -173,26 +170,22 @@ public class FunNode implements Node {
 
 	public String codeGeneration() {
 
-		String declCode="";
-		if (declist!=null) 
-			for (Node dec:declist)
-				declCode+=dec.codeGeneration();
-		
-		String bodyCodeString = "";
-		for (Node exp : body) {
-			bodyCodeString += exp.codeGeneration();
-		}
-		
-		// TODO stms and exps codegen (careful with the order)
+		StringBuilder declCode= new StringBuilder();
+        StringBuilder popDecl= new StringBuilder();
 
-		String popDecl="";
-		if (declist!=null) 
-			for (Node dec:declist)
-				popDecl+="pop\n";
+        for (Node dec:declist){
+            declCode.append(dec.codeGeneration());
+            popDecl.append("pop\n");
+        }
 
-		String popParl="";
+        StringBuilder bodyCodeString = new StringBuilder();
+        for (Node exp : body) {
+            bodyCodeString.append(exp.codeGeneration());
+        }
+
+		StringBuilder popParl= new StringBuilder();
 		for (Node dec:parlist)
-			popParl+="pop\n";
+			popParl.append("pop\n");
 
 		String funLabel=FOOLlib.freshFunLabel(); 
 		FOOLlib.putCode(funLabel+":\n"+
