@@ -7,6 +7,7 @@ public class STEntry {
 	private int nestingLevel;
 	private Type type;
 	private int offset;
+	private boolean toBeEvaluated = false;
 
 	public STEntry(int nestingLevel, int os) {
 		this.nestingLevel = nestingLevel;
@@ -14,10 +15,13 @@ public class STEntry {
 	}
 
 	public STEntry(int nestingLevel, Type t, int os) {
-		this.nestingLevel = nestingLevel;
-		type = t;
-		offset = os;
+		this(nestingLevel, os);
+        type = t;
 	}
+
+	public STEntry(){
+	    toBeEvaluated = true;
+    }
 
 	public void setType(Type t) {
 		type = t;
@@ -44,4 +48,12 @@ public class STEntry {
 				+ "\n" + s + "STEntry: type " + type.toPrint("  ")
 				+ s + "STEntry: offset " + Integer.toString(offset) + "\n";
 	}
+
+    public boolean isToBeEvaluated() {
+        return toBeEvaluated;
+    }
+
+    public void setToBeEvaluated(boolean toBeEvaluated) {
+        this.toBeEvaluated = toBeEvaluated;
+    }
 }

@@ -42,7 +42,7 @@ public String toPrint(String indent) {
 	  }
 	 
       if (tmp == null) {
-          res.add(new SemanticError("Id "+ id +" not declared"));
+          res.add(new SemanticError("Variable "+ id +" not declared"));
       }
       else{
     	  entry = tmp;

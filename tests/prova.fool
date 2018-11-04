@@ -1,1 +1,5 @@
-if true then {4} else {6};
+let
+    int f() g();
+    int g() 3;
+in
+    f;

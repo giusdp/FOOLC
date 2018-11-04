@@ -1,14 +1,15 @@
 package util;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 import ast.ClassNode;
+import ast.FunNode;
 
 public class Environment {
 
-	private ArrayList<HashMap<String, STEntry>> symTable = 
-			new ArrayList<HashMap<String, STEntry>>();
+	private ArrayList<HashMap<String, STEntry>> symTable = new ArrayList<>();
 	
 	private int nestingLevel;
 	private int offset;
@@ -16,6 +17,7 @@ public class Environment {
 	private int methodOffset;
 
 	private HashMap<String, ClassNode> classMap = new HashMap<>();
+	private ArrayList<FunNode> declaredFunctions = new ArrayList<>();
 	
 	public Environment() {
 		nestingLevel = -1;
@@ -81,11 +83,26 @@ public class Environment {
 	public void setMethodOffset(int methodOffset) {
 		this.methodOffset = methodOffset;
 	}
-	
-	
-	
 
-	//livello ambiente con dichiarazioni piu' esterno è 0 (prima posizione ArrayList) 
+    public ArrayList<FunNode> getDeclaredFunctions() {
+        return declaredFunctions;
+    }
+
+    public FunNode getFunctionById(String id){
+        // Reversed for each on the declared functions. It's reversed to respect the scopes, the function in the most
+        // nested scope is the last one inserted in the list, so it should be the first one returned.
+        // The first functions inserted is the one in the most external scope, so it should be the last one returned.
+        for (int i = declaredFunctions.size() - 1; i >= 0; --i){
+            if (declaredFunctions.get(i).getId().equals(id)){
+                return declaredFunctions.get(i);
+            }
+        }
+
+        return null;
+    }
+
+
+    //livello ambiente con dichiarazioni piu' esterno è 0 (prima posizione ArrayList)
 	//invece che 1 (slides)
 	//il "fronte" della lista di tabelle è symTable.get(nestingLevel)
 }

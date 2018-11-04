@@ -65,10 +65,10 @@ public class FunNode implements Node {
 		// Quindi è stato introdotto methodOffset
 		STEntry entry;
 		if (isMethod)  entry = new STEntry(env.getNestLevel(), env.decMethodOffset()); 
-		else entry = new STEntry(env.getNestLevel(), env.decOffset()); 
-		
+		else entry = new STEntry(env.getNestLevel(), env.decOffset());
 
-		if ( currentScope.put(id,entry) != null )
+		STEntry oldEntry = currentScope.put(id,entry);
+		if ( oldEntry != null && !oldEntry.isToBeEvaluated())
 			res.add(new SemanticError("Error for " 
 					+ (isMethod ? "method " : "function ")+ id
 					+ ". ID " +id + " already in use."));
