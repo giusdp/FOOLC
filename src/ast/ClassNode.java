@@ -118,7 +118,7 @@ public class ClassNode implements Node {
 		// Altrimenti proseguiamo con la creazione di un nuovo scope
 		// Dove inserire i campi e i metodi e fare i controlli dovuti
 		env.incNestLevel();
-		HashMap<String,STEntry> newScope = new HashMap<String,STEntry> ();
+		HashMap<String,STEntry> newScope = new HashMap<>();
 		env.getST().add(newScope);
 
 		int paroffset=1;

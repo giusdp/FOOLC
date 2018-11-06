@@ -80,7 +80,7 @@ public class ConstructorNode implements Node {
 	@Override
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
 		//create the result
-		ArrayList<SemanticError> res = new ArrayList<SemanticError>();
+		ArrayList<SemanticError> res = new ArrayList<>();
 
 		int j=env.getNestLevel();
 		STEntry tmp=null; 
@@ -104,9 +104,9 @@ public class ConstructorNode implements Node {
 	
 	@Override
 	public String codeGeneration() {
-		String parCode = "";
+		StringBuilder parCode = new StringBuilder();
 		for (int i = parList.size() - 1; i >= 0; i--) {
-			parCode+=parList.get(i).codeGeneration();
+			parCode.append(parList.get(i).codeGeneration());
 		}
 		
         return parCode

@@ -86,6 +86,10 @@ public class Environment {
         this.functionOffset = functionOffset;
     }
 
+    public int getFunctionOffset() {
+        return functionOffset;
+    }
+
     public static ArrayList<FunNode> getDeclaredFunctions() {
         return declaredFunctions;
     }

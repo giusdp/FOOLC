@@ -62,7 +62,7 @@ public class FunNode implements Node {
 		// Problema con il decOffset qui. Se questo è un metodo di una classe, l'offset dovrebbe
 		// essere inerente alla classe e non all'offset di tutto l'environment. 
 		// Quindi è stato introdotto methodOffset
-		if (isMethod)  entry = new STEntry(env.getNestLevel(), env.decMethodOffset()); 
+		if (isMethod)  entry = new STEntry(env.getNestLevel(), env.decMethodOffset());
 		else entry = new STEntry(env.getNestLevel(), env.decFunctionffset());
 
 		STEntry oldEntry = currentScope.put(id,entry);

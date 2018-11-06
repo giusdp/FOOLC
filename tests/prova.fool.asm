@@ -9,7 +9,7 @@ new
 ## IN
 
 lfp
-push -1
+push -3
 lfp
 add
 lw
@@ -27,7 +27,7 @@ function0:
 cfp
 lra
 lfp
-push -1
+push -3
 lfp
 lw
 lw

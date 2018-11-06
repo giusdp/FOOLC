@@ -43,10 +43,10 @@ public class ProgClassNode implements Node {
 		env.setFunctionOffset(-1);
 
 		// Creo una nuova hashmap e la aggiugno alla symbol table
-		HashMap<String, STEntry> hm = new HashMap<String, STEntry>();
+		HashMap<String, STEntry> hm = new HashMap<>();
 		env.getST().add(hm);// Nuovo scope (della classe)
 
-		ArrayList<SemanticError> res = new ArrayList<SemanticError>();
+		ArrayList<SemanticError> res = new ArrayList<>();
 
 		//int initialClassOffset = env.getClassOffset();
 		for (ClassNode cn : classList) {
@@ -67,6 +67,13 @@ public class ProgClassNode implements Node {
 		for (Node instruction : contextBody) {
 			res.addAll(instruction.checkSemantics(env));
 		}
+
+
+		// Siccome le funzioni in svm sono dichiarate all'inizio, il class offset non puo' iniziare da -1, ma da functionOffset + 1
+        // Quindi vengono aggiornati i valori degli offset alle classi
+		for (ClassNode c : classList){
+		    c.stEntry.setOffset(c.stEntry.getOffset() + env.getFunctionOffset() +1);
+        }
 		// Lascia lo scope
 		env.getST().remove(env.decNestLevel());
 		//env.decNestLevel();
