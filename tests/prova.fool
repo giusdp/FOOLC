@@ -2,8 +2,9 @@ class A { int f() g(); int g() 119; };
 
 let
     A a = new A();
-    int z() g();
+    //int z() g();
     int g() 115;
 in
-    a.f();
+    //a.f();
     //a.g();
+    g();

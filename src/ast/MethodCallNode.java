@@ -131,14 +131,14 @@ public class MethodCallNode implements Node {
 
 			// si controllano numero parametri con quelli passati in input
 			if ( parTypes.size() != parList.size() ) {
-				error.addErrorMessage("Wrong number of parameters in the invocation of the method: "+varNode.getId()+"."+id +
+				error.addErrorMessage("Wrong number of parameters in the invocation of the method: "+ownerClass+"."+id +
 									  "\nExpected " + parTypes.size() + " but found " + parList.size());
 				return error;
 			}
 			// si controllano tipi parametri con quelli passati in input
 			for (int i = 0; i < parList.size(); i++) 
 				if ( !(FOOLlib.isSubtype( (parList.get(i)).typeCheck(), parTypes.get(i)) ) ) {
-					error.addErrorMessage("Wrong type for the "+(i+1)+"-th parameter in the invocation of method: "+varNode.getId()+"."+id);
+					error.addErrorMessage("Wrong type for the "+(i+1)+"-th parameter in the invocation of method: "+ownerClass+"."+id);
 					return error;
 				}
 			return funType.getReturn();

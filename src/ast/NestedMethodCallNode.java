@@ -13,12 +13,9 @@ import java.util.ArrayList;
 
 public class NestedMethodCallNode implements Node {
 
-    String className;
-
     private String id;
     private ArrayList<Node> parList;
 
-    private IdNode varNode;
     private String ownerClass;
 
     private STEntry ownerClassEntry;
@@ -30,14 +27,14 @@ public class NestedMethodCallNode implements Node {
     public NestedMethodCallNode(String className, String m, ArrayList<Node> args) {
         id = m;
         parList = args;
-        this.className = className;
+        ownerClass = className;
     }
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
         ArrayList<SemanticError> res = new ArrayList<>();
 
-        ClassNode ownerClass = env.getClassMap().get(className);
+        ClassNode ownerClassNode = env.getClassMap().get(ownerClass);
 
 
         // Dopo i controlli preliminari sulla variabile usata.
@@ -45,7 +42,6 @@ public class NestedMethodCallNode implements Node {
         // Siccome  metodo di una classe, la variabile dovrebbe essere una classe
         // Se non lo è si intercetta l'eccezione e si da un Semantic Error
 
-            ClassNode ownerClassNode = env.getClassMap().get(className);
             //Non può succedere in realtà perché quando si va ad instanziare la classe, se non è stata
             // definita già è errore, quindi molto prima di questo controllo.
             if (ownerClassNode == null){
@@ -119,14 +115,14 @@ public class NestedMethodCallNode implements Node {
 
             // si controllano numero parametri con quelli passati in input
             if ( parTypes.size() != parList.size() ) {
-                error.addErrorMessage("Wrong number of parameters in the invocation of the method: "+varNode.getId()+"."+id +
+                error.addErrorMessage("Wrong number of parameters in the invocation of the method: "+id + " inside  class" + ownerClass+
                         "\nExpected " + parTypes.size() + " but found " + parList.size());
                 return error;
             }
             // si controllano tipi parametri con quelli passati in input
             for (int i = 0; i < parList.size(); i++)
                 if ( !(FOOLlib.isSubtype( (parList.get(i)).typeCheck(), parTypes.get(i)) ) ) {
-                    error.addErrorMessage("Wrong type for the "+(i+1)+"-th parameter in the invocation of method: "+varNode.getId()+"."+id);
+                    error.addErrorMessage("Wrong type for the "+(i+1)+"-th parameter in the invocation of method: "+id + " inside  class" + ownerClass);
                     return error;
                 }
             return funType.getReturn();
