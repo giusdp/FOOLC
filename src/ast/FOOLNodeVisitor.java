@@ -432,31 +432,32 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 		//this corresponds to a function invocation
 
 		ParserRuleContext prc = ctx;
-        boolean isM = false;
+        boolean isMethod = false;
+        String className = "";
 
         while (prc.getParent() != null) {
-            /*if (prc.getText().contains("class")) {
-                isM = true;
+            if (prc.getText().contains("class")) {
+                isMethod = true;
+                className = ((ClassdecContext) prc).ID(0).getText();
                 break;
-            }*/
+            }
 
-            System.out.println(prc.getText());
 
             prc = prc.getParent();
         }
-        System.out.println();
 
 		//declare the result
 		Node res;
 
 		//get the invocation arguments
-		ArrayList<Node> args = new ArrayList<Node>();
+		ArrayList<Node> args = new ArrayList<>();
 
 		for (ExpContext exp : ctx.exp())
 			args.add(visit(exp));
 
-		//instantiate the invocation
-		res = new CallNode(ctx.ID().getText(), args);
+		//instantiate the invocation3
+        if (isMethod) res = new NestedMethodCallNode(className, ctx.ID().getText(), args);
+        else		  res = new CallNode(ctx.ID().getText(), args);
 
 		return res;
 	}

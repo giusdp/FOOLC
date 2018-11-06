@@ -92,7 +92,7 @@ public class ClassNode implements Node {
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
 		
 		//create result list
-		ArrayList<SemanticError> res = new ArrayList<SemanticError>();
+		ArrayList<SemanticError> res = new ArrayList<>();
 		
 		// Controllo classe già dichiarata
 		HashMap<String,STEntry> currentScope = env.getST().get(env.getNestLevel());

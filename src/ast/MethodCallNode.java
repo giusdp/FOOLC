@@ -27,6 +27,7 @@ public class MethodCallNode implements Node {
 	
 	private Type methodType;
 
+
 	public MethodCallNode(String m, ArrayList<Node> args, Node obj) {
 		id = m;
 		parList = args;
@@ -35,10 +36,10 @@ public class MethodCallNode implements Node {
 
 	@Override
 	public String toPrint(String indent) {
-		String parlstr = "";
+		StringBuilder parlstr = new StringBuilder();
 
 		for (Node par : parList)
-			parlstr += par.toPrint(indent + "  ");
+			parlstr.append(par.toPrint(indent + "  "));
 
 		// TODO: methodEntry is null at runtime. Causes NullPtrException.
 		// methodEntry is never instantiated here.
@@ -48,7 +49,7 @@ public class MethodCallNode implements Node {
 	@Override
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
 		
-		ArrayList<SemanticError> res = new ArrayList<SemanticError>();
+		ArrayList<SemanticError> res = new ArrayList<>();
 				
 		res.addAll(varNode.checkSemantics(env));
 		if (!res.isEmpty()) return res;
@@ -151,36 +152,15 @@ public class MethodCallNode implements Node {
 
 	@Override
 	public String codeGeneration() {
-
-//
-//        return
-//                "lfp\n"                                  // pusho frame pointer e parametri
-//                        + parameterCode
-//                        + "push " + objectOffset + "\n"         // pusho l'offset logico dell'oggetto (dispatch table)
-//                        + "lfp\n"
-//                        + getActivationRecord                                 //pusho access link (lw consecutivamente)
-//                        // così si potrà risalire la catena statica
-//                        + "add\n"                               // $fp + offset
-//                        + "lw\n"                                // pusho indirizzo di memoria in cui si trova
-//                        // l'indirizzo della dispatch table
-//                        + "copy\n"                              // copio
-//                        + "lw\n"                                // pusho l'indirizzo della dispatch table
-//                        + "push " + (methodOffset - 1) + "\n"   // pusho l'offset di dove si trova metodo rispetto
-//                        // all'inizio della dispatch table
-//                        + "add" + "\n"                          // dispatch_table_start + offset
-//                        + "loadc\n"                             // pusho il codice del metodo
-//                        + "js\n";                               // jump all'istruzione dove e' definito il metodo e
-//        // salvo $ra
-    
 		
-		 String parametersCodeString = "";
+		 StringBuilder parametersCodeString = new StringBuilder();
 		    for (int i = parList.size() - 1; i >= 0; i--) {
-		    	parametersCodeString+=parList.get(i).codeGeneration();
+		    	parametersCodeString.append(parList.get(i).codeGeneration());
 		    }
 		    
-		    String getAR="";
+		    StringBuilder getAR= new StringBuilder();
 			for (int i=0; i< nestingLevel - ownerClassEntry.getNestLevel(); i++) {
-				getAR+="lw\n";
+				getAR.append("lw\n");
 			}
 		    
 			return "lfp\n" + //CL

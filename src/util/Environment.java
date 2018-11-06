@@ -90,13 +90,14 @@ public class Environment {
         return declaredFunctions;
     }
 
-    public static FunNode getFunctionById(String id){
+    public static FunNode getFunctionById(String id, int nl){
         // Reversed for each on the declared functions. It's reversed to respect the scopes, the function in the most
         // nested scope is the last one inserted in the list, so it should be the first one returned.
         // The first functions inserted is the one in the most external scope, so it should be the last one returned.
         for (int i = declaredFunctions.size() - 1; i >= 0; --i){
-            if (declaredFunctions.get(i).getId().equals(id)){
-                return declaredFunctions.get(i);
+        	FunNode f = declaredFunctions.get(i);
+            if (f.getId().equals(id) && f.getEntry().getNestLevel() <= nl){
+                return f;
             }
         }
 

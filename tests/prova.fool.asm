@@ -1,33 +1,45 @@
 ## LET
 
-push function0
-push function1
+push 0
+push A_class
+new
+push function2
+push function3
 
 ## IN
 
 lfp
-lfp
-push -2
+push -1
 lfp
 add
 lw
+cts
+lw
+push 1
+add
+lm
 js
 halt
+
+## Functions code and Dispatch Table
 
 function0:
 cfp
 lra
-push 113
-push 114
-push 115
-push -3
 lfp
+push -1
+lfp
+lw
+lw
 add
 lw
+cts
+lw
+push 2
+add
+lm
+js
 srv
-pop
-pop
-pop
 sra
 pop
 sfp
@@ -38,18 +50,8 @@ js
 function1:
 cfp
 lra
-push 117
-lfp
-lfp
-lw
-push -1
-lfp
-lw
-add
-lw
-js
+push 119
 srv
-pop
 sra
 pop
 sfp
@@ -57,3 +59,38 @@ lrv
 lra
 js
 
+function2:
+cfp
+lra
+lfp
+lfp
+lw
+push -2
+lfp
+lw
+add
+lw
+js
+srv
+sra
+pop
+sfp
+lrv
+lra
+js
+
+function3:
+cfp
+lra
+push 115
+srv
+sra
+pop
+sfp
+lrv
+lra
+js
+
+A_class:
+function0
+function1
