@@ -70,14 +70,16 @@ public class ClassNode implements Node {
 
 	@Override
 	public String toPrint(String indent) {
-		String fieldstr = "", methodstr = "", superstr = "";
+		StringBuilder fieldstr = new StringBuilder();
+		StringBuilder methodstr = new StringBuilder();
+		String superstr = "";
 
 		for (Node n : fieldList) {
-			fieldstr += n.toPrint(indent + "  ");
+			fieldstr.append(n.toPrint(indent + "  "));
 		}
 
 		for (Node method : methodList) {
-			methodstr += method.toPrint(indent + "  ");
+			methodstr.append(method.toPrint(indent + "  "));
 		}
 
 		if (superClass != null)
@@ -129,12 +131,10 @@ public class ClassNode implements Node {
 			}
 		}
 
-		for (Node method : methodList) {
-			FunNode fun = (FunNode) method;
-			res.addAll(fun.checkSemantics(env));
-		}
+        res.addAll(FOOLlib.processCheckSemanticsDecs(this.methodList, env));
 
-		env.getST().remove(env.decNestLevel());
+
+        env.getST().remove(env.decNestLevel());
 		
 		return res;
 	}

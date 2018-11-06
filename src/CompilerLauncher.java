@@ -34,7 +34,7 @@ import type.Type;
 public class CompilerLauncher {
 	
 
-	static boolean doCodeGen = true;
+	static boolean doCodeGen = false;
 
 	public static void main(String[] args) {
 

@@ -431,6 +431,21 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 
 		//this corresponds to a function invocation
 
+		ParserRuleContext prc = ctx;
+        boolean isM = false;
+
+        while (prc.getParent() != null) {
+            /*if (prc.getText().contains("class")) {
+                isM = true;
+                break;
+            }*/
+
+            System.out.println(prc.getText());
+
+            prc = prc.getParent();
+        }
+        System.out.println();
+
 		//declare the result
 		Node res;
 

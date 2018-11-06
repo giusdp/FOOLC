@@ -43,8 +43,8 @@ public class ProgLetInNode implements Node {
         res.addAll(FOOLlib.processCheckSemanticsDecs(this.declist, env));
 		
 		//check semantics in the exp body or stms body
-		for (Node stm : this.contextBody) {
-			res.addAll(stm.checkSemantics(env));
+		for (Node instr : this.contextBody) {
+			res.addAll(instr.checkSemantics(env));
 		}
 
 		//clean the scope, we are leaving a let scope

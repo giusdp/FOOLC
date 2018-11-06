@@ -36,10 +36,11 @@ public class ProgClassNode implements Node {
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
 		env.incNestLevel(); // porto il nesting level a 0
 		
-		env.setOffset(-1); // Bisogna settare il primo offset a -1 così quando si accede ad una variabile prendendo
+		env.setOffset(-2); // Bisogna settare il primo offset a -1 così quando si accede ad una variabile prendendo
 		// l'offset, si inizia da 9999 invece che da MEMSIZE=10000, dato che l'array memory va da 0 a 9999
 		env.setClassOffset(-1);
 		env.setMethodOffset(-1);
+		env.setFunctionOffset(-1);
 
 		// Creo una nuova hashmap e la aggiugno alla symbol table
 		HashMap<String, STEntry> hm = new HashMap<String, STEntry>();
@@ -60,9 +61,7 @@ public class ProgClassNode implements Node {
 		}
 
 		// Se ci sono lets
-		//env.setOffset(env.getClassOffset());
-		for (Node n : decList)
-			res.addAll(n.checkSemantics(env));
+		res.addAll(FOOLlib.processCheckSemanticsDecs(this.decList, env));
 
 		// Controlla l'espressione fuori 
 		for (Node instruction : contextBody) {
