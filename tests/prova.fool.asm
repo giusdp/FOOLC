@@ -1,18 +1,22 @@
 ## LET
 
+push function2
 push 0
 push A_class
 new
-push function2
 
 ## IN
 
-lfp
 lfp
 push -1
 lfp
 add
 lw
+cts
+lw
+push 1
+add
+lm
 js
 halt
 

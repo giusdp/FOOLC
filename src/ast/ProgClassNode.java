@@ -17,7 +17,7 @@ public class ProgClassNode implements Node {
 	private ArrayList<ClassNode> classList;
 	private ArrayList<Node> decList;
 	private ArrayList<Node> contextBody;
-	
+
 	public ProgClassNode(ArrayList<ClassNode> classes,
 						 ArrayList<Node> decs,
 						 ArrayList<Node> body) {
@@ -100,22 +100,28 @@ public class ProgClassNode implements Node {
 	}
 	@Override
 	public String codeGeneration() {
-		
-		for (ClassNode c : classList) {
-			c.codeGeneration();  // La code generation delle classi ritorna stringa vuota quindi non serve. 
-			// Piuttosto popola la stringa in FOOLlib con le dispatch tables.
-		}
-		
+
+
+        for (ClassNode c : classList) {
+            c.codeGeneration();  // La code generation delle classi ritorna stringa vuota quindi non serve.
+            // Piuttosto popola la stringa in FOOLlib con le dispatch tables.
+        }
 		// Se è solo un file di dichiarazioni di classi salta la code generation del let in
 		if ( ! decList.isEmpty()) {
 			StringBuilder declCode = new StringBuilder();
-			for (Node dec : decList)
-				declCode.append(dec.codeGeneration());
-		
+            for (Node dec : decList){
+                if (dec instanceof FunNode) declCode.append(dec.codeGeneration());
+            }
+
+            for (Node dec : decList){
+                if (! (dec instanceof FunNode)) declCode.append(dec.codeGeneration());
+            }
+
 			StringBuilder bodyCode = new StringBuilder();
 			for (Node stm : contextBody)
 				bodyCode.append(stm.codeGeneration());
-			
+
+
 			return "## LET\n\n" + declCode.toString() + "\n## IN\n\n" + bodyCode.toString() + "halt\n\n" + "## Functions code and Dispatch Table\n" +
 				FOOLlib.getCode();
 		}

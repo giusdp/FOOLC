@@ -58,7 +58,7 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 					contextBody.add(visit(stm));
 				}
 			} else if (node instanceof FOOLParser.ExpContext) {
-				contextBody.add(visit( (FOOLParser.ExpContext) node));
+				contextBody.add(visit(node));
 			}
 		});
 
@@ -69,11 +69,9 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 	@Override
 	public Node visitClassExp(ClassExpContext ctx) {
 
-		ArrayList<ClassNode> classes = new ArrayList<ClassNode>();
-		ArrayList<Node> declarations = new ArrayList<Node>();
-//		ArrayList<Node> expressions = new ArrayList<Node>();
-//		ArrayList<Node> statements = new ArrayList<Node>();
-		ArrayList<Node> contextBody = new ArrayList<>();
+		ArrayList<ClassNode> classes = new ArrayList<>();
+		ArrayList<Node> declarations = new ArrayList<>();
+		ArrayList<Node> fullBody = new ArrayList<>();
 		
 		// Visita tutte le classi
 		for (ClassdecContext cc : ctx.classdec())
@@ -84,23 +82,37 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 		if (ctx.let() != null) {
 			for (DecContext dc : ctx.let().dec())
 				declarations.add(visit(dc));
-			
-//			for (ExpContext e : ctx.exp())
-//				expressions.add(visit(e));
-//			
-//			for (StmsContext stm : ctx.stms()) {
-//				//System.out.println(dc.toString());
-//				for (StmContext s : stm.stm()) {
-//					statements.add(visit(s));	
-//				}
-//			}
-			contextBody = getContextBody(ctx);
+
+            fullBody = getContextBody(ctx);
 		}
 
-		return new ProgClassNode(classes, declarations, contextBody);
+		return new ProgClassNode(classes, declarations, fullBody);
 	
 	}
-	
+
+
+    // PROG let
+    @Override
+    public Node visitLetInExp(LetInExpContext ctx) {
+
+        //resulting node of the right type
+        ProgLetInNode res;
+
+        //list of declarations, exps and stms in @res
+        ArrayList<Node> declarations = new ArrayList<>();
+        ArrayList<Node> fullBody;
+
+        for (DecContext dc : ctx.let().dec()) {
+            declarations.add(visit(dc));
+        }
+
+        fullBody = getContextBody(ctx);
+
+        res = new ProgLetInNode(declarations, fullBody);
+        //build @res accordingly with the result of the visits to its content
+
+        return res;
+    }
 	
 
 	@Override
@@ -175,28 +187,6 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 		return prog;
 	}
 
-	// PROG let
-	@Override
-	public Node visitLetInExp(LetInExpContext ctx) {
-
-		//resulting node of the right type
-		ProgLetInNode res;
-
-		//list of declarations, exps and stms in @res
-		ArrayList<Node> declarations = new ArrayList<>();
-		ArrayList<Node> fullBody = new ArrayList<>();
-		
-		for (DecContext dc : ctx.let().dec()) {
-			declarations.add(visit(dc));
-		}
-		
-		fullBody = getContextBody(ctx);
-		
-		res = new ProgLetInNode(declarations, fullBody);
-		//build @res accordingly with the result of the visits to its content
-
-		return res;
-	}
 
 
 
