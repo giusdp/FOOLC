@@ -83,9 +83,9 @@ public class MethodCallNode implements Node {
 			// una classe, bisogna controllare che il metodo sia della 'superClass'
 			if (!methodDeclared) {
 				while (ownerClassNode.getSuperClass() != null) {
-					for (Node fn : ownerClassNode.getMethodList()) {
+					for (Node fn : ownerClassNode.getSuperClass().getMethodList()) {
 						FunNode function = (FunNode) fn;
-						if (function.getId().equals(this.id)) {
+                        if (function.getId().equals(this.id)) {
 							// if method declared in subclass is polymorphic, store type for TypeChecking.
 							methodType = (ArrowType) function.getType();
 							methodDeclared = true;
@@ -97,7 +97,7 @@ public class MethodCallNode implements Node {
 			}
 			
 			if (!methodDeclared) {
-				res.add(new SemanticError("Method "+ id + " in class " + ownerClass + " is not defined."));
+				res.add(new SemanticError("MethodCall Method "+ id + " in class " + ownerClass + " is not defined."));
 				return res;
 			}
 			

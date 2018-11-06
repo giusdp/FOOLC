@@ -1,8 +1,9 @@
 ## LET
 
 push function2
+push function3
 push 0
-push A_class
+push B_class
 new
 
 ## IN
@@ -70,6 +71,29 @@ lrv
 lra
 js
 
+function3:
+cfp
+lra
+lfp
+lfp
+lw
+push -1
+lfp
+lw
+add
+lw
+js
+srv
+sra
+pop
+sfp
+lrv
+lra
+js
+
 A_class:
+function0
+function1
+B_class:
 function0
 function1
