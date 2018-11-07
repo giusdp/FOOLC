@@ -39,6 +39,19 @@ push 2
 add
 lm
 js
+lfp
+push -3
+lfp
+lw
+lw
+add
+lw
+cts
+lw
+push 2
+add
+lm
+js
 srv
 sra
 pop

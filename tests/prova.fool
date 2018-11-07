@@ -1,4 +1,4 @@
-class A { int f() g(); int g() 119; };
+class A { int f() g(); g(); int g() 119; };
 class B extends A;
 
 let
