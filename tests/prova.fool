@@ -1,7 +1,7 @@
 class A { int g() 119;};
 class B extends A { bool ciao() true;};
-class C extends B ;
-class D extends C {int f() 118;};
+class C extends B { int p() g();};
+class D extends C {int f() p();};
 
 let
     C c = new C();
@@ -9,4 +9,3 @@ let
     D d = new D();
 in
     d.f();
-    a.g();      

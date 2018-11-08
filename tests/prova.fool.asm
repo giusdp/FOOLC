@@ -19,18 +19,7 @@ add
 lw
 cts
 lw
-push 3
-add
-lm
-js
-lfp
-push -3
-lfp
-add
-lw
-cts
-lw
-push 1
+push 4
 add
 lm
 js
@@ -65,7 +54,43 @@ js
 function2:
 cfp
 lra
-push 118
+lfp
+push -3
+lfp
+lw
+lw
+add
+lw
+cts
+lw
+push 1
+add
+lm
+js
+srv
+sra
+pop
+sfp
+lrv
+lra
+js
+
+function3:
+cfp
+lra
+lfp
+push -3
+lfp
+lw
+lw
+add
+lw
+cts
+lw
+push 3
+add
+lm
+js
 srv
 sra
 pop
@@ -82,7 +107,9 @@ function1
 C_class:
 function0
 function1
+function2
 D_class:
 function0
 function1
 function2
+function3

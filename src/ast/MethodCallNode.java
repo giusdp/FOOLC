@@ -14,21 +14,24 @@ import util.STEntry;
 import util.SemanticError;
 
 public class MethodCallNode implements Node {
-	
+
 	private String id;
 	private ArrayList<Node> parList;
 
 	private IdNode varNode;
 	private String ownerClass;
-	
-	private STEntry ownerClassEntry; 
+
+	private STEntry ownerClassEntry;
 	private int dtOffset;
 	private int nestingLevel;
-	
+
 	private Type methodType;
 
 
-	public MethodCallNode(String m, ArrayList<Node> args, Node obj) {
+    public MethodCallNode() {
+    }
+
+    public MethodCallNode(String m, ArrayList<Node> args, Node obj) {
 		id = m;
 		parList = args;
 		varNode = (IdNode) obj;
@@ -89,7 +92,6 @@ public class MethodCallNode implements Node {
 							// if method declared in subclass is polymorphic, store type for TypeChecking.
 							methodType = function.getType();
 							methodDeclared = true;
-							//System.err.println(ownerClassNode.getSuperClass().stEntry.getOffset());
 							break;
 						}
 					}
