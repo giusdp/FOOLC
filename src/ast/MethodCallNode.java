@@ -82,13 +82,14 @@ public class MethodCallNode implements Node {
 			// Se il metodo non è dichiarato nella 'ownerClass' e la 'ownerClass' estende 
 			// una classe, bisogna controllare che il metodo sia della 'superClass'
 			if (!methodDeclared) {
-				while (ownerClassNode.getSuperClass() != null) {
+				while (ownerClassNode.getSuperClass() != null && !methodDeclared) {
 					for (Node fn : ownerClassNode.getSuperClass().getMethodList()) {
 						FunNode function = (FunNode) fn;
                         if (function.getId().equals(this.id)) {
 							// if method declared in subclass is polymorphic, store type for TypeChecking.
-							methodType = (ArrowType) function.getType();
+							methodType = function.getType();
 							methodDeclared = true;
+							//System.err.println(ownerClassNode.getSuperClass().stEntry.getOffset());
 							break;
 						}
 					}
@@ -119,7 +120,7 @@ public class MethodCallNode implements Node {
 		 * To be achieved:
 		 */
 
-		ArrowType funType = null;
+		ArrowType funType;
 		ErrorType error = new ErrorType();
 		
 		// Siccome il polimorfismo e' stato gia' controllato in classnode, per tutti i metodi
@@ -165,7 +166,7 @@ public class MethodCallNode implements Node {
 		    
 			return "lfp\n" + //CL
 					parametersCodeString +
-					"push " + ownerClassEntry.getOffset() + "\n" + //metto offset sullo stack
+					"push " + ownerClassEntry.getOffset()+ "\n" + //metto offset sullo stack
 			       "lfp\n" + 
 					getAR +
 				   "add\n" + 

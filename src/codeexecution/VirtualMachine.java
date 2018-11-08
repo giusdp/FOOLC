@@ -278,7 +278,7 @@ public class VirtualMachine {
 				
 			case SVMParser.DUPLICATETOP:
 				push(getMemory(sp));
-				System.out.println("ctop " + getMemory(sp));
+				System.out.println("cts " + getMemory(sp));
 				break;
 			case SVMParser.HALT:
 				System.out.println("HALT!");

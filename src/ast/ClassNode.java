@@ -97,7 +97,7 @@ public class ClassNode implements Node {
 		// Controllo classe già dichiarata
 		HashMap<String,STEntry> currentScope = env.getST().get(env.getNestLevel());
 
-		stEntry = new STEntry(env.getNestLevel(), type, env.decClassOffset()); 
+		stEntry = new STEntry(env.getNestLevel(), type, env.getClassOffset());
 
 		if ( currentScope.put(id, stEntry) != null ) {
 			res.add(new SemanticError("Class "+ id +" is already declared"));
@@ -192,7 +192,7 @@ public class ClassNode implements Node {
 		Iterator<FunNode> it = derivedMethodToBaseArrowTypeMap.keySet().iterator();
 
 		while (it.hasNext()) {
-			FunNode derivedMethod = (FunNode) it.next();
+			FunNode derivedMethod = it.next();
 			ArrowType derivedMethodType = (ArrowType) derivedMethod.getType();
 			ArrowType baseMethodType = derivedMethodToBaseArrowTypeMap.get(derivedMethod);
 			
@@ -335,6 +335,7 @@ public class ClassNode implements Node {
 	}
 
 	public int getMethodDTOffset(String methodID) {
-		return methodsDTOffsets.get(methodID);
-	}
+        return methodsDTOffsets.get(methodID);
+
+    }
 }

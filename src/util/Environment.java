@@ -62,6 +62,8 @@ public class Environment {
 		return classMap;
 	}
 
+	public int getClassOffset(){ return classOffset; }
+
 	public int decClassOffset() {
 		return classOffset--;
 	}

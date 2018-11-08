@@ -1,9 +1,12 @@
-class A { int f() g(); g(); int g() 119; };
-class B extends A;
+class A ;
+class B extends A ;
+class C extends B {int f() g(); int g() 119;};
+class D extends C;
 
 let
-    int g() 115;
-    B a = new B();
-    int z() g();
+    C a = new D();
+    A b = new A();
+    int f() 44;
+
 in
     a.f();
