@@ -1,12 +1,9 @@
-class A ;
-class B extends A ;
-class C extends B {int f() g(); int g() 119;};
-class D extends C;
+class A { int g() 119;};
+class B extends A { bool ciao() true;};
+class C extends B ;
+class D extends C {int f() 118;};
 
 let
-    C a = new D();
-    A b = new A();
-    int f() 44;
-
+    D d = new D();
 in
-    a.f();
+    d.f();

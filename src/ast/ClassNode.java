@@ -112,7 +112,15 @@ public class ClassNode implements Node {
 				res.add(new SemanticError("Super class "+ superClassName +" is not declared"));
 			} else {
 				setSuperClass(env.getClassMap().get(superClassName));
-			}
+
+
+                ClassNode sc = superClass;
+                while (sc != null) {
+                    updateDTOffsets(sc);
+                    sc = sc.getSuperClass();
+                }
+
+            }
 		}
 		
 		// Altrimenti proseguiamo con la creazione di un nuovo scope
@@ -157,7 +165,8 @@ public class ClassNode implements Node {
 		HashMap<FunNode, ArrowType> derivedMethodToBaseArrowTypeMap = new HashMap<>();
 				
 		while (superclassIterator != null) {
-			for (Node myMethods : this.getMethodList()) {
+
+            for (Node myMethods : this.getMethodList()) {
 				FunNode derivedMethod = (FunNode) myMethods;
 				for (Node baseMethods : superclassIterator.getMethodList()) {
 					FunNode baseMethod = (FunNode) baseMethods;
@@ -169,7 +178,8 @@ public class ClassNode implements Node {
 					}
 				}
 			}
-			superclassIterator = superclassIterator.getSuperClass();
+
+            superclassIterator = superclassIterator.getSuperClass();
 		}
 		
 		// TODO: controllare tipi dei campi (istanceof NullNode?)
@@ -241,7 +251,7 @@ public class ClassNode implements Node {
 		// abbiamo la className: this.id
 		
 		// Creiamo List<DTEntry>
-		List<DTEntry> dispatchTable = new ArrayList<>();
+		List<DTEntry> dispatchTable;
 		
 		// Se la classe ha superclasse, allora la dispatch table di questa classe è solo 
 		// una estensione di quella della superclasse, altrimenti è una nuova da zero
@@ -321,7 +331,7 @@ public class ClassNode implements Node {
 	public void setSuperClassName(String superClassName) {
 		this.superClassName = superClassName;
 	}
-	
+
 	public void setSuperClass(ClassNode parent) {
 		this.superClass = parent;
 	}
@@ -329,7 +339,7 @@ public class ClassNode implements Node {
 	public ClassNode getSuperClass() {
 		return superClass;
 	}
-	
+
 	public ClassType getClassType() {
 		return type;
 	}
@@ -337,5 +347,9 @@ public class ClassNode implements Node {
 	public int getMethodDTOffset(String methodID) {
         return methodsDTOffsets.get(methodID);
 
+    }
+
+    private void updateDTOffsets(ClassNode parent){
+        methodsDTOffsets.forEach((k,v) -> methodsDTOffsets.put(k, v + parent.getMethodList().size()));
     }
 }

@@ -94,7 +94,7 @@ public class ConstructorNode implements Node {
 		else{
 			this.entry = tmp;
 			this.nestingLevel = env.getNestLevel();
-
+//			tmp.setOffset(tmp.getOffset() + env.decClassOffset());
 			for(Node arg : parList)
 				res.addAll(arg.checkSemantics(env));
 		}

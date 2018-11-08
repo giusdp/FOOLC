@@ -18,6 +18,7 @@ public class Environment {
     private int functionOffset;
 
 
+
 	private HashMap<String, ClassNode> classMap = new HashMap<>();
 	static private ArrayList<FunNode> declaredFunctions = new ArrayList<>();
 	

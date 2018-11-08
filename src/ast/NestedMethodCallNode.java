@@ -147,7 +147,7 @@ public class NestedMethodCallNode implements Node {
 
         return "lfp\n" + //CL
                 parametersCodeString +
-                "push " + (ownerClassEntry.getOffset()+2) + "\n" + //metto offset sullo stack
+                "push " + ownerClassEntry.getOffset() + "\n" + //metto offset sullo stack
                 "lfp\n" +
                 getAR +
                 "add\n" +
