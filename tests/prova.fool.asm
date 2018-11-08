@@ -1,78 +1,41 @@
 ## LET
 
-push function2
-push function3
-push 0
-push B_class
-new
+push function0
+push 12
+push 3
+push function1
 
 ## IN
 
+push -2
+lfp
+add
+lw
+push 6
+div
+lfp
+push -2
+add
+sw
+push -2
+lfp
+add
+lw
+lfp
+lfp
+push -2
+lfp
+add
+lw
+js
+mult
 lfp
 push -3
-lfp
 add
-lw
-cts
-lw
-push 1
-add
-lm
-js
+sw
 halt
 
-## Functions code and Dispatch Table
-
 function0:
-cfp
-lra
-lfp
-push -3
-lfp
-lw
-lw
-add
-lw
-cts
-lw
-push 2
-add
-lm
-js
-lfp
-push -3
-lfp
-lw
-lw
-add
-lw
-cts
-lw
-push 2
-add
-lm
-js
-srv
-sra
-pop
-sfp
-lrv
-lra
-js
-
-function1:
-cfp
-lra
-push 119
-srv
-sra
-pop
-sfp
-lrv
-lra
-js
-
-function2:
 cfp
 lra
 push 115
@@ -84,18 +47,10 @@ lrv
 lra
 js
 
-function3:
+function1:
 cfp
 lra
-lfp
-lfp
-lw
-push -1
-lfp
-lw
-add
-lw
-js
+push 37
 srv
 sra
 pop
@@ -104,9 +59,3 @@ lrv
 lra
 js
 
-A_class:
-function0
-function1
-B_class:
-function0
-function1

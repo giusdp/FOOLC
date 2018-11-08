@@ -1,9 +1,8 @@
-class A { int f() g(); g(); int g() 119; };
-class B extends A;
-
 let
     int g() 115;
-    B a = new B();
-    int z() g();
+    int a = 12;
+    int b = 3;
+    int f() 37;
 in
-    a.f();
+    a = a / 6;
+    b = a * f();
