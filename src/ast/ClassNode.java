@@ -350,6 +350,13 @@ public class ClassNode implements Node {
     }
 
     private void updateDTOffsets(ClassNode parent){
-        methodsDTOffsets.forEach((k,v) -> methodsDTOffsets.put(k, v + parent.getMethodList().size()));
+	    int nOverrideMethods = 0;
+
+        for (String k : methodsDTOffsets.keySet()){
+            for (Node f : parent.getMethodList()){
+                if(((FunNode) f).getId().equals(k)) nOverrideMethods++;
+            }
+            methodsDTOffsets.put(k, methodsDTOffsets.get(k) + parent.getMethodList().size() - nOverrideMethods);
+        }
     }
 }
