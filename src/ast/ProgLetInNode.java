@@ -46,6 +46,12 @@ public class ProgLetInNode implements Node {
 		for (Node instr : this.contextBody) {
 			res.addAll(instr.checkSemantics(env));
 		}
+		
+		for (Node variable : this.contextBody){
+			if (variable instanceof StmAsmNode) {
+				((StmAsmNode) variable).updateEntryOffset(env.getFunctionOffset() +1);
+			}
+        }
 
 		//clean the scope, we are leaving a let scope
 		env.getST().remove(env.decNestLevel());
@@ -74,9 +80,13 @@ public class ProgLetInNode implements Node {
 		// TODO: more rigorous testing needed to ensure codeGen works.
 
 		StringBuilder declCode = new StringBuilder();
-		for (Node dec : this.declist) {
-			declCode.append(dec.codeGeneration());
-		}
+        for (Node dec : declist){
+            if (dec instanceof FunNode) declCode.append(dec.codeGeneration());
+        }
+
+        for (Node dec : declist){
+            if (! (dec instanceof FunNode)) declCode.append(dec.codeGeneration());
+        }
 
 		StringBuilder bodyCode = new StringBuilder();
 		for (Node stm : this.contextBody) {

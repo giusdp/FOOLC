@@ -1,23 +1,23 @@
 ## LET
 
 push function0
+push function1
 push 12
 push 3
-push function1
 
 ## IN
 
-push -2
+push -4
 lfp
 add
 lw
 push 6
 div
 lfp
-push -2
+push -4
 add
 sw
-push -2
+push -4
 lfp
 add
 lw
@@ -30,7 +30,7 @@ lw
 js
 mult
 lfp
-push -3
+push -5
 add
 sw
 halt
