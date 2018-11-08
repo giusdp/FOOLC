@@ -1,19 +1,36 @@
 ## LET
 
 push 0
+push C_class
+new
+push 0
+push A_class
+new
+push 0
 push D_class
 new
 
 ## IN
 
 lfp
-push -1
+push -3
 lfp
 add
 lw
 cts
 lw
 push 3
+add
+lm
+js
+lfp
+push -3
+lfp
+add
+lw
+cts
+lw
+push 1
 add
 lm
 js

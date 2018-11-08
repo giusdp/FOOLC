@@ -166,7 +166,7 @@ public class MethodCallNode implements Node {
 		    
 			return "lfp\n" + //CL
 					parametersCodeString +
-					"push " + ownerClassEntry.getOffset()+ "\n" + //metto offset sullo stack
+					"push " + (ownerClassEntry.getOffset() - ConstructorNode.numberOfInstances) + "\n" + //metto offset sullo stack
 			       "lfp\n" + 
 					getAR +
 				   "add\n" + 

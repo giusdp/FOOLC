@@ -21,13 +21,14 @@ public class ConstructorNode implements Node {
 	public ConstructorNode(String id, ArrayList<Node> parList) {
 		this.className = id;
 		this.parList = parList;
+		numberOfInstances++;
 	}
 
 	@Override
 	public String toPrint(String indent) {
-		String parlstr="";
+		StringBuilder parlstr= new StringBuilder();
 		for (Node par:parList)
-			parlstr+=par.toPrint(indent + "  ");		
+			parlstr.append(par.toPrint(indent + "  "));
 		return indent+"Constructor for Class: " + className + " at nestlev " + nestingLevel +"\n" 
 		+entry.toPrint(indent + "  ") + parlstr; 
 	}
@@ -114,4 +115,7 @@ public class ConstructorNode implements Node {
                 + "push " + className + "_class\n"
                 + "new\n";
 	}
+
+
+	public static int numberOfInstances = -1;
 }

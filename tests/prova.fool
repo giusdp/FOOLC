@@ -4,6 +4,9 @@ class C extends B ;
 class D extends C {int f() 118;};
 
 let
+    C c = new C();
+    A a = new A();
     D d = new D();
 in
     d.f();
+    a.g();      
