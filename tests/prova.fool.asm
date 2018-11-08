@@ -1,9 +1,6 @@
 ## LET
 
 push 0
-push C_class
-new
-push 0
 push A_class
 new
 push 0
@@ -13,13 +10,13 @@ new
 ## IN
 
 lfp
-push -3
+push -2
 lfp
 add
 lw
 cts
 lw
-push 4
+push 5
 add
 lm
 js
@@ -55,10 +52,8 @@ function2:
 cfp
 lra
 lfp
-push -3
+push 0
 lfp
-lw
-lw
 add
 lw
 cts
@@ -79,15 +74,35 @@ function3:
 cfp
 lra
 lfp
-push -3
+push 0
 lfp
-lw
-lw
 add
 lw
 cts
 lw
-push 3
+push 1
+add
+lm
+js
+srv
+sra
+pop
+sfp
+lrv
+lra
+js
+
+function4:
+cfp
+lra
+lfp
+push 0
+lfp
+add
+lw
+cts
+lw
+push 4
 add
 lm
 js
@@ -113,3 +128,4 @@ function0
 function1
 function2
 function3
+function4

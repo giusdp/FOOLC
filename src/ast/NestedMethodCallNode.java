@@ -1,7 +1,6 @@
 package ast;
 
 import type.ArrowType;
-import type.ClassType;
 import type.ErrorType;
 import type.Type;
 import util.Environment;
@@ -23,6 +22,9 @@ public class NestedMethodCallNode extends MethodCallNode {
     private int nestingLevel;
 
     private Type methodType;
+
+    private int nestedCallNestingLevel = 3; // La chiamata in un metodo sarà sempre a nl = 3.
+                                            // Class -> nl=1. Method -> nl=2. Call-> nl=3
 
     public NestedMethodCallNode(String className, String m, ArrayList<Node> args) {
         id = m;
@@ -141,13 +143,13 @@ public class NestedMethodCallNode extends MethodCallNode {
         }
 
         StringBuilder getAR= new StringBuilder();
-        for (int i=0; i< nestingLevel - ownerClassEntry.getNestLevel(); i++) {
+        for (int i=0; i< nestingLevel - nestedCallNestingLevel; i++) {
             getAR.append("lw\n");
         }
 
         return "lfp\n" + //CL
                 parametersCodeString +
-                "push " + (ownerClassEntry.getOffset() - ConstructorNode.numberOfInstances)  + "\n" + //metto offset sullo stack
+                "push " + 0 + "\n" + //metto offset sullo stack. E' 0 perché non dobbiamo spostarci via dalla classe
                 "lfp\n" +
                 getAR +
                 "add\n" +

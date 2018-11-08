@@ -1,9 +1,7 @@
 package ast;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
-import ast.FunNode;
 import type.ArrowType;
 import type.ClassType;
 import type.ErrorType;
@@ -168,7 +166,7 @@ public class MethodCallNode implements Node {
 		    
 			return "lfp\n" + //CL
 					parametersCodeString +
-					"push " + (ownerClassEntry.getOffset() - ConstructorNode.numberOfInstances) + "\n" + //metto offset sullo stack
+					"push " + (ownerClassEntry.getOffset() - ConstructorNode.nInstances) + "\n" + //metto offset sullo stack
 			       "lfp\n" + 
 					getAR +
 				   "add\n" + 
