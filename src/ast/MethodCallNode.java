@@ -1,9 +1,7 @@
 package ast;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
-import ast.FunNode;
 import type.ArrowType;
 import type.ClassType;
 import type.ErrorType;
@@ -14,20 +12,24 @@ import util.STEntry;
 import util.SemanticError;
 
 public class MethodCallNode implements Node {
-	
+
 	private String id;
 	private ArrayList<Node> parList;
 
 	private IdNode varNode;
 	private String ownerClass;
-	
-	private STEntry ownerClassEntry; 
+
+	private STEntry ownerClassEntry;
 	private int dtOffset;
 	private int nestingLevel;
-	
+
 	private Type methodType;
 
-	public MethodCallNode(String m, ArrayList<Node> args, Node obj) {
+
+    public MethodCallNode() {
+    }
+
+    public MethodCallNode(String m, ArrayList<Node> args, Node obj) {
 		id = m;
 		parList = args;
 		varNode = (IdNode) obj;
@@ -35,10 +37,10 @@ public class MethodCallNode implements Node {
 
 	@Override
 	public String toPrint(String indent) {
-		String parlstr = "";
+		StringBuilder parlstr = new StringBuilder();
 
 		for (Node par : parList)
-			parlstr += par.toPrint(indent + "  ");
+			parlstr.append(par.toPrint(indent + "  "));
 
 		// TODO: methodEntry is null at runtime. Causes NullPtrException.
 		// methodEntry is never instantiated here.
@@ -48,7 +50,7 @@ public class MethodCallNode implements Node {
 	@Override
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
 		
-		ArrayList<SemanticError> res = new ArrayList<SemanticError>();
+		ArrayList<SemanticError> res = new ArrayList<>();
 				
 		res.addAll(varNode.checkSemantics(env));
 		if (!res.isEmpty()) return res;
@@ -81,12 +83,12 @@ public class MethodCallNode implements Node {
 			// Se il metodo non è dichiarato nella 'ownerClass' e la 'ownerClass' estende 
 			// una classe, bisogna controllare che il metodo sia della 'superClass'
 			if (!methodDeclared) {
-				while (ownerClassNode.getSuperClass() != null) {
-					for (Node fn : ownerClassNode.getMethodList()) {
+				while (ownerClassNode.getSuperClass() != null && !methodDeclared) {
+					for (Node fn : ownerClassNode.getSuperClass().getMethodList()) {
 						FunNode function = (FunNode) fn;
-						if (function.getId().equals(this.id)) {
+                        if (function.getId().equals(this.id)) {
 							// if method declared in subclass is polymorphic, store type for TypeChecking.
-							methodType = (ArrowType) function.getType();
+							methodType = function.getType();
 							methodDeclared = true;
 							break;
 						}
@@ -96,7 +98,7 @@ public class MethodCallNode implements Node {
 			}
 			
 			if (!methodDeclared) {
-				res.add(new SemanticError("Method "+ id + " in class " + ownerClass + " is not defined."));
+				res.add(new SemanticError("MethodCall Method "+ id + " in class " + ownerClass + " is not defined."));
 				return res;
 			}
 			
@@ -118,7 +120,7 @@ public class MethodCallNode implements Node {
 		 * To be achieved:
 		 */
 
-		ArrowType funType = null;
+		ArrowType funType;
 		ErrorType error = new ErrorType();
 		
 		// Siccome il polimorfismo e' stato gia' controllato in classnode, per tutti i metodi
@@ -130,14 +132,14 @@ public class MethodCallNode implements Node {
 
 			// si controllano numero parametri con quelli passati in input
 			if ( parTypes.size() != parList.size() ) {
-				error.addErrorMessage("Wrong number of parameters in the invocation of the method: "+varNode.getId()+"."+id +
+				error.addErrorMessage("Wrong number of parameters in the invocation of the method: "+ownerClass+"."+id +
 									  "\nExpected " + parTypes.size() + " but found " + parList.size());
 				return error;
 			}
 			// si controllano tipi parametri con quelli passati in input
 			for (int i = 0; i < parList.size(); i++) 
 				if ( !(FOOLlib.isSubtype( (parList.get(i)).typeCheck(), parTypes.get(i)) ) ) {
-					error.addErrorMessage("Wrong type for the "+(i+1)+"-th parameter in the invocation of method: "+varNode.getId()+"."+id);
+					error.addErrorMessage("Wrong type for the "+(i+1)+"-th parameter in the invocation of method: "+ownerClass+"."+id);
 					return error;
 				}
 			return funType.getReturn();
@@ -151,41 +153,20 @@ public class MethodCallNode implements Node {
 
 	@Override
 	public String codeGeneration() {
-
-//
-//        return
-//                "lfp\n"                                  // pusho frame pointer e parametri
-//                        + parameterCode
-//                        + "push " + objectOffset + "\n"         // pusho l'offset logico dell'oggetto (dispatch table)
-//                        + "lfp\n"
-//                        + getActivationRecord                                 //pusho access link (lw consecutivamente)
-//                        // così si potrà risalire la catena statica
-//                        + "add\n"                               // $fp + offset
-//                        + "lw\n"                                // pusho indirizzo di memoria in cui si trova
-//                        // l'indirizzo della dispatch table
-//                        + "copy\n"                              // copio
-//                        + "lw\n"                                // pusho l'indirizzo della dispatch table
-//                        + "push " + (methodOffset - 1) + "\n"   // pusho l'offset di dove si trova metodo rispetto
-//                        // all'inizio della dispatch table
-//                        + "add" + "\n"                          // dispatch_table_start + offset
-//                        + "loadc\n"                             // pusho il codice del metodo
-//                        + "js\n";                               // jump all'istruzione dove e' definito il metodo e
-//        // salvo $ra
-    
 		
-		 String parametersCodeString = "";
+		 StringBuilder parametersCodeString = new StringBuilder();
 		    for (int i = parList.size() - 1; i >= 0; i--) {
-		    	parametersCodeString+=parList.get(i).codeGeneration();
+		    	parametersCodeString.append(parList.get(i).codeGeneration());
 		    }
 		    
-		    String getAR="";
+		    StringBuilder getAR= new StringBuilder();
 			for (int i=0; i< nestingLevel - ownerClassEntry.getNestLevel(); i++) {
-				getAR+="lw\n";
+				getAR.append("lw\n");
 			}
 		    
 			return "lfp\n" + //CL
 					parametersCodeString +
-					"push " + ownerClassEntry.getOffset() + "\n" + //metto offset sullo stack
+					"push " + (ownerClassEntry.getOffset() - ConstructorNode.nInstances) + "\n" + //metto offset sullo stack
 			       "lfp\n" + 
 					getAR +
 				   "add\n" + 

@@ -17,7 +17,7 @@ public class ProgClassNode implements Node {
 	private ArrayList<ClassNode> classList;
 	private ArrayList<Node> decList;
 	private ArrayList<Node> contextBody;
-	
+
 	public ProgClassNode(ArrayList<ClassNode> classes,
 						 ArrayList<Node> decs,
 						 ArrayList<Node> body) {
@@ -36,16 +36,17 @@ public class ProgClassNode implements Node {
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
 		env.incNestLevel(); // porto il nesting level a 0
 		
-		env.setOffset(-1); // Bisogna settare il primo offset a -1 così quando si accede ad una variabile prendendo
+		env.setOffset(-2); // Bisogna settare il primo offset a -1 così quando si accede ad una variabile prendendo
 		// l'offset, si inizia da 9999 invece che da MEMSIZE=10000, dato che l'array memory va da 0 a 9999
 		env.setClassOffset(-1);
 		env.setMethodOffset(-1);
+		env.setFunctionOffset(-1);
 
 		// Creo una nuova hashmap e la aggiugno alla symbol table
-		HashMap<String, STEntry> hm = new HashMap<String, STEntry>();
+		HashMap<String, STEntry> hm = new HashMap<>();
 		env.getST().add(hm);// Nuovo scope (della classe)
 
-		ArrayList<SemanticError> res = new ArrayList<SemanticError>();
+		ArrayList<SemanticError> res = new ArrayList<>();
 
 		//int initialClassOffset = env.getClassOffset();
 		for (ClassNode cn : classList) {
@@ -60,14 +61,19 @@ public class ProgClassNode implements Node {
 		}
 
 		// Se ci sono lets
-		//env.setOffset(env.getClassOffset());
-		for (Node n : decList)
-			res.addAll(n.checkSemantics(env));
+		res.addAll(FOOLlib.processCheckSemanticsDecs(this.decList, env));
 
 		// Controlla l'espressione fuori 
 		for (Node instruction : contextBody) {
 			res.addAll(instruction.checkSemantics(env));
 		}
+
+
+		// Siccome le funzioni in svm sono dichiarate all'inizio, il class offset non puo' iniziare da -1, ma da functionOffset + 1
+        // Quindi vengono aggiornati i valori degli offset alle classi
+		for (ClassNode c : classList){
+		    c.stEntry.setOffset(c.stEntry.getOffset() + env.getFunctionOffset() +1);
+        }
 		// Lascia lo scope
 		env.getST().remove(env.decNestLevel());
 		//env.decNestLevel();
@@ -78,8 +84,7 @@ public class ProgClassNode implements Node {
 	@Override
 	public Type typeCheck() {
 		
-		// TODO: se c'è tempo, fare refactoring delle chiamate
-		//       ripetute di typeCheck() e l'if.
+		// TODO: se c'è tempo, fare refactoring delle chiamate ripetute di typeCheck() e l'if.
 		//       e.g. checkForErrors(ArrayList<Node>), e pure
 		//            checkForErrors(ArrayList< ArrayList<Node> >).
 		
@@ -102,23 +107,29 @@ public class ProgClassNode implements Node {
 	}
 	@Override
 	public String codeGeneration() {
-		
-		for (ClassNode c : classList) {
-			c.codeGeneration();  // La code generation delle classi ritorna stringa vuota quindi non serve. 
-			// Piuttosto popola la stringa in FOOLlib con le dispatch tables.
-		}
-		
+
+
+        for (ClassNode c : classList) {
+            c.codeGeneration();  // La code generation delle classi ritorna stringa vuota quindi non serve.
+            // Piuttosto popola la stringa in FOOLlib con le dispatch tables.
+        }
 		// Se è solo un file di dichiarazioni di classi salta la code generation del let in
 		if ( ! decList.isEmpty()) {
-			String declCode = "";
-			for (Node dec : decList)
-				declCode += dec.codeGeneration();
-		
-			String bodyCode = "";
+			StringBuilder declCode = new StringBuilder();
+            for (Node dec : decList){
+                if (dec instanceof FunNode) declCode.append(dec.codeGeneration());
+            }
+
+            for (Node dec : decList){
+                if (! (dec instanceof FunNode)) declCode.append(dec.codeGeneration());
+            }
+
+			StringBuilder bodyCode = new StringBuilder();
 			for (Node stm : contextBody)
-				bodyCode +=  stm.codeGeneration();
-			
-			return "## LET\n\n" + declCode + "\n## IN\n\n" + bodyCode + "halt\n\n" + "## Functions code and Dispatch Table\n" +
+				bodyCode.append(stm.codeGeneration());
+
+
+			return "## LET\n\n" + declCode.toString() + "\n## IN\n\n" + bodyCode.toString() + "halt\n\n" + "## Functions code and Dispatch Table\n" +
 				FOOLlib.getCode();
 		}
 		

@@ -21,13 +21,14 @@ public class ConstructorNode implements Node {
 	public ConstructorNode(String id, ArrayList<Node> parList) {
 		this.className = id;
 		this.parList = parList;
+		nInstances++;
 	}
 
 	@Override
 	public String toPrint(String indent) {
-		String parlstr="";
+		StringBuilder parlstr= new StringBuilder();
 		for (Node par:parList)
-			parlstr+=par.toPrint(indent + "  ");		
+			parlstr.append(par.toPrint(indent + "  "));
 		return indent+"Constructor for Class: " + className + " at nestlev " + nestingLevel +"\n" 
 		+entry.toPrint(indent + "  ") + parlstr; 
 	}
@@ -80,7 +81,7 @@ public class ConstructorNode implements Node {
 	@Override
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
 		//create the result
-		ArrayList<SemanticError> res = new ArrayList<SemanticError>();
+		ArrayList<SemanticError> res = new ArrayList<>();
 
 		int j=env.getNestLevel();
 		STEntry tmp=null; 
@@ -94,7 +95,7 @@ public class ConstructorNode implements Node {
 		else{
 			this.entry = tmp;
 			this.nestingLevel = env.getNestLevel();
-
+//			tmp.setOffset(tmp.getOffset() + env.decClassOffset());
 			for(Node arg : parList)
 				res.addAll(arg.checkSemantics(env));
 		}
@@ -104,9 +105,9 @@ public class ConstructorNode implements Node {
 	
 	@Override
 	public String codeGeneration() {
-		String parCode = "";
+		StringBuilder parCode = new StringBuilder();
 		for (int i = parList.size() - 1; i >= 0; i--) {
-			parCode+=parList.get(i).codeGeneration();
+			parCode.append(parList.get(i).codeGeneration());
 		}
 		
         return parCode
@@ -114,4 +115,7 @@ public class ConstructorNode implements Node {
                 + "push " + className + "_class\n"
                 + "new\n";
 	}
+
+
+	public static int nInstances = -1;
 }

@@ -1,1 +1,9 @@
-if true then {4} else {6};
+class A(int x){ int f() 119;};
+class B extends A { int g() z(); f(); int z() 65; };
+
+let
+    B b = new B();
+
+in
+    //f();
+  b.g();

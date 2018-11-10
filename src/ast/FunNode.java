@@ -1,15 +1,14 @@
 package ast;
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import type.ArrowType;
 import type.ErrorType;
 import type.Type;
-import util.FOOLlib;
-import util.FOOLlib.RuleName;
-import util.STEntry;
 import util.Environment;
+import util.FOOLlib;
+import util.STEntry;
 import util.SemanticError;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class FunNode implements Node {
 
@@ -19,6 +18,7 @@ public class FunNode implements Node {
 	private ArrayList<Node> declist; 
 	private ArrayList<Node> body;
 	private ArrowType functionType;
+	private STEntry entry;
 	
 	private boolean isMethod = false;
 
@@ -55,30 +55,28 @@ public class FunNode implements Node {
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
 
 		//create result list
-		ArrayList<SemanticError> res = new ArrayList<SemanticError>();
+		ArrayList<SemanticError> res = new ArrayList<>();
 
-		//env.offset = -2;
 		HashMap<String,STEntry> currentScope = env.getST().get(env.getNestLevel());
 		
 		// Problema con il decOffset qui. Se questo è un metodo di una classe, l'offset dovrebbe
 		// essere inerente alla classe e non all'offset di tutto l'environment. 
 		// Quindi è stato introdotto methodOffset
-		STEntry entry;
-		if (isMethod)  entry = new STEntry(env.getNestLevel(), env.decMethodOffset()); 
-		else entry = new STEntry(env.getNestLevel(), env.decOffset()); 
-		
+		if (isMethod)  entry = new STEntry(env.getNestLevel(), env.decMethodOffset());
+		else entry = new STEntry(env.getNestLevel(), env.decFunctionffset());
 
-		if ( currentScope.put(id,entry) != null )
+		STEntry oldEntry = currentScope.put(id,entry);
+		if ( oldEntry != null && !oldEntry.isToBeEvaluated())
 			res.add(new SemanticError("Error for " 
 					+ (isMethod ? "method " : "function ")+ id
 					+ ". ID " +id + " already in use."));
 		else{
 			//creare una nuova hashmap per la symTable
 			env.incNestLevel();
-			HashMap<String,STEntry> nuovoScope = new HashMap<String,STEntry> ();
+			HashMap<String,STEntry> nuovoScope = new HashMap<>();
 			env.getST().add(nuovoScope);
 
-			ArrayList<Type> parTypes = new ArrayList<Type>();
+			ArrayList<Type> parTypes = new ArrayList<>();
 			int paroffset=1;
 
 			//check args
@@ -96,11 +94,9 @@ public class FunNode implements Node {
 
 			//check semantics in the dec list
 			if(declist.size() > 0){
-				env.setOffset(-2);
-				//System.out.println("DEC SIZE > 0");
-				//if there are children then check semantics for every child and save the results
-				for(Node n : declist)
-					res.addAll(n.checkSemantics(env));
+                env.setOffset(-2); // reset the offset to the starting value because we are in a new scope
+                //if there are children then check semantics for every child and save the results
+				FOOLlib.processCheckSemanticsDecs(declist, env);
 			}
 
 			// Check semantics for function statements and expressions.
@@ -116,23 +112,23 @@ public class FunNode implements Node {
 	}
 
 	public String toPrint(String indent) {
-		String parlstr="";
+		StringBuilder parlstr= new StringBuilder();
 		
 		for (Node par:parlist)
-			parlstr+=par.toPrint(indent+"  ");
+			parlstr.append(par.toPrint(indent + "  "));
 		
-		String declstr="";
+		StringBuilder declstr= new StringBuilder();
 		if (declist!=null) 
 			for (Node dec:declist)
-				declstr+=dec.toPrint(indent+"  ");
+				declstr.append(dec.toPrint(indent + "  "));
 		
-		String instrString="";
+		StringBuilder instrString= new StringBuilder();
 		if (!body.isEmpty()) 
 			for (Node s:body)
-				instrString+=s.toPrint(indent+"  ");
+				instrString.append(s.toPrint(indent + "  "));
 		
 		return indent + "Fun: "+ id + " of type " +functionType.toPrint("") +
-				"\n" + parlstr + declstr + instrString;
+				"\n" + parlstr.toString() + declstr.toString() + instrString.toString();
 	}
 
 	public Type typeCheck () {
@@ -174,26 +170,30 @@ public class FunNode implements Node {
 
 	public String codeGeneration() {
 
-		String declCode="";
-		if (declist!=null) 
-			for (Node dec:declist)
-				declCode+=dec.codeGeneration();
-		
-		String bodyCodeString = "";
-		for (Node exp : body) {
-			bodyCodeString += exp.codeGeneration();
-		}
-		
-		// TODO stms and exps codegen (careful with the order)
+		StringBuilder declCode= new StringBuilder();
+        StringBuilder popDecl= new StringBuilder();
 
-		String popDecl="";
-		if (declist!=null) 
-			for (Node dec:declist)
-				popDecl+="pop\n";
+        for (Node dec:declist){
+            declCode.append(dec.codeGeneration());
+            popDecl.append("pop\n");
+        }
 
-		String popParl="";
+        StringBuilder bodyCodeString = new StringBuilder();
+        for (Node exp : body) {
+            bodyCodeString.append(exp.codeGeneration());
+        }
+
+		StringBuilder popParl= new StringBuilder();
 		for (Node dec:parlist)
-			popParl+="pop\n";
+			popParl.append("pop\n");
+
+		StringBuilder srvCalls = new StringBuilder();
+		boolean multipleCalls = false;
+		for (Node n : body){
+            if ((n instanceof CallNode || n instanceof MethodCallNode) && multipleCalls) srvCalls.append("srv\n");
+            else multipleCalls=true;
+        }
+
 
 		String funLabel=FOOLlib.freshFunLabel(); 
 		FOOLlib.putCode(funLabel+":\n"+
@@ -201,7 +201,8 @@ public class FunNode implements Node {
 				"lra\n"+ //inserimento return address
 				declCode+ //inserimento dichiarazioni locali
 				bodyCodeString +
-				"srv\n"+ //pop del return value
+				"srv\n"+ //pop del return value // ci dovrebbero essere tanti srv quante sono le chiamate
+                srvCalls +
 				popDecl+
 				"sra\n"+ // pop del return address
 				"pop\n"+ // pop di AL
@@ -222,6 +223,9 @@ public class FunNode implements Node {
 		this.isMethod = isMethod;
 	}
 	
-	
+
+	public STEntry getEntry(){
+	    return entry;
+    }
 
 }  
