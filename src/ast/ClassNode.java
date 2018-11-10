@@ -50,22 +50,11 @@ public class ClassNode implements Node {
 		 * function1 	<---- dtOffset = 2
 		 * 
 		 */
-		
-		ArrayList<Type> fieldTypeList = new ArrayList<>();
-		for (Node par : fieldList) {
-			ParNode p = (ParNode) par;
-			fieldTypeList.add(p.getType());
-		}
-		type.setFieldTypeList(fieldTypeList);
-		
-		ArrayList<ArrowType> methodTypeList = new ArrayList<>();
+
 		for (Node m : methodList) {
 			FunNode f = (FunNode) m;
-			methodTypeList.add((ArrowType) f.getType());
 			methodsDTOffsets.put(f.getId(), dtOffset++);
 		}
-		type.setMethodTypeList(methodTypeList);
-		
 	}
 
 	@Override
@@ -110,6 +99,7 @@ public class ClassNode implements Node {
 		if (superClassName != null) {
 			if (currentScope.get(superClassName) == null) {
 				res.add(new SemanticError("Super class "+ superClassName +" is not declared"));
+				return res;
 			} else {
 				setSuperClass(env.getClassMap().get(superClassName));
 
@@ -117,6 +107,11 @@ public class ClassNode implements Node {
                 ClassNode sc = superClass;
                 while (sc != null) {
                     updateDTOffsets(sc);
+                    ArrayList<Node> sf = sc.getFieldList();
+                    for (int i = sf.size() -1; i >=0; --i){
+                        fieldList.add(0, sf.get(i));
+                    }
+//                    fieldList.addAll(sc.getFieldList());
                     sc = sc.getSuperClass();
                 }
 
