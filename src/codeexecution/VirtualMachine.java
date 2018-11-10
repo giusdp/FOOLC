@@ -1,8 +1,6 @@
 package codeexecution;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 import svm.AssemblyNode;
 import svm.SVMParser;
@@ -26,6 +24,7 @@ public class VirtualMachine {
 	private int fp = MEMSIZE;
 	private int ra;
 	private int rv;
+
 
 	private Heap heap = new Heap(MEMSIZE);
 
@@ -167,45 +166,45 @@ public class VirtualMachine {
 				else
 					System.out.println("False, not jumping there");
 				break;
-			case SVMParser.JS: //
+			case SVMParser.JS:
 				address = pop();
 				ra = ip;
 				ip = address;
 				System.out.println("js " + address);
 				break;
-			case SVMParser.STORERA: //
+			case SVMParser.STORERA:
 				ra = pop();
 				System.out.println("sra");
 				break;
-			case SVMParser.LOADRA: //
+			case SVMParser.LOADRA:
 				push(ra);
 				System.out.println("lra");
 				break;
-			case SVMParser.STORERV: //
+			case SVMParser.STORERV:
 				rv = pop();
 				System.out.println("srv");
 				break;
-			case SVMParser.LOADRV: //
+			case SVMParser.LOADRV:
 				push(rv);
 				System.out.println("lrv");
 				break;
-			case SVMParser.LOADFP: //
+			case SVMParser.LOADFP:
 				push(fp);
 				System.out.println("lfp");
 				break;
-			case SVMParser.STOREFP: //
+			case SVMParser.STOREFP:
 				fp = pop();
 				System.out.println("sfp");
 				break;
-			case SVMParser.COPYFP: //
+			case SVMParser.COPYFP:
 				System.out.println("cfp");
 				fp = sp;
 				break;
-			case SVMParser.STOREHP: //
+			case SVMParser.STOREHP:
 				hp = pop();
 				System.out.println("shp");
 				break;
-			case SVMParser.LOADHP: //
+			case SVMParser.LOADHP:
 				push(hp);
 				System.out.println("lhp");
 				break;

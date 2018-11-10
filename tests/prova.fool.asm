@@ -13,7 +13,7 @@ add
 lw
 cts
 lw
-push 1
+push 2
 add
 lm
 js
@@ -43,7 +43,7 @@ add
 lw
 cts
 lw
-push 2
+push 3
 add
 lm
 js
@@ -54,7 +54,7 @@ add
 lw
 cts
 lw
-push 2
+push 1
 add
 lm
 js
@@ -82,5 +82,6 @@ js
 A_class:
 function0
 B_class:
+function0
 function1
 function2

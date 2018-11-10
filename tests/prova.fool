@@ -1,5 +1,5 @@
-class A(int x){ int g() 119;};
-class B extends A { int g() z(); z(); int z() 65; };
+class A(int x){ int f() 119;};
+class B extends A { int g() z(); f(); int z() 65; };
 
 let
     B b = new B();
