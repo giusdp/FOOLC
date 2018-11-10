@@ -17,6 +17,8 @@ public class ConstructorNode implements Node {
 	private STEntry entry; 
 	private int nestingLevel;
 
+	private ClassNode classNode;
+
 
 	public ConstructorNode(String id, ArrayList<Node> parList) {
 		this.className = id;
@@ -36,17 +38,13 @@ public class ConstructorNode implements Node {
 	@Override
 	public Type typeCheck() {
 
-		//TODO: ripetizione di codice con il call node (e methodcallnode)
-		// Possiamo creare una classe astratta che implementa questo codice (con tipi generici) e viene ereditato
-
-		ClassType classType = null;
 		ErrorType error = new ErrorType();
 		Type entryType = entry.getType();
 
 		// Se e' una invocazione del costruttore (new Class() ) allora il tipo sara' un classtype e si fa
 		// type checking sul costruttore 
 		if (entryType instanceof ClassType) {
-			classType = (ClassType) entryType;
+			ClassType classType = (ClassType) entryType;
 
 			// Bisogna controllare che i tipi degli argomenti (parList) siano subtype dei campi della classe
 			// I campi della classe sono da considerarsi come parametri
@@ -55,18 +53,21 @@ public class ConstructorNode implements Node {
 //				System.out.println(classType.getFieldTypeList().get(i).toPrint(""));
 
 
-			ArrayList<Type> parTypes = classType.getFieldTypeList();
-			if ( !(parTypes.size() == parList.size()) ) {
+
+			ArrayList<Node> fields = classNode.getFieldList();
+			if ( !(fields.size() == parList.size()) ) {
 				error.addErrorMessage("Wrong number of parameters in the invocation of the constructor for "+ className +
-						". \n Expected " + parTypes.size() + " but found " + parList.size());
+						". \n Expected " + fields.size() + " but found " + parList.size());
 				return error;
 			} 
 
-			for (int i=0; i<parList.size(); i++) 
-				if ( !(FOOLlib.isSubtype( (parList.get(i)).typeCheck(), parTypes.get(i)) ) ) {
-					error.addErrorMessage("Wrong type for the "+(i+1)+"-th parameter in the invocation of the constructor for "+ className);
-					return error;
-				} 
+			for (int i=0; i<parList.size(); i++) {
+                if (!(FOOLlib.isSubtype((parList.get(i)).typeCheck(), fields.get(i).typeCheck()))) {
+                    error.addErrorMessage("Wrong type for the " + (i + 1) + "-th parameter in the invocation of the constructor for " + className);
+                    return error;
+                }
+            }
+
 
 			return classType;
 		}
@@ -91,6 +92,7 @@ public class ConstructorNode implements Node {
 
 		if (tmp==null) {
 			res.add(new SemanticError("Class " + className + " not declared"));
+			return res;
 		}
 		else{
 			this.entry = tmp;
@@ -98,8 +100,13 @@ public class ConstructorNode implements Node {
 //			tmp.setOffset(tmp.getOffset() + env.decClassOffset());
 			for(Node arg : parList)
 				res.addAll(arg.checkSemantics(env));
-		}
-		return res;
+
+			classNode = env.getClassMap().get(className);
+
+
+
+            return res;
+        }
 	}
 
 	

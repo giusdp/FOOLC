@@ -1,9 +1,10 @@
-class A(int x){ int f() 119;};
-class B extends A { int g() z(); f(); int z() 65; };
+class A(int x){ int f() 119; int getX() x;};
+class B extends A (int t, int x) { int g() z(); f(); int z() 65; int getT() x; int getY() y;};
 
 let
-    B b = new B();
+    B b = new B(4,6);
 
 in
     //f();
-  b.g();
+  b.getT();b.getX();b.getY();
+//b.z();
