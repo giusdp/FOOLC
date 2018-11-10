@@ -28,7 +28,6 @@ public class VirtualMachine {
 	private int rv;
 
 	private Heap heap = new Heap(MEMSIZE);
-	private HashSet<HeapBlock> usedHeapBlocks = new HashSet<>();
 
 	public VirtualMachine(List<AssemblyNode> code) {
 		this.code = code;
@@ -234,12 +233,6 @@ public class VirtualMachine {
 				// Bisogna allocare memoria per i campi e l'indirizzo alla dispatch table
 				allocatedMemory = heap.alloc(fieldNumber + 1);
 
-				// La memoria allocata viene "taggata" come in uso (essendo nell'insieme degli
-				// used heap block),
-				// Può essere utile per un eventuale garbage collector, se non lo facciamo
-				// togliamo questa roba
-				usedHeapBlocks.add(allocatedMemory);
-
 				// Si prende la prima posizione per l'array memory della lista di heap blocks
 				// allocati
 				int heapMemoryStart = allocatedMemory.getPointedPosition();
@@ -265,8 +258,7 @@ public class VirtualMachine {
 					hp = heap.getHeadIndex();
 				}
 
-				// TODO E se la memoria terminasse? Errore e il programma esce. Oppure garbage
-				// collector se lo facciamo
+				// TODO E se la memoria terminasse? Errore e il programma esce. Oppure garbage collector se lo facciamo
 
 				break;
 				

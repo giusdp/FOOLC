@@ -187,13 +187,22 @@ public class FunNode implements Node {
 		for (Node dec:parlist)
 			popParl.append("pop\n");
 
+		StringBuilder srvCalls = new StringBuilder();
+		boolean multipleCalls = false;
+		for (Node n : body){
+            if (n instanceof CallNode && multipleCalls) srvCalls.append("srv\n");
+            else multipleCalls=true;
+        }
+
+
 		String funLabel=FOOLlib.freshFunLabel(); 
 		FOOLlib.putCode(funLabel+":\n"+
 				"cfp\n"+ //setta $fp a $sp				
 				"lra\n"+ //inserimento return address
 				declCode+ //inserimento dichiarazioni locali
 				bodyCodeString +
-				"srv\n"+ //pop del return value
+				"srv\n"+ //pop del return value // ci dovrebbero essere tanti srv quante sono le chiamate
+                srvCalls +
 				popDecl+
 				"sra\n"+ // pop del return address
 				"pop\n"+ // pop di AL

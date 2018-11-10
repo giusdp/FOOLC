@@ -1,8 +1,10 @@
 class A(int x){ int g() 119;};
-class B extends A { int g() 118; };
+class B extends A { int g() z(); z(); int z() 65; };
 
 let
     B b = new B();
+    int f() h();
+    int h() 64;
 in
-
-    b.g();
+    //f();
+  b.g();
