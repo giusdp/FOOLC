@@ -1,7 +1,5 @@
 ## LET
 
-push function3
-push function4
 push 0
 push B_class
 new
@@ -9,7 +7,7 @@ new
 ## IN
 
 lfp
-push -3
+push -1
 lfp
 add
 lw
@@ -61,6 +59,7 @@ add
 lm
 js
 srv
+srv
 sra
 pop
 sfp
@@ -72,38 +71,6 @@ function2:
 cfp
 lra
 push 65
-srv
-sra
-pop
-sfp
-lrv
-lra
-js
-
-function3:
-cfp
-lra
-lfp
-lfp
-lw
-push -2
-lfp
-lw
-add
-lw
-js
-srv
-sra
-pop
-sfp
-lrv
-lra
-js
-
-function4:
-cfp
-lra
-push 64
 srv
 sra
 pop

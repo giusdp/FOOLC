@@ -190,7 +190,7 @@ public class FunNode implements Node {
 		StringBuilder srvCalls = new StringBuilder();
 		boolean multipleCalls = false;
 		for (Node n : body){
-            if (n instanceof CallNode && multipleCalls) srvCalls.append("srv\n");
+            if ((n instanceof CallNode || n instanceof MethodCallNode) && multipleCalls) srvCalls.append("srv\n");
             else multipleCalls=true;
         }
 

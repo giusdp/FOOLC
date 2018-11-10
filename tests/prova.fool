@@ -3,8 +3,7 @@ class B extends A { int g() z(); z(); int z() 65; };
 
 let
     B b = new B();
-    int f() h();
-    int h() 64;
+
 in
     //f();
   b.g();
