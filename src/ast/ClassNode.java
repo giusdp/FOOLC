@@ -130,7 +130,7 @@ public class ClassNode implements Node {
 			ParNode arg = (ParNode) field;
 			STEntry argSTEntry = new STEntry(env.getNestLevel(),arg.getType(),paroffset++);
 			if (newScope.put(arg.getId(), argSTEntry) != null) {
-				res.add(new SemanticError("Parameter "+arg.getId()+" already declared"));
+				res.add(new SemanticError("Field "+arg.getId()+" already declared"));
 			}
 		}
 

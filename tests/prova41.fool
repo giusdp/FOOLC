@@ -1,0 +1,10 @@
+class A;
+class B extends A;
+class C extends A;
+class D extends B;
+class E extends C ;
+
+let
+    A test = if (true) then { new D() } else { new E() };
+in
+    1;

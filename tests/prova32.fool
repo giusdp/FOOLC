@@ -1,0 +1,17 @@
+class A{
+    int funz1() 20;
+    int funz2(int a) funz1();
+};
+
+class B extends A{
+    int funz1() 10;
+    int funz3() funz2(1);
+};
+
+let
+    A a = new B();
+    A b = new A();
+in
+    a.funz1() + b.funz1();
+
+//30

@@ -33,7 +33,6 @@ public class VirtualMachine {
 	}
 
 	public void cpu() throws Exception {
-		System.out.println("CODE SIZE " + code.size());
 		while (true) {
 			printStack();
 			AssemblyNode instruction = code.get(ip++); // fetch next instruction identifier
@@ -295,11 +294,17 @@ public class VirtualMachine {
         return m;
     }
 	
-	private int pop() {
+	private int pop() throws Exception {
+		if ((sp >= MEMSIZE)) {
+			throw new Exception("Stack UnderFlow Error");
+		}
 		return memory[sp++];
 	}
 
-	private void push(int v) {
+	private void push(int v) throws Exception {
+		if ((sp <= 0)) {
+			throw new Exception("Stack OverFlow Error");
+		}
 		memory[--sp] = v;
 	}
 

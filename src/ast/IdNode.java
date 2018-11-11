@@ -32,7 +32,7 @@ public String toPrint(String indent) {
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
 	  
 	  //create result list
-	  ArrayList<SemanticError> res = new ArrayList<SemanticError>();
+	  ArrayList<SemanticError> res = new ArrayList<>();
 	  
 	  int j = env.getNestLevel();
 	  STEntry tmp=null; 
@@ -62,9 +62,9 @@ public String toPrint(String indent) {
   }
   
   public String codeGeneration() {
-      String getAR="";
+      StringBuilder getAR= new StringBuilder();
 	  for (int i=0; i< nestinglevel - entry.getNestLevel(); i++) 
-	    	 getAR+="lw\n";
+	    	 getAR.append("lw\n");
 	  
 	    return "push "+entry.getOffset()+"\n"+ //metto offset sullo stack
 		       "lfp\n"+getAR+ //risalgo la catena statica

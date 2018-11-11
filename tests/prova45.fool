@@ -7,4 +7,3 @@ let
 in
     a.prodotto(1,b);
 //Errore: Tipo errato per il parametro 2 nell'invocazione di 'prodotto'
-
