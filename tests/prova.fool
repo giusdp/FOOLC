@@ -1,10 +1,14 @@
-class A(int x){ int f() 119; int getX() x;};
-class B extends A (int t, int x) { int g() z(); f(); int z() 65; int getT() x; int getY() y;};
+class W;
+class Z extends W;
 
-let
-    B b = new B(4,6);
+class A{
+    W getW(W z) new Z();
+};
 
-in
-    //f();
-  b.getT();b.getX();b.getY();
-//b.z();
+class B extends A{
+    Z getW(Z w) new Z();
+};
+
+//L'override (tipo parametro errato) del 'getW' nella classe 'B' non è permesso!
+
+// La contravarianza non e' permessa
