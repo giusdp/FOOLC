@@ -106,7 +106,4 @@ public class StmAsmNode implements Node {
 		return res;
 	}
 
-	void updateEntryOffset(int diff) {
-		this.variableEntry.setOffset(this.variableEntry.getOffset() + diff);
-	}
 }

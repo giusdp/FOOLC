@@ -76,8 +76,4 @@ public class IdNode implements Node {
         return entry.getType();
     }
 
-    void updateEntryOffset(int diff) {
-        this.entry.setOffset(this.entry.getOffset() + diff);
-    }
-
 }  

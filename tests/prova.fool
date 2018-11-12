@@ -4,10 +4,9 @@ let
     int b = 3;
     int f() 37;
 in
-    //a = a / 6;
+    a = a / 6;
     b = a * f();
-    //b;
-    //a;
+    a;
     b;
 
     //TODO: REFERENCING VARIABLE LOCATIONS:

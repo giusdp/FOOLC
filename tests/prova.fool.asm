@@ -7,7 +7,17 @@ push 3
 
 ## IN
 
-push -1
+push -3
+lfp
+add
+lw
+push 6
+div
+lfp
+push -3
+add
+sw
+push -3
 lfp
 add
 lw
@@ -20,10 +30,14 @@ lw
 js
 mult
 lfp
-push -6
+push -4
 add
 sw
-push -6
+push -3
+lfp
+add
+lw
+push -4
 lfp
 add
 lw

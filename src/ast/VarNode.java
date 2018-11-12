@@ -16,6 +16,7 @@ public class VarNode implements Node {
 	private String id;
 	private Type type;
 	private Node exp;
+    private STEntry entry;
 
 	public VarNode (String i, Type t, Node v) {
 		id=i;
@@ -26,14 +27,14 @@ public class VarNode implements Node {
 	@Override
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
 		//create result list
-		ArrayList<SemanticError> res = new ArrayList<SemanticError>();
+		ArrayList<SemanticError> res = new ArrayList<>();
 
 		// Il nesting level viene incrementato ogni volta in cui si entra in uno scope,
 		// quindi non sarà mai -1, perché il let in, le funzioni e le classi creano nuovi scope
 		// e le variabili non possono essere dichiarate al di fuori di quei comandi.
 		HashMap<String,STEntry> hm = env.getST().get(env.getNestLevel());
 		//separo introducendo "entry"
-		STEntry entry = new STEntry(env.getNestLevel(), type, env.decOffset()); 
+		entry = new STEntry(env.getNestLevel(), type, env.decOffset());
 		
 		boolean varClass = false;
 		if (type instanceof ClassType) {
@@ -80,6 +81,15 @@ public class VarNode implements Node {
 
 	public String codeGeneration() {
 		return exp.codeGeneration();
-	}  
+	}
 
+
+    public STEntry getEntry() {
+        return entry;
+    }
+
+
+    void updateEntryOffset(int diff) {
+        this.entry.setOffset(this.entry.getOffset() + diff);
+    }
 }  

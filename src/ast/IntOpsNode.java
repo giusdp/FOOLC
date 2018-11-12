@@ -77,9 +77,4 @@ public class IntOpsNode implements Node {
 		return left.codeGeneration() + right.codeGeneration() + opToCode + "\n";
 	}
 
-    void updateEntryOffset(int diff) {
-        if (left instanceof IdNode) ((IdNode) left).updateEntryOffset(diff);
-        if (right instanceof IdNode) ((IdNode) right).updateEntryOffset(diff);
-    }
-
 }

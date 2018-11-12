@@ -106,12 +106,4 @@ public class LogicOpsNode implements Node {
 		+ ":\n" + "push 1\n" + l2 + ":\n";
 	}
 
-
-	void updateEntryOffset(int diff) {
-		if (left instanceof IdNode) ((IdNode) left).updateEntryOffset(diff);
-		if (right instanceof IdNode) ((IdNode) right).updateEntryOffset(diff);
-	}
-
-
-
 }

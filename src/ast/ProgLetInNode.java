@@ -42,26 +42,15 @@ public class ProgLetInNode implements Node {
 		//check semantics in the dec list
         res.addAll(FOOLlib.processCheckSemanticsDecs(this.declist, env));
 
-		//check semantics in the exp body or stms body
-		for (Node instr : this.contextBody) {
-			res.addAll(instr.checkSemantics(env));
-		}
-		
-		for (Node variable : this.contextBody){
-			if (!(variable instanceof CallNode)) {
-			    if (variable instanceof StmAsmNode){
-                    ((StmAsmNode) variable).updateEntryOffset(env.getFunctionOffset() + 1);
-                }
-                else if (variable instanceof IdNode) {
-                    ((IdNode) variable).updateEntryOffset(env.getFunctionOffset() + 1);
-                }
-                else if (variable instanceof IntOpsNode) {
-                    ((IntOpsNode) variable).updateEntryOffset(env.getFunctionOffset() + 1);
-                }
-                else if (variable instanceof LogicOpsNode) {
-                    ((LogicOpsNode) variable).updateEntryOffset(env.getFunctionOffset() + 1);
-                }
-			}
+		declist.forEach(d -> {
+		    if (d instanceof VarNode) ((VarNode) d).updateEntryOffset(env.getFunctionOffset() + 1);
+        });
+
+		env.setOffset(env.getOffset() + env.getFunctionOffset() + 1);
+
+        //check semantics in the exp body or stms body
+        for (Node instr : this.contextBody) {
+            res.addAll(instr.checkSemantics(env));
         }
 
 		//clean the scope, we are leaving a let scope
