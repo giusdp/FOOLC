@@ -4,9 +4,12 @@ let
     int b = 3;
     int f() 37;
 in
-    a = a / 6;
+    //a = a / 6;
     b = a * f();
-    
+    //b;
+    //a;
+    b;
+
     //TODO: REFERENCING VARIABLE LOCATIONS:
     // WHEN FUNCTIONS ARE DECLARED, INTEFERES.
     // -> BASE + OFFSET + NO OF FUNCTIONS (CLASSES TOO?)

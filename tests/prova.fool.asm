@@ -7,17 +7,7 @@ push 3
 
 ## IN
 
-push -4
-lfp
-add
-lw
-push 6
-div
-lfp
-push -4
-add
-sw
-push -4
+push -1
 lfp
 add
 lw
@@ -30,9 +20,13 @@ lw
 js
 mult
 lfp
-push -5
+push -6
 add
 sw
+push -6
+lfp
+add
+lw
 halt
 
 function0:

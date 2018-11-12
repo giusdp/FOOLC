@@ -10,7 +10,7 @@ import util.SemanticError;
 
 public class IntOpsNode implements Node {
 
-	public static enum IntOpsType {PLUS, MINUS, MULT, DIVISION};
+	public enum IntOpsType {PLUS, MINUS, MULT, DIVISION};
 
 	private Node left, right;
 	
@@ -76,5 +76,10 @@ public class IntOpsNode implements Node {
 	public String codeGeneration() {
 		return left.codeGeneration() + right.codeGeneration() + opToCode + "\n";
 	}
+
+    void updateEntryOffset(int diff) {
+        if (left instanceof IdNode) ((IdNode) left).updateEntryOffset(diff);
+        if (right instanceof IdNode) ((IdNode) right).updateEntryOffset(diff);
+    }
 
 }

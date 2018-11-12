@@ -36,7 +36,7 @@ public class ProgLetInNode implements Node {
 		//declare resulting list
 		ArrayList<SemanticError> res = new ArrayList<>();
 
-		env.setOffset(-2);
+		env.setOffset(-1);
         env.setFunctionOffset(-1);
 
 		//check semantics in the dec list
@@ -48,8 +48,19 @@ public class ProgLetInNode implements Node {
 		}
 		
 		for (Node variable : this.contextBody){
-			if (variable instanceof StmAsmNode) {
-				((StmAsmNode) variable).updateEntryOffset(env.getFunctionOffset() +1);
+			if (!(variable instanceof CallNode)) {
+			    if (variable instanceof StmAsmNode){
+                    ((StmAsmNode) variable).updateEntryOffset(env.getFunctionOffset() + 1);
+                }
+                else if (variable instanceof IdNode) {
+                    ((IdNode) variable).updateEntryOffset(env.getFunctionOffset() + 1);
+                }
+                else if (variable instanceof IntOpsNode) {
+                    ((IntOpsNode) variable).updateEntryOffset(env.getFunctionOffset() + 1);
+                }
+                else if (variable instanceof LogicOpsNode) {
+                    ((LogicOpsNode) variable).updateEntryOffset(env.getFunctionOffset() + 1);
+                }
 			}
         }
 
