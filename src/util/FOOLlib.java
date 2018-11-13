@@ -77,15 +77,17 @@ public class FOOLlib {
 
         String progType = (classList.isEmpty()) ? "ProgLetIn" : "ProgClass";
         String let = "Let Declarations\n", in = "IN\n";
-        String classString = "", declarationString = "", bodyString = "";
+        StringBuilder classString = new StringBuilder();
+        StringBuilder declarationString = new StringBuilder();
+        StringBuilder bodyString = new StringBuilder();
 
         // Popula le stringhe con informazioni sulle classi, dichiarazioni e il corpo.
-        for (ClassNode c : classList) classString += c.toPrint(indent + "    ");
-        for (Node d : declarationList) declarationString += d.toPrint(indent + "    ");
-        for (Node b : contextBody) bodyString += b.toPrint(indent + "    ");
+        for (ClassNode c : classList) classString.append(c.toPrint(indent + "    "));
+        for (Node d : declarationList) declarationString.append(d.toPrint(indent + "    "));
+        for (Node b : contextBody) bodyString.append(b.toPrint(indent + "    "));
 
-        if (!classString.isEmpty()) {
-            classString = "Classes\n" + classString;
+        if (classString.length() > 0) {
+            classString.insert(0, "Classes\n");
         }
 
         return indent + progType + "\n" +
@@ -119,7 +121,6 @@ public class FOOLlib {
         //if there are children then check semantics for every child and save the results
         for (Node dec : decList) {
             if (dec instanceof FunNode) {
-                // TODO: this for loop checking the FunNodes is repeated every time there can be a let in. Refactor!
                 // Separo il caso in cui è una fun node così da poter gestire chiamate di funzioni dichiarate dopo.
                 // Inserisco la funzione con una stentry provvisoria per posticipare la valutazione vera della funzione.
                 env.getST().get(env.getNestLevel()).put(((FunNode) dec).getId(), new STEntry());

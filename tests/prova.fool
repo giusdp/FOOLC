@@ -1,9 +1,17 @@
 class A {int f() 4;};
+class B;
 
 let
     int b = 3;
+    //int assign42toA() 4;
+    int h = 55;
     A a = new A();
-    int assign42toA() 4;
+    B aa = new B();
 in
     //a.f();
-    b ;
+    h;
+
+    b;
+    a;
+    aa;//a;
+    //aa;
