@@ -1,15 +1,14 @@
-class A {int f() 4;};
-class B extends B;
+class A;
+class B extends A;
 
 let
+    int f() 7;
     int b = 3;
-    //int assign42toA() 4;
     int h = 55;
-    A a = new A();
-    B aa = new B();
+    //A objA = new A();
 in
-    //a.f();
-    h;
-
     b;
-    a;
+    h;
+    f();
+    h = f();
+    h;

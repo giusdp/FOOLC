@@ -35,7 +35,7 @@ public class ProgClassNode implements Node {
     public ArrayList<SemanticError> checkSemantics(Environment env) {
         env.incNestLevel(); // porto il nesting level a 0
 
-        env.setOffset(-2); // Bisogna settare il primo offset a -1 così quando si accede ad una variabile prendendo
+        env.setOffset(-1); // Bisogna settare il primo offset a -1 così quando si accede ad una variabile prendendo
         // l'offset, si inizia da 9999 invece che da MEMSIZE=10000, dato che l'array memory va da 0 a 9999
         env.setClassOffset(-1);
         env.setMethodOffset(-1);
@@ -62,7 +62,7 @@ public class ProgClassNode implements Node {
 
         decList.forEach(d -> {
             if (d instanceof VarNode)
-                ((VarNode) d).updateEntryOffset(env.getFunctionOffset() + 1 + ConstructorNode.nInstances);
+                ((VarNode) d).updateEntryOffset(env.getFunctionOffset() + 1 );
         });
 
         env.setOffset(env.getOffset() + env.getFunctionOffset() + 1);
@@ -89,11 +89,6 @@ public class ProgClassNode implements Node {
 
     @Override
     public Type typeCheck() {
-
-        // TODO: se c'è tempo, fare refactoring delle chiamate ripetute di typeCheck() e l'if.
-        //       e.g. checkForErrors(ArrayList<Node>), e pure
-        //            checkForErrors(ArrayList< ArrayList<Node> >).
-
         Type type = new VoidType(); // Default value
 
         for (ClassNode cl : classList) {
@@ -114,7 +109,6 @@ public class ProgClassNode implements Node {
 
     @Override
     public String codeGeneration() {
-
 
         for (ClassNode c : classList) {
             c.codeGeneration();  // La code generation delle classi ritorna stringa vuota quindi non serve.
