@@ -1,7 +1,6 @@
 package ast;
 
 import type.ArrowType;
-import type.ClassType;
 import type.ErrorType;
 import type.Type;
 import util.Environment;
@@ -11,7 +10,7 @@ import util.SemanticError;
 
 import java.util.ArrayList;
 
-public class NestedMethodCallNode implements Node {
+public class NestedMethodCallNode extends MethodCallNode {
 
     private String id;
     private ArrayList<Node> parList;
@@ -23,6 +22,9 @@ public class NestedMethodCallNode implements Node {
     private int nestingLevel;
 
     private Type methodType;
+
+    private int nestedCallNestingLevel = 3; // La chiamata in un metodo sarà sempre a nl = 3.
+                                            // Class -> nl=1. Method -> nl=2. Call-> nl=3
 
     public NestedMethodCallNode(String className, String m, ArrayList<Node> args) {
         id = m;
@@ -62,12 +64,12 @@ public class NestedMethodCallNode implements Node {
             // Se il metodo non è dichiarato nella 'ownerClass' e la 'ownerClass' estende
             // una classe, bisogna controllare che il metodo sia della 'superClass'
             if (!methodDeclared) {
-                while (ownerClassNode.getSuperClass() != null) {
-                    for (Node fn : ownerClassNode.getMethodList()) {
+                while (ownerClassNode.getSuperClass() != null  && !methodDeclared) {
+                    for (Node fn : ownerClassNode.getSuperClass().getMethodList()) {
                         FunNode function = (FunNode) fn;
                         if (function.getId().equals(this.id)) {
                             // if method declared in subclass is polymorphic, store type for TypeChecking.
-                            methodType = (ArrowType) function.getType();
+                            methodType = function.getType();
                             methodDeclared = true;
                             break;
                         }
@@ -141,13 +143,13 @@ public class NestedMethodCallNode implements Node {
         }
 
         StringBuilder getAR= new StringBuilder();
-        for (int i=0; i< nestingLevel - ownerClassEntry.getNestLevel(); i++) {
+        for (int i=0; i< nestingLevel - nestedCallNestingLevel; i++) {
             getAR.append("lw\n");
         }
 
         return "lfp\n" + //CL
                 parametersCodeString +
-                "push " + ownerClassEntry.getOffset() + "\n" + //metto offset sullo stack
+                "push " + 0 + "\n" + //metto offset sullo stack. E' 0 perché non dobbiamo spostarci via dalla classe
                 "lfp\n" +
                 getAR +
                 "add\n" +

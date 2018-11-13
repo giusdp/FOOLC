@@ -1,0 +1,10 @@
+class Somma(){
+    int add(int a, int b) a+b;
+};
+
+let
+    int x = 1;
+    int y = 2;
+    Somma s = new Somma();
+in
+    x = s.add(4,5);

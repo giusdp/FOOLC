@@ -1,0 +1,22 @@
+class A (int x){
+    int getA()
+        let
+            int y = x + 23;
+        in
+        y;
+};
+class B extends A{
+    int getA() x;
+};
+let
+    int x = 5;
+    bool t = false;
+    A a1 = new A(11);
+    B b1 = new B(22);
+    A a = if(t)then{b1}else{a1};
+
+in
+    x = if(t)then{14}else{12};
+    x = a.getA();
+
+//cella di x -> 34

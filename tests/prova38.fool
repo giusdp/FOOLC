@@ -1,0 +1,23 @@
+class A(int a, int b){
+    A createA(int x, int y)
+     let
+        A tmp = new A(x,y);
+     in
+        tmp;
+
+     int geta() a;
+     int getb() b;
+
+};
+
+class B extends A;
+
+let
+    A a = new A(1,2);
+    A b = null;
+    int res = 0;
+in
+    b = a.createA(5,6);
+    res = b.geta() + b.getb();
+
+//nella cella di res: 11

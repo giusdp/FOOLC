@@ -1,0 +1,13 @@
+class W;
+class Z extends W;
+
+class A{
+    Z getW(Z z) new Z();
+};
+
+class B extends A{
+    W getW(W w) new Z();
+};
+
+// Deve dare Errore type checking.
+//L'override  (tipo ritorno errato) del 'getW' nella classe 'B' non è permesso!

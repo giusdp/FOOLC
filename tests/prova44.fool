@@ -3,7 +3,7 @@ class A extends Z;
 class B extends A;
 class C extends A ;
 let
-    A f(A a, A b, A c)
+    C f(A a, A b, A c)
         new A();
     A a = new A();
     B b = new B();
@@ -11,8 +11,7 @@ let
     Z z = new Z();
 
 in
-    f(a,b,z);
+    f(a,b,c);
 
-// Deve dare Errore type checking.
-//Covarianza errata per il parametro 3 della funzione f
-
+//Errore: Tipo incompatibile ritornato dalla funzione 'f'.
+//la funzione f ritorna un oggetto più grande!

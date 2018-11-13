@@ -18,6 +18,7 @@ public class Environment {
     private int functionOffset;
 
 
+
 	private HashMap<String, ClassNode> classMap = new HashMap<>();
 	static private ArrayList<FunNode> declaredFunctions = new ArrayList<>();
 	
@@ -61,6 +62,8 @@ public class Environment {
 	public HashMap<String, ClassNode> getClassMap() {
 		return classMap;
 	}
+
+	public int getClassOffset(){ return classOffset; }
 
 	public int decClassOffset() {
 		return classOffset--;

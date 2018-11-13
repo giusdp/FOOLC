@@ -1,0 +1,22 @@
+class A(int a){
+    int getA() a;
+    int get(int z)
+        let int a = 10; in z+a;
+};
+
+class B extends A(int b){
+    int getB() b;
+};
+
+let
+    int x = 2;
+    int somma(A a) let int x = 1; in a.get(12)+x;
+    A a = new A(x);
+
+    B b = new B(somma(a),24);
+
+in
+    b.getA();
+
+
+    //23

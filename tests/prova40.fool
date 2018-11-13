@@ -1,0 +1,19 @@
+class W;
+class Z extends W;
+
+class A{
+    W getW(Z z) new W();
+};
+
+class B extends A{
+    Z getZ(W w) new Z();
+};
+
+let
+   A a = new A();
+   B b = new B();
+   W w = new W();
+   Z z = b.getZ(w);
+   W w1 = a.getW(z);
+in
+    1;

@@ -1,0 +1,9 @@
+class A(int x){
+    int get() x;
+};
+let
+    A a = null;
+in
+    a.get();
+//L'oggetto non è stato ancora inizializzato!
+// null va bene per le classi.

@@ -1,0 +1,10 @@
+class A(int x){
+    int get() x;
+};
+let
+    int b = 1;
+    A a = null;
+in
+    a = new A(90);
+    b = a.get();
+//cella di b contiene 90
