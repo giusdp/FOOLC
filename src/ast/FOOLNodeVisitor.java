@@ -205,7 +205,7 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
         List<Node> thenStms = new ArrayList<>();
         List<Node> elseStms = new ArrayList<>();
 
-        ctx.elseBranch.stm().forEach(stm -> thenStms.add(visit(stm)));
+        ctx.thenBranch.stm().forEach(stm -> thenStms.add(visit(stm)));
         ctx.elseBranch.stm().forEach(stm -> elseStms.add(visit(stm)));
 		
 		return new IfStmsNode(condExp, thenStms, elseStms);

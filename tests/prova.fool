@@ -1,7 +1,9 @@
 let
     int a = 12;
+    int b = 42;
     int assign42toA() let int a = 4; in a = 42; a;
 in
+    if (false) then {a = 3; b = 23;} else {a = 4 + b; b = b +3;};
     assign42toA();
-    if (true) then {a = 10;} else {a = 14;};
     a;
+    b;

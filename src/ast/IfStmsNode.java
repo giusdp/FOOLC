@@ -73,7 +73,17 @@ public class IfStmsNode implements Node {
 
     @Override
     public String codeGeneration() {
-        return null;
+
+        StringBuilder thenCodeString = new StringBuilder();
+        StringBuilder elseCodeString = new StringBuilder();
+
+        thenBranch.forEach(s -> thenCodeString.append(s.codeGeneration()));
+        elseBranch.forEach(s -> elseCodeString.append(s.codeGeneration()));
+
+        String l1 = FOOLlib.freshLabel();
+        String l2 = FOOLlib.freshLabel();
+        return condition.codeGeneration() + "push 1\n" + "beq " + l1 + "\n" + elseCodeString +
+                "b " + l2 + "\n" + l1 + ":\n" + thenCodeString + l2 + ":\n";
     }
 
     @Override
