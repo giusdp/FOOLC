@@ -10,7 +10,7 @@ import util.SemanticError;
 
 public class IntOpsNode implements Node {
 
-	public static enum IntOpsType {PLUS, MINUS, MULT, DIVISION};
+	public enum IntOpsType {PLUS, MINUS, MULT, DIVISION};
 
 	private Node left, right;
 	

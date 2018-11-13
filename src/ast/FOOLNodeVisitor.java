@@ -43,13 +43,14 @@ import static ast.IntOpsNode.IntOpsType.*;
 import static ast.LogicOpsNode.LogicOpsType.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.antlr.v4.runtime.ParserRuleContext;
 
 public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 
-	public ArrayList<Node> getContextBody(ParserRuleContext ctx) {
-		ArrayList<Node> contextBody = new ArrayList<Node>();
+	private ArrayList<Node> getContextBody(ParserRuleContext ctx) {
+		ArrayList<Node> contextBody = new ArrayList<>();
 
 		ctx.children.forEach(node ->
 		{
@@ -192,34 +193,26 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 
 	@Override
 	public Node visitAsmStm(AsmStmContext ctx) {
-		StmAsmNode res = new StmAsmNode(ctx.ID().getText(), visit(ctx.body));
-		return res;
+		return new StmAsmNode(ctx.ID().getText(), visit(ctx.body));
 	}
 
 
 	@Override
 	public Node visitIfStm(IfStmContext ctx) {
 
-		//create the resulting node
-		IfNode ifnode = null;
-
-		//visit the conditional, then the then branch, and then the else branch
-		//notice once again the need of named terminals in the rule, this is because
-		//we need to point to the right expression among the 3 possible ones in the rule
-
 		Node condExp = visit(ctx.cond);
-		
-		Node thenExp = visit(ctx.thenBranch);
-		
-		Node elseExp = visit(ctx.elseBranch);
 
-		//build the @res properly and return it
+        List<Node> thenStms = new ArrayList<>();
+        List<Node> elseStms = new ArrayList<>();
+
+        ctx.thenBranch.stm().forEach(stm -> thenStms.add(visit(stm)));
+        ctx.elseBranch.stm().forEach(stm -> elseStms.add(visit(stm)));
 		
-		ifnode = new IfNode(condExp, thenExp, elseExp);
-		return ifnode;
+		return new IfStmsNode(condExp, thenStms, elseStms);
 	}
 
-	@Override
+
+    @Override
 	public Node visitVarasm(VarasmContext ctx) {
 		//declare the result node
 		VarNode result;
@@ -252,7 +245,7 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 
 		//add body
 		//create a list for the nested declarations
-		ArrayList<Node> innerDec = new ArrayList<Node>();
+		ArrayList<Node> innerDec = new ArrayList<>();
 
 		//check whether there are actually nested decs
 		if (ctx.letVar() != null) {
@@ -263,11 +256,11 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 
 		ArrayList<Node> fullBody;
 		fullBody = getContextBody(ctx);
-		
-		FunNode res = new FunNode(ctx.ID().getText(), 
-				returnType, 
-				parTypes, 
-				innerDec, 
+
+		FunNode res = new FunNode(ctx.ID().getText(),
+				returnType,
+				parTypes,
+				innerDec,
 				fullBody);
 
 		return res;

@@ -36,16 +36,22 @@ public class ProgLetInNode implements Node {
 		//declare resulting list
 		ArrayList<SemanticError> res = new ArrayList<>();
 
-		env.setOffset(-2);
+		env.setOffset(-1);
         env.setFunctionOffset(-1);
 
 		//check semantics in the dec list
         res.addAll(FOOLlib.processCheckSemanticsDecs(this.declist, env));
 
-		//check semantics in the exp body or stms body
-		for (Node instr : this.contextBody) {
-			res.addAll(instr.checkSemantics(env));
-		}
+		declist.forEach(d -> {
+		    if (d instanceof VarNode) ((VarNode) d).updateEntryOffset(env.getFunctionOffset() + 1);
+        });
+
+		env.setOffset(env.getOffset() + env.getFunctionOffset() + 1);
+
+        //check semantics in the exp body or stms body
+        for (Node instr : this.contextBody) {
+            res.addAll(instr.checkSemantics(env));
+        }
 
 		//clean the scope, we are leaving a let scope
 		env.getST().remove(env.decNestLevel());
@@ -74,9 +80,13 @@ public class ProgLetInNode implements Node {
 		// TODO: more rigorous testing needed to ensure codeGen works.
 
 		StringBuilder declCode = new StringBuilder();
-		for (Node dec : this.declist) {
-			declCode.append(dec.codeGeneration());
-		}
+        for (Node dec : declist){
+            if (dec instanceof FunNode) declCode.append(dec.codeGeneration());
+        }
+
+        for (Node dec : declist){
+            if (! (dec instanceof FunNode)) declCode.append(dec.codeGeneration());
+        }
 
 		StringBuilder bodyCode = new StringBuilder();
 		for (Node stm : this.contextBody) {

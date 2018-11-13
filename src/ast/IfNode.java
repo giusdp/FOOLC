@@ -2,6 +2,7 @@ package ast;
 
 import java.util.ArrayList;
 
+import type.ErrorType;
 import type.Type;
 import type.BoolType;
 import util.Environment;
@@ -10,60 +11,73 @@ import util.FOOLlib;
 
 public class IfNode implements Node {
 
-  private Node cond;
-  private Node th;
-  private Node el;
-  
-  public IfNode (Node c, Node t, Node e) {
-	
-    cond=c;
-    th=t;
-    el=e;
-  }
-  
-  public String toPrint(String indent) {
-    return indent+"If\n" + cond.toPrint(indent+"  ") + th.toPrint(indent+"  ") + el.toPrint(indent+"  "); 
-  }
-  
-  
-  @Override
-	public ArrayList<SemanticError> checkSemantics(Environment env) {
-	  //create the result
-	  ArrayList<SemanticError> res = new ArrayList<SemanticError>();
-	  
-	  //check semantics in the condition
-	  res.addAll(cond.checkSemantics(env));
-	 	  
-	  //check semantics in then and in else exp
-	  
-	  res.addAll(th.checkSemantics(env));
-	  res.addAll(el.checkSemantics(env));
-	  
-	  return res;
-	}
-  
-  
-  public Type typeCheck() {
-    if (!(FOOLlib.isSubtype(cond.typeCheck(),new BoolType()))) {
-      System.out.println("non boolean condition in if");
-      System.exit(0);
+    private Node cond;
+    private Node th;
+    private Node el;
+
+    public IfNode(Node c, Node t, Node e) {
+
+        cond = c;
+        th = t;
+        el = e;
     }
-    Type t = th.typeCheck();
-    Type e = el.typeCheck();
-    if (FOOLlib.isSubtype(t,e)) 
-      return e;
-    if (FOOLlib.isSubtype(e,t))
-      return t;
-    System.out.println("Incompatible types in then else branches");
-    System.exit(0);
-    return null;
-  }
-  
-  public String codeGeneration() {
-	  String l1 = FOOLlib.freshLabel(); 
-	  String l2 = FOOLlib.freshLabel();
-	  return cond.codeGeneration()+"push 1\n"+"beq "+ l1 +"\n"+	el.codeGeneration()+
-			 "b " + l2 + "\n" +l1 + ":\n"+th.codeGeneration()+l2 + ":\n"; 
-  }
-  
+
+    public String toPrint(String indent) {
+        return indent + "If\n" + cond.toPrint(indent + "  ") + th.toPrint(indent + "  ") + el.toPrint(indent + "  ");
+    }
+
+
+    @Override
+    public ArrayList<SemanticError> checkSemantics(Environment env) {
+        //create the result
+        ArrayList<SemanticError> res = new ArrayList<>();
+
+        //check semantics in the condition
+        res.addAll(cond.checkSemantics(env));
+
+        //check semantics in then and in else exp
+
+        res.addAll(th.checkSemantics(env));
+        res.addAll(el.checkSemantics(env));
+
+        return res;
+    }
+
+
+    public Type typeCheck() {
+
+        ErrorType error = new ErrorType();
+
+        Type condType = cond.typeCheck();
+
+        if (condType instanceof ErrorType){
+            return error;
+        }
+
+        if (!(FOOLlib.isSubtype(condType, new BoolType()))) {
+            error.addErrorMessage("Non boolean condition in if.");
+            return error;
+        }
+        Type t = th.typeCheck();
+        Type e = el.typeCheck();
+
+        if (t instanceof ErrorType) return t;
+        if (e instanceof ErrorType) return e;
+
+        if (FOOLlib.isSubtype(t, e))
+            return e;
+        if (FOOLlib.isSubtype(e, t))
+            return t;
+
+        error.addErrorMessage("Incompatible types in then else branches.");
+        return error;
+    }
+
+    public String codeGeneration() {
+        String l1 = FOOLlib.freshLabel();
+        String l2 = FOOLlib.freshLabel();
+        return cond.codeGeneration() + "push 1\n" + "beq " + l1 + "\n" + el.codeGeneration() +
+                "b " + l2 + "\n" + l1 + ":\n" + th.codeGeneration() + l2 + ":\n";
+    }
+
 }  

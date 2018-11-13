@@ -1,10 +1,9 @@
-class A{
-    int prodotto(int a, int b) a*b;
-};
 let
-    bool b = true;
-    A a = new A();
+    int a = 12;
+    int b = 42;
+    int assign42toA() let int a = 4; in a = 42; a;
 in
-    a.prodotto(1,b);
-//Errore: Tipo errato per il parametro 2 nell'invocazione di 'prodotto'
-
+    if (false) then {a = 3; b = 23;} else {a = 4 + b; b = b +3;};
+    assign42toA();
+    a;
+    b;

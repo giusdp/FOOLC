@@ -20,7 +20,7 @@ vardec : type ID ;
 varasm : vardec ASM exp SEMIC ;
 
 fun    : type ID LPAR ( vardec ( COMMA vardec)* )? RPAR (letVar)?
-		 (exp SEMIC|stms)* (lastexp=exp SEMIC | laststm=stm SEMIC) ;
+		 (exp SEMIC|stms)+;
 
 dec    : varasm  #varAssignment
        | fun     #funDeclaration
@@ -41,9 +41,8 @@ term   : left=factor ((TIMES | DIVISION) right=term)?
 factor : left=value ((EQ|GREATER|LESS|GREATEREQUAL|LESSEQUAL|OR|AND) right=factor)?
        ;
 
-// Gli stms forse sono da usare solo nel corpo di metodi?
 stm    : ID ASM body=exp																#AsmStm
-       | IF cond=exp THEN CLPAR thenBranch=stms CRPAR ELSE CLPAR elseBranch=stms CRPAR  #ifStm ;
+       | IF LPAR cond=exp RPAR THEN CLPAR thenBranch=stms CRPAR ELSE CLPAR elseBranch=stms CRPAR  #ifStm ;
        // if exp then { stms } else { stms } (condizionale) ;
 
 stms   : ( stm SEMIC )+ ;
@@ -51,7 +50,7 @@ stms   : ( stm SEMIC )+ ;
 value  : (MINUS)? INTEGER          #intVal
        | (NOT)? ( TRUE | FALSE ) #boolVal
        | LPAR exp RPAR    #baseExp
-       | IF cond=exp THEN CLPAR thenBranch=exp CRPAR ELSE CLPAR elseBranch=exp CRPAR  #ifExp
+       | IF LPAR cond=exp RPAR THEN CLPAR thenBranch=exp SEMIC CRPAR ELSE CLPAR elseBranch=exp SEMIC CRPAR  #ifExp
        | ID                                                 #varExp
        | ID ( LPAR (exp (COMMA exp)* )? RPAR )              #funExp
        | ID DOT ID ( LPAR (exp (COMMA exp)* )? RPAR )	    #methodExp

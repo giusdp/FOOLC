@@ -56,8 +56,21 @@ public class StmAsmNode implements Node {
 
 	@Override
 	public String codeGeneration() {
-		// TODO Auto-generated method stub
-		return null;
+		String asmString = "";
+		
+		StringBuilder getAR = new StringBuilder();
+		for (int i = 0; i < nestinglevel - this.variableEntry.getNestLevel(); i++) {
+			getAR.append("lw\n");
+		}
+		
+		asmString += this.asmBody.codeGeneration();
+		// Address of variable = framePointer + offset:
+		
+		asmString += "lfp\n" + getAR +
+				"push " + this.variableEntry.getOffset() + "\n" + "add\n";
+		// Address to overwrite indicated by current top of stack.
+		asmString += "sw\n";
+		return asmString;
 	}
 
 	@Override
@@ -87,6 +100,8 @@ public class StmAsmNode implements Node {
 		} else {
 			this.asmType = variableEntry.getType();
 		}
+		
+		res.addAll(this.asmBody.checkSemantics(env));
 		
 		return res;
 	}

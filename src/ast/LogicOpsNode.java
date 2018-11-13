@@ -106,5 +106,4 @@ public class LogicOpsNode implements Node {
 		+ ":\n" + "push 1\n" + l2 + ":\n";
 	}
 
-
 }
