@@ -12,15 +12,7 @@ lfp
 add
 lw
 js
-push 1
-push 1
-beq label0
-push 2
-b label1
-label0:
-push 1
-label1:
-push -2
+nullpush -2
 lfp
 add
 lw

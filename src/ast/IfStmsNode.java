@@ -45,16 +45,27 @@ public class IfStmsNode implements Node {
             error.addErrorMessage("Non boolean condition in if.");
             return error;
         }
-        Type t = th.typeCheck();
-        Type e = el.typeCheck();
 
-        if (t instanceof ErrorType) return t;
-        if (e instanceof ErrorType) return e;
+        Type t = null;
+        Type e = null;
+        for (Node s : thenBranch){
+            t = s.typeCheck();
+            if (t instanceof ErrorType) return t;
+        }
 
-        if (FOOLlib.isSubtype(t, e))
-            return e;
-        if (FOOLlib.isSubtype(e, t))
-            return t;
+        for (Node s : elseBranch){
+            e = s.typeCheck();
+            if (e instanceof ErrorType) return e;
+        }
+
+        if (t == null || e == null) { // Non può mai accadere per via della sintassi di FOOL
+            // ma mi fa sentire meglio controllare
+            error.addErrorMessage("Then or Else branch is missing.");
+        }
+        // Controllo il sotto tipaggio solo dell'ultima istruzione nel then e else branch
+        // Che sarebbero le istruzioni di ritorno
+        if (FOOLlib.isSubtype(t, e)) return e;
+        if (FOOLlib.isSubtype(e, t)) return t;
 
         error.addErrorMessage("Incompatible types in then else branches.");
         return error;
