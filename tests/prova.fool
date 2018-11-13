@@ -1,13 +1,8 @@
 let
-    int g() 115;
     int a = 12;
-    int b = 3;
-    int f() 37;
+    int h() a = 4;
 in
-    a = a / 6;
-    b = a * f();
     a;
-    b;
 
     //TODO: REFERENCING VARIABLE LOCATIONS:
     // WHEN FUNCTIONS ARE DECLARED, INTEFERES.

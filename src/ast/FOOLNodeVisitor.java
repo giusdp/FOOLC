@@ -48,8 +48,8 @@ import org.antlr.v4.runtime.ParserRuleContext;
 
 public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 
-	public ArrayList<Node> getContextBody(ParserRuleContext ctx) {
-		ArrayList<Node> contextBody = new ArrayList<Node>();
+	private ArrayList<Node> getContextBody(ParserRuleContext ctx) {
+		ArrayList<Node> contextBody = new ArrayList<>();
 
 		ctx.children.forEach(node ->
 		{
@@ -192,8 +192,7 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 
 	@Override
 	public Node visitAsmStm(AsmStmContext ctx) {
-		StmAsmNode res = new StmAsmNode(ctx.ID().getText(), visit(ctx.body));
-		return res;
+		return new StmAsmNode(ctx.ID().getText(), visit(ctx.body));
 	}
 
 
@@ -252,7 +251,7 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 
 		//add body
 		//create a list for the nested declarations
-		ArrayList<Node> innerDec = new ArrayList<Node>();
+		ArrayList<Node> innerDec = new ArrayList<>();
 
 		//check whether there are actually nested decs
 		if (ctx.letVar() != null) {
@@ -263,11 +262,11 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 
 		ArrayList<Node> fullBody;
 		fullBody = getContextBody(ctx);
-		
-		FunNode res = new FunNode(ctx.ID().getText(), 
-				returnType, 
-				parTypes, 
-				innerDec, 
+
+		FunNode res = new FunNode(ctx.ID().getText(),
+				returnType,
+				parTypes,
+				innerDec,
 				fullBody);
 
 		return res;

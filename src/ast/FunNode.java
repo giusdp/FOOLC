@@ -147,7 +147,7 @@ public class FunNode implements Node {
 			if(type instanceof ErrorType) return type;
 		}
 		
-		// Controllo del returnNode (in realta' viene gia' fatto quando si controlla il corpo
+		// Controllo del returnNode in realta' viene gia' fatto quando si controlla il corpo
 		// Pero' ora ci serve proprio il tipo per vedere se e' subtype di return type
 		
 		Node finalNode = body.get(body.size() - 1);
