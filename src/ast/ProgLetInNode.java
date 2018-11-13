@@ -24,7 +24,7 @@ public class ProgLetInNode implements Node {
 	}
 	public String toPrint(String indent) {
 
-		return FOOLlib.printProgNode(indent, new ArrayList<ClassNode>(), declist, contextBody);
+		return FOOLlib.printProgNode(indent, new ArrayList<>(), declist, contextBody);
 	}
 
 	@Override

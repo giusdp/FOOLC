@@ -92,4 +92,8 @@ public class VarNode implements Node {
     void updateEntryOffset(int diff) {
         this.entry.setOffset(this.entry.getOffset() + diff);
     }
+
+	public Node getExp() {
+		return exp;
+	}
 }  

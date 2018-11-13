@@ -28,7 +28,6 @@ public class ProgClassNode implements Node {
 	
 	@Override
 	public String toPrint(String indent) {
-		
 		return FOOLlib.printProgNode(indent, classList, decList, contextBody);
 	}
 	
@@ -116,13 +115,23 @@ public class ProgClassNode implements Node {
 		// Se è solo un file di dichiarazioni di classi salta la code generation del let in
 		if ( ! decList.isEmpty()) {
 			StringBuilder declCode = new StringBuilder();
-            for (Node dec : decList){
-                if (dec instanceof FunNode) declCode.append(dec.codeGeneration());
-            }
 
-            for (Node dec : decList){
-                if (! (dec instanceof FunNode)) declCode.append(dec.codeGeneration());
-            }
+            decList.forEach(d -> {
+                if (d instanceof FunNode) declCode.append(d.codeGeneration());
+            });
+
+            decList.forEach(d -> {
+                if (d instanceof VarNode)
+                    if (((VarNode) d).getExp() instanceof ConstructorNode)
+                        declCode.append(d.codeGeneration());
+            });
+
+
+            decList.forEach(d -> {
+                if (!(d instanceof FunNode) &&
+                        !((d instanceof VarNode) && ((VarNode) d).getExp() instanceof ConstructorNode))
+                    declCode.append(d.codeGeneration());
+            });
 
 			StringBuilder bodyCode = new StringBuilder();
 			for (Node stm : contextBody)

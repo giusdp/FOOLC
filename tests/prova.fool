@@ -1,9 +1,9 @@
+class A {int f() 4;};
+
 let
-    int a = 12;
-    int b = 42;
-    int assign42toA() let int a = 4; in a = 42; a;
+    int b = 3;
+    A a = new A();
+    int assign42toA() 4;
 in
-    if (false) then {a = 3; b = 23;} else {a = 4 + b; b = b +3;};
-    assign42toA();
-    a;
-    b;
+    //a.f();
+    b ;
