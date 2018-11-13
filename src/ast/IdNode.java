@@ -76,4 +76,8 @@ public class IdNode implements Node {
     public Type getType() {
         return entry.getType();
     }
+
+    public STEntry getEntry() {
+        return entry;
+    }
 }

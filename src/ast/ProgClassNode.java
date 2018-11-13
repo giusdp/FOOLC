@@ -60,9 +60,16 @@ public class ProgClassNode implements Node {
         // Se ci sono lets
         res.addAll(FOOLlib.processCheckSemanticsDecs(this.decList, env));
 
+        // Siccome le funzioni in svm sono dichiarate all'inizio, il class offset non puo' iniziare da -1, ma da functionOffset + 1
+        // Quindi vengono aggiornati i valori degli offset alle classi
+        for (ClassNode c : classList) {
+            c.stEntry.setOffset(c.stEntry.getOffset() + env.getFunctionOffset() + 1);
+        }
+
         decList.forEach(d -> {
-            if (d instanceof VarNode)
+            if (d instanceof VarNode) {
                 ((VarNode) d).updateEntryOffset(env.getFunctionOffset() + 1 );
+            }
         });
 
         env.setOffset(env.getOffset() + env.getFunctionOffset() + 1);
@@ -71,14 +78,6 @@ public class ProgClassNode implements Node {
         for (Node instruction : contextBody) {
             res.addAll(instruction.checkSemantics(env));
         }
-
-        // Siccome le funzioni in svm sono dichiarate all'inizio, il class offset non puo' iniziare da -1, ma da functionOffset + 1
-        // Quindi vengono aggiornati i valori degli offset alle classi
-        for (ClassNode c : classList) {
-            c.stEntry.setOffset(c.stEntry.getOffset() + env.getFunctionOffset() + 1);
-        }
-
-
 
         // Lascia lo scope
         env.getST().remove(env.decNestLevel());
@@ -136,8 +135,8 @@ public class ProgClassNode implements Node {
             });
 
             StringBuilder bodyCode = new StringBuilder();
-            for (Node stm : contextBody)
-                bodyCode.append(stm.codeGeneration());
+            for (Node instr : contextBody)
+                bodyCode.append(instr.codeGeneration());
 
 
             return "## LET\n\n" + declCode.toString() + "\n## IN\n\n" + bodyCode.toString() + "halt\n\n" + "## Functions code and Dispatch Table\n" +
