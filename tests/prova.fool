@@ -1,5 +1,5 @@
 class A {int f() 4;};
-class B;
+class B extends B;
 
 let
     int b = 3;
@@ -13,5 +13,3 @@ in
 
     b;
     a;
-    aa;//a;
-    //aa;
