@@ -23,7 +23,6 @@ public class ConstructorNode implements Node {
 	public ConstructorNode(String id, ArrayList<Node> parList) {
 		this.className = id;
 		this.parList = parList;
-		nInstances++;
 	}
 
 	@Override
@@ -124,5 +123,4 @@ public class ConstructorNode implements Node {
         return entry;
     }
 
-    static int nInstances = -1;
 }

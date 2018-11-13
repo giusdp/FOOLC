@@ -20,8 +20,8 @@ import util.SemanticError;
 public class ClassNode implements Node {
 
 	private String id;
-	private ArrayList<Node> fieldList = new ArrayList<>();
-	private ArrayList<Node> methodList = new ArrayList<>();
+	private ArrayList<Node> fieldList;
+	private ArrayList<Node> methodList;
 
 	public STEntry stEntry;
 	

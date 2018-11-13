@@ -17,7 +17,6 @@ public class NestedMethodCallNode extends MethodCallNode {
 
     private String ownerClass;
 
-    private STEntry ownerClassEntry;
     private int dtOffset;
     private int nestingLevel;
 
@@ -84,7 +83,6 @@ public class NestedMethodCallNode extends MethodCallNode {
             }
 
             nestingLevel = env.getNestLevel(); // Otteniamo il nesting level "a tempo di invocazione"
-            ownerClassEntry = ownerClassNode.stEntry;
             dtOffset = ownerClassNode.getMethodDTOffset(this.id);
 
         return res;

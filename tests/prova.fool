@@ -1,10 +1,19 @@
 class A { int f() 42; };
-//class B;
+class B extends A;
 
 let
-    //int f() 7;
-    //B bb = new B();
+    int f() 7;
+    B bb = new B();
     int h = 55;
+    A aa = new A();
+    int g = 4;
     A a = new A();
 in
     a.f();
+    h;
+    a;
+    bb;
+    bb.f();
+    h = 44;
+    aa.f();
+    h;

@@ -153,13 +153,11 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 
 		for (ExpContext exp : ctx.exp())
 			args.add(visit(exp));
-		
-		MethodCallNode m = new MethodCallNode(
-				ctx.ID(1).getText(), 
-				args, 
-				new IdNode(ctx.ID(0).getText()));
 
-		return m;
+        return new MethodCallNode(
+                ctx.ID(1).getText(),
+                args,
+                new IdNode(ctx.ID(0).getText()));
 	}
 
 	@Override
