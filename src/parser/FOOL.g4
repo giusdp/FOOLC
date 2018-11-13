@@ -41,7 +41,6 @@ term   : left=factor ((TIMES | DIVISION) right=term)?
 factor : left=value ((EQ|GREATER|LESS|GREATEREQUAL|LESSEQUAL|OR|AND) right=factor)?
        ;
 
-// Gli stms forse sono da usare solo nel corpo di metodi?
 stm    : ID ASM body=exp																#AsmStm
        | IF LPAR cond=exp RPAR THEN CLPAR thenBranch=stms CRPAR ELSE CLPAR elseBranch=stms CRPAR  #ifStm ;
        // if exp then { stms } else { stms } (condizionale) ;

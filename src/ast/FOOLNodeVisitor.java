@@ -43,6 +43,7 @@ import static ast.IntOpsNode.IntOpsType.*;
 import static ast.LogicOpsNode.LogicOpsType.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.antlr.v4.runtime.ParserRuleContext;
 
@@ -199,26 +200,19 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 	@Override
 	public Node visitIfStm(IfStmContext ctx) {
 
-		//create the resulting node
-		IfNode ifnode = null;
-
-		//visit the conditional, then the then branch, and then the else branch
-		//notice once again the need of named terminals in the rule, this is because
-		//we need to point to the right expression among the 3 possible ones in the rule
-
 		Node condExp = visit(ctx.cond);
-		
-		Node thenExp = visit(ctx.thenBranch);
-		
-		Node elseExp = visit(ctx.elseBranch);
 
-		//build the @res properly and return it
+        List<Node> thenStms = new ArrayList<>();
+        List<Node> elseStms = new ArrayList<>();
+
+        ctx.elseBranch.stm().forEach(stm -> thenStms.add(visit(stm)));
+        ctx.elseBranch.stm().forEach(stm -> elseStms.add(visit(stm)));
 		
-		ifnode = new IfNode(condExp, thenExp, elseExp);
-		return ifnode;
+		return new IfStmsNode(condExp, thenStms, elseStms);
 	}
 
-	@Override
+
+    @Override
 	public Node visitVarasm(VarasmContext ctx) {
 		//declare the result node
 		VarNode result;
