@@ -2,6 +2,7 @@ package ast;
 import type.ArrowType;
 import type.ErrorType;
 import type.Type;
+import type.VoidType;
 import util.Environment;
 import util.FOOLlib;
 import util.STEntry;
@@ -188,9 +189,12 @@ public class FunNode implements Node {
 			popParl.append("pop\n");
 
 		StringBuilder srvCalls = new StringBuilder();
-		boolean multipleCalls = false;
+        if (!(returnType instanceof VoidType))
+            srvCalls.append("srv\n"); // 1 di default ci deve essere a meno che il return della funzione sia void
+        boolean multipleCalls = false;
 		for (Node n : body){
-            if ((n instanceof CallNode || n instanceof MethodCallNode) && multipleCalls) srvCalls.append("srv\n");
+            if ((n instanceof CallNode || n instanceof MethodCallNode) && multipleCalls)
+                srvCalls.append("srv\n");
             else multipleCalls=true;
         }
 
@@ -201,8 +205,7 @@ public class FunNode implements Node {
 				"lra\n"+ //inserimento return address
 				declCode+ //inserimento dichiarazioni locali
 				bodyCodeString +
-				"srv\n"+ //pop del return value // ci dovrebbero essere tanti srv quante sono le chiamate
-                srvCalls +
+                srvCalls + //pop del return value // ci dovrebbero essere tanti srv quante sono le chiamate
 				popDecl+
 				"sra\n"+ // pop del return address
 				"pop\n"+ // pop di AL
