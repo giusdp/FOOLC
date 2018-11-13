@@ -1,6 +1,7 @@
 let
     int a = 12;
-    void assign42toA() a = 42;
+    int assign42toA() let int a = 4; in a = 42; a;
 in
     assign42toA();
+    if (true) then {a = 10;} else {a = 14;};
     a;
