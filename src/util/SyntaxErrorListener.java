@@ -23,12 +23,17 @@ public class SyntaxErrorListener extends BaseErrorListener {
 
         numErrors++;
 
-        List<String> stack = ((Parser) recognizer).getRuleInvocationStack();
-        Collections.reverse(stack);
-        System.err.println("Rule stack: " + stack);
-        System.err.println("Line " + line + ":" + charPositionInLine + " at " + offendingSymbol + ": " + msg);
+        try {
+			List<String> stack = ((Parser) recognizer).getRuleInvocationStack();
+			Collections.reverse(stack);
+			System.err.println("Rule stack: " + stack);
+			System.err.println("Line " + line + ":" + charPositionInLine + " at " + offendingSymbol + ": " + msg+"\n");
 
-		System.err.println("\nThe FOOL program was not in the right format."
+		}
+		catch (Exception exp){
+        	System.err.println("Error in the FOOL program.");
+		}
+		System.err.println("The FOOL program was not in the right format."
 				+ " Exiting the compilation process now.");
 		System.exit(1); 
 	}

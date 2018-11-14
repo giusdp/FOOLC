@@ -1,19 +1,17 @@
-class A { int f() 42; };
-class B extends A;
-
 let
-    int f() 7;
-    B bb = new B();
-    int h = 55;
-    A aa = new A();
-    int g = 4;
-    A a = new A();
+    int z = 3;
+    void f(int x) z = x;
+    void g(int y) f(y);
 in
-    a.f();
-    h;
-    a;
-    bb;
-    bb.f();
-    h = 44;
-    aa.f();
-    h;
+    g(23);
+
+//class A(int x) { int getX() x; };
+//    class B extends A {
+//        void setX(int v) x = v;
+//        int setGet(int y) setX(y);
+//    };
+
+//    let
+//        B b = new B(41);
+//    in
+//        b.setGet(420);

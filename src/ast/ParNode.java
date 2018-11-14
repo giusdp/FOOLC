@@ -28,7 +28,7 @@ public class ParNode implements Node {
   @Override
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
 
-	  return new ArrayList<SemanticError>();
+	  return new ArrayList<>();
 	}
   
   public String toPrint(String indent) {

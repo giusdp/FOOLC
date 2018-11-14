@@ -22,8 +22,6 @@ public class NestedMethodCallNode extends MethodCallNode {
 
     private Type methodType;
 
-    private int nestedCallNestingLevel = 3; // La chiamata in un metodo sarà sempre a nl = 3.
-                                            // Class -> nl=1. Method -> nl=2. Call-> nl=3
 
     public NestedMethodCallNode(String className, String m, ArrayList<Node> args) {
         id = m;
@@ -55,7 +53,7 @@ public class NestedMethodCallNode extends MethodCallNode {
             for (Node fn : ownerClassNode.getMethodList()) {
                 FunNode function = (FunNode) fn;
                 if (function.getId().equals(this.id)) {
-                    methodType = (ArrowType) function.getType();
+                    methodType = function.getType();
                     methodDeclared = true;
                     break;
                 }
@@ -78,7 +76,8 @@ public class NestedMethodCallNode extends MethodCallNode {
             }
 
             if (!methodDeclared) {
-                res.add(new SemanticError("NestedMethodCall: Method "+ id + " in class " + ownerClass + " is not defined."));
+                res.add(new SemanticError("NestedMethodCall: Method "+ id +
+                        " in class " + ownerClass + " is not defined."));
                 return res;
             }
 
@@ -99,7 +98,8 @@ public class NestedMethodCallNode extends MethodCallNode {
 
         // TODO: methodEntry is null at runtime. Causes NullPtrException.
         // methodEntry is never instantiated here.
-        return indent + "Method Call:" + id + "\n" + indent + "    from class " + ownerClass + /*methodEntry.toPrint(indent + "  ") +*/ parlstr;
+        return indent + "Method Call:" + id + "\n" + indent +
+                "    from class " + ownerClass + /*methodEntry.toPrint(indent + "  ") +*/ parlstr;
     }
 
     @Override
@@ -115,14 +115,16 @@ public class NestedMethodCallNode extends MethodCallNode {
 
             // si controllano numero parametri con quelli passati in input
             if ( parTypes.size() != parList.size() ) {
-                error.addErrorMessage("Wrong number of parameters in the invocation of the method: "+id + " inside  class" + ownerClass+
+                error.addErrorMessage("Wrong number of parameters in the invocation of the method: " +
+                        id + " inside  class" + ownerClass+
                         "\nExpected " + parTypes.size() + " but found " + parList.size());
                 return error;
             }
             // si controllano tipi parametri con quelli passati in input
             for (int i = 0; i < parList.size(); i++)
                 if ( !(FOOLlib.isSubtype( (parList.get(i)).typeCheck(), parTypes.get(i)) ) ) {
-                    error.addErrorMessage("Wrong type for the "+(i+1)+"-th parameter in the invocation of method: "+id + " inside  class" + ownerClass);
+                    error.addErrorMessage("Wrong type for the "+(i+1)+
+                            "-th parameter in the invocation of method: "+id + " inside  class" + ownerClass);
                     return error;
                 }
             return funType.getReturn();
@@ -141,7 +143,9 @@ public class NestedMethodCallNode extends MethodCallNode {
         }
 
         StringBuilder getAR= new StringBuilder();
-        for (int i=0; i< nestingLevel - nestedCallNestingLevel; i++) {
+        // La chiamata in un metodo sarà sempre a nl = 3. Class -> nl=1. Method -> nl=2. Call-> nl=3
+        int nestedCallNestingLevel = 3;
+        for (int i = 0; i< nestingLevel - nestedCallNestingLevel; i++) {
             getAR.append("lw\n");
         }
 
