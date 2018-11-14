@@ -1,79 +1,96 @@
 ## LET
 
-push function0
-push 12
+push 41
+push 1
+push B_class
+new
 push 42
+push 1
+push A_class
+new
 
 ## IN
 
-push 0
+lfp
+push 420
+push -1
+lfp
+add
+lw
+cts
+lw
+push 3
+add
+lm
+js
+lfp
+push 119
+push 118
 push 1
-beq label0
+push -1
+lfp
+add
+lw
+cts
+lw
 push 4
-push -3
-lfp
 add
-lw
-add
-lfp
-push -2
-add
-sw
-push -3
-lfp
-add
-lw
-push 3
-add
-lfp
-push -3
-add
-sw
-b label1
-label0:
-push 3
-lfp
-push -2
-add
-sw
-push 23
-lfp
-push -3
-add
-sw
-label1:
-lfp
+lm
+js
 lfp
 push -1
 lfp
 add
 lw
+cts
+lw
+push 1
+add
+lm
 js
+lfp
 push -2
 lfp
 add
 lw
-push -3
+cts
+lw
+push 1
+add
+lm
+js
+push -1
 lfp
 add
 lw
-halt
-
-function0:
-cfp
-lra
-push 4
-push 42
 lfp
 push -2
 add
 sw
+lfp
 push -2
 lfp
 add
 lw
+cts
+lw
+push 1
+add
+lm
+js
+halt
+
+## Functions code and Dispatch Table
+
+function0:
+cfp
+lra
+push 1
+lfp
+lw
+add
+lw
 srv
-pop
 sra
 pop
 sfp
@@ -81,3 +98,106 @@ lrv
 lra
 js
 
+function1:
+cfp
+lra
+push 1
+lfp
+add
+lw
+lfp
+lw
+push 1
+add
+sw
+sra
+pop
+pop
+sfp
+lra
+js
+
+function2:
+cfp
+lra
+lfp
+push 1
+lfp
+add
+lw
+push 0
+lfp
+add
+lw
+cts
+lw
+push 2
+add
+lm
+js
+lfp
+push 0
+lfp
+add
+lw
+cts
+lw
+push 1
+add
+lm
+js
+srv
+sra
+pop
+pop
+sfp
+lrv
+lra
+js
+
+function3:
+cfp
+lra
+push 1
+lfp
+add
+lw
+push 1
+beq label0
+push 3
+lfp
+add
+lw
+lfp
+lw
+push 1
+add
+sw
+b label1
+label0:
+push 2
+lfp
+add
+lw
+lfp
+lw
+push 1
+add
+sw
+label1:
+sra
+pop
+pop
+pop
+pop
+sfp
+lra
+js
+
+A_class:
+function0
+B_class:
+function0
+function1
+function2
+function3

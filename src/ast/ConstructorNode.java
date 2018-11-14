@@ -23,7 +23,6 @@ public class ConstructorNode implements Node {
 	public ConstructorNode(String id, ArrayList<Node> parList) {
 		this.className = id;
 		this.parList = parList;
-		nInstances++;
 	}
 
 	@Override
@@ -102,9 +101,6 @@ public class ConstructorNode implements Node {
 				res.addAll(arg.checkSemantics(env));
 
 			classNode = env.getClassMap().get(className);
-
-
-
             return res;
         }
 	}
@@ -123,6 +119,8 @@ public class ConstructorNode implements Node {
                 + "new\n";
 	}
 
+    public STEntry getEntry() {
+        return entry;
+    }
 
-	public static int nInstances = -1;
 }

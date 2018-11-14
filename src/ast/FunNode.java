@@ -192,12 +192,28 @@ public class FunNode implements Node {
         if (!(returnType instanceof VoidType))
             srvCalls.append("srv\n"); // 1 di default ci deve essere a meno che il return della funzione sia void
         boolean multipleCalls = false;
-		for (Node n : body){
-            if ((n instanceof CallNode || n instanceof MethodCallNode) && multipleCalls)
-                srvCalls.append("srv\n");
+
+        // Add many srv as there are fun (or methods) invocations unless they return void
+        for (int i = body.size() -1 ; i >= 0; --i){
+            Node n = body.get(i);
+            if (multipleCalls){
+                if (n instanceof CallNode){
+                    CallNode c = (CallNode) n;
+                    ArrowType rt = (ArrowType) c.getEntry().getType();
+                    if (!(rt.getReturn() instanceof VoidType))
+                        srvCalls.append("srv\n");
+                }
+                else if (n instanceof MethodCallNode){
+                    MethodCallNode c = (MethodCallNode) n;
+                    ArrowType rt = (ArrowType) c.getMethodType();
+                    if (!(rt.getReturn() instanceof VoidType)) {
+                        srvCalls.append("srv\n");
+                    }
+                }
+
+            }
             else multipleCalls=true;
         }
-
 
 		String funLabel=FOOLlib.freshFunLabel(); 
 		FOOLlib.putCode(funLabel+":\n"+
@@ -211,7 +227,7 @@ public class FunNode implements Node {
 				"pop\n"+ // pop di AL
 				popParl+
 				"sfp\n"+  // setto $fp a valore del CL
-				"lrv\n"+ // risultato della funzione sullo stack
+                ((returnType instanceof VoidType) ? "" :"lrv\n")+ // risultato della funzione sullo stack
 				"lra\n"+"js\n" // salta a $ra
 				);
 

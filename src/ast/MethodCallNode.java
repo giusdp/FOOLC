@@ -23,7 +23,7 @@ public class MethodCallNode implements Node {
 	private int dtOffset;
 	private int nestingLevel;
 
-	private Type methodType;
+	protected Type methodType;
 
 
     public MethodCallNode() {
@@ -49,10 +49,8 @@ public class MethodCallNode implements Node {
 	
 	@Override
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
-		
-		ArrayList<SemanticError> res = new ArrayList<>();
-				
-		res.addAll(varNode.checkSemantics(env));
+
+        ArrayList<SemanticError> res = new ArrayList<>(varNode.checkSemantics(env));
 		if (!res.isEmpty()) return res;
 		
 		// Dopo i controlli preliminari sulla variabile usata. 
@@ -75,7 +73,7 @@ public class MethodCallNode implements Node {
 			for (Node fn : ownerClassNode.getMethodList()) {
 				FunNode function = (FunNode) fn;
 				if (function.getId().equals(this.id)) {
-					methodType = (ArrowType) function.getType();
+					methodType = function.getType();
 					methodDeclared = true;
 					break;
 				}
@@ -98,13 +96,16 @@ public class MethodCallNode implements Node {
 			}
 			
 			if (!methodDeclared) {
-				res.add(new SemanticError("MethodCall Method "+ id + " in class " + ownerClass + " is not defined."));
+				res.add(new SemanticError("Method "+ id + " in class " + ownerClass + " is not defined."));
 				return res;
 			}
 			
 			nestingLevel = env.getNestLevel(); // Otteniamo il nesting level "a tempo di invocazione"
 			ownerClassEntry = ownerClassNode.stEntry;
 			dtOffset = ownerClassNode.getMethodDTOffset(this.id);
+
+            for (Node arg : parList)
+                res.addAll(arg.checkSemantics(env));
 		}
 		catch (ClassCastException e) {
 			// TODO: Però questo è un controllo di tipi, si dovrebbe fare nel type check non qui
@@ -166,7 +167,7 @@ public class MethodCallNode implements Node {
 		    
 			return "lfp\n" + //CL
 					parametersCodeString +
-					"push " + (ownerClassEntry.getOffset() - ConstructorNode.nInstances) + "\n" + //metto offset sullo stack
+					"push " + varNode.getEntry().getOffset() + "\n" + //metto offset sullo stack
 			       "lfp\n" + 
 					getAR +
 				   "add\n" + 
@@ -180,4 +181,7 @@ public class MethodCallNode implements Node {
 			       "js\n";
 	}
 
+    public Type getMethodType() {
+        return methodType;
+    }
 }

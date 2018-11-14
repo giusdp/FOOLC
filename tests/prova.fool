@@ -1,9 +1,18 @@
+class A(int x) { int getX() x; };
+class B extends A {
+    void setX(int v) x = v;
+    int setGet(int y) setX(y); getX();
+    void ifStm(bool b, int z, int y) if (b) then { x = z; } else { x = y;};
+};
+
 let
-    int a = 12;
-    int b = 42;
-    int assign42toA() let int a = 4; in a = 42; a;
+    B b = new B(41);
+    A a = new A(42);
 in
-    if (false) then {a = 3; b = 23;} else {a = 4 + b; b = b +3;};
-    assign42toA();
-    a;
-    b;
+    b.setGet(420);
+    b.ifStm(true, 118, 119);
+    b.getX();
+    a.getX();
+    a = b;
+    a.getX();
+    a.setX(4);

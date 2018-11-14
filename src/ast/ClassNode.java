@@ -20,8 +20,8 @@ import util.SemanticError;
 public class ClassNode implements Node {
 
 	private String id;
-	private ArrayList<Node> fieldList = new ArrayList<>();
-	private ArrayList<Node> methodList = new ArrayList<>();
+	private ArrayList<Node> fieldList;
+	private ArrayList<Node> methodList;
 
 	public STEntry stEntry;
 	
@@ -97,8 +97,12 @@ public class ClassNode implements Node {
 		// Controllo super classe dichiarata
 		
 		if (superClassName != null) {
+			if (superClassName.equals(id)){
+                res.add(new SemanticError("Class "+id+" cannot have as base class itself."));
+                return res;
+            }
 			if (currentScope.get(superClassName) == null) {
-				res.add(new SemanticError("Super class "+ superClassName +" is not declared"));
+				res.add(new SemanticError("Base class "+ superClassName +" is not declared"));
 				return res;
 			} else {
 				setSuperClass(env.getClassMap().get(superClassName));

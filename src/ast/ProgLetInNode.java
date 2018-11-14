@@ -13,18 +13,18 @@ import util.SemanticError;
 /* Class representing a Let in instruction node */
 public class ProgLetInNode implements Node {
 
-	private ArrayList<Node> declist;
+	private ArrayList<Node> decList;
 
 	private ArrayList<Node> contextBody;
 	/* takes the list of declarations, the expressions and the statements*/
 
 	public ProgLetInNode(ArrayList<Node> d, ArrayList<Node> fullBody) {
-		this.declist = d;
+		this.decList = d;
 		this.contextBody = fullBody;
 	}
 	public String toPrint(String indent) {
 
-		return FOOLlib.printProgNode(indent, new ArrayList<ClassNode>(), declist, contextBody);
+		return FOOLlib.printProgNode(indent, new ArrayList<>(), decList, contextBody);
 	}
 
 	@Override
@@ -40,9 +40,9 @@ public class ProgLetInNode implements Node {
         env.setFunctionOffset(-1);
 
 		//check semantics in the dec list
-        res.addAll(FOOLlib.processCheckSemanticsDecs(this.declist, env));
+        res.addAll(FOOLlib.processCheckSemanticsDecs(this.decList, env));
 
-		declist.forEach(d -> {
+		decList.forEach(d -> {
 		    if (d instanceof VarNode) ((VarNode) d).updateEntryOffset(env.getFunctionOffset() + 1);
         });
 
@@ -63,7 +63,7 @@ public class ProgLetInNode implements Node {
 	public Type typeCheck () {
 		Type type = new VoidType(); // Default value
 
-		for (Node declaration : this.declist) {
+		for (Node declaration : this.decList) {
 			type = declaration.typeCheck();
 			if (type instanceof ErrorType) return type;
 		}
@@ -80,11 +80,11 @@ public class ProgLetInNode implements Node {
 		// TODO: more rigorous testing needed to ensure codeGen works.
 
 		StringBuilder declCode = new StringBuilder();
-        for (Node dec : declist){
+        for (Node dec : decList){
             if (dec instanceof FunNode) declCode.append(dec.codeGeneration());
         }
 
-        for (Node dec : declist){
+        for (Node dec : decList){
             if (! (dec instanceof FunNode)) declCode.append(dec.codeGeneration());
         }
 
@@ -96,8 +96,8 @@ public class ProgLetInNode implements Node {
         return "## LET\n\n" + declCode.toString() + "\n## IN\n\n" + bodyCode.toString() + "halt\n" + FOOLlib.getCode();
 	}
 
-	public ArrayList<Node> getDeclist() {
-		return declist;
+	public ArrayList<Node> getDecList() {
+		return decList;
 	}
 
 	public ArrayList<Node> getContextBody() {

@@ -51,11 +51,12 @@ public class VarNode implements Node {
 			if (tmp == null) {
 				res.add(new SemanticError("Class " + ((ClassType) type).getId() + " has not been defined."));
 				return res;
-			} 
+			}
 		}
+
 		if ( hm.put(id, entry) != null )
 		{
-			if(!varClass)res.add(new SemanticError("Id for var "+ id +" is already declared."));
+			if(!varClass)res.add(new SemanticError("Id for variable "+ id +" is already declared."));
 			else res.add(new SemanticError("Id "+ id +" already used as class name. Can't use exact name for var."));
 			return res;
 		}
@@ -92,4 +93,8 @@ public class VarNode implements Node {
     void updateEntryOffset(int diff) {
         this.entry.setOffset(this.entry.getOffset() + diff);
     }
+
+	public Node getExp() {
+		return exp;
+	}
 }  
