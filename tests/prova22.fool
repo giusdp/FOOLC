@@ -2,7 +2,7 @@ let
      int foo1(int n)
         n+3;
      int foo2(int n)
-        if(n==0) then { 5 } else { n*foo1(n-1) };
+        if(n==0) then { 5; } else { n*foo1(n-1); };
 in
     foo2(3);
 

@@ -3,7 +3,7 @@ let
 		let
 		    int z = x+y;
 		in
-		    if (z <= 50) then {z} else {50};
+		    if (z <= 50) then {z;} else {50;};
 in
     addMax50(45, -4);
 

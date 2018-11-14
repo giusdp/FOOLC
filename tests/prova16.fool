@@ -7,6 +7,6 @@ let
         in
             x == y;
 in
-    if(f(y,8)) then { false } else { 10 };
+    if(f(y,8)) then { false; } else { 10; };
 
 //Tipi incompatibili nei rami then ed else

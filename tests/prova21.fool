@@ -1,8 +1,8 @@
 let
     int Fibonacci(int n)
         if( (n == 0) || (n == 1))
-            then { n }
-            else { Fibonacci(n-1) + Fibonacci(n-2) } ;
+            then { n; }
+            else { Fibonacci(n-1) + Fibonacci(n-2); } ;
 in
     Fibonacci(10);
 
