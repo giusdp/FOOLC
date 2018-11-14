@@ -75,7 +75,7 @@ public class MethodCallNode implements Node {
 			for (Node fn : ownerClassNode.getMethodList()) {
 				FunNode function = (FunNode) fn;
 				if (function.getId().equals(this.id)) {
-					methodType = (ArrowType) function.getType();
+					methodType = function.getType();
 					methodDeclared = true;
 					break;
 				}
@@ -105,6 +105,9 @@ public class MethodCallNode implements Node {
 			nestingLevel = env.getNestLevel(); // Otteniamo il nesting level "a tempo di invocazione"
 			ownerClassEntry = ownerClassNode.stEntry;
 			dtOffset = ownerClassNode.getMethodDTOffset(this.id);
+
+            for (Node arg : parList)
+                res.addAll(arg.checkSemantics(env));
 		}
 		catch (ClassCastException e) {
 			// TODO: Però questo è un controllo di tipi, si dovrebbe fare nel type check non qui

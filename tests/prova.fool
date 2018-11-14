@@ -1,17 +1,10 @@
-let
-    int z = 3;
-    void f(int x) z = x;
-    void g(int y) f(y);
-in
-    g(23);
+class A(int x) { int getX() x; };
+    class B extends A {
+        void setX(int v) x = v;
+        void setGet(int y) setX(y);
+    };
 
-//class A(int x) { int getX() x; };
-//    class B extends A {
-//        void setX(int v) x = v;
-//        int setGet(int y) setX(y);
-//    };
-
-//    let
-//        B b = new B(41);
-//    in
-//        b.setGet(420);
+    let
+        B b = new B(41);
+    in
+        b.setGet(420);

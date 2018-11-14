@@ -41,48 +41,50 @@ public class NestedMethodCallNode extends MethodCallNode {
         // Siccome  metodo di una classe, la variabile dovrebbe essere una classe
         // Se non lo è si intercetta l'eccezione e si da un Semantic Error
 
-            //Non può succedere in realtà perché quando si va ad instanziare la classe, se non è stata
-            // definita già è errore, quindi molto prima di questo controllo.
-            if (ownerClassNode == null){
-                res.add(new SemanticError("Class "+ ownerClass + " not defined."));
-                return res;
-            }
+        //Non può succedere in realtà perché quando si va ad instanziare la classe, se non è stata
+        // definita già è errore, quindi molto prima di questo controllo.
+        if (ownerClassNode == null) {
+            res.add(new SemanticError("Class " + ownerClass + " not defined."));
+            return res;
+        }
 
-            // Verificare che il metodo 'id' esiste in classe 'ownerClass':
-            boolean methodDeclared = false;
-            for (Node fn : ownerClassNode.getMethodList()) {
-                FunNode function = (FunNode) fn;
-                if (function.getId().equals(this.id)) {
-                    methodType = function.getType();
-                    methodDeclared = true;
-                    break;
-                }
+        // Verificare che il metodo 'id' esiste in classe 'ownerClass':
+        boolean methodDeclared = false;
+        for (Node fn : ownerClassNode.getMethodList()) {
+            FunNode function = (FunNode) fn;
+            if (function.getId().equals(this.id)) {
+                methodType = function.getType();
+                methodDeclared = true;
+                break;
             }
-            // Se il metodo non è dichiarato nella 'ownerClass' e la 'ownerClass' estende
-            // una classe, bisogna controllare che il metodo sia della 'superClass'
-            if (!methodDeclared) {
-                while (ownerClassNode.getSuperClass() != null  && !methodDeclared) {
-                    for (Node fn : ownerClassNode.getSuperClass().getMethodList()) {
-                        FunNode function = (FunNode) fn;
-                        if (function.getId().equals(this.id)) {
-                            // if method declared in subclass is polymorphic, store type for TypeChecking.
-                            methodType = function.getType();
-                            methodDeclared = true;
-                            break;
-                        }
+        }
+        // Se il metodo non è dichiarato nella 'ownerClass' e la 'ownerClass' estende
+        // una classe, bisogna controllare che il metodo sia della 'superClass'
+        if (!methodDeclared) {
+            while (ownerClassNode.getSuperClass() != null && !methodDeclared) {
+                for (Node fn : ownerClassNode.getSuperClass().getMethodList()) {
+                    FunNode function = (FunNode) fn;
+                    if (function.getId().equals(this.id)) {
+                        // if method declared in subclass is polymorphic, store type for TypeChecking.
+                        methodType = function.getType();
+                        methodDeclared = true;
+                        break;
                     }
-                    ownerClassNode = ownerClassNode.getSuperClass();
                 }
+                ownerClassNode = ownerClassNode.getSuperClass();
             }
+        }
 
-            if (!methodDeclared) {
-                res.add(new SemanticError("NestedMethodCall: Method "+ id +
-                        " in class " + ownerClass + " is not defined."));
-                return res;
-            }
+        if (!methodDeclared) {
+            res.add(new SemanticError("NestedMethodCall: Method " + id +
+                    " in class " + ownerClass + " is not defined."));
+            return res;
+        }
 
-            nestingLevel = env.getNestLevel(); // Otteniamo il nesting level "a tempo di invocazione"
-            dtOffset = ownerClassNode.getMethodDTOffset(this.id);
+        nestingLevel = env.getNestLevel(); // Otteniamo il nesting level "a tempo di invocazione"
+        dtOffset = ownerClassNode.getMethodDTOffset(this.id);
+        for (Node arg : parList)
+            res.addAll(arg.checkSemantics(env));
 
         return res;
     }
@@ -114,17 +116,17 @@ public class NestedMethodCallNode extends MethodCallNode {
             ArrayList<Type> parTypes = funType.getParList();
 
             // si controllano numero parametri con quelli passati in input
-            if ( parTypes.size() != parList.size() ) {
+            if (parTypes.size() != parList.size()) {
                 error.addErrorMessage("Wrong number of parameters in the invocation of the method: " +
-                        id + " inside  class" + ownerClass+
+                        id + " inside  class" + ownerClass +
                         "\nExpected " + parTypes.size() + " but found " + parList.size());
                 return error;
             }
             // si controllano tipi parametri con quelli passati in input
             for (int i = 0; i < parList.size(); i++)
-                if ( !(FOOLlib.isSubtype( (parList.get(i)).typeCheck(), parTypes.get(i)) ) ) {
-                    error.addErrorMessage("Wrong type for the "+(i+1)+
-                            "-th parameter in the invocation of method: "+id + " inside  class" + ownerClass);
+                if (!(FOOLlib.isSubtype((parList.get(i)).typeCheck(), parTypes.get(i)))) {
+                    error.addErrorMessage("Wrong type for the " + (i + 1) +
+                            "-th parameter in the invocation of method: " + id + " inside  class" + ownerClass);
                     return error;
                 }
             return funType.getReturn();
@@ -142,10 +144,10 @@ public class NestedMethodCallNode extends MethodCallNode {
             parametersCodeString.append(parList.get(i).codeGeneration());
         }
 
-        StringBuilder getAR= new StringBuilder();
+        StringBuilder getAR = new StringBuilder();
         // La chiamata in un metodo sarà sempre a nl = 3. Class -> nl=1. Method -> nl=2. Call-> nl=3
         int nestedCallNestingLevel = 3;
-        for (int i = 0; i< nestingLevel - nestedCallNestingLevel; i++) {
+        for (int i = 0; i < nestingLevel - nestedCallNestingLevel; i++) {
             getAR.append("lw\n");
         }
 
@@ -155,12 +157,12 @@ public class NestedMethodCallNode extends MethodCallNode {
                 "lfp\n" +
                 getAR +
                 "add\n" +
-                "lw\n"  + //carico sullo stack il valore all'indirizzo ottenuto (della classe all'heap)
-                "cts\n"+ // Duplicando ora il top, duplico l'indirizzo della classe che punta all'heap.
+                "lw\n" + //carico sullo stack il valore all'indirizzo ottenuto (della classe all'heap)
+                "cts\n" + // Duplicando ora il top, duplico l'indirizzo della classe che punta all'heap.
                 //cosi' sara' il top dello stack all'esecuzione del metodo
                 "lw\n" +
-                "push " + dtOffset + "\n"+
-                "add\n"+
+                "push " + dtOffset + "\n" +
+                "add\n" +
                 "lm\n" +
                 "js\n";
     }
