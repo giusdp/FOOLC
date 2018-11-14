@@ -1,10 +1,10 @@
 class A(int x) { int getX() x; };
-    class B extends A {
-        void setX(int v) x = v;
-        void setGet(int y) setX(y);
-    };
+class B extends A {
+    void setX(int v) x = v;
+    int setGet(int y) getX(); setX(y); getX();
+};
 
-    let
-        B b = new B(41);
-    in
-        b.setGet(420);
+let
+    B b = new B(41);
+in
+    b.setGet(420);

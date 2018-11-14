@@ -20,8 +20,6 @@ public class NestedMethodCallNode extends MethodCallNode {
     private int dtOffset;
     private int nestingLevel;
 
-    private Type methodType;
-
 
     public NestedMethodCallNode(String className, String m, ArrayList<Node> args) {
         id = m;

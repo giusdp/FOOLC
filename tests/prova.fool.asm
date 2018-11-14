@@ -62,6 +62,17 @@ function2:
 cfp
 lra
 lfp
+push 0
+lfp
+add
+lw
+cts
+lw
+push 1
+add
+lm
+js
+lfp
 push 1
 lfp
 add
@@ -76,10 +87,24 @@ push 2
 add
 lm
 js
+lfp
+push 0
+lfp
+add
+lw
+cts
+lw
+push 1
+add
+lm
+js
+srv
+srv
 sra
 pop
 pop
 sfp
+lrv
 lra
 js
 

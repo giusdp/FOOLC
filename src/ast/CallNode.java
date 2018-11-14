@@ -123,4 +123,7 @@ public class CallNode implements Node {
                 "js\n";
     }
 
-}  
+    public STEntry getEntry() {
+        return entry;
+    }
+}

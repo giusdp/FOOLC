@@ -23,7 +23,7 @@ public class MethodCallNode implements Node {
 	private int dtOffset;
 	private int nestingLevel;
 
-	private Type methodType;
+	protected Type methodType;
 
 
     public MethodCallNode() {
@@ -49,10 +49,8 @@ public class MethodCallNode implements Node {
 	
 	@Override
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
-		
-		ArrayList<SemanticError> res = new ArrayList<>();
-				
-		res.addAll(varNode.checkSemantics(env));
+
+        ArrayList<SemanticError> res = new ArrayList<>(varNode.checkSemantics(env));
 		if (!res.isEmpty()) return res;
 		
 		// Dopo i controlli preliminari sulla variabile usata. 
@@ -183,4 +181,7 @@ public class MethodCallNode implements Node {
 			       "js\n";
 	}
 
+    public Type getMethodType() {
+        return methodType;
+    }
 }
