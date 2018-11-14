@@ -4,6 +4,10 @@ push 41
 push 1
 push B_class
 new
+push 42
+push 1
+push A_class
+new
 
 ## IN
 
@@ -35,6 +39,36 @@ lm
 js
 lfp
 push -1
+lfp
+add
+lw
+cts
+lw
+push 1
+add
+lm
+js
+lfp
+push -2
+lfp
+add
+lw
+cts
+lw
+push 1
+add
+lm
+js
+push -1
+lfp
+add
+lw
+lfp
+push -2
+add
+sw
+lfp
+push -2
 lfp
 add
 lw

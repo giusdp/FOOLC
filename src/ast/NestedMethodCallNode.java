@@ -74,7 +74,7 @@ public class NestedMethodCallNode extends MethodCallNode {
         }
 
         if (!methodDeclared) {
-            res.add(new SemanticError("NestedMethodCall: Method " + id +
+            res.add(new SemanticError("Method " + id +
                     " in class " + ownerClass + " is not defined."));
             return res;
         }
