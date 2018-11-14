@@ -19,6 +19,31 @@ push 3
 add
 lm
 js
+lfp
+push 119
+push 118
+push 1
+push -1
+lfp
+add
+lw
+cts
+lw
+push 4
+add
+lm
+js
+lfp
+push -1
+lfp
+add
+lw
+cts
+lw
+push 1
+add
+lm
+js
 halt
 
 ## Functions code and Dispatch Table
@@ -62,17 +87,6 @@ function2:
 cfp
 lra
 lfp
-push 0
-lfp
-add
-lw
-cts
-lw
-push 1
-add
-lm
-js
-lfp
 push 1
 lfp
 add
@@ -99,12 +113,50 @@ add
 lm
 js
 srv
-srv
 sra
 pop
 pop
 sfp
 lrv
+lra
+js
+
+function3:
+cfp
+lra
+push 1
+lfp
+add
+lw
+push 1
+beq label0
+push 3
+lfp
+add
+lw
+lfp
+lw
+push 1
+add
+sw
+b label1
+label0:
+push 2
+lfp
+add
+lw
+lfp
+lw
+push 1
+add
+sw
+label1:
+sra
+pop
+pop
+pop
+pop
+sfp
 lra
 js
 
@@ -114,3 +166,4 @@ B_class:
 function0
 function1
 function2
+function3

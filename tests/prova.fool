@@ -1,10 +1,13 @@
 class A(int x) { int getX() x; };
 class B extends A {
     void setX(int v) x = v;
-    int setGet(int y) getX(); setX(y); getX();
+    int setGet(int y) setX(y); getX();
+    void ifStm(bool b, int z, int y) if (b) then { x = z; } else { x = y;};
 };
 
 let
     B b = new B(41);
 in
     b.setGet(420);
+    b.ifStm(true, 118, 119);
+    b.getX();
