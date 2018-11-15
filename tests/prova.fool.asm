@@ -1,8 +1,6 @@
 ## LET
 
-push function0
 push function1
-push 4
 
 ## IN
 
@@ -20,33 +18,23 @@ halt
 function0:
 cfp
 lra
-push -3
+push 1
 lfp
 lw
 add
 lw
-push 44
+push 55
 lfp
 lw
-push -3
+push 1
 add
 sw
-lfp
-lfp
-lw
-push -2
-lfp
-lw
-add
-lw
-js
-push -3
+push 1
 lfp
 lw
 add
 lw
 srv
-pop
 pop
 sra
 pop
@@ -58,8 +46,24 @@ js
 function1:
 cfp
 lra
-push 42
+push 4
+push 1
+push A_class
+new
+lfp
+push -2
+lfp
+lw
+add
+lw
+cts
+lw
+push 1
+add
+lm
+js
 srv
+pop
 sra
 pop
 sfp
@@ -67,4 +71,5 @@ lrv
 lra
 js
 
-Z_class:
+A_class:
+function0

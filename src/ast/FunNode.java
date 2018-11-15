@@ -97,7 +97,9 @@ public class FunNode implements Node {
 			if(declist.size() > 0){
                 env.setOffset(-2); // reset the offset to the starting value because we are in a new scope
                 //if there are children then check semantics for every child and save the results
-				FOOLlib.processCheckSemanticsDecs(declist, env);
+//				FOOLlib.processCheckSemanticsDecs(declist, env);
+                for (Node arg : declist)
+                    res.addAll(arg.checkSemantics(env));
 			}
 
 			// Check semantics for function statements and expressions.

@@ -1,8 +1,5 @@
-class Z;
-
+class A(int x) { int f() {x; x=55;x;} };
 let
-    int a = 4;
-    int f() { a; a = 44; g(); a;}
-    int g() {42;}
+    int f() let A a = new A(b); in { a.f();}
 in
     f();
