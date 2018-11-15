@@ -8,28 +8,28 @@ import util.SemanticError;
 
 public class PrintNode implements Node {
 
-  private Node val;
+  private Node value;
   
   public PrintNode (Node v) {
-    val=v;
+    this.value = v;
   }
   
   public String toPrint(String indent) {
-    return indent+"Print\n" + val.toPrint(indent+"  ") ;
+    return indent+"Print\n" + this.value.toPrint(indent+"  ") ;
   }
   
   public Type typeCheck() {
-    return val.typeCheck();
+    return this.value.typeCheck();
   }  
   
   @Override
  	public ArrayList<SemanticError> checkSemantics(Environment env) {
 
- 	  return val.checkSemantics(env);
+ 	  return this.value.checkSemantics(env);
  	}
   
   public String codeGeneration() {
-		return val.codeGeneration()+"print\n";
+		return value.codeGeneration()+"print\n";
   }
     
 }  

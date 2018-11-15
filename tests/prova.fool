@@ -1,5 +1,5 @@
 class A(int x) { int f() {x; x=55;x;} };
 let
-    int f() let A a = new A(b); in { a.f();}
+	int b = 12;
 in
-    f();
+    print(b * 6 * 2);

@@ -1,16 +1,18 @@
 ## LET
 
-push function1
+push 12
 
 ## IN
 
-lfp
-lfp
 push -1
 lfp
 add
 lw
-js
+push 6
+push 2
+mult
+mult
+print
 halt
 
 ## Functions code and Dispatch Table
@@ -34,34 +36,6 @@ lfp
 lw
 add
 lw
-srv
-pop
-sra
-pop
-sfp
-lrv
-lra
-js
-
-function1:
-cfp
-lra
-push 4
-push 1
-push A_class
-new
-lfp
-push -2
-lfp
-lw
-add
-lw
-cts
-lw
-push 1
-add
-lm
-js
 srv
 pop
 sra
