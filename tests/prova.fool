@@ -1,7 +1,8 @@
+class Z;
+
 let
-    int f() g(); z();
-    int g() 42;
-    int z() 44;
     int a = 4;
+    int f() { a; a = 4; g();}
+    int g() {42;}
 in
     f();

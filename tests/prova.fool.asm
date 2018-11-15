@@ -2,7 +2,6 @@
 
 push function0
 push function1
-push function2
 push 4
 
 ## IN
@@ -16,9 +15,22 @@ lw
 js
 halt
 
+## Functions code and Dispatch Table
+
 function0:
 cfp
 lra
+push -3
+lfp
+lw
+add
+lw
+push 4
+lfp
+lw
+push -3
+add
+sw
 lfp
 lfp
 lw
@@ -28,16 +40,8 @@ lw
 add
 lw
 js
-lfp
-lfp
-lw
-push -3
-lfp
-lw
-add
-lw
-js
 srv
+pop
 pop
 sra
 pop
@@ -58,15 +62,4 @@ lrv
 lra
 js
 
-function2:
-cfp
-lra
-push 44
-srv
-sra
-pop
-sfp
-lrv
-lra
-js
-
+Z_class:

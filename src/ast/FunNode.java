@@ -197,21 +197,22 @@ public class FunNode implements Node {
         String cmd = "pop\n";
         for (int i = 0; i < body.size() -1 ;++i){
             Node n = body.get(i);
-                if (n instanceof CallNode){
-                    CallNode c = (CallNode) n;
-                    ArrowType rt = (ArrowType) c.getEntry().getType();
-                    if (!(rt.getReturn() instanceof VoidType))
-                        srvCalls.append(cmd);
+            if (n instanceof CallNode){
+                CallNode c = (CallNode) n;
+                ArrowType rt = (ArrowType) c.getEntry().getType();
+                if (!(rt.getReturn() instanceof VoidType))
+                    srvCalls.append(cmd);
+            }
+            else if (n instanceof MethodCallNode){
+                MethodCallNode c = (MethodCallNode) n;
+                ArrowType rt = (ArrowType) c.getMethodType();
+                if (!(rt.getReturn() instanceof VoidType)) {
+                    srvCalls.append(cmd);
                 }
-                else if (n instanceof MethodCallNode){
-                    MethodCallNode c = (MethodCallNode) n;
-                    ArrowType rt = (ArrowType) c.getMethodType();
-                    if (!(rt.getReturn() instanceof VoidType)) {
-                        srvCalls.append(cmd);
-                    }
-
-                }
-
+            }
+            else {
+                srvCalls.append(cmd);
+            }
         }
 
 		String funLabel=FOOLlib.freshFunLabel(); 
