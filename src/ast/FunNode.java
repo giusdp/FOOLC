@@ -191,14 +191,12 @@ public class FunNode implements Node {
 		StringBuilder srvCalls = new StringBuilder();
         if (!(returnType instanceof VoidType))
             srvCalls.append("srv\n"); // 1 di default ci deve essere a meno che il return della funzione sia void
-        boolean multipleCalls = false;
 
         // Add many pop as there are fun (or methods) invocations unless they return void
-        String cmd = "pop\n"; // pop because the only value to save is from the last call invocation
-        // which is saved by the first srv
-        for (int i = body.size() -1 ; i >= 0; --i){
+         // pop because the only value to save is from the last call invocation which is saved by the first srv
+        String cmd = "pop\n";
+        for (int i = 0; i < body.size() -1 ;++i){
             Node n = body.get(i);
-            if (multipleCalls){
                 if (n instanceof CallNode){
                     CallNode c = (CallNode) n;
                     ArrowType rt = (ArrowType) c.getEntry().getType();
@@ -211,10 +209,9 @@ public class FunNode implements Node {
                     if (!(rt.getReturn() instanceof VoidType)) {
                         srvCalls.append(cmd);
                     }
+
                 }
 
-            }
-            else multipleCalls=true;
         }
 
 		String funLabel=FOOLlib.freshFunLabel(); 

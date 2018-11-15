@@ -1,7 +1,7 @@
 let
-    int f() g(); z(); g();
+    int f() g(); z();
     int g() 42;
-    int z() a;
+    int z() 44;
     int a = 4;
 in
     f();

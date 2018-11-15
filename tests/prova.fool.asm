@@ -37,17 +37,7 @@ lw
 add
 lw
 js
-lfp
-lfp
-lw
-push -2
-lfp
-lw
-add
-lw
-js
 srv
-pop
 pop
 sra
 pop
@@ -71,11 +61,7 @@ js
 function2:
 cfp
 lra
-push -4
-lfp
-lw
-add
-lw
+push 44
 srv
 sra
 pop
