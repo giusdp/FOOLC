@@ -1,18 +1,7 @@
-class A(int x) { int getX() x; };
-class B extends A {
-    void setX(int v) x = v;
-    int setGet(int y) setX(y); getX();
-    void ifStm(bool b, int z, int y) if (b) then { x = z; } else { x = y;};
-};
-
 let
-    B b = new B(41);
-    A a = new A(42);
+    int f() g(); z(); g();
+    int g() 42;
+    int z() a;
+    int a = 4;
 in
-    b.setGet(420);
-    b.ifStm(true, 118, 119);
-    b.getX();
-    a.getX();
-    a = b;
-    a.getX();
-    a.setX(4);
+    f();

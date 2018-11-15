@@ -193,7 +193,9 @@ public class FunNode implements Node {
             srvCalls.append("srv\n"); // 1 di default ci deve essere a meno che il return della funzione sia void
         boolean multipleCalls = false;
 
-        // Add many srv as there are fun (or methods) invocations unless they return void
+        // Add many pop as there are fun (or methods) invocations unless they return void
+        String cmd = "pop\n"; // pop because the only value to save is from the last call invocation
+        // which is saved by the first srv
         for (int i = body.size() -1 ; i >= 0; --i){
             Node n = body.get(i);
             if (multipleCalls){
@@ -201,13 +203,13 @@ public class FunNode implements Node {
                     CallNode c = (CallNode) n;
                     ArrowType rt = (ArrowType) c.getEntry().getType();
                     if (!(rt.getReturn() instanceof VoidType))
-                        srvCalls.append("srv\n");
+                        srvCalls.append(cmd);
                 }
                 else if (n instanceof MethodCallNode){
                     MethodCallNode c = (MethodCallNode) n;
                     ArrowType rt = (ArrowType) c.getMethodType();
                     if (!(rt.getReturn() instanceof VoidType)) {
-                        srvCalls.append("srv\n");
+                        srvCalls.append(cmd);
                     }
                 }
 
