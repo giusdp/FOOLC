@@ -1,5 +1,6 @@
-class A(int x) { int f() {x; x=55;x;} };
-let
-    int f() let A a = new A(b); in { a.f();}
-in
-    f();
+  class A(int x) { int f() {x; x=55;g();} int g() {118; x;}};
+
+    let
+    int z() let A a = new A(4); in { a.f(); }
+    in
+        z();

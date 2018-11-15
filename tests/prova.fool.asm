@@ -1,6 +1,6 @@
 ## LET
 
-push function1
+push function2
 
 ## IN
 
@@ -29,6 +29,30 @@ lw
 push 1
 add
 sw
+lfp
+push 0
+lfp
+add
+lw
+cts
+lw
+push 2
+add
+lm
+js
+srv
+pop
+sra
+pop
+sfp
+lrv
+lra
+js
+
+function1:
+cfp
+lra
+push 118
 push 1
 lfp
 lw
@@ -43,7 +67,7 @@ lrv
 lra
 js
 
-function1:
+function2:
 cfp
 lra
 push 4
@@ -53,7 +77,6 @@ new
 lfp
 push -2
 lfp
-lw
 add
 lw
 cts
@@ -73,3 +96,4 @@ js
 
 A_class:
 function0
+function1
