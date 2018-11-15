@@ -2,7 +2,7 @@ class Z;
 
 let
     int a = 4;
-    int f() { a; a = 4; g();}
+    int f() { a; a = 44; g(); a;}
     int g() {42;}
 in
     f();

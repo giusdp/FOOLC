@@ -210,7 +210,8 @@ public class FunNode implements Node {
                     srvCalls.append(cmd);
                 }
             }
-            else {
+            // The only other cases it would be void type
+            else if (! (n instanceof StmAsmNode) && !(n instanceof IfStmsNode)) {
                 srvCalls.append(cmd);
             }
         }

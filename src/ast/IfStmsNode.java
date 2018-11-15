@@ -12,8 +12,8 @@ import java.util.List;
 
 public class IfStmsNode implements Node {
 
-    Node condition;
-    List<Node> thenBranch, elseBranch;
+    private Node condition;
+    private List<Node> thenBranch, elseBranch;
 
     public IfStmsNode(Node condition, List<Node> thenBranch, List<Node> elseBranch) {
         this.condition = condition;
@@ -50,7 +50,7 @@ public class IfStmsNode implements Node {
         Type e = null;
         for (Node s : thenBranch){
             t = s.typeCheck();
-            if (t instanceof ErrorType) return t;
+            if (t instanceof ErrorType) return t; // It will be void type
         }
 
         for (Node s : elseBranch){

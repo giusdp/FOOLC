@@ -25,7 +25,7 @@ lfp
 lw
 add
 lw
-push 4
+push 44
 lfp
 lw
 push -3
@@ -40,6 +40,11 @@ lw
 add
 lw
 js
+push -3
+lfp
+lw
+add
+lw
 srv
 pop
 pop
