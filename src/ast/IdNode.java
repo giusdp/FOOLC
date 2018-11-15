@@ -53,7 +53,7 @@ public class IdNode implements Node {
     }
 
     public Type typeCheck() {
-        if (entry.getType() instanceof ArrowType) { //
+        if (entry.getType() instanceof ArrowType) {
             ErrorType error = new ErrorType();
             error.addErrorMessage("Wrong usage of function identifier: " + id);
             return error;

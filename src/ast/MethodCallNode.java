@@ -161,7 +161,7 @@ public class MethodCallNode implements Node {
 		    }
 		    
 		    StringBuilder getAR= new StringBuilder();
-			for (int i=0; i< nestingLevel - ownerClassEntry.getNestLevel(); i++) {
+			for (int i=0; i< nestingLevel - varNode.getEntry().getNestLevel(); i++) {
 				getAR.append("lw\n");
 			}
 		    

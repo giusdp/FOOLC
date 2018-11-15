@@ -97,7 +97,9 @@ public class FunNode implements Node {
 			if(declist.size() > 0){
                 env.setOffset(-2); // reset the offset to the starting value because we are in a new scope
                 //if there are children then check semantics for every child and save the results
-				FOOLlib.processCheckSemanticsDecs(declist, env);
+//				FOOLlib.processCheckSemanticsDecs(declist, env);
+                for (Node arg : declist)
+                    res.addAll(arg.checkSemantics(env));
 			}
 
 			// Check semantics for function statements and expressions.
@@ -191,28 +193,29 @@ public class FunNode implements Node {
 		StringBuilder srvCalls = new StringBuilder();
         if (!(returnType instanceof VoidType))
             srvCalls.append("srv\n"); // 1 di default ci deve essere a meno che il return della funzione sia void
-        boolean multipleCalls = false;
 
-        // Add many srv as there are fun (or methods) invocations unless they return void
-        for (int i = body.size() -1 ; i >= 0; --i){
+        // Add many pop as there are fun (or methods) invocations unless they return void
+         // pop because the only value to save is from the last call invocation which is saved by the first srv
+        String cmd = "pop\n";
+        for (int i = 0; i < body.size() -1 ;++i){
             Node n = body.get(i);
-            if (multipleCalls){
-                if (n instanceof CallNode){
-                    CallNode c = (CallNode) n;
-                    ArrowType rt = (ArrowType) c.getEntry().getType();
-                    if (!(rt.getReturn() instanceof VoidType))
-                        srvCalls.append("srv\n");
-                }
-                else if (n instanceof MethodCallNode){
-                    MethodCallNode c = (MethodCallNode) n;
-                    ArrowType rt = (ArrowType) c.getMethodType();
-                    if (!(rt.getReturn() instanceof VoidType)) {
-                        srvCalls.append("srv\n");
-                    }
-                }
-
+            if (n instanceof CallNode){
+                CallNode c = (CallNode) n;
+                ArrowType rt = (ArrowType) c.getEntry().getType();
+                if (!(rt.getReturn() instanceof VoidType))
+                    srvCalls.append(cmd);
             }
-            else multipleCalls=true;
+            else if (n instanceof MethodCallNode){
+                MethodCallNode c = (MethodCallNode) n;
+                ArrowType rt = (ArrowType) c.getMethodType();
+                if (!(rt.getReturn() instanceof VoidType)) {
+                    srvCalls.append(cmd);
+                }
+            }
+            // The only other cases it would be void type
+            else if (! (n instanceof StmAsmNode) && !(n instanceof IfStmsNode)) {
+                srvCalls.append(cmd);
+            }
         }
 
 		String funLabel=FOOLlib.freshFunLabel(); 

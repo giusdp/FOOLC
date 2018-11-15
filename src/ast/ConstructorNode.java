@@ -101,6 +101,7 @@ public class ConstructorNode implements Node {
 				res.addAll(arg.checkSemantics(env));
 
 			classNode = env.getClassMap().get(className);
+
             return res;
         }
 	}
