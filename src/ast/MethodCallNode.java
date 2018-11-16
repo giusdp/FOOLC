@@ -15,8 +15,8 @@ public class MethodCallNode implements Node {
 
 	private IdNode varNode;
 	private String ownerClass;
+	private ClassNode ownerClassNode;
 
-	private STEntry ownerClassEntry;
 	private int dtOffset;
 	private int nestingLevel;
 
@@ -57,7 +57,7 @@ public class MethodCallNode implements Node {
 		try {
 			ownerClass = ((ClassType) varNode.getType()).getId(); // Ottendo il nome/tipo della classe
 
-			ClassNode ownerClassNode = env.getClassMap().get(ownerClass);
+			ownerClassNode = env.getClassMap().get(ownerClass);
 			//Non può succedere in realtà perché quando si va ad instanziare la classe, se non è stata
 			// definita già è errore, quindi molto prima di questo controllo.
 			if (ownerClassNode == null){
@@ -98,7 +98,6 @@ public class MethodCallNode implements Node {
 			}
 			
 			nestingLevel = env.getNestLevel(); // Otteniamo il nesting level "a tempo di invocazione"
-			ownerClassEntry = ownerClassNode.stEntry;
 			dtOffset = ownerClassNode.getMethodDTOffset(this.id);
 
             for (Node arg : parList)
@@ -120,7 +119,7 @@ public class MethodCallNode implements Node {
 
         ErrorType error = new ErrorType();
 
-        if (varNode.getType() instanceof VoidType){
+        if (!ownerClassNode.isInitialized()){
             error.addErrorMessage("Invocation of method "+id+ " on non-initialized class "+ownerClass+".");
             return error;
         }
