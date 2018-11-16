@@ -1,5 +1,6 @@
 ## LET
 
+push function2
 push 0
 push A_class
 new
@@ -11,11 +12,11 @@ push 1
 push A_class
 new
 lfp
-push -1
+push -2
 add
 sw
 lfp
-push -1
+push -2
 lfp
 add
 lw
@@ -24,6 +25,14 @@ lw
 push 1
 add
 lm
+js
+push 4
+lfp
+lfp
+push -1
+lfp
+add
+lw
 js
 halt
 
@@ -78,6 +87,17 @@ sra
 pop
 sfp
 lrv
+lra
+js
+
+function2:
+cfp
+lra
+push 5
+pop
+sra
+pop
+sfp
 lra
 js
 

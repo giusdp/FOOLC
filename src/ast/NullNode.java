@@ -10,7 +10,7 @@ import type.VoidType;
 
 public class NullNode implements Node {
 
-	private String id;
+	private String id = null;
 
 	/** This is would be like a class constructor but it doesnt set isInitialized to true.*/
 
