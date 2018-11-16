@@ -111,7 +111,6 @@ public class CallNode implements Node {
             getAR.append("lw\n");
         }
 
-        // TODO:
         return  "lfp\n" + //CL
                 parCode.toString() +
                 "lfp\n" + getAR + //setto AL risalendo la catena statica

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import type.*;
 import util.Environment;
 import util.FOOLlib;
-import util.STEntry;
 import util.SemanticError;
 
 public class MethodCallNode implements Node {
@@ -13,7 +12,7 @@ public class MethodCallNode implements Node {
 	private String id;
 	private ArrayList<Node> parList;
 
-	private IdNode varNode;
+	private IdNode variableIdNode;
 	private String ownerClass;
 	private ClassNode ownerClassNode;
 
@@ -22,13 +21,15 @@ public class MethodCallNode implements Node {
 
 	protected Type methodType;
 
+	private boolean isVarInitialized = false;
+
     public MethodCallNode() {
     }
 
     public MethodCallNode(String m, ArrayList<Node> args, Node obj) {
 		id = m;
 		parList = args;
-		varNode = (IdNode) obj;
+		variableIdNode = (IdNode) obj;
 	}
 
 	@Override
@@ -46,7 +47,11 @@ public class MethodCallNode implements Node {
 	@Override
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
 
-        ArrayList<SemanticError> res = new ArrayList<>(varNode.checkSemantics(env));
+        ArrayList<SemanticError> res = new ArrayList<>(variableIdNode.checkSemantics(env));
+
+        isVarInitialized = ((ClassType) variableIdNode.getEntry().getType()).isInstantiated();
+
+
 		if (!res.isEmpty()) return res;
 		
 		// Dopo i controlli preliminari sulla variabile usata. 
@@ -54,7 +59,7 @@ public class MethodCallNode implements Node {
 		// Siccome  metodo di una classe, la variabile dovrebbe essere una classe
 		// Se non lo è si intercetta l'eccezione e si da un Semantic Error
 		try {
-			ownerClass = ((ClassType) varNode.getType()).getId(); // Ottendo il nome/tipo della classe
+			ownerClass = ((ClassType) variableIdNode.getType()).getId(); // Ottendo il nome/tipo della classe
 
 			ownerClassNode = env.getClassMap().get(ownerClass);
 			//Non può succedere in realtà perché quando si va ad instanziare la classe, se non è stata
@@ -104,7 +109,7 @@ public class MethodCallNode implements Node {
 		}
 		catch (ClassCastException e) {
 			// TODO: Però questo è un controllo di tipi, si dovrebbe fare nel type check non qui
-			res.add(new SemanticError("Var " + varNode.getId() + " is not ClassType, instead it's " + varNode.getType().toPrint("")));
+			res.add(new SemanticError("Var " + variableIdNode.getId() + " is not ClassType, instead it's " + variableIdNode.getType().toPrint("")));
 		}
 		
 		return res;
@@ -115,7 +120,7 @@ public class MethodCallNode implements Node {
 
         ErrorType error = new ErrorType();
 
-        if (!varNode.isInitializedClass()){
+        if (! isVarInitialized){
             error.addErrorMessage("Invocation of method "+id+ " on non-initialized class "+ownerClass+".");
             return error;
         }
@@ -157,13 +162,13 @@ public class MethodCallNode implements Node {
 		    }
 		    
 		    StringBuilder getAR= new StringBuilder();
-			for (int i=0; i< nestingLevel - varNode.getEntry().getNestLevel(); i++) {
+			for (int i = 0; i< nestingLevel - variableIdNode.getEntry().getNestLevel(); i++) {
 				getAR.append("lw\n");
 			}
 		    
 			return "lfp\n" + //CL
 					parametersCodeString +
-					"push " + varNode.getEntry().getOffset() + "\n" + //metto offset sullo stack
+					"push " + variableIdNode.getEntry().getOffset() + "\n" + //metto offset sullo stack
 			       "lfp\n" + 
 					getAR +
 				   "add\n" + 

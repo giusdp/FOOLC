@@ -15,8 +15,6 @@ public class IdNode implements Node {
     private STEntry entry;
     private int nestinglevel;
 
-    private boolean isInitializedClass = true;
-
     public IdNode(String i) {
         id = i;
     }
@@ -83,11 +81,4 @@ public class IdNode implements Node {
         return entry;
     }
 
-    public boolean isInitializedClass() {
-        return isInitializedClass;
-    }
-
-    public void setInitializedClass() {
-        isInitializedClass = true;
-    }
 }

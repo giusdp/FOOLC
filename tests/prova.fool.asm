@@ -1,20 +1,13 @@
 ## LET
 
 push function2
-push 0
+push 4
+push 1
 push A_class
 new
 
 ## IN
 
-push 3
-push 1
-push A_class
-new
-lfp
-push -2
-add
-sw
 lfp
 push -2
 lfp

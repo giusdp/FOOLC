@@ -48,11 +48,6 @@ public class ConstructorNode implements Node {
 			// Bisogna controllare che i tipi degli argomenti (parList) siano subtype dei campi della classe
 			// I campi della classe sono da considerarsi come parametri
 
-//			for (int i=0; i<classType.getFieldTypeList().size(); i++) 
-//				System.out.println(classType.getFieldTypeList().get(i).toPrint(""));
-
-
-
 			ArrayList<Node> fields = classNode.getFieldList();
 			if ( !(fields.size() == parList.size()) ) {
 				error.addErrorMessage("Wrong number of parameters in the invocation of the constructor for "+ className +
@@ -96,12 +91,10 @@ public class ConstructorNode implements Node {
 		else{
 			this.entry = tmp;
 			this.nestingLevel = env.getNestLevel();
-//			tmp.setOffset(tmp.getOffset() + env.decClassOffset());
 			for(Node arg : parList)
 				res.addAll(arg.checkSemantics(env));
 
 			classNode = env.getClassMap().get(className);
-
             return res;
         }
 	}

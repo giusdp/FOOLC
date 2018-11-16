@@ -19,8 +19,8 @@ public class Environment {
 
 
 	private HashMap<String, ClassNode> classMap = new HashMap<>();
-	static private ArrayList<FunNode> declaredFunctions = new ArrayList<>();
-	
+	private static ArrayList<FunNode> declaredFunctions = new ArrayList<>();
+
 	public Environment() {
 		nestingLevel = -1;
 		offset = 0;

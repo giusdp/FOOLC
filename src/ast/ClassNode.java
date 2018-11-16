@@ -229,13 +229,6 @@ public class ClassNode implements Node {
             }
         }
 
-        // TODO
-        /*
-         * Una classe C1 e` sottotipo di una classe C2 se C1 estende C2 e se i campi e metodi che
-         * vengono sovrascritti sono sottotipi rispetto ai campi e metodi corrispondenti di C2.
-         * Inoltre, C1 e` sottotipo di C2 se esiste una classe C3 sottotipo di C2 di cui C1 e` sottotipo.
-         */
-        // FORSE
         return type;
     }
 
