@@ -1,8 +1,5 @@
 package ast;
-import type.ArrowType;
-import type.ErrorType;
-import type.Type;
-import type.VoidType;
+import type.*;
 import util.Environment;
 import util.FOOLlib;
 import util.STEntry;
@@ -84,6 +81,9 @@ public class FunNode implements Node {
 			for(Node a : parlist){
 				ParNode arg = (ParNode) a;
 				parTypes.add(arg.getType());
+
+				// Devo settarlo a true inizialmente altrimenti se nel corpo c'è un methodcall darebbe errore di tipo
+				if (arg.getType() instanceof ClassType) ((ClassType) arg.getType()).setInstantiated(true);
 				STEntry parSTEntry = new STEntry(env.getNestLevel(),arg.getType(),paroffset++);
 				if (nuovoScope.put(arg.getId(), parSTEntry) != null) {
 					res.add(new SemanticError("Parameter "+arg.getId()+" already declared"));
@@ -94,12 +94,14 @@ public class FunNode implements Node {
 			entry.setType( new ArrowType(parTypes, returnType) );
 
 			//check semantics in the dec list
-			if(declist.size() > 0){
-                env.setOffset(-2); // reset the offset to the starting value because we are in a new scope
-                //if there are children then check semantics for every child and save the results
+			if(declist.size() > 0) {
+				env.setOffset(-2); // reset the offset to the starting value because we are in a new scope
+				//if there are children then check semantics for every child and save the results
 //				FOOLlib.processCheckSemanticsDecs(declist, env);
-                for (Node arg : declist)
-                    res.addAll(arg.checkSemantics(env));
+				for (Node arg : declist) {
+					res.addAll(arg.checkSemantics(env));
+
+				}
 			}
 
 			// Check semantics for function statements and expressions.
