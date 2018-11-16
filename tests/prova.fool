@@ -1,13 +1,11 @@
-class A(int x) { int f() {x; g();} int g() {118; x;}};
-//class B extends A{ void setX(int y) { x = y+x; } void z(){554; null;}};
+class A(int x) { int pippo() {x;} };
+class Z(A a) {
+        int execute() let A ciao = null; in { a.pippo(); }
+        int lol(A aa) {4;}
+        };
 
 let
-  //  B b = new B(119);
-  //A ciao = A;
     A objA = new A(34);
-    A a = new A(3);
-    int z() let A a = new A(4); in { a.f(); } // BUG
+    Z objZ = new Z(objA);
 in
-    objA.f();
-
-    //ciao.f();
+    objZ.execute();

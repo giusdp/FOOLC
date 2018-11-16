@@ -132,6 +132,12 @@ public class ClassNode implements Node {
 
         for (Node field : fieldList) {
             ParNode arg = (ParNode) field;
+
+            // se non si setta su true poi nel controllo del corpo della classe se si evoca un metodo
+            // da errore che la variabile non è inizializzata
+            if (arg.getType() instanceof ClassType)
+                ((ClassType) arg.getType()).setInstantiated(true);
+
             STEntry argSTEntry = new STEntry(env.getNestLevel(), arg.getType(), paroffset++);
             if (newScope.put(arg.getId(), argSTEntry) != null) {
                 res.add(new SemanticError("Field " + arg.getId() + " already declared"));

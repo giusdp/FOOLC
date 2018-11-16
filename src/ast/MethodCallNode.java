@@ -14,14 +14,12 @@ public class MethodCallNode implements Node {
 
 	private IdNode variableIdNode;
 	private String ownerClass;
-	private ClassNode ownerClassNode;
 
-	private int dtOffset;
+    private int dtOffset;
 	private int nestingLevel;
 
 	protected Type methodType;
 
-	private boolean isVarInitialized = false;
 
     public MethodCallNode() {
     }
@@ -58,7 +56,7 @@ public class MethodCallNode implements Node {
 		try {
 			ownerClass = ((ClassType) variableIdNode.getType()).getId(); // Ottendo il nome/tipo della classe
 
-			ownerClassNode = env.getClassMap().get(ownerClass);
+            ClassNode ownerClassNode = env.getClassMap().get(ownerClass);
 			//Non può succedere in realtà perché quando si va ad instanziare la classe, se non è stata
 			// definita già è errore, quindi molto prima di questo controllo.
 			if (ownerClassNode == null){
@@ -117,8 +115,11 @@ public class MethodCallNode implements Node {
 
         ErrorType error = new ErrorType();
 
-        if (! ((ClassType) variableIdNode.getEntry().getType()).isInstantiated()){
-            error.addErrorMessage("Invocation of method "+id+ " on non-initialized class "+ownerClass+".");
+
+        boolean isVarInitialized = ((ClassType) variableIdNode.getEntry().getType()).isInstantiated();
+
+        if (! isVarInitialized) {
+            error.addErrorMessage("Invocation of method "+id+ " on non-initialized variable "+variableIdNode.getId()+".");
             return error;
         }
 
@@ -131,14 +132,14 @@ public class MethodCallNode implements Node {
 
 			// si controllano numero parametri con quelli passati in input
 			if ( parTypes.size() != parList.size() ) {
-				error.addErrorMessage("Wrong number of parameters in the invocation of the method: "+ownerClass+"."+id +
+				error.addErrorMessage("Wrong number of parameters in the invocation of the method: "+variableIdNode.getId()+"."+id +
 									  "\nExpected " + parTypes.size() + " but found " + parList.size());
 				return error;
 			}
 			// si controllano tipi parametri con quelli passati in input
 			for (int i = 0; i < parList.size(); i++) 
 				if ( !(FOOLlib.isSubtype( (parList.get(i)).typeCheck(), parTypes.get(i)) ) ) {
-					error.addErrorMessage("Wrong type for the "+(i+1)+"-th parameter in the invocation of method: "+ownerClass+"."+id);
+					error.addErrorMessage("Wrong type for the "+(i+1)+"-th parameter in the invocation of method: "+variableIdNode.getId()+"."+id);
 					return error;
 				}
 			return funType.getReturn();
