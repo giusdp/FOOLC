@@ -10,7 +10,14 @@ import type.VoidType;
 
 public class NullNode implements Node {
 
-	@Override
+	private String className;
+
+	/** This is would be like a class constructor but it doesnt set isInitialized to true.*/
+    public NullNode(String className) {
+        this.className = className;
+    }
+
+    @Override
 	public String toPrint(String indent) {
 		// TODO Auto-generated method stub
 		return indent + "NULL\n";
@@ -26,7 +33,7 @@ public class NullNode implements Node {
 	@Override
 	public String codeGeneration() {
 		// TODO Auto-generated method stub
-		return "";
+		return "push 0\n" + "push class"+className+"\n" + "new\n";
 	}
 
     // Non utilizzato

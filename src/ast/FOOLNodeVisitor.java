@@ -164,7 +164,7 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 	public Node visitNewExp(NewExpContext ctx) {
 		ConstructorNode constr;
 
-		ArrayList<Node> args = new ArrayList<Node>();
+		ArrayList<Node> args = new ArrayList<>();
 
 		for (ExpContext exp : ctx.exp())
 			args.add(visit(exp));
@@ -185,9 +185,6 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 		ProgExpNode prog = new ProgExpNode(visit(ctx.exp()));
 		return prog;
 	}
-
-
-
 
 	@Override
 	public Node visitAsmStm(AsmStmContext ctx) {
