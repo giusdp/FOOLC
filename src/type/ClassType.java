@@ -1,7 +1,5 @@
 package type;
 
-import java.util.ArrayList;
-
 public class ClassType extends Type {
 
 	private String id;

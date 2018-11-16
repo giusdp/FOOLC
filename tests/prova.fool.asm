@@ -1,5 +1,8 @@
 ## LET
 
+push 0
+push A_class
+new
 
 ## IN
 
@@ -34,6 +37,12 @@ lfp
 lw
 add
 lw
+push 5
+lfp
+lw
+push 1
+add
+sw
 lfp
 push 0
 lfp

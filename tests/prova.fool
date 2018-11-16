@@ -1,4 +1,4 @@
-class A(int x) { int f() {x; g();} int g() {118; x;}};
+class A(int x) { int f() {x; x = 5; g();} int g() {118; x;}};
 //class B extends A{ void setX(int y) { x = y+x; } };
 
 let

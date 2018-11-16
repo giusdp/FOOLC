@@ -74,22 +74,21 @@ public class VarNode implements Node {
 
         if (expType instanceof ErrorType) return expType;
 
-        if (!(FOOLlib.isSubtype(exp.typeCheck(), type)) && (exp instanceof NullNode) && !isClass) {
-            ErrorType error = new ErrorType();
-            error.addErrorMessage("Incompatible value for variable: " + id);
-            return error;
-
+        if (!(FOOLlib.isSubtype(exp.typeCheck(), type))) {
+            if ((exp instanceof NullNode) && !isClass){
+                ErrorType error = new ErrorType();
+                error.addErrorMessage("Incompatible value for variable: " + id);
+                return error;
+            }
+            else {
+                ((NullNode) exp).setId(((ClassType)entry.getType()).getId());
+            }
         }
         return type;
     }
 
     public String codeGeneration() {
         return exp.codeGeneration();
-    }
-
-
-    public STEntry getEntry() {
-        return entry;
     }
 
 

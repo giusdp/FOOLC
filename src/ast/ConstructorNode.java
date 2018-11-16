@@ -121,8 +121,4 @@ public class ConstructorNode implements Node {
                 + "new\n";
 	}
 
-    public STEntry getEntry() {
-        return entry;
-    }
-
 }
