@@ -1,12 +1,10 @@
-    class A(int x) { int f() {x; x=55;g();} int g() {118; x;}};
-    class B extends A{ void setX(int y) { x = y+x; } };
+class A(int x) { int f() {x; x=55;g();} int g() {118; x;}};
+class B extends A{ void setX(int y) { x = y+x; } };
 
-    let
-        B b = new B(119);
-        int z() let A a = new A(4); in { a.f(); }
-    in
-        z();
-        b.g();
-        //b.f();
-        b.setX(301);
-        b.g();
+let
+    B b = new B(119);
+    A a = null;
+    int z() let A a = new A(4); in { a.f(); }
+in
+    //a = new A(2);
+    a.f();

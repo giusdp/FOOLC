@@ -72,7 +72,7 @@ public class VarNode implements Node {
 	public Type typeCheck () {
 		Type expType = exp.typeCheck();
 		if (expType instanceof ErrorType) return expType;
-		if (! (FOOLlib.isSubtype(exp.typeCheck(),type)) ){ 
+		if (! (FOOLlib.isSubtype(exp.typeCheck(), type)) && !(exp instanceof NullNode) ){
 			ErrorType error = new ErrorType();
 			error.addErrorMessage("Incompatible value for variable: " + id);
 			return error;

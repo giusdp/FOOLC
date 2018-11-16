@@ -9,43 +9,13 @@ new
 ## IN
 
 lfp
-lfp
-push -1
-lfp
-add
-lw
-js
-lfp
-push -2
+push -3
 lfp
 add
 lw
 cts
 lw
-push 2
-add
-lm
-js
-lfp
-push 301
-push -2
-lfp
-add
-lw
-cts
-lw
-push 3
-add
-lm
-js
-lfp
-push -2
-lfp
-add
-lw
-cts
-lw
-push 2
+push 1
 add
 lm
 js

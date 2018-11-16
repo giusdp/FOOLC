@@ -2,10 +2,7 @@ package ast;
 
 import java.util.ArrayList;
 
-import type.ArrowType;
-import type.ClassType;
-import type.ErrorType;
-import type.Type;
+import type.*;
 import util.Environment;
 import util.FOOLlib;
 import util.STEntry;
@@ -59,7 +56,7 @@ public class MethodCallNode implements Node {
 		// Se non lo è si intercetta l'eccezione e si da un Semantic Error
 		try {
 			ownerClass = ((ClassType) varNode.getType()).getId(); // Ottendo il nome/tipo della classe
-		
+
 			ClassNode ownerClassNode = env.getClassMap().get(ownerClass);
 			//Non può succedere in realtà perché quando si va ad instanziare la classe, se non è stata
 			// definita già è errore, quindi molto prima di questo controllo.
@@ -121,14 +118,19 @@ public class MethodCallNode implements Node {
 		 * To be achieved:
 		 */
 
-		ArrowType funType;
-		ErrorType error = new ErrorType();
-		
+        ErrorType error = new ErrorType();
+
+        if (varNode.getType() instanceof VoidType){
+            error.addErrorMessage("Invocation of method "+id+ " on non-initialized class "+ownerClass+".");
+            return error;
+        }
+
+
 		// Siccome il polimorfismo e' stato gia' controllato in classnode, per tutti i metodi
 		// Ora bisogna fare un semplice controllo sui parametri. Questo controllo ora e' identico a CallNode
 		// TODO: classe padre per callnode, methodcallnode, constructornode per evitare questo codice ripetuto 3 volte???
 		if (methodType instanceof ArrowType) {
-			funType = (ArrowType) methodType; 
+            ArrowType funType = (ArrowType) methodType;
 			ArrayList<Type> parTypes = funType.getParList();
 
 			// si controllano numero parametri con quelli passati in input

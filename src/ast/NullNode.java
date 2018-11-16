@@ -22,13 +22,15 @@ public class NullNode implements Node {
 		return new VoidType();
 	}
 
+	// Non utilizzato
 	@Override
 	public String codeGeneration() {
 		// TODO Auto-generated method stub
-		return null;
+		return "";
 	}
 
-	@Override
+    // Non utilizzato
+    @Override
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
 		// TODO Auto-generated method stub
 		return new ArrayList<>();
