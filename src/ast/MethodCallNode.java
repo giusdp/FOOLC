@@ -49,9 +49,6 @@ public class MethodCallNode implements Node {
 
         ArrayList<SemanticError> res = new ArrayList<>(variableIdNode.checkSemantics(env));
 
-        isVarInitialized = ((ClassType) variableIdNode.getEntry().getType()).isInstantiated();
-
-
 		if (!res.isEmpty()) return res;
 		
 		// Dopo i controlli preliminari sulla variabile usata. 
@@ -111,8 +108,8 @@ public class MethodCallNode implements Node {
 			// TODO: Però questo è un controllo di tipi, si dovrebbe fare nel type check non qui
 			res.add(new SemanticError("Var " + variableIdNode.getId() + " is not ClassType, instead it's " + variableIdNode.getType().toPrint("")));
 		}
-		
-		return res;
+
+        return res;
 	}
 
 	@Override
@@ -120,7 +117,7 @@ public class MethodCallNode implements Node {
 
         ErrorType error = new ErrorType();
 
-        if (! isVarInitialized){
+        if (! ((ClassType) variableIdNode.getEntry().getType()).isInstantiated()){
             error.addErrorMessage("Invocation of method "+id+ " on non-initialized class "+ownerClass+".");
             return error;
         }

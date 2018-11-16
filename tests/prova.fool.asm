@@ -1,7 +1,11 @@
 ## LET
 
 push function2
-push 4
+push 34
+push 1
+push A_class
+new
+push 3
 push 1
 push A_class
 new
@@ -31,12 +35,6 @@ lfp
 lw
 add
 lw
-push 5
-lfp
-lw
-push 1
-add
-sw
 lfp
 push 0
 lfp
