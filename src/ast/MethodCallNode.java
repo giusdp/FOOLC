@@ -22,7 +22,6 @@ public class MethodCallNode implements Node {
 
 	protected Type methodType;
 
-
     public MethodCallNode() {
     }
 
@@ -113,17 +112,13 @@ public class MethodCallNode implements Node {
 
 	@Override
 	public Type typeCheck() {
-		/*
-		 * To be achieved:
-		 */
 
         ErrorType error = new ErrorType();
 
-        if (!ownerClassNode.isInitialized()){
+        if (!varNode.isInitializedClass()){
             error.addErrorMessage("Invocation of method "+id+ " on non-initialized class "+ownerClass+".");
             return error;
         }
-
 
 		// Siccome il polimorfismo e' stato gia' controllato in classnode, per tutti i metodi
 		// Ora bisogna fare un semplice controllo sui parametri. Questo controllo ora e' identico a CallNode

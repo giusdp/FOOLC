@@ -72,7 +72,7 @@ public class ConstructorNode implements Node {
 		}
 
 		// ALTRIMENTI se non e' costruttore, allora errore
-		error.addErrorMessage("Invocation of 'new "+ className + "()' but it's not a constructor.");
+		error.addErrorMessage("Invocation of 'new "+ className + "()' but "+className+" is not a constructor.");
 		return error;
 
 	}
@@ -101,7 +101,6 @@ public class ConstructorNode implements Node {
 				res.addAll(arg.checkSemantics(env));
 
 			classNode = env.getClassMap().get(className);
-			classNode.setInitialized();
 
             return res;
         }

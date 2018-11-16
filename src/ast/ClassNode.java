@@ -27,8 +27,6 @@ public class ClassNode implements Node {
 
     private ClassType type;
 
-    private boolean isInitialized = false;
-
     // EREDITARIETA
     private String superClassName = null;
     private ClassNode superClass = null;
@@ -358,11 +356,4 @@ public class ClassNode implements Node {
         }
     }
 
-    public boolean isInitialized() {
-        return isInitialized;
-    }
-
-    public void setInitialized() {
-        isInitialized = true;
-    }
 }

@@ -1,11 +1,6 @@
 ## LET
 
-push function3
-push function4
-push 119
-push 1
-push B_class
-new
+push function2
 push 0
 push A_class
 new
@@ -17,11 +12,11 @@ push 1
 push A_class
 new
 lfp
-push -4
+push -2
 add
 sw
 lfp
-push -4
+push -2
 lfp
 add
 lw
@@ -30,21 +25,6 @@ lw
 push 1
 add
 lm
-js
-push 4
-lfp
-lfp
-push -2
-lfp
-add
-lw
-js
-lfp
-lfp
-push -1
-lfp
-add
-lw
 js
 halt
 
@@ -105,42 +85,6 @@ js
 function2:
 cfp
 lra
-push 1
-lfp
-add
-lw
-push 1
-lfp
-lw
-add
-lw
-add
-lfp
-lw
-push 1
-add
-sw
-sra
-pop
-pop
-sfp
-lra
-js
-
-function3:
-cfp
-lra
-push 5
-pop
-sra
-pop
-sfp
-lra
-js
-
-function4:
-cfp
-lra
 push 4
 push 1
 push A_class
@@ -168,7 +112,3 @@ js
 A_class:
 function0
 function1
-B_class:
-function0
-function1
-function2

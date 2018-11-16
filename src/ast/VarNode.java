@@ -71,19 +71,30 @@ public class VarNode implements Node {
     //valore di ritorno non utilizzato
     public Type typeCheck() {
         Type expType = exp.typeCheck();
+        ErrorType error = new ErrorType();
+        error.addErrorMessage("Incompatible value for variable: " + id);
 
         if (expType instanceof ErrorType) return expType;
 
-        if (!(FOOLlib.isSubtype(exp.typeCheck(), type))) {
-            if ((exp instanceof NullNode) && !isClass){
-                ErrorType error = new ErrorType();
+        if (!isClass) { // Se non è una classe vedi il tipaggio. Se sotto tipo ok altrimenti errore
+            if (!(FOOLlib.isSubtype(exp.typeCheck(), type))) {
+                return error;
+            }
+        }
+        else { // Altrimenti se è una classe ed è sotto tipo: ok
+            if (FOOLlib.isSubtype(exp.typeCheck(), type)){
+                return type;
+            }
+            else if (exp instanceof NullNode) { // oppure se non è sottotipo deve essere null
+                ((NullNode) exp).setId(((ClassType) entry.getType()).getId());
+                return type;
+            }
+            else{ // se non è manco null allora errore
                 error.addErrorMessage("Incompatible value for variable: " + id);
                 return error;
             }
-            else {
-                ((NullNode) exp).setId(((ClassType)entry.getType()).getId());
-            }
         }
+
         return type;
     }
 
