@@ -2,13 +2,9 @@ package ast;
 
 import java.util.ArrayList;
 
-import type.ArrowType;
-import type.ClassType;
-import type.ErrorType;
-import type.Type;
+import type.*;
 import util.Environment;
 import util.FOOLlib;
-import util.STEntry;
 import util.SemanticError;
 
 public class MethodCallNode implements Node {
@@ -16,11 +12,10 @@ public class MethodCallNode implements Node {
 	private String id;
 	private ArrayList<Node> parList;
 
-	private IdNode varNode;
+	private IdNode variableIdNode;
 	private String ownerClass;
 
-	private STEntry ownerClassEntry;
-	private int dtOffset;
+    private int dtOffset;
 	private int nestingLevel;
 
 	protected Type methodType;
@@ -32,7 +27,7 @@ public class MethodCallNode implements Node {
     public MethodCallNode(String m, ArrayList<Node> args, Node obj) {
 		id = m;
 		parList = args;
-		varNode = (IdNode) obj;
+		variableIdNode = (IdNode) obj;
 	}
 
 	@Override
@@ -50,7 +45,8 @@ public class MethodCallNode implements Node {
 	@Override
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
 
-        ArrayList<SemanticError> res = new ArrayList<>(varNode.checkSemantics(env));
+        ArrayList<SemanticError> res = new ArrayList<>(variableIdNode.checkSemantics(env));
+
 		if (!res.isEmpty()) return res;
 		
 		// Dopo i controlli preliminari sulla variabile usata. 
@@ -58,9 +54,9 @@ public class MethodCallNode implements Node {
 		// Siccome  metodo di una classe, la variabile dovrebbe essere una classe
 		// Se non lo è si intercetta l'eccezione e si da un Semantic Error
 		try {
-			ownerClass = ((ClassType) varNode.getType()).getId(); // Ottendo il nome/tipo della classe
-		
-			ClassNode ownerClassNode = env.getClassMap().get(ownerClass);
+			ownerClass = ((ClassType) variableIdNode.getType()).getId(); // Ottendo il nome/tipo della classe
+
+            ClassNode ownerClassNode = env.getClassMap().get(ownerClass);
 			//Non può succedere in realtà perché quando si va ad instanziare la classe, se non è stata
 			// definita già è errore, quindi molto prima di questo controllo.
 			if (ownerClassNode == null){
@@ -101,7 +97,6 @@ public class MethodCallNode implements Node {
 			}
 			
 			nestingLevel = env.getNestLevel(); // Otteniamo il nesting level "a tempo di invocazione"
-			ownerClassEntry = ownerClassNode.stEntry;
 			dtOffset = ownerClassNode.getMethodDTOffset(this.id);
 
             for (Node arg : parList)
@@ -109,40 +104,60 @@ public class MethodCallNode implements Node {
 		}
 		catch (ClassCastException e) {
 			// TODO: Però questo è un controllo di tipi, si dovrebbe fare nel type check non qui
-			res.add(new SemanticError("Var " + varNode.getId() + " is not ClassType, instead it's " + varNode.getType().toPrint("")));
+			res.add(new SemanticError("Var " + variableIdNode.getId() + " is not ClassType, instead it's " + variableIdNode.getType().toPrint("")));
 		}
-		
-		return res;
+
+        return res;
 	}
 
 	@Override
 	public Type typeCheck() {
-		/*
-		 * To be achieved:
-		 */
 
-		ArrowType funType;
-		ErrorType error = new ErrorType();
-		
+        ErrorType error = new ErrorType();
+
+
+        boolean isVarInitialized = ((ClassType) variableIdNode.getEntry().getType()).isInstantiated();
+
+        if (! isVarInitialized) {
+            error.addErrorMessage("Invocation of method "+id+ " on non-initialized variable "+variableIdNode.getId()+".");
+            return error;
+        }
+
 		// Siccome il polimorfismo e' stato gia' controllato in classnode, per tutti i metodi
 		// Ora bisogna fare un semplice controllo sui parametri. Questo controllo ora e' identico a CallNode
 		// TODO: classe padre per callnode, methodcallnode, constructornode per evitare questo codice ripetuto 3 volte???
 		if (methodType instanceof ArrowType) {
-			funType = (ArrowType) methodType; 
+            ArrowType funType = (ArrowType) methodType;
 			ArrayList<Type> parTypes = funType.getParList();
 
 			// si controllano numero parametri con quelli passati in input
 			if ( parTypes.size() != parList.size() ) {
-				error.addErrorMessage("Wrong number of parameters in the invocation of the method: "+ownerClass+"."+id +
+				error.addErrorMessage("Wrong number of parameters in the invocation of the method: "+variableIdNode.getId()+"."+id +
 									  "\nExpected " + parTypes.size() + " but found " + parList.size());
 				return error;
 			}
 			// si controllano tipi parametri con quelli passati in input
-			for (int i = 0; i < parList.size(); i++) 
-				if ( !(FOOLlib.isSubtype( (parList.get(i)).typeCheck(), parTypes.get(i)) ) ) {
-					error.addErrorMessage("Wrong type for the "+(i+1)+"-th parameter in the invocation of method: "+ownerClass+"."+id);
-					return error;
-				}
+			for (int i = 0; i < parList.size(); i++) {
+
+                Type inputParType = parList.get(i).typeCheck();
+                Type argType = parTypes.get(i);
+
+                if (inputParType instanceof VoidType ||
+                        (inputParType instanceof ClassType && !((ClassType) inputParType).isInstantiated())) {
+                    error.addErrorMessage("Cannot pass 'null' to method "+variableIdNode.getId() + "." + id+". Null at "+ (i + 1) +"-th parameter.");
+                    return error;
+                    //((ClassType) fieldType).setInstantiated(false);
+                }
+                if (inputParType instanceof ErrorType) return inputParType;
+                if (argType instanceof ErrorType) return argType;
+
+                if (!(FOOLlib.isSubtype(inputParType, argType))) {
+                    error.addErrorMessage("Wrong type for the " + (i + 1) + "-th parameter in the invocation of method: " + variableIdNode.getId() + "." + id);
+                    return error;
+                }
+            }
+
+
 			return funType.getReturn();
 		}
 
@@ -161,13 +176,13 @@ public class MethodCallNode implements Node {
 		    }
 		    
 		    StringBuilder getAR= new StringBuilder();
-			for (int i=0; i< nestingLevel - varNode.getEntry().getNestLevel(); i++) {
+			for (int i = 0; i< nestingLevel - variableIdNode.getEntry().getNestLevel(); i++) {
 				getAR.append("lw\n");
 			}
 		    
 			return "lfp\n" + //CL
 					parametersCodeString +
-					"push " + varNode.getEntry().getOffset() + "\n" + //metto offset sullo stack
+					"push " + variableIdNode.getEntry().getOffset() + "\n" + //metto offset sullo stack
 			       "lfp\n" + 
 					getAR +
 				   "add\n" + 

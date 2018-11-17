@@ -79,8 +79,9 @@ public class VirtualMachine {
 				break;
 			case SVMParser.STOREW: //
 				address = pop();
-				System.out.println("sw " + address);
-                setMemory(address, pop());
+				int v = pop();
+				System.out.println("sw " + address + " " + v);
+                setMemory(address, v);
                 break;
 			case SVMParser.LOADW: //
 				address = pop();
