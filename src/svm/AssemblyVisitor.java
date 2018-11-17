@@ -43,11 +43,11 @@ import svm.SVMParser.SubContext;
 
 public class AssemblyVisitor extends SVMBaseVisitor<AssemblyNode> {
 
-	private HashMap<String,Integer> labelAdd = new HashMap<String,Integer>();
-    private HashMap<Integer,String> labelRef = new HashMap<Integer,String>();
+	private HashMap<String,Integer> labelAdd = new HashMap<>();
+    private HashMap<Integer,String> labelRef = new HashMap<>();
     private int codeIndex = 0;
     List<AssemblyNode> assemblyNodes = new ArrayList<>();
-	
+
 	public List<AssemblyNode> buildCodeList(AssemblyContext ctx) {
 		
 		ctx.instruction().forEach(instrCtx -> {

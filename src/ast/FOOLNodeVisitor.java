@@ -405,7 +405,7 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 	@Override
 	public Node visitVarExp(VarExpContext ctx) {
 
-		return new IdNode(ctx.ID().getText());
+		return new IdNode(ctx.ID().getText(), ctx.MINUS() !=null, ctx.NOT() != null);
 	}
 
 	@Override

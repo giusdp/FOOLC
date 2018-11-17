@@ -2,9 +2,7 @@ package ast;
 
 import java.util.ArrayList;
 
-import type.ArrowType;
-import type.ErrorType;
-import type.Type;
+import type.*;
 import util.Environment;
 import util.SemanticError;
 import util.STEntry;
@@ -15,8 +13,17 @@ public class IdNode implements Node {
     private STEntry entry;
     private int nestinglevel;
 
+    private boolean minus = false, not = false;
+
+
     public IdNode(String i) {
         id = i;
+    }
+
+    public IdNode(String i, boolean minus, boolean not) {
+        id = i;
+        this.minus = minus;
+        this.not = not;
     }
 
     public String getId() {
@@ -53,11 +60,24 @@ public class IdNode implements Node {
     }
 
     public Type typeCheck() {
+        ErrorType error = new ErrorType();
         if (entry.getType() instanceof ArrowType) {
-            ErrorType error = new ErrorType();
             error.addErrorMessage("Wrong usage of function identifier: " + id);
             return error;
         }
+
+        if (minus && !(entry.getType() instanceof IntType)){
+            error.addErrorMessage("Wrong usage of minus symbol. Can't negate variable: "+
+                    id+" of type "+entry.getType().toPrint(""));
+            return error;
+        }
+
+        if (not && !(entry.getType() instanceof BoolType)){
+            error.addErrorMessage("Wrong usage of not symbol. Can't negate variable: "+
+                    id+" of type "+entry.getType().toPrint(""));
+            return error;
+        }
+
         return entry.getType();
     }
 
@@ -66,11 +86,19 @@ public class IdNode implements Node {
         for (int i = 0; i < nestinglevel - entry.getNestLevel(); i++)
             getAR.append("lw\n");
 
-        return "push " + entry.getOffset() + "\n" + //metto offset sullo stack
+        String code =  "push " + entry.getOffset() + "\n" + //metto offset sullo stack
                 "lfp\n" + getAR + //risalgo la catena statica
                 "add\n" +
                 "lw\n"; //carico sullo stack il valore all'indirizzo ottenuto
+        if (minus){
+            code += "push -1\n" + "mult\n";
+        }
+        else if (not){
+            String neg = "push 1\n";
+            code = neg + code + "sub\n";
+        }
 
+        return code;
     }
 
     public Type getType() {

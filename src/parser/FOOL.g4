@@ -50,7 +50,7 @@ value  : (MINUS)? INTEGER          #intVal
        | (NOT)? ( TRUE | FALSE ) #boolVal
        | LPAR exp RPAR    #baseExp
        | IF LPAR cond=exp RPAR THEN CLPAR thenBranch=exp SEMIC CRPAR ELSE CLPAR elseBranch=exp SEMIC CRPAR  #ifExp
-       | ID                                                 #varExp
+       | (MINUS|NOT)? ID                                    #varExp
        | ID ( LPAR (exp (COMMA exp)* )? RPAR )              #funExp
        | ID DOT ID ( LPAR (exp (COMMA exp)* )? RPAR )	    #methodExp
        | NEW ID (LPAR (exp (COMMA exp)*)? RPAR)   		    #newExp
