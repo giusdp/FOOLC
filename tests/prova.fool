@@ -1,13 +1,10 @@
-//ShouldBe STError
+class A;
+class B extends A;
+class C extends A;
+class D extends B;
+class E extends C ;
+
 let
-    int a = 3;
-    int f(int x)
-        let
-            int x  = x;
-        in
-            {
-                x;
-            }
+    A test = if (true) then { new D(); } else { new E(); };
 in
-    f(a);
-//Variabile 'x' già dichiarata!
+    1;

@@ -66,8 +66,10 @@ public class IfNode implements Node {
 
         if (FOOLlib.isSubtype(t, e))
             return e;
-        if (FOOLlib.isSubtype(e, t))
+        else if (FOOLlib.isSubtype(e, t))
             return t;
+
+        // TODO Se t ed e sono di tipo classe, si deve controllare se abbiano una classe base in comune
 
         error.addErrorMessage("Incompatible types in then else branches.");
         return error;

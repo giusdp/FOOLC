@@ -2,12 +2,16 @@ class A (int x){
     int getA()
         let
             int y = x + 23;
-        in
-        y;
+        in{
+            y;
+        }
 };
 class B extends A{
-    int getA() x;
+    int getA() {
+        x;
+     }
 };
+
 let
     int x = 5;
     bool t = false;
@@ -18,5 +22,6 @@ let
 in
     x = if(t)then{14;}else{12;};
     x = a.getA();
+    x;
 
-//cella di x -> 34
+// 34

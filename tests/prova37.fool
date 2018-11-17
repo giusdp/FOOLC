@@ -1,5 +1,7 @@
-class Somma(){
-    int add(int a, int b) a+b;
+class Somma{
+    int add(int a, int b) {
+        a+b;
+    }
 };
 
 let
@@ -8,3 +10,4 @@ let
     Somma s = new Somma();
 in
     x = s.add(4,5);
+    x;

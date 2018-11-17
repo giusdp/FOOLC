@@ -2,11 +2,15 @@ class W;
 class Z extends W;
 
 class A{
-    W getW(Z z) new W();
+    W getW(Z z) {
+        new W();
+    }
 };
 
 class B extends A{
-    Z getZ(W w) new Z();
+    Z getZ(W w) {
+        new Z();
+    }
 };
 
 let

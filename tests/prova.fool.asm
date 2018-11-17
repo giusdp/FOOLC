@@ -1,15 +1,34 @@
 ## LET
 
 push 0
+push A_class
+new
+push 0
 push B_class
 new
 push 0
-push A_class
+push W_class
 new
-
-## IN
-
 lfp
+push -3
+lfp
+add
+lw
+push -2
+lfp
+add
+lw
+cts
+lw
+push 2
+add
+lm
+js
+lfp
+push -4
+lfp
+add
+lw
 push -1
 lfp
 add
@@ -20,18 +39,10 @@ push 1
 add
 lm
 js
-lfp
-push -2
-lfp
-add
-lw
-cts
-lw
+
+## IN
+
 push 1
-add
-lm
-js
-add
 halt
 
 ## Functions code and Dispatch Table
@@ -39,9 +50,12 @@ halt
 function0:
 cfp
 lra
-push 20
+push 0
+push W_class
+new
 srv
 sra
+pop
 pop
 sfp
 lrv
@@ -51,55 +65,12 @@ js
 function1:
 cfp
 lra
-lfp
 push 0
-lfp
-add
-lw
-cts
-lw
-push 1
-add
-lm
-js
+push Z_class
+new
 srv
 sra
 pop
-pop
-sfp
-lrv
-lra
-js
-
-function2:
-cfp
-lra
-push 10
-srv
-sra
-pop
-sfp
-lrv
-lra
-js
-
-function3:
-cfp
-lra
-lfp
-push 1
-push 0
-lfp
-add
-lw
-cts
-lw
-push 2
-add
-lm
-js
-srv
-sra
 pop
 sfp
 lrv
@@ -108,8 +79,8 @@ js
 
 A_class:
 function0
-function1
 B_class:
-function2
+function0
 function1
-function3
+W_class:
+Z_class:

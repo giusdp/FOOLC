@@ -80,6 +80,7 @@ public class CallNode implements Node {
                         ". \n Expected " + parTypes.size() + " but found " + parList.size());
                 return error;
             }
+
             for (int i = 0; i < parList.size(); i++) {
 
                 Type inputParType = parList.get(i).typeCheck();
@@ -98,6 +99,7 @@ public class CallNode implements Node {
                     return error;
                 }
             }
+
             return funType.getReturn();
         }
 
