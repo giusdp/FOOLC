@@ -1,12 +1,11 @@
 ## LET
 
 push function3
-push function4
 push 34
 push 1
 push A_class
 new
-push -5
+push -4
 lfp
 add
 lw
@@ -17,7 +16,7 @@ new
 ## IN
 
 lfp
-push -6
+push -5
 lfp
 add
 lw
@@ -50,8 +49,7 @@ js
 function1:
 cfp
 lra
-push 98
-push 1
+push 0
 push A_class
 new
 lfp
@@ -102,34 +100,6 @@ lra
 js
 
 function3:
-cfp
-lra
-push 0
-push A_class
-new
-lfp
-push -2
-lfp
-add
-lw
-lfp
-lw
-push -2
-lfp
-lw
-add
-lw
-js
-srv
-pop
-sra
-pop
-sfp
-lrv
-lra
-js
-
-function4:
 cfp
 lra
 lfp

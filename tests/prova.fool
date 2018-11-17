@@ -1,13 +1,13 @@
 class A(int x) { int pippo() {x;} };
 class Z(A a) {
-        int execute() let A ciao = new A(98); in { lol(ciao); }
+        int execute() let A ciao = null; in { lol(ciao); }
         int lol(A aa) { aa.pippo();}
         };
 
 let
     A objA = new A(34);
     Z objZ = new Z(objA);
-    int f() let A a =null; in {g(null);}
+    //int f() let A a =null; in { objZ.lol(a);}
     int g(A a){ a.pippo();}
 in
     objZ.execute();

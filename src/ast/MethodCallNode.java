@@ -137,11 +137,27 @@ public class MethodCallNode implements Node {
 				return error;
 			}
 			// si controllano tipi parametri con quelli passati in input
-			for (int i = 0; i < parList.size(); i++) 
-				if ( !(FOOLlib.isSubtype( (parList.get(i)).typeCheck(), parTypes.get(i)) ) ) {
-					error.addErrorMessage("Wrong type for the "+(i+1)+"-th parameter in the invocation of method: "+variableIdNode.getId()+"."+id);
-					return error;
-				}
+			for (int i = 0; i < parList.size(); i++) {
+
+                Type inputParType = parList.get(i).typeCheck();
+                Type argType = parTypes.get(i).typeCheck();
+
+                if (inputParType instanceof VoidType ||
+                        (inputParType instanceof ClassType && !((ClassType) inputParType).isInstantiated())) {
+                    error.addErrorMessage("Cannot pass 'null' to method "+variableIdNode.getId() + "." + id+". Null at "+ (i + 1) +"-th parameter.");
+                    return error;
+                    //((ClassType) fieldType).setInstantiated(false);
+                }
+                if (inputParType instanceof ErrorType) return inputParType;
+                if (argType instanceof ErrorType) return argType;
+
+                if (!(FOOLlib.isSubtype(inputParType, argType))) {
+                    error.addErrorMessage("Wrong type for the " + (i + 1) + "-th parameter in the invocation of method: " + variableIdNode.getId() + "." + id);
+                    return error;
+                }
+            }
+
+
 			return funType.getReturn();
 		}
 

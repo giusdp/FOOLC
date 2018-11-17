@@ -2,10 +2,7 @@ package ast;
 
 import java.util.ArrayList;
 
-import type.ArrowType;
-import type.ClassType;
-import type.ErrorType;
-import type.Type;
+import type.*;
 import util.Environment;
 import util.SemanticError;
 import util.FOOLlib;
@@ -84,7 +81,19 @@ public class CallNode implements Node {
                 return error;
             }
             for (int i = 0; i < parList.size(); i++) {
-                if (!(FOOLlib.isSubtype((parList.get(i)).typeCheck(), parTypes.get(i)))) {
+
+                Type inputParType = parList.get(i).typeCheck();
+                Type argType = parTypes.get(i).typeCheck();
+                if (inputParType instanceof VoidType ||
+                        (inputParType instanceof ClassType && !((ClassType) inputParType).isInstantiated())) {
+                    error.addErrorMessage("Cannot pass 'null' to function "+id+". Null at "+ (i + 1) +"-th parameter.");
+                    return error;
+                    //((ClassType) fieldType).setInstantiated(false);
+                }
+                if (inputParType instanceof ErrorType) return inputParType;
+                if (argType instanceof ErrorType) return argType;
+
+                if (!(FOOLlib.isSubtype(inputParType, argType))) {
                     error.addErrorMessage("Wrong type for the " + (i + 1) + "-th parameter in the invocation of function: " + id);
                     return error;
                 }
