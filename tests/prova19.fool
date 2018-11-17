@@ -1,11 +1,16 @@
 let
-    int f(int x)
+    int f(int x){
         if(x<1)
             then { get(5); }
             else { g(x-3); };
+    }
 
-    int g(int x) f(x);
-    int get(int n) n;
+    int g(int x) {
+        f(x);
+    }
+    int get(int n) {
+        n;
+    }
 
 in
     g(20);

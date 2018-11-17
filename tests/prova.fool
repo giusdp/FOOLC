@@ -1,12 +1,8 @@
 let
-	int addMax50(int x, int y)
-		let
-		    int z = x+y;
-		in
-		    {
-		        if (z <= 50) then {z;} else {50;};
-		    }
+    int x = 5;
+    int y = 3;
+    int z = 2;
 in
-    addMax50(45, -4);
+    x+y*z;
 
-    // 41
+//11

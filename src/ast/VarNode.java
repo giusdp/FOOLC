@@ -93,7 +93,6 @@ public class VarNode implements Node {
                 return type;
             }
             else{ // se non è manco null allora errore
-                error.addErrorMessage("Incompatible value for variable: " + id);
                 return error;
             }
         }

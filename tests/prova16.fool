@@ -5,7 +5,9 @@ let
         let
             int x = b;
         in
-            x == y;
+            {
+                x == y;
+            }
 in
     if(f(y,8)) then { false; } else { 10; };
 
