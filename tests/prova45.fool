@@ -1,5 +1,7 @@
 class A{
-    int prodotto(int a, int b) a*b;
+    int prodotto(int a, int b) {
+        a*b;
+    }
 };
 let
     bool b = true;

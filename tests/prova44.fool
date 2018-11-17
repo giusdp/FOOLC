@@ -3,8 +3,9 @@ class A extends Z;
 class B extends A;
 class C extends A ;
 let
-    C f(A a, A b, A c)
+    C f(A a, A b, A c){
         new A();
+    }
     A a = new A();
     B b = new B();
     C c = new C();

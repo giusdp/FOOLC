@@ -1,10 +1,13 @@
 class A{
-    int get(int x) x;
+    int get(int x) {
+        x;
+    }
 };
 let
     A a = new A();
 in
     a.get(i);
+
 //Variabile 'i' non dichiarata!
 
 
