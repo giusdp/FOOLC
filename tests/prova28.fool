@@ -1,9 +1,15 @@
 class A(int a, int b){
-    int getA() a;
-    int getB() b;
+    int getA() {
+        a;
+    }
+    int getB() {
+        b;
+    }
 };
 
 let
     A a = new A(1,5);
 in
     a.getA() + a.getB();
+
+// 6

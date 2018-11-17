@@ -5,7 +5,9 @@ let
         let
             int x  = x;
         in
-            x;
+            {
+                x;
+            }
 in
     f(a);
-//Variabile 'pluto' già dichiarata!
+//Variabile 'x' già dichiarata!
