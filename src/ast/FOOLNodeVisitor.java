@@ -350,7 +350,8 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 		// ProgNode -> IntNode
 
 		//there is no need to perform a check here, the lexer ensures this text is an int
-		return new IntNode(Integer.parseInt(ctx.INTEGER().getText()));
+		int val = Integer.parseInt(ctx.INTEGER().getText());
+		return new IntNode(ctx.MINUS() == null ? val : -val);
 	}
 
 	@Override

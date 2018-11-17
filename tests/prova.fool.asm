@@ -1,70 +1,61 @@
 ## LET
 
-push 0
-push Z_class
-new
+push function0
 
 ## IN
 
+lfp
+push -4
+push 45
 lfp
 push -1
 lfp
 add
 lw
-cts
-lw
-push 1
-add
-lm
 js
 halt
-
-## Functions code and Dispatch Table
 
 function0:
 cfp
 lra
 push 1
 lfp
-lw
 add
 lw
-srv
-sra
-pop
-sfp
-lrv
-lra
-js
-
-function1:
-cfp
-lra
-push 118
-push 1
-push A_class
-new
+push 2
 lfp
+add
+lw
+add
 push -2
 lfp
 add
 lw
-cts
-lw
+push 50
+bleq label2
+push 0
+b label3
+label2:
 push 1
+label3:
+push 1
+beq label0
+push 50
+b label1
+label0:
+push -2
+lfp
 add
-lm
-js
+lw
+label1:
 srv
 pop
 sra
+pop
+pop
 pop
 sfp
 lrv
 lra
 js
 
-A_class:
-function0
-Z_class:
-function1

@@ -1,4 +1,4 @@
 let 
-	bool g() true;
+	bool g() {true;}
 in
 	g();

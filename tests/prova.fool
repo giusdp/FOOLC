@@ -1,9 +1,12 @@
-class A(int x) { int pippo() {x;} };
-class Z{ int g() let A aa = new A(118); in { aa.pippo();} };
-
 let
-    Z objZ = new Z();
+	int addMax50(int x, int y)
+		let
+		    int z = x+y;
+		in
+		    {
+		        if (z <= 50) then {z;} else {50;};
+		    }
 in
-    objZ.g();
+    addMax50(45, -4);
 
-
+    // 41
