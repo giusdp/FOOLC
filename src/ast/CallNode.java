@@ -83,7 +83,7 @@ public class CallNode implements Node {
             for (int i = 0; i < parList.size(); i++) {
 
                 Type inputParType = parList.get(i).typeCheck();
-                Type argType = parTypes.get(i).typeCheck();
+                Type argType = parTypes.get(i);
                 if (inputParType instanceof VoidType ||
                         (inputParType instanceof ClassType && !((ClassType) inputParType).isInstantiated())) {
                     error.addErrorMessage("Cannot pass 'null' to function "+id+". Null at "+ (i + 1) +"-th parameter.");

@@ -121,7 +121,7 @@ public class NestedMethodCallNode extends MethodCallNode {
             // si controllano tipi parametri con quelli passati in input
             for (int i = 0; i < parList.size(); i++) {
                 Type inputParType = parList.get(i).typeCheck();
-                Type argType = parTypes.get(i).typeCheck();
+                Type argType = parTypes.get(i);
 
                 if (inputParType instanceof VoidType ||
                         (inputParType instanceof ClassType && !((ClassType) inputParType).isInstantiated())) {
@@ -133,7 +133,7 @@ public class NestedMethodCallNode extends MethodCallNode {
                 if (argType instanceof ErrorType) return argType;
 
                 if (!(FOOLlib.isSubtype(inputParType, argType))) {
-                    error.addErrorMessage("Wrong type for the " + (i + 1) + "-th parameter in the invocation of method: " + id + " inside  class" + ownerClass);
+                    error.addErrorMessage("Wrong type for the " + (i + 1) + "-th parameter in the invocation of method: " + id + " inside class " + ownerClass);
                     return error;
                 }
             }

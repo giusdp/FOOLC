@@ -140,7 +140,7 @@ public class MethodCallNode implements Node {
 			for (int i = 0; i < parList.size(); i++) {
 
                 Type inputParType = parList.get(i).typeCheck();
-                Type argType = parTypes.get(i).typeCheck();
+                Type argType = parTypes.get(i);
 
                 if (inputParType instanceof VoidType ||
                         (inputParType instanceof ClassType && !((ClassType) inputParType).isInstantiated())) {
