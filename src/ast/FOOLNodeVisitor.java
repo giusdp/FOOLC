@@ -47,7 +47,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.antlr.v4.runtime.tree.TerminalNode;
 
 public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 

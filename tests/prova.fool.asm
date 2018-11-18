@@ -8,9 +8,17 @@ new
 
 ## IN
 
-push 12
-push 12
-mult
+lfp
+push -2
+lfp
+add
+lw
+cts
+lw
+push 1
+add
+lm
+js
 print
 halt
 
