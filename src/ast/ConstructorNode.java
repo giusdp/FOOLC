@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import type.ClassType;
 import type.ErrorType;
 import type.Type;
+import type.VoidType;
 import util.Environment;
 import util.FOOLlib;
 import util.STEntry;
@@ -47,12 +48,6 @@ public class ConstructorNode implements Node {
 
 			// Bisogna controllare che i tipi degli argomenti (parList) siano subtype dei campi della classe
 			// I campi della classe sono da considerarsi come parametri
-
-//			for (int i=0; i<classType.getFieldTypeList().size(); i++) 
-//				System.out.println(classType.getFieldTypeList().get(i).toPrint(""));
-
-
-
 			ArrayList<Node> fields = classNode.getFieldList();
 			if ( !(fields.size() == parList.size()) ) {
 				error.addErrorMessage("Wrong number of parameters in the invocation of the constructor for "+ className +
@@ -61,7 +56,17 @@ public class ConstructorNode implements Node {
 			} 
 
 			for (int i=0; i<parList.size(); i++) {
-                if (!(FOOLlib.isSubtype((parList.get(i)).typeCheck(), fields.get(i).typeCheck()))) {
+				Type parType = parList.get(i).typeCheck();
+				Type fieldType = fields.get(i).typeCheck();
+                if (parType instanceof VoidType ||
+                        (parType instanceof ClassType && !((ClassType) parType).isInstantiated())) {
+                    error.addErrorMessage("Cannot pass 'null' to constructor. Null at "+ (i + 1) +"-th parameter.");
+                    return error;
+                    //((ClassType) fieldType).setInstantiated(false);
+                }
+                if (parType instanceof ErrorType) return parType;
+                if (fieldType instanceof ErrorType) return fieldType;
+                if (!(FOOLlib.isSubtype(parType, fieldType))) {
                     error.addErrorMessage("Wrong type for the " + (i + 1) + "-th parameter in the invocation of the constructor for " + className);
                     return error;
                 }
@@ -72,7 +77,7 @@ public class ConstructorNode implements Node {
 		}
 
 		// ALTRIMENTI se non e' costruttore, allora errore
-		error.addErrorMessage("Invocation of 'new "+ className + "()' but it's not a constructor.");
+		error.addErrorMessage("Invocation of 'new "+ className + "()' but "+className+" is not a constructor.");
 		return error;
 
 	}
@@ -96,12 +101,11 @@ public class ConstructorNode implements Node {
 		else{
 			this.entry = tmp;
 			this.nestingLevel = env.getNestLevel();
-//			tmp.setOffset(tmp.getOffset() + env.decClassOffset());
-			for(Node arg : parList)
-				res.addAll(arg.checkSemantics(env));
 
-			classNode = env.getClassMap().get(className);
-
+			for(Node arg : parList) {
+                res.addAll(arg.checkSemantics(env));
+            }
+            classNode = env.getClassMap().get(className);
             return res;
         }
 	}
@@ -119,9 +123,5 @@ public class ConstructorNode implements Node {
                 + "push " + className + "_class\n"
                 + "new\n";
 	}
-
-    public STEntry getEntry() {
-        return entry;
-    }
 
 }

@@ -33,7 +33,7 @@ public class IdNode implements Node {
     public ArrayList<SemanticError> checkSemantics(Environment env) {
 
         //create result list
-        ArrayList<SemanticError> res = new ArrayList<SemanticError>();
+        ArrayList<SemanticError> res = new ArrayList<>();
 
         int j = env.getNestLevel();
         STEntry tmp = null;
@@ -80,4 +80,5 @@ public class IdNode implements Node {
     public STEntry getEntry() {
         return entry;
     }
+
 }

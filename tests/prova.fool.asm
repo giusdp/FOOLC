@@ -32,19 +32,7 @@ lfp
 lw
 add
 lw
-push 55
-lfp
-lw
-push 1
-add
-sw
-push 1
-lfp
-lw
-add
-lw
 srv
-pop
 sra
 pop
 sfp
