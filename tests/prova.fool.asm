@@ -1,16 +1,15 @@
 ## LET
 
 push 12
+push 3
+push 1
+push B_class
+new
 
 ## IN
 
-push -1
-lfp
-add
-lw
-push 6
-push 2
-mult
+push 12
+push 12
 mult
 print
 halt
@@ -46,4 +45,6 @@ lra
 js
 
 A_class:
+function0
+B_class:
 function0

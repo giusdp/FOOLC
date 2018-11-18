@@ -47,6 +47,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.tree.TerminalNode;
 
 public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 
@@ -189,7 +190,9 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 	}
 
 	public Node visitPrint(PrintContext ctx) {
-		return new PrintNode(visit(ctx.exp()));
+		String variableID = (ctx.ID() == null) ? "" : ctx.ID().getText();
+		Node expNode = (ctx.exp() == null) ? null : visit(ctx.exp());
+		return new PrintNode(expNode, variableID);
 	}
 
 	@Override

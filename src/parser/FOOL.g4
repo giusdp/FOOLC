@@ -31,7 +31,7 @@ type   : INT
        | ID
        ;
        
-print  : PRINT LPAR exp  RPAR
+print  : PRINT LPAR (ID | exp) RPAR
        ;
     
 exp    : left=term ((PLUS | MINUS) right=exp)?
