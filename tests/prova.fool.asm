@@ -1,13 +1,15 @@
 ## LET
 
-push 0
-push Z_class
+push 12
+push 3
+push 1
+push B_class
 new
 
 ## IN
 
 lfp
-push -1
+push -2
 lfp
 add
 lw
@@ -17,6 +19,7 @@ push 1
 add
 lm
 js
+print
 halt
 
 ## Functions code and Dispatch Table
@@ -37,34 +40,7 @@ lrv
 lra
 js
 
-function1:
-cfp
-lra
-push 118
-push 1
-push A_class
-new
-lfp
-push -2
-lfp
-add
-lw
-cts
-lw
-push 1
-add
-lm
-js
-srv
-pop
-sra
-pop
-sfp
-lrv
-lra
-js
-
 A_class:
 function0
-Z_class:
-function1
+B_class:
+function0

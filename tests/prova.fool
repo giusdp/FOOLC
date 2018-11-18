@@ -1,9 +1,9 @@
-class A(int x) { int pippo() {x;} };
-class Z{ int g() let A aa = new A(118); in { aa.pippo();} };
-
+class A(int x) { int f() {x; x=55;x;} };
+class B extends A;
+//class C extends B;
 let
-    Z objZ = new Z();
+	int ba = 12;
+	B a = new B(3);
 in
-    objZ.g();
-
-
+    print(ba);
+    //print(a);

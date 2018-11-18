@@ -5,8 +5,8 @@ grammar FOOL;
  *------------------------------------------------------------------*/
 
 prog   : exp SEMIC                                                  #singleExp
-       | let ( exp SEMIC | stms )+                                  #letInExp
-       | (classdec)+ ( let ( exp SEMIC | stms )+ )?                 #classExp
+       | let ( exp SEMIC | print SEMIC | stms )+                    #letInExp
+       | (classdec)+ ( let ( exp SEMIC | print SEMIC | stms )+ )?   #classExp
        ;
 
 classdec  : CLASS ID (EXTENDS ID)? (LPAR vardec (COMMA vardec)* RPAR)? (CLPAR (fun)+ CRPAR)? SEMIC;
@@ -19,7 +19,7 @@ vardec : type ID ;
 
 varasm : vardec ASM exp SEMIC ;
 
-fun    : type ID LPAR ( vardec ( COMMA vardec)* )? RPAR (letVar)? CLPAR (exp SEMIC|stms)+ CRPAR ;
+fun    : type ID LPAR ( vardec ( COMMA vardec)* )? RPAR (letVar)? CLPAR (exp SEMIC|print SEMIC|stms)+ CRPAR ;
 
 dec    : varasm  #varAssignment
        | fun     #funDeclaration
@@ -29,6 +29,9 @@ type   : INT
        | BOOL 
        | VOID
        | ID
+       ;
+       
+print  : PRINT LPAR (ID | exp) RPAR
        ;
     
 exp    : left=term ((PLUS | MINUS) right=exp)?
