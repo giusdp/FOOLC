@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 class A(int a){
     int getA() {
         a;
