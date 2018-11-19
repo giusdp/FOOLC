@@ -105,7 +105,7 @@ public class ClassNode implements Node {
                 res.add(new SemanticError("Base class " + superClassName + " is not declared"));
                 return res;
             } else {
-                setSuperClass(env.getClassMap().get(superClassName));
+                setSuperClass(Environment.getClassMap().get(superClassName));
 
 
                 ClassNode sc = superClass;

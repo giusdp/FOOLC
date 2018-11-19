@@ -64,6 +64,7 @@ public class ConstructorNode implements Node {
                     return error;
                     //((ClassType) fieldType).setInstantiated(false);
                 }
+
                 if (parType instanceof ErrorType) return parType;
                 if (fieldType instanceof ErrorType) return fieldType;
                 if (!(FOOLlib.isSubtype(parType, fieldType))) {
@@ -105,7 +106,7 @@ public class ConstructorNode implements Node {
 			for(Node arg : parList) {
                 res.addAll(arg.checkSemantics(env));
             }
-            classNode = env.getClassMap().get(className);
+            classNode = Environment.getClassMap().get(className);
             return res;
         }
 	}

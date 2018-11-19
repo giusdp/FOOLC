@@ -51,13 +51,13 @@ public class FOOLlib {
                 // Altrimenti controlliamo la classe padre di a se ha lo stesso ID di b
                 // Per controllare la classe padre serve accedere alla classMap in env
 
-                String parent = env.getClassMap().get(typeA.getId()).getSuperClassName();
+                String parent = Environment.getClassMap().get(typeA.getId()).getSuperClassName();
 
                 while (parent != null) { // sali di livello nell'albero della ereditarieta'
                     if ((parent).equals(typeB.getId()))
                         return true; // se la classe parent e' la stessa classe di b, c'e' subtyping
                     else
-                        parent = env.getClassMap().get(parent).getSuperClassName(); // altrimenti accedi alla classe padre di a
+                        parent = Environment.getClassMap().get(parent).getSuperClassName(); // altrimenti accedi alla classe padre di a
                 }
             }
         }

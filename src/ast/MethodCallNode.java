@@ -56,7 +56,7 @@ public class MethodCallNode implements Node {
 		try {
 			ownerClass = ((ClassType) variableIdNode.getType()).getId(); // Ottendo il nome/tipo della classe
 
-            ClassNode ownerClassNode = env.getClassMap().get(ownerClass);
+            ClassNode ownerClassNode = Environment.getClassMap().get(ownerClass);
 			//Non può succedere in realtà perché quando si va ad instanziare la classe, se non è stata
 			// definita già è errore, quindi molto prima di questo controllo.
 			if (ownerClassNode == null){

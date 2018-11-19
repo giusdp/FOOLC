@@ -16,8 +16,6 @@ public class IfNode implements Node {
     private Node th;
     private Node el;
 
-    private Environment env;
-
     public IfNode(Node c, Node t, Node e) {
 
         cond = c;
@@ -42,8 +40,6 @@ public class IfNode implements Node {
 
         res.addAll(th.checkSemantics(env));
         res.addAll(el.checkSemantics(env));
-
-        this.env = env;
 
         return res;
     }
@@ -76,8 +72,8 @@ public class IfNode implements Node {
 
         // Controllo di classe padre comune
         if (t instanceof ClassType && e instanceof ClassType){
-            ClassNode thenClass = env.getClassMap().get(((ClassType) t).getId());
-            ClassNode elseClass = env.getClassMap().get(((ClassType) e).getId());
+            ClassNode thenClass = Environment.getClassMap().get(((ClassType) t).getId());
+            ClassNode elseClass = Environment.getClassMap().get(((ClassType) e).getId());
 
             ClassNode thenParent = thenClass.getSuperClass();
             ClassNode elseParent = elseClass.getSuperClass();
