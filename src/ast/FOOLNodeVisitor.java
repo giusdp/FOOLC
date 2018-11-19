@@ -1,49 +1,25 @@
 package ast;
 
+import org.antlr.v4.runtime.ParserRuleContext;
 import parser.FOOLBaseVisitor;
 import parser.FOOLParser;
-import parser.FOOLParser.AsmStmContext;
-import parser.FOOLParser.BaseExpContext;
-import parser.FOOLParser.BoolValContext;
-import parser.FOOLParser.ClassExpContext;
-import parser.FOOLParser.ClassdecContext;
-import parser.FOOLParser.DecContext;
-import parser.FOOLParser.ExpContext;
-import parser.FOOLParser.FactorContext;
-import parser.FOOLParser.FunContext;
-import parser.FOOLParser.FunDeclarationContext;
-import parser.FOOLParser.FunExpContext;
-import parser.FOOLParser.IfExpContext;
-import parser.FOOLParser.IfStmContext;
-import parser.FOOLParser.IntValContext;
-import parser.FOOLParser.LetContext;
-import parser.FOOLParser.LetInExpContext;
-import parser.FOOLParser.MethodExpContext;
-import parser.FOOLParser.NewExpContext;
-import parser.FOOLParser.NullExpContext;
-import parser.FOOLParser.PrintContext;
-import parser.FOOLParser.ProgContext;
-import parser.FOOLParser.SingleExpContext;
-import parser.FOOLParser.StmContext;
-import parser.FOOLParser.TermContext;
-import parser.FOOLParser.TypeContext;
-import parser.FOOLParser.VarExpContext;
-import parser.FOOLParser.VarasmContext;
-import parser.FOOLParser.VardecContext;
-
-import type.BoolType;
-import type.ClassType;
-import type.IntType;
-import type.Type;
-import type.VoidType;
-
-import static ast.IntOpsNode.IntOpsType.*;
-import static ast.LogicOpsNode.LogicOpsType.*;
+import parser.FOOLParser.*;
+import type.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.antlr.v4.runtime.ParserRuleContext;
+import static ast.IntOpsNode.IntOpsType.DIVISION;
+import static ast.IntOpsNode.IntOpsType.MINUS;
+import static ast.IntOpsNode.IntOpsType.*;
+import static ast.IntOpsNode.IntOpsType.PLUS;
+import static ast.LogicOpsNode.LogicOpsType.AND;
+import static ast.LogicOpsNode.LogicOpsType.*;
+import static ast.LogicOpsNode.LogicOpsType.GREATER;
+import static ast.LogicOpsNode.LogicOpsType.GREATEREQUAL;
+import static ast.LogicOpsNode.LogicOpsType.LESS;
+import static ast.LogicOpsNode.LogicOpsType.LESSEQUAL;
+import static ast.LogicOpsNode.LogicOpsType.OR;
 
 public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 
