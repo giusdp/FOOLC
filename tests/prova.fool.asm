@@ -41,6 +41,7 @@ push 2
 add
 lm
 js
+print
 halt
 
 ## Functions code and Dispatch Table
@@ -160,3 +161,7 @@ function2
 C_class:
 function0
 function1
+A_class:
+function0
+B_class:
+function0

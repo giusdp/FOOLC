@@ -21,6 +21,7 @@ import parser.FOOLParser.LetInExpContext;
 import parser.FOOLParser.MethodExpContext;
 import parser.FOOLParser.NewExpContext;
 import parser.FOOLParser.NullExpContext;
+import parser.FOOLParser.PrintContext;
 import parser.FOOLParser.ProgContext;
 import parser.FOOLParser.SingleExpContext;
 import parser.FOOLParser.StmContext;
@@ -55,7 +56,8 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 				for (StmContext stm : ((FOOLParser.StmsContext) node).stm()) {
 					contextBody.add(visit(stm));
 				}
-			} else if (node instanceof FOOLParser.ExpContext) {
+			} else if (	node instanceof FOOLParser.ExpContext ||
+						node instanceof FOOLParser.PrintContext) {
 				contextBody.add(visit(node));
 			}
 		});
@@ -183,8 +185,11 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 		return prog;
 	}
 
-
-
+	public Node visitPrint(PrintContext ctx) {
+		String variableID = (ctx.ID() == null) ? "" : ctx.ID().getText();
+		Node expNode = (ctx.exp() == null) ? null : visit(ctx.exp());
+		return new PrintNode(expNode, variableID);
+	}
 
 	@Override
 	public Node visitAsmStm(AsmStmContext ctx) {
