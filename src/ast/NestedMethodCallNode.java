@@ -29,7 +29,7 @@ public class NestedMethodCallNode extends MethodCallNode {
     public ArrayList<SemanticError> checkSemantics(Environment env) {
         ArrayList<SemanticError> res = new ArrayList<>();
 
-        ClassNode ownerClassNode = env.getClassMap().get(ownerClass);
+        ClassNode ownerClassNode = Environment.getClassMap().get(ownerClass);
 
 
         // Dopo i controlli preliminari sulla variabile usata.

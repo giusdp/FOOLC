@@ -1,7 +1,7 @@
 let 
-	bool g() true;
-	int f() 5;
-	int z() 11;
+	bool g() { true; }
+	int f() { 5; }
+	int z() {11;}
 in
 	z();
 	g();

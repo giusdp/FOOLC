@@ -49,7 +49,7 @@ public class ProgClassNode implements Node {
 
         //int initialClassOffset = env.getClassOffset();
         for (ClassNode cn : classList) {
-            env.getClassMap().put(cn.getId(), cn);
+            Environment.getClassMap().put(cn.getId(), cn);
         }
 
         // Controlla la semantica per ogni dichiarazione di classe

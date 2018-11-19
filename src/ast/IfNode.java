@@ -2,6 +2,7 @@ package ast;
 
 import java.util.ArrayList;
 
+import type.ClassType;
 import type.ErrorType;
 import type.Type;
 import type.BoolType;
@@ -66,8 +67,34 @@ public class IfNode implements Node {
 
         if (FOOLlib.isSubtype(t, e))
             return e;
-        if (FOOLlib.isSubtype(e, t))
+        else if (FOOLlib.isSubtype(e, t))
             return t;
+
+        // Controllo di classe padre comune
+        if (t instanceof ClassType && e instanceof ClassType){
+            ClassNode thenClass = Environment.getClassMap().get(((ClassType) t).getId());
+            ClassNode elseClass = Environment.getClassMap().get(((ClassType) e).getId());
+
+            ClassNode thenParent = thenClass.getSuperClass();
+            ClassNode elseParent = elseClass.getSuperClass();
+
+            // Se hanno un padre in comune allora tutto bene
+            while (thenParent != null){
+
+                if (FOOLlib.isSubtype(e, thenParent.getClassType())) return thenParent.getClassType();
+
+                thenParent = thenParent.getSuperClass();
+            }
+
+            while (elseParent != null){
+
+                if (FOOLlib.isSubtype(t, elseParent.getClassType())) return elseParent.getClassType();
+
+                elseParent = elseParent.getSuperClass();
+            }
+        }
+
+        // TODO Se t ed e sono di tipo classe, si deve controllare se abbiano una classe base in comune
 
         error.addErrorMessage("Incompatible types in then else branches.");
         return error;

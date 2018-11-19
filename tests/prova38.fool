@@ -3,10 +3,16 @@ class A(int a, int b){
      let
         A tmp = new A(x,y);
      in
-        tmp;
+       {
+         tmp;
+       }
 
-     int geta() a;
-     int getb() b;
+     int geta() {
+        a;
+     }
+     int getb() {
+        b;
+     }
 
 };
 
@@ -19,5 +25,6 @@ let
 in
     b = a.createA(5,6);
     res = b.geta() + b.getb();
+    res;
 
-//nella cella di res: 11
+//11

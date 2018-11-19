@@ -1,6 +1,6 @@
 let 
-	bool g(int x) true;
-	int f(int x, int y) x+y;
-	int z(bool b) 11;
+	bool g(int x) {true;}
+	int f(int x, int y) {x+y;}
+	int z(bool b) {11;}
 in
 	f(2, 40);

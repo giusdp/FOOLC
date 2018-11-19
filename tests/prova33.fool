@@ -1,19 +1,26 @@
 class A(int x){
-    int getX() x;
-    int f(int a, B b)
-        if(a==0) then { b.i() + getX(); } else { f(a-1, b); };
+    int getX() {
+        x;
+    }
+
+    int f(int a, B b){
+        if (a==0) then { b.i() + getX(); } else { f(a-1, b); };
+    }
 };
 
 
 class B extends A{
-    int i() x;
+    int i() {
+        x;
+    }
 };
+
 class C extends A;
 
 let
     bool b = true;
     B bb = new B(3);
-    A a = if(b) then { new B(1) } else { new C(2) } ;
+    A a = if (b) then { new B(1); } else { new C(2); } ;
 in
     a.f(2,bb);
 

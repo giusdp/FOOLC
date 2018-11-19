@@ -19,10 +19,6 @@ public class FOOLlib {
         env = e;
     }
 
-    public enum RuleName {
-        EXP,
-        STM
-    }
 
     private static int labCount = 0;
 
@@ -30,7 +26,7 @@ public class FOOLlib {
 
     private static String funCode = "";
 
-    //valuta se il tipo "a" è <: al tipo "b"
+    //valuta se il tipo "a" è <: del tipo "b"
     public static boolean isSubtype(Type a, Type b) {
         if (env == null) {
             System.err.println("Error: FOOLlib.env is null. Call FOOLlib.setEnv in CompilerLauncher after creating an env.");
@@ -44,24 +40,24 @@ public class FOOLlib {
         // Se a e' un ClassType allora si controlla il subtyping fra classi
         else if (a instanceof ClassType) {
 
-            if (!(b instanceof ClassType)) return false; // se anche b non e' una classe, non puo' esserci subtyping
+            if (!(b instanceof ClassType)) return false; // se b non e' una classe, non puo' esserci subtyping
 
             ClassType typeA = (ClassType) a;
             ClassType typeB = (ClassType) b;
 
-            if ((typeA).getId().equals(typeB.getId())) return true; // rappresentano la stessa classe (stesso ID)
+            if ((typeA).getId().equals(typeB.getId())) return true; // sono la stess tipo di classe (stesso ID)
             else {
 
                 // Altrimenti controlliamo la classe padre di a se ha lo stesso ID di b
                 // Per controllare la classe padre serve accedere alla classMap in env
 
-                String parent = env.getClassMap().get(typeA.getId()).getSuperClassName();
+                String parent = Environment.getClassMap().get(typeA.getId()).getSuperClassName();
 
                 while (parent != null) { // sali di livello nell'albero della ereditarieta'
                     if ((parent).equals(typeB.getId()))
                         return true; // se la classe parent e' la stessa classe di b, c'e' subtyping
                     else
-                        parent = env.getClassMap().get(parent).getSuperClassName(); // altrimenti accedi alla classe padre di a
+                        parent = Environment.getClassMap().get(parent).getSuperClassName(); // altrimenti accedi alla classe padre di a
                 }
             }
         }

@@ -25,10 +25,8 @@ import parser.FOOLParser.PrintContext;
 import parser.FOOLParser.ProgContext;
 import parser.FOOLParser.SingleExpContext;
 import parser.FOOLParser.StmContext;
-import parser.FOOLParser.StmsContext;
 import parser.FOOLParser.TermContext;
 import parser.FOOLParser.TypeContext;
-import parser.FOOLParser.VarAssignmentContext;
 import parser.FOOLParser.VarExpContext;
 import parser.FOOLParser.VarasmContext;
 import parser.FOOLParser.VardecContext;
@@ -38,7 +36,6 @@ import type.ClassType;
 import type.IntType;
 import type.Type;
 import type.VoidType;
-import util.FOOLlib.RuleName;
 
 import static ast.IntOpsNode.IntOpsType.*;
 import static ast.LogicOpsNode.LogicOpsType.*;
@@ -355,7 +352,8 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 		// ProgNode -> IntNode
 
 		//there is no need to perform a check here, the lexer ensures this text is an int
-		return new IntNode(Integer.parseInt(ctx.INTEGER().getText()));
+		int val = Integer.parseInt(ctx.INTEGER().getText());
+		return new IntNode(ctx.MINUS() == null ? val : -val);
 	}
 
 	@Override
@@ -409,7 +407,7 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 	@Override
 	public Node visitVarExp(VarExpContext ctx) {
 
-		return new IdNode(ctx.ID().getText());
+		return new IdNode(ctx.ID().getText(), ctx.MINUS() !=null, ctx.NOT() != null);
 	}
 
 	@Override

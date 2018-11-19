@@ -1,12 +1,16 @@
 class W;
 class Z extends W;
 
-class A(){
-    W getW(W z) new Z();
+class A{
+    W getW(W z) {
+        new Z();
+    }
 };
 
-class B extends A(){
-    Z getW(Z w) new Z();
+class B extends A{
+    Z getW(Z w) {
+        new Z();
+    }
 };
 
 // Deve dare Errore type checking.

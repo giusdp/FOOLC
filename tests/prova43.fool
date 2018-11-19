@@ -1,8 +1,11 @@
 class A(int x){
-    int get() x;
+    int get() {
+        x;
+    }
 };
 let
     A a = new A(true);
 in
     a.get();
+
 //Errore: Tipo errato per il parametro 1 nell'invocazione del costruttore di A
