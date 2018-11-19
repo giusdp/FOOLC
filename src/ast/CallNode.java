@@ -64,7 +64,7 @@ public class CallNode implements Node {
 
         Type entryType;
         if (entry.isToBeEvaluated()) {
-            FunNode f = Environment.getFunctionById(id, nestingLevel-1); // -1 perche' la call e' ad un scope annidato
+            FunNode f = Environment.getFunctionById(id, nestingLevel);
             entry = f != null ? f.getEntry() : null;
             entryType = f != null ? f.getType() : null;
         } else {
