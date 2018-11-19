@@ -1,11 +1,28 @@
-class A{
-    int prodotto(int a, int b) {
-        a*b;
+class A(int x){
+    int getX() {
+        x;
+    }
+
+    int f(int a, B b){
+        if (a==0) then { b.i() + getX(); } else { f(a-1, b); };
     }
 };
+
+
+class B extends A{
+    int i() {
+        x;
+    }
+};
+
+class C extends A;
+
 let
     bool b = true;
-    A a = new A();
+    B bb = new B(3);
+    A a = if (b) then { new B(1); } else { new C(2); } ;
 in
-    a.prodotto(1,b);
-//Errore: Tipo errato per il parametro 2 nell'invocazione di 'prodotto'
+    a.f(2,bb);
+
+
+//4

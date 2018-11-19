@@ -24,10 +24,8 @@ import parser.FOOLParser.NullExpContext;
 import parser.FOOLParser.ProgContext;
 import parser.FOOLParser.SingleExpContext;
 import parser.FOOLParser.StmContext;
-import parser.FOOLParser.StmsContext;
 import parser.FOOLParser.TermContext;
 import parser.FOOLParser.TypeContext;
-import parser.FOOLParser.VarAssignmentContext;
 import parser.FOOLParser.VarExpContext;
 import parser.FOOLParser.VarasmContext;
 import parser.FOOLParser.VardecContext;
@@ -37,7 +35,6 @@ import type.ClassType;
 import type.IntType;
 import type.Type;
 import type.VoidType;
-import util.FOOLlib.RuleName;
 
 import static ast.IntOpsNode.IntOpsType.*;
 import static ast.LogicOpsNode.LogicOpsType.*;
