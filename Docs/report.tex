@@ -3,15 +3,15 @@
 \usepackage[italian]{babel}
 \usepackage[utf8]{inputenc}
 
-\usepackage{bussproofs}
+\usepackage{ebproof}
 \usepackage{amssymb}
 \usepackage{latexsym}
 
 \usepackage{amsmath}
 
 \title{Report del Progetto di Compilatori e Interpreti}
-\date{Data di Consegna}
-\author{Giuseppe De Palma 0000854846, Andrew Memma XXXXXX\\
+\date{}
+\author{Giuseppe De Palma 0000854846, Andrew Memma 1900068459\\
 \\Corso di Laurea Magistrale in Informatica 2017/2018}
 \begin{document}
 
@@ -41,11 +41,14 @@ Si spiega con dettaglio come lanciare e utilizzare il progetto.
 Punto di inizio dello sviluppo. Si discute FOOL.
 Si discute l'analisi sintattica, l'AST etc. Anche qui sarà breve.\\
 Si discute anche l'implementazione dell'AST e le altre parti inerenti alla sintassi.
+\section{FOOL}
 
 \chapter{Semantica}
 Si discute brevemente lo scopo dell'analisi semantica (attraversare l'albero di sintassi astratta costruito prima, gestione
 degli scope e controllo tipi).\\
 Si spiega brevemente le decisioni di design per le symbol tables ed il sistema dei tipi (statico).
+\section{Scope}
+
 \section{Type Checking}
 sezione importantissimo, qui è dove bisogna essere i più precisi e formali. Si discute per bene lo sviluppo
 e implementazione del type checking.
@@ -53,12 +56,54 @@ e implementazione del type checking.
 \[
 \begin{array}{lcl}
 k & ::= & 0 \mid 1 \mid \dots \mid true \mid false\\
-T & ::= & int \mid bool \mid void \mid T \to T'\\
+T & ::= & int \mid bool \mid void \mid T \to T' \mid class\\
 E & ::= & k \mid id \mid E + E \mid E - E \mid E \times E \mid E \div E \mid\\
 & &  E < E \mid E > E \mid E \le E \mid E \ge E \mid E \lor E \mid E \land E \mid \lnot E
 \end{array}
 \]
 
+\subsection{Regole}
+
+\begin{enumerate}
+
+    \item Rule 1
+        \[
+            \begin{prooftree}
+                \Hypo{P \lor Q}
+                \Hypo {[P]}
+                \Infer [rule style=no rule] 1 {R}
+                \Hypo {[Q]}
+                \Infer [rule style=no rule] 1 {R}
+                \Infer3{R}
+            \end{prooftree}
+        \]
+    
+    \item Rule 2
+        \[
+            \begin{prooftree}
+                \Hypo{P \lor Q}
+                \Hypo {[P]}
+                \Infer [rule style=no rule] 1 {R}
+                \Hypo {[Q]}
+                \Infer [rule style=no rule] 1 {R}
+                \Infer3{R}
+            \end{prooftree}
+        \]
+    
+    \item Rule 3
+        \[
+            \begin{prooftree}
+                \Hypo{P \lor Q}
+                \Hypo {[P]}
+                \Infer [rule style=no rule] 1 {R}
+                \Hypo {[Q]}
+                \Infer [rule style=no rule] 1 {R}
+                \Infer3{R}
+            \end{prooftree}
+        \]
+
+
+\end{enumerate}
 
 \chapter{Generazione del Codice}
 Capitolo sulla code generation. Si discute come si trasforma il codice scritto nella grammatica
@@ -68,11 +113,11 @@ Magari si può dividere questo capitolo con le due sezioni sotto, dipende da com
 generation. Se la facciamo in due fasi passando prima per una generazione ad un codice intermedio e 
 poi al bytecode, allora questo capitolo si scrive con le due sezioni sotto.
 La generazione intermedia si fa quando si usa anche un interprete, dipende da come vogliamo fare.
-\section{Generazione del Codice Intermedia}
-\section{Generazione del Codice}
 
-\chapter{Garbage Collection}
-Opzionalmente possiamo fare la garbage collection e verrà discussa qui.
+\section{Heap}
+\section{Dispatch Table}
+\section{SVM}
+\section{Virtual Machine}
 
 \chapter{Conclusioni}
 Brevissimo capitolo conclusivo, si fa un piccolo riassunto di tutto il report e si tirano le somme.
