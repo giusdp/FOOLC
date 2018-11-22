@@ -1,3 +1,1 @@
-class A { int f() {h();} int h(){ 42;} };
-
-let A a = new A(); in a.h();
+print(null);

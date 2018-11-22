@@ -67,10 +67,9 @@ public class PrintNode implements Node {
 				  res.add(new SemanticError("Unable to print object, " + this.variableID));
 			  }
 		  }
-	  }
-	
- 	  if (this.expNode != null)
+	  } else {
  		  res.addAll(this.expNode.checkSemantics(env));
+	  }
  	  return res;
  	}
   
