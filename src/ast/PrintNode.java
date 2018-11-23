@@ -44,7 +44,7 @@ public class PrintNode implements Node {
 
 	  if (this.expNode instanceof NullNode) {
 		String nodetype = "null";
-		res.add(new SemanticError("Cannot pass a  " + nodetype + " object to a Print() statement."));
+		res.add(new SemanticError("Cannot pass a " + nodetype + " object to a Print() statement."));
 		return res;
 	  }
 	  
@@ -67,10 +67,9 @@ public class PrintNode implements Node {
 				  res.add(new SemanticError("Unable to print object, " + this.variableID));
 			  }
 		  }
-	  }
-	
- 	  if (this.expNode != null)
+	  } else {
  		  res.addAll(this.expNode.checkSemantics(env));
+	  }
  	  return res;
  	}
   

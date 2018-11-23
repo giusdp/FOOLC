@@ -4,7 +4,7 @@ grammar FOOL;
  * PARSER RULES
  *------------------------------------------------------------------*/
 
-prog   : exp SEMIC                                                  #singleExp
+prog   : (print | exp) SEMIC                                        #singleExp
        | let ( exp SEMIC | print SEMIC | stms )+                    #letInExp
        | (classdec)+ ( let ( exp SEMIC | print SEMIC | stms )+ )?   #classExp
        ;

@@ -157,8 +157,10 @@ public class FOOLNodeVisitor extends FOOLBaseVisitor<Node> {
 	// PROG exp
 	@Override
 	public Node visitSingleExp(SingleExpContext ctx) {
-		ProgExpNode prog = new ProgExpNode(visit(ctx.exp()));
-		return prog;
+		ParserRuleContext expContext;
+		expContext = (ctx.print() == null) ? ctx.exp() : ctx.print();
+
+		return new ProgExpNode(visit(expContext));
 	}
 
 	public Node visitPrint(PrintContext ctx) {
