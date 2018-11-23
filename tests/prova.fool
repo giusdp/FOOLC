@@ -1,1 +1,9 @@
-print(null);
+let
+    void addOne(int x) {
+        x = x+1;
+    }
+    int x = 1;
+in
+    print(x);
+    addOne(x);
+    print(x);
