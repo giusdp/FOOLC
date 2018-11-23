@@ -2,6 +2,7 @@
 
 \usepackage[italian]{babel}
 \usepackage[utf8]{inputenc}
+\usepackage{multicol}
 
 \usepackage{ebproof}
 \usepackage{amssymb}
@@ -50,60 +51,154 @@ Si spiega brevemente le decisioni di design per le symbol tables ed il sistema d
 \section{Scope}
 
 \section{Type Checking}
-sezione importantissimo, qui è dove bisogna essere i più precisi e formali. Si discute per bene lo sviluppo
+È stato sviluppato un sistema di tipi statico per il linguaggio FOOL. Qui di seguito vengono riportate le varie regoli di inferenza implementate.
+
+Linguaggio con espressioni. ezione importantissimo, qui è dove bisogna essere i più precisi e formali. Si discute per bene lo sviluppo
 e implementazione del type checking.
 
 \[
 \begin{array}{lcl}
-k & ::= & 0 \mid 1 \mid \dots \mid true \mid false\\
-T & ::= & int \mid bool \mid void \mid T \to T' \mid class\\
-E & ::= & k \mid id \mid E + E \mid E - E \mid E \times E \mid E \div E \mid\\
-& &  E < E \mid E > E \mid E \le E \mid E \ge E \mid E \lor E \mid E \land E \mid \lnot E
+N & ::= & 0 \mid 1 \mid \dots\\ 
+B & ::= &  true \mid false \\
+T & ::= & int \mid bool \mid void \mid class\\
+E & ::= & N \mid B \mid id \mid E + E \mid E - E \mid E \times E \mid E \div E \mid\\
+& & E == E \mid E < E \mid E > E \mid E \le E \mid E \ge E \mid E \lor E \mid E \land E \mid \lnot E
 \end{array}
 \]
 
-\subsection{Regole}
+\subsection{Regole di Inferenza}
 
+\begin{multicols}{2}
 \begin{enumerate}
 
-    \item Rule 1
+    \item Num Rule
+    \[
+        \begin{prooftree}
+            %\hypo {[Q]}
+            \infer [no rule] 0 {\Gamma \vdash Num: int}
+        \end{prooftree} 
+    \] 
+    \item True Rule
+    \[
+        \begin{prooftree}
+            %\hypo {[Q]}
+            \infer [no rule] 0 {\Gamma \vdash true: bool}
+        \end{prooftree}
+    \]
+    \item False Rule
+    \[
+        \begin{prooftree}
+            %\hypo {[Q]}
+            \infer [no rule] 0 {\Gamma \vdash false: bool}
+        \end{prooftree}
+    \]
+    \item Var Rule
+    \[
+        \begin{prooftree}
+            \hypo {\Gamma(id) = T}
+            \infer 1 {\Gamma \vdash id: T}
+        \end{prooftree}\\
+    \]
+    \item Plus Rule
         \[
             \begin{prooftree}
-                \Hypo{P \lor Q}
-                \Hypo {[P]}
-                \Infer [rule style=no rule] 1 {R}
-                \Hypo {[Q]}
-                \Infer [rule style=no rule] 1 {R}
-                \Infer3{R}
+                \hypo {E : int}
+                \hypo {E' : int}
+                \infer 2 {\Gamma \vdash E + E' : int}
             \end{prooftree}
         \]
-    
-    \item Rule 2
+    \item Sub Rule
         \[
             \begin{prooftree}
-                \Hypo{P \lor Q}
-                \Hypo {[P]}
-                \Infer [rule style=no rule] 1 {R}
-                \Hypo {[Q]}
-                \Infer [rule style=no rule] 1 {R}
-                \Infer3{R}
+                \hypo {E : int}
+                \hypo {E' : int}
+                \infer 2 {\Gamma \vdash E - E' : int}
             \end{prooftree}
         \]
-    
-    \item Rule 3
+    \item Mult Rule
         \[
             \begin{prooftree}
-                \Hypo{P \lor Q}
-                \Hypo {[P]}
-                \Infer [rule style=no rule] 1 {R}
-                \Hypo {[Q]}
-                \Infer [rule style=no rule] 1 {R}
-                \Infer3{R}
-            \end{prooftree}
+                \hypo {E : int}
+                \hypo {E' : int}
+                \infer 2 {\Gamma \vdash E \times E' : int}
+            \end{prooftree} [Mul]
         \]
-
+    \item Div Rule
+        \[
+            \begin{prooftree}
+                \hypo {E : int}
+                \hypo {E' : int}
+                \infer 2 {\Gamma \vdash E \div E' : int}
+            \end{prooftree} 
+        \]
+    \item Equal Rule
+        \[
+            \begin{prooftree}
+                \hypo {E : T}
+                \hypo {E' : T}
+                \infer 2 {\Gamma \vdash E == E' : bool}
+            \end{prooftree} 
+        \]
+    \item Less Than Rule
+        \[
+            \begin{prooftree}
+                \hypo {E : int}
+                \hypo {E' : int}
+                \infer 2 {\Gamma \vdash E < E' : bool}
+            \end{prooftree} 
+        \]
+    \item Less Equal Rule
+        \[
+            \begin{prooftree}
+                \hypo {E : int}
+                \hypo {E' : int}
+                \infer 2 {\Gamma \vdash E \le E' : bool}
+            \end{prooftree} 
+        \]
+    \item Greater Than Rule
+        \[
+            \begin{prooftree}
+                \hypo {E : int}
+                \hypo {E' : int}
+                \infer 2 {\Gamma \vdash E > E' : bool}
+            \end{prooftree} 
+        \]
+        \item Greater Equal Rule
+        \[
+            \begin{prooftree}
+                \hypo {E : int}
+                \hypo {E' : int}
+                \infer 2 {\Gamma \vdash E \ge E' : bool}
+            \end{prooftree} 
+        \]
+        \item Or Rule
+        \[
+            \begin{prooftree}
+                \hypo {E : bool}
+                \hypo {E' : bool}
+                \infer 2 {\Gamma \vdash E \lor E' : bool}
+            \end{prooftree} 
+        \]
+        \item And Rule
+        \[
+            \begin{prooftree}
+                \hypo {E : bool}
+                \hypo {E' : bool}
+                \infer 2 {\Gamma \vdash E \land E' : bool}
+            \end{prooftree} 
+        \]
+        \item Not Rule
+        \[
+            \begin{prooftree}
+                \hypo {E : bool}
+                \infer 1 {\Gamma \vdash \lnot E : bool}
+            \end{prooftree} 
+        \]
 
 \end{enumerate}
+\end{multicols}
+
+\subsection{Comandi imperativi}
 
 \chapter{Generazione del Codice}
 Capitolo sulla code generation. Si discute come si trasforma il codice scritto nella grammatica
