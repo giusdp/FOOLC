@@ -28,12 +28,30 @@ L'obiettivo di tale progetto è volto allo studio dello sviluppo e funzionamento
 FOOL non è l'unico linguaggio utilizzato, infatti il compilatore deve generare del codice eseguibile (da un elaboratore) partendo da un programma scritto in FOOL. Questo nuovo codice è scritto in un linguaggio \textit{assembly} per una \textit{stack virtual machine} con registri (SVM), il quale offre istruzioni per alcuni calcoli aritmentici, per gestione di \textit{stack} e \textit{heap} e salti condizionati. In accordo con le estensioni fatte a FOOL, anche il linguaggio SVM è stato arricchito.
 
 \section{Outline}
-Nei capitoli successivi è presentato in modo approfondito il progetto e le sue caratteristiche principali. Nel capitolo successivo viene descritta la struttura del compilatore e come utilizzarlo e una breve analisi sulle diverse parti che lo costituiscono. Il capitolo 3 discute la grammatica del linguaggio e come da questa si ricavino le informazioni per proseguire con la compilazione. Nel capitolo 4 è discussa l'analisi semantica, di particolare importanza è la sezione del \textit{type checking}. Prima di concludere è descritta, nel capitolo 5, la generazione del codice \textit{assembly}.
+Nei capitoli successivi è presentato in modo approfondito il progetto e le sue caratteristiche principali. Nel capitolo successivo viene descritta la struttura del compilatore e come utilizzarlo e una breve analisi sulle diverse parti che lo costituiscono. Il capitolo 3 discute la grammatica del linguaggio e come da questa si ricavano le informazioni per proseguire con la compilazione. Nel capitolo 4 è discussa l'analisi semantica, di particolare importanza è la sezione del \textit{type checking}. Prima di concludere è descritta, nel capitolo 5, la generazione del codice \textit{svm}.
 
 \chapter{Descrizione del Progetto}
-Il compilatore è stato sviluppato nel linguaggio di programmazione Java, utilizzando il \textit{tool} Antlr nella sua versione 4.6 per la generazione automatica di \textit{lexer} e \textit{parser}. Avendo, quindi, definito la grammatica di FOOL (nel file \textit{FOOL.g4} per essere compatibile con Antlr), il \textit{tool} può così generare le varie classi che permettono di effettuare l'analisi lessicale e sintattica sui programmi scritti in FOOL. In questo modo la creazione di \textit{tokens} e poi creare l'albero astratto di sintassi (\textit{Abstract Syntax Tree}) sono già gestite da Antlr, il quale fornisce due metodi per visitare ed utilizzare l'albero: i \textit{visitor} e \textit{listener design patterns}. Per questo progetto il \textit{visitor pattern} è stato scelto per percorrere l'albero ed ottenere il necessario per effettuare l'analisi semantica e la generazione di codice.\\
+\section{Struttura}
+Il compilatore è stato sviluppato nel linguaggio di programmazione Java, utilizzando il \textit{tool} Antlr nella sua versione 4.6 per la generazione automatica di \textit{lexer} e \textit{parser}.
+Avendo, quindi, definito la grammatica di FOOL (nel file \textit{FOOL.g4}), il \textit{tool} genera le varie classi che permettono di effettuare l'analisi lessicale e sintattica sui programmi scritti in FOOL.
+In questo modo la creazione di \textit{tokens} e la creazione dell'albero astratto di sintassi (\textit{Abstract Syntax Tree}) sono già gestite da Antlr, il quale fornisce due metodi per visitare ed utilizzare l'albero: i \textit{visitor} e \textit{listener design patterns}.
+Per questo progetto il \textit{visitor pattern} è stato scelto per visitare l'albero ed ottenere il necessario per effettuare l'analisi semantica e la generazione di codice.\\
 
-\textbf{Parlare della struttura del progetto, dei nodi etc.}
+Il progetto è stato strutturato in diversi package, partendo dal codice fornito dal professore:
+\begin{itemize}
+    \item ast: contiene le classi che rappresentano i nodi dell'albero visitato con il Visitor di \textit{Antlr}. 
+            L'interfaccia Node rappresenta il concetto di nodo dell'albero astratto sintattico, in particolare dichiara tre metodi:
+            \textit{checkSemantics}, \textit{typeCheck}, \textit{codeGeneration}. Le classi usate per i vari tipi di nodo implementano questa interfaccia.
+    \item codeexecution: si occupa della esecuzione del codice e della gestione della memoria. In particolare la classe \textit{VirtualMachine} interpreta il codice (\textit{SVM}) generato dalle istruzioni in FOOL.
+    \item lib: contiene la libreria \textit{Antlr 4.6}, necessaria per l'esecuzione del compilatore.
+    \item parser: contiene \textit{FOOL.g4} e le diverse classi create da \textit{Antlr}.
+    \item svm:  contiene \textit{SVM.g4} e le diverse classi create da \textit{Antlr}.
+    \item type: contiene le classi che rappresentano i tipi dei costrutti \textit{FOOL}: \textit{IntType}, \textit{BoolType}, \textit{ClassType}, \textit{VoidType}.
+    \item util: contiene in particolare la classe \textit{Enviroment} che offre varie strutture dati di utilità e la \textit{Symbol Table}, e la classe \textit{FOOLlib} che oltre ad alcuni metodi utili
+            per la generazione del codice, offre il metodo \text{isSubType} per il controllo dei tipi delle espressioni \textit{FOOL}.
+\end{itemize}
+
+Il file ``CompilerLauncher.java'' è il punto d'entrata del compilatore.
 
 \section{Istruzioni Per l'Utilizzo}
 Si spiega con dettaglio come lanciare e utilizzare il progetto.
@@ -200,17 +218,20 @@ Il linguaggio mostrato precedentemente viene esteso con questi nuovi comandi.
 
 \[
 \begin{array}{lcl}
-D & ::= & T$ $id = E \mid T$ $id \\
-F & ::= &$let $D$ in $P \mid T$ $f(D)$ $ P\\
-P & ::= & E \mid id \mid T$ $id = E \mid id = E \mid $ if $ E $ then $ P $ else $ P' \mid\\
-& & $class $C$ extends $C'(D)$ $F \mid $ new $ C()\\ 
+    D &::=& T$ $id = E\\
+    L &::= & $let $T$ $id = E$ in $P \\
+    F & ::= & T$ $f(T$ $id)$ $ P\\
+    P & ::= & E \mid id \mid id = E \mid $ if $ E $ then $ P $ else $ P' \mid\\
+& & $class $C$ extends $C'(T$ $id)$ $F \mid $ new $ C()\\ 
 \end{array}
 \]
 
 Dove ``$id$'' rappresenta l'utilizzo di una generica variabile che può assumere un valore numerico, booleano o classe.
 Essa viene ``dichiarata'' prefissando il tipo alla variabile quando c'è un assegnamento con un'espressione, usando il simbolo $=$. Non dichiarando 
 il tipo, invece, il comando diventa uno ``statement'', cioè una assegnazione di una variabile dichiarata in precedenza.
-Infine, usiamo $f$, e $C$ per indicare nomi generici che una funzione o una classe possono avere.
+Infine, usiamo $f$, e $C$ per indicare nomi generici che una funzione o una classe possono avere.\\
+
+Di seguito sono elencate alcune delle molte regole utilizzate.
 
 \begin{multicols}{2}
     \begin{enumerate}
