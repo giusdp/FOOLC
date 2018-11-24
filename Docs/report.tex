@@ -51,22 +51,24 @@ Si spiega brevemente le decisioni di design per le symbol tables ed il sistema d
 \section{Scope}
 
 \section{Type Checking}
-È stato sviluppato un sistema di tipi statico per il linguaggio FOOL. Qui di seguito vengono riportate le varie regoli di inferenza implementate.
+È stato sviluppato un sistema di tipi statico per il linguaggio FOOL. Qui di seguito vengono riportate le varie regole di inferenza.\\
 
-Linguaggio con espressioni. ezione importantissimo, qui è dove bisogna essere i più precisi e formali. Si discute per bene lo sviluppo
-e implementazione del type checking.
-
+Partendo dalle regole più semplici, FOOL può essere sintetizzato con il linguaggio di espressioni seguente:
 \[
 \begin{array}{lcl}
 N & ::= & 0 \mid 1 \mid \dots\\ 
 B & ::= &  true \mid false \\
-T & ::= & int \mid bool \mid void \mid class\\
-E & ::= & N \mid B \mid id \mid E + E \mid E - E \mid E \times E \mid E \div E \mid\\
-& & E == E \mid E < E \mid E > E \mid E \le E \mid E \ge E \mid E \lor E \mid E \land E \mid \lnot E
+T & ::= & int \mid bool \\
+E & ::= & N \mid B \mid E + E' \mid E - E' \mid E \times E' \mid E \div E' \mid\\
+& & E == E' \mid E < E '\mid E > E' \mid E \le E' \mid E \ge E' \mid \\
+& & E \lor E' \mid E \land E' \mid \lnot E 
 \end{array}
 \]
 
+Dove $N$ sono i numeri, $B$ i valori booleani, $T$ il tipo che un'espressione può avere ed $E$ espressioni semplici, aritmetiche e booleane.
 \subsection{Regole di Inferenza}
+
+I controlli che il compilatore esegue sulla correttezza delle espressioni usate, sono dati dalle seguenti regole.
 
 \begin{multicols}{2}
 \begin{enumerate}
@@ -78,13 +80,6 @@ E & ::= & N \mid B \mid id \mid E + E \mid E - E \mid E \times E \mid E \div E \
             \infer [no rule] 0 {\Gamma \vdash Num: int}
         \end{prooftree} 
     \] 
-    \item True Rule
-    \[
-        \begin{prooftree}
-            %\hypo {[Q]}
-            \infer [no rule] 0 {\Gamma \vdash true: bool}
-        \end{prooftree}
-    \]
     \item False Rule
     \[
         \begin{prooftree}
@@ -92,12 +87,12 @@ E & ::= & N \mid B \mid id \mid E + E \mid E - E \mid E \times E \mid E \div E \
             \infer [no rule] 0 {\Gamma \vdash false: bool}
         \end{prooftree}
     \]
-    \item Var Rule
+    \item True Rule
     \[
         \begin{prooftree}
-            \hypo {\Gamma(id) = T}
-            \infer 1 {\Gamma \vdash id: T}
-        \end{prooftree}\\
+            %\hypo {[Q]}
+            \infer [no rule] 0 {\Gamma \vdash true: bool}
+        \end{prooftree}
     \]
     \item Plus Rule
         \[
@@ -198,7 +193,36 @@ E & ::= & N \mid B \mid id \mid E + E \mid E - E \mid E \times E \mid E \div E \
 \end{enumerate}
 \end{multicols}
 
-\subsection{Comandi imperativi}
+\subsection{Altri comandi}
+
+FOOL offre anche comandi di tipo imperativo e orientato agli oggetti, quindi dichiarazioni di variabili, di classi, il costrutto $if$ $then$ $else$.
+Il linguaggio mostrato precedentemente viene esteso con questi nuovi comandi.
+
+\[
+\begin{array}{lcl}
+D & ::= & T$ $id = E \mid T$ $id \\
+F & ::= &$let $D$ in $P \mid T$ $f(D)$ $ P\\
+P & ::= & E \mid id \mid T$ $id = E \mid id = E \mid $ if $ E $ then $ P $ else $ P' \mid\\
+& & $class $C$ extends $C'(D)$ $F \mid $ new $ C()\\ 
+\end{array}
+\]
+
+Dove ``$id$'' rappresenta l'utilizzo di una generica variabile che può assumere un valore numerico, booleano o classe.
+Essa viene ``dichiarata'' prefissando il tipo alla variabile quando c'è un assegnamento con un'espressione, usando il simbolo $=$. Non dichiarando 
+il tipo, invece, il comando diventa uno ``statement'', cioè una assegnazione di una variabile dichiarata in precedenza.
+Infine, usiamo $f$, e $C$ per indicare nomi generici che una funzione o una classe possono avere.
+
+\begin{multicols}{2}
+    \begin{enumerate}
+        \item Var Rule
+    \[
+        \begin{prooftree}
+            \hypo {\Gamma(id) = T}
+            \infer 1 {\Gamma \vdash id: T}
+        \end{prooftree}\\
+    \]
+    \end{enumerate}
+\end{multicols}
 
 \chapter{Generazione del Codice}
 Capitolo sulla code generation. Si discute come si trasforma il codice scritto nella grammatica

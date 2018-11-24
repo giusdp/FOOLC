@@ -5,3 +5,4 @@ report.toc
 .vscode
 report.fdb_latexmk
 report.fls
+__latexindent_temp.tex
