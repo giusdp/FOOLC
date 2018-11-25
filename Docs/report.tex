@@ -10,13 +10,31 @@
 
 \usepackage{amsmath}
 
-\title{Report del Progetto di Compilatori e Interpreti}
-\date{}
-\author{Giuseppe De Palma 0000854846, Andrew Memma 1900068459\\
-\\Corso di Laurea Magistrale in Informatica 2017/2018}
+%\title{Report del Progetto di Compilatori e Interpreti}
+%\date{}
+%\author{Giuseppe De Palma  \and Andrew Memma  \\ \\Corso di Laurea Magistrale in Informatica}
+%0000854846
+%1900068459
 \begin{document}
 
-\maketitle
+\begin{titlepage}
+	\centering
+	{\scshape\LARGE Alma Mater Studiorum\\Università di Bologna \par}
+	\vspace{1cm}
+	{\scshape\Large Report\par}
+	\vspace{1.5cm}
+    {\huge\bfseries Progetto di Compilatori e Interpreti\par}
+    \vspace{0.5cm}
+    {\scshape\Large Corso di Laurea Magistrale in Informatica\par}
+	\vspace{2cm}
+    {\Large\itshape Giuseppe De Palma \\0000854846\par}
+	\vspace{0.5cm}    
+    {\Large\itshape Andrew Memma \\1900068459\par}
+    \vfill
+
+% Bottom of the page
+	{\large \today\par}
+\end{titlepage}
 
 \tableofcontents
 
@@ -73,7 +91,7 @@ Si discute anche l'implementazione dell'AST e le altre parti inerenti alla sinta
 
 \chapter{Semantica}
 Si discute brevemente lo scopo dell'analisi semantica (attraversare l'albero di sintassi astratta costruito prima, gestione
-degli scope e controllo tipi).\\
+degli scope e controllo tipi).
 Si spiega brevemente le decisioni di design per le symbol tables ed il sistema dei tipi (statico).
 \section{Scope}
 
