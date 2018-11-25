@@ -34,7 +34,7 @@ Nei capitoli successivi è presentato in modo approfondito il progetto e le sue 
 \section{Struttura}
 Il compilatore è stato sviluppato nel linguaggio di programmazione Java, utilizzando il \textit{tool} Antlr nella sua versione 4.6 per la generazione automatica di \textit{lexer} e \textit{parser}.
 Avendo, quindi, definito la grammatica di FOOL (nel file \textit{FOOL.g4}), il \textit{tool} genera le varie classi che permettono di effettuare l'analisi lessicale e sintattica sui programmi scritti in FOOL.
-In questo modo la creazione di \textit{tokens} e la creazione dell'albero astratto di sintassi (\textit{Abstract Syntax Tree}) sono già gestite da Antlr, il quale fornisce due metodi per visitare ed utilizzare l'albero: i \textit{visitor} e \textit{listener design patterns}.
+In questo modo la creazione di \textit{tokens} e la creazione dell'albero astratto di sintassi (\textit{Abstract Syntax Tree}) sono già gestite da Antlr, il quale fornisce due metodi per visitare ed utilizzare l'albero: i \textit{visitor} e \textit{listener} design patterns.
 Per questo progetto il \textit{visitor pattern} è stato scelto per visitare l'albero ed ottenere il necessario per effettuare l'analisi semantica e la generazione di codice.\\
 
 Il progetto è stato strutturato in diversi package, partendo dal codice fornito dal professore:
@@ -42,19 +42,28 @@ Il progetto è stato strutturato in diversi package, partendo dal codice fornito
     \item ast: contiene le classi che rappresentano i nodi dell'albero visitato con il Visitor di \textit{Antlr}. 
             L'interfaccia Node rappresenta il concetto di nodo dell'albero astratto sintattico, in particolare dichiara tre metodi:
             \textit{checkSemantics}, \textit{typeCheck}, \textit{codeGeneration}. Le classi usate per i vari tipi di nodo implementano questa interfaccia.
-    \item codeexecution: si occupa della esecuzione del codice e della gestione della memoria. In particolare la classe \textit{VirtualMachine} interpreta il codice (\textit{SVM}) generato dalle istruzioni in FOOL.
+    \item codeexecution: si occupa della esecuzione del codice e della gestione della memoria. In particolare la classe \textit{VirtualMachine} interpreta il codice (SVM) generato dalle istruzioni in FOOL.
     \item lib: contiene la libreria \textit{Antlr 4.6}, necessaria per l'esecuzione del compilatore.
     \item parser: contiene \textit{FOOL.g4} e le diverse classi create da \textit{Antlr}.
     \item svm:  contiene \textit{SVM.g4} e le diverse classi create da \textit{Antlr}.
-    \item type: contiene le classi che rappresentano i tipi dei costrutti \textit{FOOL}: \textit{IntType}, \textit{BoolType}, \textit{ClassType}, \textit{VoidType}.
+    \item type: contiene le classi che rappresentano i tipi dei costrutti FOOL: \textit{IntType}, \textit{BoolType}, \textit{ClassType}, \textit{VoidType}.
     \item util: contiene in particolare la classe \textit{Enviroment} che offre varie strutture dati di utilità e la \textit{Symbol Table}, e la classe \textit{FOOLlib} che oltre ad alcuni metodi utili
-            per la generazione del codice, offre il metodo \text{isSubType} per il controllo dei tipi delle espressioni \textit{FOOL}.
+            per la generazione del codice, offre il metodo \text{isSubType} per il controllo dei tipi delle espressioni FOOL.
 \end{itemize}
 
 Il file ``CompilerLauncher.java'' è il punto d'entrata del compilatore.
 
 \section{Istruzioni Per l'Utilizzo}
-Si spiega con dettaglio come lanciare e utilizzare il progetto.
+\begin{enumerate}
+    \item Importare il progetto in \textit{Eclipse} oppure \textit{IntelliJ}.
+    \item Se il progetto presenta problemi, aggiungere nel \textit{Build Path} la libreria \textit{Antlr} contenuta nella cartella \textit{lib}.
+        Da Eclipse, tasto destro sulla cartella del progetto, \textit{Configure Build Path} e da lì aggiungere la libreria.
+    \item Il file ``prova.fool'' nella cartella \textit{Tests} contiene il codice FOOL che il compilatore utilizza. Scrivere lì il proprio codice. 
+        Il compilatore legge il file ``prova.fool'' e, in seguito ai controlli di errori, crea il file ``prova.fool.asm'' con il codice SVM corrispondente.
+    \item In caso di errori in un qualunque punto del processo (errori lessicali, sintattici, di scope, di tipi), l'esecuzione verrà interrotta e verrà mostrato l'errore
+        nel terminale.
+    \item Se nel codice FOOL vengono utilizzati comandi \textit{print}, viene mostrata l'espressione da stampare nel terminale. 
+\end{enumerate}
 
 \chapter{Sintassi}
 Punto di inizio dello sviluppo. Si discute FOOL.
