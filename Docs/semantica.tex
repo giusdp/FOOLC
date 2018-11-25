@@ -1,0 +1,181 @@
+Si discute brevemente lo scopo dell'analisi semantica (attraversare l'albero di sintassi astratta costruito prima, gestione
+degli scope e controllo tipi).
+Si spiega brevemente le decisioni di design per le symbol tables ed il sistema dei tipi (statico).
+\section{Scope}
+
+\section{Type Checking}
+È stato sviluppato un sistema di tipi statico per il linguaggio FOOL. Qui di seguito vengono riportate le varie regole di inferenza.\\
+
+Partendo dalle regole più semplici, FOOL può essere sintetizzato con il linguaggio di espressioni seguente:
+\[
+\begin{array}{lcl}
+N & ::= & 0 \mid 1 \mid \dots\\ 
+B & ::= &  true \mid false \\
+T & ::= & int \mid bool \\
+E & ::= & N \mid B \mid E + E' \mid E - E' \mid E \times E' \mid E \div E' \mid\\
+& & E == E' \mid E < E '\mid E > E' \mid E \le E' \mid E \ge E' \mid \\
+& & E \lor E' \mid E \land E' \mid \lnot E 
+\end{array}
+\]
+
+Dove $N$ sono i numeri, $B$ i valori booleani, $T$ il tipo che un'espressione può avere ed $E$ espressioni semplici, aritmetiche e booleane.
+\subsection{Regole di Inferenza}
+
+I controlli che il compilatore esegue sulla correttezza delle espressioni usate, sono dati dalle seguenti regole.
+
+\begin{multicols}{2}
+\begin{enumerate}
+
+    \item Num Rule
+    \[
+        \begin{prooftree}
+            %\hypo {[Q]}
+            \infer [no rule] 0 {\Gamma \vdash Num: int}
+        \end{prooftree} 
+    \] 
+    \item False Rule
+    \[
+        \begin{prooftree}
+            %\hypo {[Q]}
+            \infer [no rule] 0 {\Gamma \vdash false: bool}
+        \end{prooftree}
+    \]
+    \item True Rule
+    \[
+        \begin{prooftree}
+            %\hypo {[Q]}
+            \infer [no rule] 0 {\Gamma \vdash true: bool}
+        \end{prooftree}
+    \]
+    \item Plus Rule
+        \[
+            \begin{prooftree}
+                \hypo {E : int}
+                \hypo {E' : int}
+                \infer 2 {\Gamma \vdash E + E' : int}
+            \end{prooftree}
+        \]
+    \item Sub Rule
+        \[
+            \begin{prooftree}
+                \hypo {E : int}
+                \hypo {E' : int}
+                \infer 2 {\Gamma \vdash E - E' : int}
+            \end{prooftree}
+        \]
+    \item Mult Rule
+        \[
+            \begin{prooftree}
+                \hypo {E : int}
+                \hypo {E' : int}
+                \infer 2 {\Gamma \vdash E \times E' : int}
+            \end{prooftree} [Mul]
+        \]
+    \item Div Rule
+        \[
+            \begin{prooftree}
+                \hypo {E : int}
+                \hypo {E' : int}
+                \infer 2 {\Gamma \vdash E \div E' : int}
+            \end{prooftree} 
+        \]
+    \item Equal Rule
+        \[
+            \begin{prooftree}
+                \hypo {E : T}
+                \hypo {E' : T}
+                \infer 2 {\Gamma \vdash E == E' : bool}
+            \end{prooftree} 
+        \]
+    \item Less Than Rule
+        \[
+            \begin{prooftree}
+                \hypo {E : int}
+                \hypo {E' : int}
+                \infer 2 {\Gamma \vdash E < E' : bool}
+            \end{prooftree} 
+        \]
+    \item Less Equal Rule
+        \[
+            \begin{prooftree}
+                \hypo {E : int}
+                \hypo {E' : int}
+                \infer 2 {\Gamma \vdash E \le E' : bool}
+            \end{prooftree} 
+        \]
+    \item Greater Than Rule
+        \[
+            \begin{prooftree}
+                \hypo {E : int}
+                \hypo {E' : int}
+                \infer 2 {\Gamma \vdash E > E' : bool}
+            \end{prooftree} 
+        \]
+        \item Greater Equal Rule
+        \[
+            \begin{prooftree}
+                \hypo {E : int}
+                \hypo {E' : int}
+                \infer 2 {\Gamma \vdash E \ge E' : bool}
+            \end{prooftree} 
+        \]
+        \item Or Rule
+        \[
+            \begin{prooftree}
+                \hypo {E : bool}
+                \hypo {E' : bool}
+                \infer 2 {\Gamma \vdash E \lor E' : bool}
+            \end{prooftree} 
+        \]
+        \item And Rule
+        \[
+            \begin{prooftree}
+                \hypo {E : bool}
+                \hypo {E' : bool}
+                \infer 2 {\Gamma \vdash E \land E' : bool}
+            \end{prooftree} 
+        \]
+        \item Not Rule
+        \[
+            \begin{prooftree}
+                \hypo {E : bool}
+                \infer 1 {\Gamma \vdash \lnot E : bool}
+            \end{prooftree} 
+        \]
+
+\end{enumerate}
+\end{multicols}
+
+\subsection{Altri comandi}
+
+FOOL offre anche comandi di tipo imperativo e orientato agli oggetti, quindi dichiarazioni di variabili, di classi, il costrutto $if$ $then$ $else$.
+Il linguaggio mostrato precedentemente viene esteso con questi nuovi comandi.
+
+\[
+\begin{array}{lcl}
+    D &::=& T$ $id = E\\
+    L &::= & $let $T$ $id = E$ in $P \\
+    F & ::= & T$ $f(T$ $id)$ $ P\\
+    P & ::= & E \mid id \mid id = E \mid $ if $ E $ then $ P $ else $ P' \mid\\
+& & $class $C$ extends $C'(T$ $id)$ $F \mid $ new $ C()\\ 
+\end{array}
+\]
+
+Dove ``$id$'' rappresenta l'utilizzo di una generica variabile che può assumere un valore numerico, booleano o classe.
+Essa viene ``dichiarata'' prefissando il tipo alla variabile quando c'è un assegnamento con un'espressione, usando il simbolo $=$. Non dichiarando 
+il tipo, invece, il comando diventa uno ``statement'', cioè una assegnazione di una variabile dichiarata in precedenza.
+Infine, usiamo $f$, e $C$ per indicare nomi generici che una funzione o una classe possono avere.\\
+
+Di seguito sono elencate alcune delle molte regole utilizzate.
+
+\begin{multicols}{2}
+    \begin{enumerate}
+        \item Var Rule
+    \[
+        \begin{prooftree}
+            \hypo {\Gamma(id) = T}
+            \infer 1 {\Gamma \vdash id: T}
+        \end{prooftree}\\
+    \]
+    \end{enumerate}
+\end{multicols}

@@ -9,12 +9,10 @@
 \contentsline {section}{\numberline {3.1}FOOL}{6}
 \contentsline {chapter}{\numberline {4}Semantica}{7}
 \contentsline {section}{\numberline {4.1}Scope}{7}
-\contentsline {section}{\numberline {4.2}Type Checking}{7}
-\contentsline {subsection}{\numberline {4.2.1}Regole di Inferenza}{7}
-\contentsline {subsection}{\numberline {4.2.2}Altri comandi}{8}
-\contentsline {chapter}{\numberline {5}Generazione del Codice}{10}
-\contentsline {section}{\numberline {5.1}Heap}{10}
-\contentsline {section}{\numberline {5.2}Dispatch Table}{10}
-\contentsline {section}{\numberline {5.3}SVM}{10}
-\contentsline {section}{\numberline {5.4}Virtual Machine}{10}
-\contentsline {chapter}{\numberline {6}Conclusioni}{11}
+\contentsline {section}{\numberline {4.2}Tipi}{7}
+\contentsline {chapter}{\numberline {5}Generazione del Codice}{8}
+\contentsline {section}{\numberline {5.1}Heap}{8}
+\contentsline {section}{\numberline {5.2}Dispatch Table}{8}
+\contentsline {section}{\numberline {5.3}SVM}{8}
+\contentsline {section}{\numberline {5.4}Virtual Machine}{8}
+\contentsline {chapter}{\numberline {6}Conclusioni}{9}
