@@ -62,13 +62,13 @@ Il progetto è stato strutturato in diversi package, partendo dal codice fornito
     \item ast: contiene le classi che rappresentano i nodi dell'albero visitato con il Visitor di \textit{Antlr}. 
             L'interfaccia Node rappresenta il concetto di nodo dell'albero astratto sintattico, in particolare dichiara tre metodi:
             \textit{checkSemantics}, \textit{typeCheck}, \textit{codeGeneration}. Le classi usate per i vari tipi di nodo implementano questa interfaccia.
-    \item codeexecution: si occupa della esecuzione del codice e della gestione della memoria. In particolare la classe \textit{VirtualMachine} interpreta il codice (SVM) generato dalle istruzioni in FOOL.
+    \item codeexecution: si occupa della esecuzione del codice e della gestione della memoria. In particolare la classe VirtualMachine interpreta il codice (SVM) generato dalle istruzioni in FOOL.
     \item lib: contiene la libreria \textit{Antlr 4.6}, necessaria per l'esecuzione del compilatore.
     \item parser: contiene \textit{FOOL.g4} e le diverse classi create da \textit{Antlr}.
     \item svm:  contiene \textit{SVM.g4} e le diverse classi create da \textit{Antlr}.
-    \item type: contiene le classi che rappresentano i tipi dei costrutti FOOL: \textit{IntType}, \textit{BoolType}, \textit{ClassType}, \textit{VoidType}.
-    \item util: contiene in particolare la classe \textit{Enviroment} che offre varie strutture dati di utilità e la \textit{Symbol Table}, e la classe \textit{FOOLlib} che oltre ad alcuni metodi utili
-            per la generazione del codice, offre il metodo \text{isSubType} per il controllo dei tipi delle espressioni FOOL.
+    \item type: contiene le classi che rappresentano i tipi dei costrutti FOOL: IntType, BoolType, ClassType, VoidType.
+    \item util: contiene in particolare la classe \textit{Enviroment} che offre varie strutture dati di utilità e la \textit{Symbol Table}, e la classe FOOLlib che oltre ad alcuni metodi utili
+            per la generazione del codice, offre il metodo \textit{isSubType} per il controllo dei tipi delle espressioni FOOL.
 \end{itemize}
 
 Il file ``CompilerLauncher.java'' è il punto d'entrata del compilatore.
@@ -86,14 +86,54 @@ Il file ``CompilerLauncher.java'' è il punto d'entrata del compilatore.
 \end{enumerate}
 
 \chapter{Sintassi}
-Punto di inizio dello sviluppo. Si discute FOOL.
-Si discute l'analisi sintattica, l'AST etc. Anche qui sarà breve.\\
-Si discute anche l'implementazione dell'AST e le altre parti inerenti alla sintassi.
-\section{FOOL}
+
+\section{Definizione della Sintassi}
+Le regole sintattiche che definiscono ciò che costituisce un programma scritto ``correttamente'' si 
+trovano nel file di grammatica di \textit{FOOL.g4} nel package parser.\\
+
+La serie di regole grammaticali di cui \textit{FOOL.g4} è composto fungono da sostituzioni. Essi associano 
+non-terminali a terminali (stringhe letterali) e ad altri non-terminali, che a loro volta sono associati 
+ad altre sostituzioni. Infine è resa possibile l’associazione di un programma in FOOL a una combinazione legale
+di regole grammaticali che definiscono il linguaggio. 
+È questo il compito del \textit{lexer} e del \textit{parser}, che vengono discussi successivamente, cioè della 
+rappresentazione di una serie di stringhe letterali in regole grammaticali opportune. \\
+
+La potenza espressiva della grammatica è fornita in gran parte dalla notazione sintattica accettata da 
+\textit{ANTLR}. Essa supporta quella usata nella scrittura di espressioni regolari, le regex, che utilizza i 
+simboli per quantificare le istanze di un’espressione indicata, quali `` ? '', `` * '', `` + '' e `` $\mid$ ''. \\
+
+Questa espressività si è vista anche nell'abilità di allocare regole di precedenza alle espressioni 
+grammatiche desiderate. Il caso esemplare in FOOL è la precedenza data alle operazioni di divisone e 
+moltiplicazione sopra quelle di addizione e sottrazione tramite la distinzione tra i ``factor'' e i ``term''. 
+
+
+\section{Controllo della sintassi}
+
+Il codice fornito in input deve aderire alla sintassi definita. L’obiettivo di \textit{Antlr} è quello di controllare che il programma sia 
+corretto sintatticamente, in modo tale da avere un programma adeguato per la 
+verifica semantica successiva. Per raggiungere tale scopo, si rappresenta il programma 
+fornito come un albero AST (\textit{abstract syntax tree}), il quale fungerà da rappresentazione strutturata 
+del programma per facilitare la sua analisi. \\
+
+Il primo passo in questo processo è la conversione del programma da formato testo in un stream dei 
+\textit{tokens}, compiuto dal \textit{lexer}. Il flusso consiste di valori che corrispondono a termini categorizzati del 
+linguaggio FOOL quali identificatori, interi o caratteri grammaticali. Questa rappresentazione del 
+programma permette più facilmente al \textit{parser} di compiere il suo compito, ovvero quello di applicare 
+le regole grammaticali definite nel file \textit{.g4} al flusso. Trasformando i \textit{token} del flusso, cioè i terminali 
+della grammatica FOOL, in non-terminali che sono associati a tali \textit{token}, vengono annotati creando 
+una struttura dati di contesti grammaticali. Ciascuno di questi è un nodo nella struttura. \\
+
+La radice di questo albero di contesti viene passato al \textit{FOOLNodeVisitor} che visita ognuno dei suoi 
+contenuti. Accompagnato ad ogni visita è la generazione di uno o più nodi del AST, che infine 
+costituiranno l’AST finale, pronto per l’analisi semantica. \\
+
+Da notare che questo processo fallisce in caso di input sintatticamente errato. Programmi 
+che non aderiscono alla grammatica definita causeranno eccezioni della fase
+del parser, che fallirà ad associare con successo le regole ai suoi token. 
 
 \chapter{Semantica}
-L'analisi semantica si occupa di controllo di scope e controllo di tipi, questo viene fatto mediante i metodi \textit{checkSemantics} e \textit{typeCheck}, 
-ereditati dall'interfaccia \textit{Node} da tutte le classi che rappresentano i nodi dell'AST.
+L'analisi semantica si occupa del controllo dello scope e del controllo dei tipi, che vengono eseguiti mediante i metodi \textit{checkSemantics} e \textit{typeCheck}, 
+ereditati dall'interfaccia Node da tutte le classi che rappresentano i nodi dell'AST.
 
 \section{Scope}
 Questo primo controllo, tramite \textit{checkSemantics}, serve per accertarsi del corretto utilizzo di variabili, funzioni e classi. Ad esempio, se una variabile viene utilizzata
@@ -103,7 +143,19 @@ Dopo aver visitato l'albero di sintassi e instanziati i nodi appropriati,
 viene invocato \textit{checkSemantics} dal punto di entrata dell'albero (la radice), che sarà un nodo ``\textit{Prog}'' (ProgExpNode, ProgLetInNode o ProgClassNode). 
 Esso invocherà lo stesso metodo sul nodo figlio, il quale continuerà ad invocare sul proprio figlio e così via, fino alle foglie dell'albero.\\
 
-In particolare, i controlli vengono fatti mediante una ``\textit{Symbol Table}''
+In particolare, i controlli vengono fatti mediante una \textit{Symbol Table}, cioè una lista di hash tables nella classe Environment. Una hash table rappresenta uno scope nel programma,
+nel quale vengono inseriti gli identificatori di variabili, funzioni e classi associati alle proprie \textit{STEntry}. I vari scope sono indicizzati tramite l'intero \textit{nesting level}, che parte da 0 quando 
+la Symbol Table è vuota ed incrementa di 1 ad ogni inserimento di hash table (quando si entra in nuovo scope). Gli oggetti STEntry contengono il nesting level, il tipo e l'\textit{offset}
+dell'identificatore inserito. Con il nesting level si può accedere all'hash table dove l'identificatore è stato inserito, quindi lo scope in cui è stato dichiarato. Il tipo e l'offset sono usati
+per il controllo dei tipi e per la generazione di codice. \\
+
+Se una stessa variabile, funzione o classe viene dichiarata più di una volta, l'errore viene riscontrato durante l'inserimento
+nella hashtable dello scope corrente in quanto già è presente una \textit{entry} con lo stesso identificatore. \\
+
+Un altro errore che il controllo con la Symbol Table riesce a catturare è l'utilizzo di identificatori non ancora dichiarati (esempio: invocazione di funzione non definita). 
+Per controllare se l'identificatore è stato dichiarato, si cerca nella Symbol Table la sua entry partendo dallo scope più interno (l'ultimo nesting level). Non trovando nessuna entry
+significa un utilizzo errato dell'identificatore.
+
 \section{Tipi}
 
 \chapter{Generazione del Codice}
