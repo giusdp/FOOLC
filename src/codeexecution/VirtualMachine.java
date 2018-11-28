@@ -4,17 +4,19 @@ import java.util.*;
 
 import svm.AssemblyNode;
 import svm.SVMParser;
+
+
 /**
  * @author Giuseppe
  *
  */
 public class VirtualMachine {
 
-	public static final int CODESIZE = 10000;
-	public static final int MEMSIZE = 10000;
+    public static boolean debugCodeGen = false;
+
+    public static final int MEMSIZE = 10000;
 
 	private List<AssemblyNode> code;
-	// private int[] code;
 	private int[] memory = new int[MEMSIZE];
 
 	private int ip = 0;
@@ -34,73 +36,73 @@ public class VirtualMachine {
 
 	public void cpu() throws Exception {
 		while (true) {
-			//printStack();
+			if (debugCodeGen) printStack();
 			AssemblyNode instruction = code.get(ip++); // fetch next instruction identifier
 			int v1, v2;
 			int address;
 			switch (instruction.getInstructionID()) {
 			case SVMParser.PUSH:
 				if (instruction.isWithLabel()) {
-					//System.out.println("push label address: " + instruction.getLabelAddress());
+                    if (debugCodeGen) System.out.println("push label address: " + instruction.getLabelAddress());
 					push(instruction.getLabelAddress());
 				}
 				else {
-					//System.out.println("push " + instruction.getNumber());
+                    if (debugCodeGen) System.out.println("push " + instruction.getNumber());
 					push(instruction.getNumber());
 				}
 				break;
 			case SVMParser.POP:
-				//System.out.println("pop");
-				pop();
-				break;
+                if (debugCodeGen) System.out.println("pop");
+                pop();
+                break;
 			case SVMParser.ADD:
 				v1 = pop();
 				v2 = pop();
-				//System.out.println("add " + v1 + " " + v2);
+                if (debugCodeGen) System.out.println("add " + v1 + " " + v2);
 				push(v2 + v1);
 				break;
 			case SVMParser.MULT:
 				v1 = pop();
 				v2 = pop();
-				//System.out.println("mult " + v1 + " " + v2);
+                if (debugCodeGen) System.out.println("mult " + v1 + " " + v2);
 				push(v2 * v1);
 				break;
 			case SVMParser.DIV:
 				v1 = pop();
 				v2 = pop();
-				//System.out.println("div " + v1 + " " + v2);
+                if (debugCodeGen) System.out.println("div " + v1 + " " + v2);
 				push(v2 / v1);
 				break;
 			case SVMParser.SUB:
 				v1 = pop();
 				v2 = pop();
-				//System.out.println("sub " + v1 + " " + v2);
+                if (debugCodeGen) System.out.println("sub " + v1 + " " + v2);
 				push(v2 - v1);
 				break;
 			case SVMParser.STOREW: //
 				address = pop();
 				int v = pop();
-				//System.out.println("sw " + address + " " + v);
+                if (debugCodeGen) System.out.println("sw " + address + " " + v);
                 setMemory(address, v);
                 break;
 			case SVMParser.LOADW: //
 				address = pop();
-				//System.out.println("lw " + address);
+                if (debugCodeGen) System.out.println("lw " + address);
 				push(getMemory(address));
                 break;
 			case SVMParser.LABEL:
-				//System.out.println("Label instruction, nothing to do");
+                if (debugCodeGen) System.out.println("Label instruction, nothing to do");
 				break;
 			case SVMParser.BRANCH:
 				address = instruction.getLabelAddress();
-				//System.out.println("Branch to " + address);
+                if (debugCodeGen) System.out.println("Branch to " + address);
 				ip = address;
 				break;
 			case SVMParser.BRANCHEQ: //
 				address = instruction.getLabelAddress(); 
 				v1 = pop();
 				v2 = pop();
-				//System.out.println("BEQ " + v1 + " " + v2 + ", label to instruction " + address);
+                if (debugCodeGen) System.out.println("BEQ " + v1 + " " + v2 + ", label to instruction " + address);
 				if (v2 == v1)
 					ip = address;
 				else
@@ -110,106 +112,106 @@ public class VirtualMachine {
 				address = instruction.getLabelAddress(); 
 				v1 = pop();
 				v2 = pop();
-				//System.out.println("BLEQ " + v2 + " " + v1 + ", label to instruction " + address);
+                if (debugCodeGen) System.out.println("BLEQ " + v2 + " " + v1 + ", label to instruction " + address);
 				if (v2 <= v1)
 					ip = address;
 				else
-					//System.out.println("False, not jumping there");
+                if (debugCodeGen) System.out.println("False, not jumping there");
 				break;
 			case SVMParser.BRANCHLESS:
 				address = instruction.getLabelAddress(); 
 				v1 = pop();
 				v2 = pop();
-				//System.out.println("BL " + v2 + " " + v1 + ", label to instruction " + address);
+                if (debugCodeGen) System.out.println("BL " + v2 + " " + v1 + ", label to instruction " + address);
 				if (v2 < v1)
 					ip = address;
 				else
-					//System.out.println("False, not jumping there");
+                if (debugCodeGen) System.out.println("False, not jumping there");
 				break;
 			case SVMParser.BRANCHGREATEREQ:
 				address = instruction.getLabelAddress(); 
 				v1 = pop();
 				v2 = pop();
-				//System.out.println("BGEQ " + v2 + " " + v1 + ", label to instruction " + address);
+                if (debugCodeGen) System.out.println("BGEQ " + v2 + " " + v1 + ", label to instruction " + address);
 				if (v2 >= v1)
 					ip = address;
 				else
-					//System.out.println("False, not jumping there");
+                if (debugCodeGen) System.out.println("False, not jumping there");
 				break;
 			case SVMParser.BRANCHGREATER:
 				address = instruction.getLabelAddress(); 
 				v1 = pop();
 				v2 = pop();
-				//System.out.println("BG " + v2 + " " + v1 + ", label to instruction " + address);
+                if (debugCodeGen) System.out.println("BG " + v2 + " " + v1 + ", label to instruction " + address);
 				if (v2 > v1)
 					ip = address;
 				else
-					//System.out.println("False, not jumping there");
+                if (debugCodeGen) System.out.println("False, not jumping there");
 				break;
 			case SVMParser.AND: 
 				address = instruction.getLabelAddress(); 
 				v1 = pop();
 				v2 = pop();
-				//System.out.println("AND " + v2 + " " + v1 + ", label to instruction " + address);
+                if (debugCodeGen) System.out.println("AND " + v2 + " " + v1 + ", label to instruction " + address);
 				if (v1 == 1 && v2 == 1)
 					ip = address;
 				else
-					//System.out.println("False, not jumping there");
+                if (debugCodeGen) System.out.println("False, not jumping there");
 				break;
 			case SVMParser.OR: 
 				address = instruction.getLabelAddress(); 
 				v1 = pop();
 				v2 = pop();
-				//System.out.println("OR " + v2 + " " + v1 + ", label to instruction " + address);
+                if (debugCodeGen) System.out.println("OR " + v2 + " " + v1 + ", label to instruction " + address);
 				if (v1 == 1 || v2 == 1)
 					ip = address;
-				else
-					//System.out.println("False, not jumping there");
+				else if (debugCodeGen) System.out.println("False, not jumping there");
 				break;
 			case SVMParser.JS:
 				address = pop();
 				ra = ip;
 				ip = address;
-				//System.out.println("js " + address);
+                if (debugCodeGen) System.out.println("js " + address);
 				break;
 			case SVMParser.STORERA:
                 ra = pop();
-				//System.out.println("sra");
+                if (debugCodeGen) System.out.println("sra");
 				break;
 			case SVMParser.LOADRA:
 				push(ra);
-				//System.out.println("lra");
+                if (debugCodeGen) System.out.println("lra");
 				break;
 			case SVMParser.STORERV:
 				rv = pop();
-				//System.out.println("srv");
+                if (debugCodeGen) System.out.println("srv");
 				break;
 			case SVMParser.LOADRV:
 				push(rv);
-				//System.out.println("lrv");
+                if (debugCodeGen) System.out.println("lrv");
 				break;
 			case SVMParser.LOADFP:
 				push(fp);
-				//System.out.println("lfp");
+                if (debugCodeGen) System.out.println("lfp");
 				break;
 			case SVMParser.STOREFP:
 				fp = pop();
-				//System.out.println("sfp");
+                if (debugCodeGen) System.out.println("sfp");
 				break;
 			case SVMParser.COPYFP:
-				//System.out.println("cfp");
+                if (debugCodeGen) System.out.println("cfp");
 				fp = sp;
 				break;
 			case SVMParser.STOREHP:
 				hp = pop();
-				//System.out.println("shp");
+                if (debugCodeGen) System.out.println("shp");
 				break;
 			case SVMParser.LOADHP:
 				push(hp);
-				//System.out.println("lhp");
+                if (debugCodeGen) System.out.println("lhp");
 				break;
 			case SVMParser.PRINT:
-				System.out.println((sp < MEMSIZE) ? memory[sp] : "Empty stack!");
+                if (debugCodeGen) System.out.println("print");
+                System.out.println((sp < MEMSIZE) ? memory[sp] : "Empty stack!");
 				break;
 
 			case SVMParser.NEW:
@@ -217,7 +219,7 @@ public class VirtualMachine {
 				// table), il numero di campi e i loro valori
 				// dall'ultimo al primo.
 
-				//System.out.println("new");
+                if (debugCodeGen) System.out.println("new");
 				
 				int dispatchTableAddress = pop();
 				int fieldNumber = pop();
@@ -261,16 +263,16 @@ public class VirtualMachine {
 				
 			case SVMParser.LOADMETHOD:
 				int methodAddress = pop();
-                push(code.get(methodAddress).getLabelAddress()); // primo metodo della classe
-                //System.out.println("lm " + methodAddress);
+                push(code.get(methodAddress).getLabelAddress());
+                if (debugCodeGen) System.out.println("lm " + methodAddress);
 				break;
 				
 			case SVMParser.DUPLICATETOP:
 				push(getMemory(sp));
-				//System.out.println("cts " + getMemory(sp));
+                if (debugCodeGen) System.out.println("cts " + getMemory(sp));
 				break;
 			case SVMParser.HALT:
-				//System.out.println("HALT!");
+                if (debugCodeGen) System.out.println("HALT!");
 				return;
 			}
 		}

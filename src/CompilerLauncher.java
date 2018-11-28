@@ -1,31 +1,25 @@
-import java.io.BufferedWriter;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.antlr.v4.runtime.ANTLRErrorListener;
-import org.antlr.v4.runtime.ANTLRInputStream;
-import org.antlr.v4.runtime.CommonTokenStream;
-
 import ast.FOOLNodeVisitor;
 import ast.Node;
 import codeexecution.DispatchTable;
 import codeexecution.VirtualMachine;
+import org.antlr.v4.runtime.ANTLRInputStream;
+import org.antlr.v4.runtime.CommonTokenStream;
 import parser.FOOLLexer;
 import parser.FOOLParser;
 import svm.AssemblyNode;
 import svm.AssemblyVisitor;
 import svm.SVMLexer;
 import svm.SVMParser;
+import type.ErrorType;
+import type.Type;
 import util.Environment;
 import util.FOOLlib;
 import util.SemanticError;
 import util.SyntaxErrorListener;
-import type.ErrorType;
-import type.Type;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Giuseppe

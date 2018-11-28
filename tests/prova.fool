@@ -1,9 +1,4 @@
-let
-    void addOne(int x) {
-        x = x+1;
-    }
-    int x = 1;
-in
-    print(x);
-    addOne(x);
-    print(x);
+class A (int x) { int getX() { x; } int f() {x;} };
+
+let A a = new A(53);
+in print(a.f());

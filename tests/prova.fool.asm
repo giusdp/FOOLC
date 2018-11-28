@@ -1,50 +1,60 @@
 ## LET
 
-push function0
+push 53
 push 1
+push A_class
+new
 
 ## IN
 
-lfp
-push -2
-add
-lw
-print
-lfp
-push -2
-lfp
-add
-lw
 lfp
 push -1
 lfp
 add
 lw
-js
-lfp
-push -2
-add
+cts
 lw
+push 2
+add
+lm
+js
 print
 halt
+
+## Functions code and Dispatch Table
 
 function0:
 cfp
 lra
 push 1
 lfp
+lw
 add
 lw
-push 1
-add
-lfp
-push 1
-add
-sw
+srv
 sra
 pop
-pop
 sfp
+lrv
 lra
 js
 
+function1:
+cfp
+lra
+push 1
+lfp
+lw
+add
+lw
+srv
+sra
+pop
+sfp
+lrv
+lra
+js
+
+A_class:
+function0
+function1
