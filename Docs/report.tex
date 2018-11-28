@@ -161,8 +161,8 @@ significa un utilizzo errato dell'identificatore.
 
 \section{Tipi}
 Il controllo successivo che il compilatore esegue è quello sui tipi dei costrutti utilizzati nel programma di input. Come \textit{checkSemantics}, il metodo \textit{typeCheck} viene invocato sulla
-radice dell'AST così da avere una catena di invocazioni che arriva fino alle foglie, per poi risalire di nuovo alla radice la quale darà il risultato finale, cioè il tipo del programma. I tipi che ogni costrutto e il programma stesso possono assumere
-sono cinque.
+radice dell'AST così da avere una catena di invocazioni che arriva fino alle foglie, per poi risalire di nuovo alla radice la quale darà il risultato finale, cioè il tipo del programma. 
+I tipi che ogni costrutto e il programma stesso possono assumere sono cinque.
 
 \begin{itemize}
     \item IntType
@@ -173,14 +173,17 @@ sono cinque.
     \item ErrorType
 \end{itemize}
 
+Ognuno implementa la classe astratta Type, che estende Node. In questo modo i tipi sono ancora nodi dell'AST però vengono separati dagli altri in quanto il loro scopo è solo quello
+di ``etichettare'' gli altri nodi.\\
+
 ErrorType è un tipo speciale utilizzato nel caso ci siano errori in un qualunque punto durante la fase di controllo. Nel momento in cui si incontra un errore,
 un ErrorType viene creato e viene restituito al nodo chiamante di volta in volta fino alla radice. In questo modo come risultato del type checking si ha un ErrorType, il compilatore
-arresta l'esecuzione e mostra l'errore all'utente.
+arresta l'esecuzione e mostra l'errore all'utente.\\
 
-ArrowType, invece, è una composizione di tipi. È il tipo associato alle funzioni, in quanto una funzione ha un tipo composto dalla sequenza di tipi data dagli argomenti di input e dal tipo di ritorno che il valore da restituire deve avere.
+ArrowType, invece, è una composizione di tipi. È il tipo associato alle funzioni, in quanto una funzione ha un tipo composto dalla sequenza di tipi data dagli argomenti di input e dal tipo di ritorno che il valore da restituire deve avere.\\
 
 Il punto fondamentale del controllo dei tipi del compilatore è il metodo \textit{isSubType} nella classe FOOLlib. Questo metodo riceve in input
-due oggeti nodi e controlla se il primo è sottotipo dell'altro. Le diverse regole di inferenza (che non riportiamo qui per brevità) sono quelle mostrate a lezione.
+due oggeti Type e controlla se il primo è sottotipo dell'altro. Le diverse regole di inferenza (che non riportiamo qui per brevità) sono quelle mostrate a lezione.
 
 Poichè isSubType si occupa unicamente di controllare il sotto tipaggio di due nodi, ogni nodo nel proprio metodo typeCheck deve utilizzare isSubType per la verifica del soddisfacimento della
 regola di inferenza di interesse. Ad esempio il nodo che rappresenta una funzione (FunNode) dovrà controllare individualmente i parametri e le istruzioni nel corpo, ponendo particolarmente attenzione alla sua ultima istruzione verificando che sia un sotto tipo del suo tipo di ritorno. 
@@ -189,7 +192,7 @@ controllare se la condizione è un BoolType e se i nodi delle branch \textit{the
 
 \subsection{isSubType}
 
-
+I tipi sono stati divisi in due classi: i tipi ``primitivi'' e i t
 
 
 \chapter{Generazione del Codice}

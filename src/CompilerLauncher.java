@@ -80,7 +80,6 @@ public class CompilerLauncher {
 
 
         Environment env = new Environment();
-		FOOLlib.setEnv(env);
 		
 		System.out.println("Perfoming Check Semantics...");
 		ArrayList<SemanticError> err = ast.checkSemantics(env);

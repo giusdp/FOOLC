@@ -13,13 +13,6 @@ import type.VoidType;
 
 public class FOOLlib {
 
-    private static Environment env;
-
-    public static void setEnv(Environment e) {
-        env = e;
-    }
-
-
     private static int labCount = 0;
 
     private static int funLabCount = 0;
@@ -28,10 +21,6 @@ public class FOOLlib {
 
     //valuta se il tipo "a" è <: del tipo "b"
     public static boolean isSubtype(Type a, Type b) {
-        if (env == null) {
-            System.err.println("Error: FOOLlib.env is null. Call FOOLlib.setEnv in CompilerLauncher after creating an env.");
-            System.exit(1);
-        }
 
         // Se a e b sono tipi primitivi (int, bool o void) si controlla solo se sono uguali.
         if (a instanceof BoolType || a instanceof IntType || a instanceof VoidType) {
