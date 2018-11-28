@@ -192,17 +192,27 @@ controllare se la condizione è un BoolType e se i nodi delle branch \textit{the
 
 \subsection{isSubType}
 
-I tipi sono stati divisi in due classi: i tipi ``primitivi'' e i t
+I tipi sono stati divisi in due classi: i tipi ``primitivi'', che non possono essere ereditati, di cui fanno parte
+IntType, BoolType, VoidType ed ErrorType, e i tipi ereditabili, i restanti. Questo significa che il metodo isSubType 
+controlla se i tipi ricevuti in input siano parte dell'insieme dei tipi primitivi ed in tal caso controlla solo se siano lo
+stesso tipo, (nel caso del tipo speciale ErrorType, si restituisce l'errore prima ancora delle invocazioni di isSubType).
+Nel caso in cui sono passati in input due ClassType, si controlla se il nome è lo stesso (che sta a significare sono la stessa classe), in caso negativo si 
+ottiene il ClassNode corrispondente alla prima classe per verificare se esso contiene il nome della classe padre. In tal caso
+si verifica se la classe padre è la seconda classe data in input. Si continua a risalire l'albero dell'ereditarietà in questo modo fino a trovare la classe estesa.
+
+Per gli ArrowType, invece, il controllo del sotto tipaggio viene effettuato dal ClassNode stesso sui propri metodi e quelli della sua classe padre. Quindi isSubType
+non implemente di per se la verifica di sotto tipo dei metodi, ma le ClassNode invocano isSubType individualmente su tutti i paramentri e sul tipo di ritorno (come definito dalla regola di inferenza sull'overriding dei metodi).
+
+Per approfondire sulle regole di inferenza utilizzate (sulle espressioni semplici, subtyping di classi, overriding di metodi etc.) consultare le slides sul type checking.
+
 
 
 \chapter{Generazione del Codice}
 Capitolo sulla code generation. Si discute come si trasforma il codice scritto nella grammatica
 ad alto livello di FOOL a svm. Come si gestisce lo stack, i pointers, i frames etc etc.
-\section{Heap}
-\section{Dispatch Table}
 \section{SVM}
 \section{Virtual Machine}
+\section{Heap}
+\section{Dispatch Table}
 
-\chapter{Conclusioni}
-Brevissimo capitolo conclusivo, si fa un piccolo riassunto di tutto il report e si tirano le somme.
 \end{document}

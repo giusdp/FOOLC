@@ -187,7 +187,6 @@ public class ClassNode implements Node {
             superclassIterator = superclassIterator.getSuperClass();
         }
 
-        // TODO: controllare tipi dei campi (istanceof NullNode?)
         Type methodType;
         for (Node m : methodList) {
             FunNode method = (FunNode) m;
