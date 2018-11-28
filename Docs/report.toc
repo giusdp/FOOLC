@@ -13,7 +13,10 @@
 \contentsline {section}{\numberline {4.2}Tipi}{9}
 \contentsline {subsection}{\numberline {4.2.1}isSubType}{10}
 \contentsline {chapter}{\numberline {5}Generazione del Codice}{11}
-\contentsline {section}{\numberline {5.1}SVM}{11}
-\contentsline {section}{\numberline {5.2}Virtual Machine}{11}
-\contentsline {section}{\numberline {5.3}Heap}{11}
-\contentsline {section}{\numberline {5.4}Dispatch Table}{11}
+\contentsline {section}{\numberline {5.1}Heap}{11}
+\contentsline {section}{\numberline {5.2}Dispatch Table}{11}
+\contentsline {section}{\numberline {5.3}Codice assembly}{11}
+\contentsline {subsection}{\numberline {5.3.1}Intanziazione}{11}
+\contentsline {subsection}{\numberline {5.3.2}Indirizzo dei metodi}{12}
+\contentsline {section}{\numberline {5.4}Virtual Machine}{12}
+\contentsline {section}{\numberline {5.5}Espressioni Multiple}{12}

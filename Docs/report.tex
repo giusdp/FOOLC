@@ -208,11 +208,35 @@ Per approfondire sulle regole di inferenza utilizzate (sulle espressioni semplic
 
 
 \chapter{Generazione del Codice}
-Capitolo sulla code generation. Si discute come si trasforma il codice scritto nella grammatica
-ad alto livello di FOOL a svm. Come si gestisce lo stack, i pointers, i frames etc etc.
-\section{SVM}
-\section{Virtual Machine}
+
+L'ultima fase del compilatore è quella di generare codice assembly da eseguire tramite una Stack Virtual Machine (SVM).
+Ogni nodo definisce un metodo chiamato \textit{codeGeneration} che si occupa di tradurre ogni nodo in codice eseguibile restituendo un stringa con il codice
+riguardante il costrutto che il nodo rappresenta. Ogni stringa generata dalle varie invocazioni del metodo vengono concatenate così da avere infine il codice completo, 
+pronto per la SVM. 
+
 \section{Heap}
+
 \section{Dispatch Table}
+
+\section{Codice assembly}
+Come per il codice FOOL, anche il codice assembly è stato definito in un file .g4 per \textit{Antlr}, chiamato SVM.g4, nel package svm. La grammatica di questo codice
+definisce istruzioni che lavorano su uno stack, dove le istruzioni fondamentali alla base del funzionamento di tutte le altre sono \textit{push} e \textit{pop}. Analogamente a FOOL, 
+il linguaggio assembly utilizzato è stato modificato ed esteso da un linguaggio preesistente dato dal professore. In particolare sono stati rimossi gli attributi ed azioni (vedere documentazione di \textit{Antlr}),
+ed usato il \textit{visitor} pattern per visitare il suo AST e definire il codice Java da eseguire per ogni nodo. In più, alcune istruzioni sono state aggiunte a quelle già definite: \textit{new} (instanziazione oggetto), \textit{lm} (load method), \textit{cts} (copy top of stack, duplica la cima dello stack facendo un \textit{pop} e due \textit{push} dello stesso valore) e le istruzioni per eseguire
+i confronti numerici e booleani.
+
+\subsection{Intanziazione}
+
+Quando si crea una nuova instanza con il costruttore ``new ClassName()'', il codice generato (dal nodo ConstructorNode) corrisponde al push dei campi, al push del \textbf{numero} dei campi e all'istruzione \textit{new}. Quest'ultima 
+istruzione si occupa di instanziare l'oggetto, cioè di inserire nell'\textbf{heap} l'indirizzo della dispatch table (vedi dopo) e i campi. Presume che in cima allo stack ci sia l'indirizzo della dispatch table, 
+il numero di campi e i parametri dati in input al costruttore, condizione che è sempre vera poichè ConstructorNode restituisce un blocco di codice che comprende tutte le istruzioni richieste da \textit{new}.
+
+\subsection{Indirizzo dei metodi}
+Istruzione usata per il dispatch dinamico, carica in cima allo stack l'indirizzo di un metodo, ottenuto dalla
+dispatch table della sua classe. 
+
+\section{Virtual Machine}
+
+\section{Espressioni Multiple}
 
 \end{document}
