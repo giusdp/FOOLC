@@ -233,7 +233,8 @@ il numero di campi e i parametri dati in input al costruttore, condizione che è
 
 \subsection{Indirizzo dei metodi}
 Istruzione usata per il dispatch dinamico, carica in cima allo stack l'indirizzo di un metodo, ottenuto dalla
-dispatch table della sua classe. 
+dispatch table della sua classe. Presume che in cima allo stack ci sia l'indirizzo al metodo nella dispatch table, in questo modo può andare a prendere l'indirizzo
+alla label che indica l'inizio del corpo del metodo e inserirlo nello stack.
 
 \section{Virtual Machine}
 
