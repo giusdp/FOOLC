@@ -7,16 +7,17 @@
 \contentsline {section}{\numberline {2.2}Istruzioni Per l'Utilizzo}{5}
 \contentsline {chapter}{\numberline {3}Sintassi}{6}
 \contentsline {section}{\numberline {3.1}Definizione della Sintassi}{6}
-\contentsline {section}{\numberline {3.2}Controllo della sintassi}{6}
-\contentsline {chapter}{\numberline {4}Semantica}{8}
-\contentsline {section}{\numberline {4.1}Scope}{8}
-\contentsline {section}{\numberline {4.2}Tipi}{9}
-\contentsline {subsection}{\numberline {4.2.1}isSubType}{10}
-\contentsline {chapter}{\numberline {5}Generazione del Codice}{11}
-\contentsline {section}{\numberline {5.1}Heap}{11}
-\contentsline {section}{\numberline {5.2}Dispatch Table}{11}
-\contentsline {section}{\numberline {5.3}Codice assembly}{11}
-\contentsline {subsection}{\numberline {5.3.1}Intanziazione}{11}
-\contentsline {subsection}{\numberline {5.3.2}Indirizzo dei metodi}{12}
-\contentsline {section}{\numberline {5.4}Virtual Machine}{12}
-\contentsline {section}{\numberline {5.5}Espressioni Multiple}{12}
+\contentsline {section}{\numberline {3.2}Caratteristiche Grammaticali}{6}
+\contentsline {section}{\numberline {3.3}Controllo della Sintassi}{7}
+\contentsline {chapter}{\numberline {4}Semantica}{9}
+\contentsline {section}{\numberline {4.1}Scope}{9}
+\contentsline {section}{\numberline {4.2}Tipi}{10}
+\contentsline {subsection}{\numberline {4.2.1}isSubType}{11}
+\contentsline {chapter}{\numberline {5}Generazione del Codice}{12}
+\contentsline {section}{\numberline {5.1}Codice assembly}{12}
+\contentsline {subsection}{\numberline {5.1.1}Intanziazione}{12}
+\contentsline {subsection}{\numberline {5.1.2}Indirizzo dei metodi}{13}
+\contentsline {section}{\numberline {5.2}Heap}{13}
+\contentsline {section}{\numberline {5.3}Dispatch Table}{13}
+\contentsline {section}{\numberline {5.4}Virtual Machine}{13}
+\contentsline {section}{\numberline {5.5}Espressioni Multiple}{13}
