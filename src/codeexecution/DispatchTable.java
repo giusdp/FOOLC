@@ -19,19 +19,11 @@ public class DispatchTable {
     public static void addDispatchTable(String classID, List<DTEntry> dtEntryList) {
         dispatchTables.put(classID, dtEntryList);
     }
-    
-    
-    public static HashMap<String, List<DTEntry>> getDispatchTables() {
-		return dispatchTables;
-	}
 
 
-	public static List<DTEntry> getDispatchTableOfClass(String classID) {
-		List<DTEntry> tmp = new ArrayList<>();
-		List<DTEntry> dtList = dispatchTables.get(classID);
-		
-		dtList.forEach(entry -> tmp.add(entry));
-        return tmp;
+    public static List<DTEntry> getDispatchTableOfClass(String classID) {
+        List<DTEntry> dtList = dispatchTables.get(classID);
+        return new ArrayList<>(dtList);
     }
 
     public static String codeGeneration() {
@@ -40,14 +32,11 @@ public class DispatchTable {
 
     	// Per ogni classe genera una label della classe 'nomeClasse_class' e sotto riga per riga una label per ogni suo metodo.
     	dispatchTables.forEach((className, entryList) -> {
-    		stringBuilder.append(className + "_class:\n");
+    		stringBuilder.append(className).append("_class:\n");
     		entryList.forEach(entry -> stringBuilder.append(entry.getMethodLabel()));
     	});
     	
         return stringBuilder.toString();
     }
 
-    public static void reset() {
-        dispatchTables = new HashMap<>();
-    }
 }
