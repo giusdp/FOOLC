@@ -47,7 +47,8 @@ Al primo tipo appartengono, ad esempio, la divisione per zero o un accesso proib
 FOOL non è l'unico linguaggio utilizzato, infatti il compilatore deve generare del codice eseguibile (da un elaboratore) partendo da un programma scritto in FOOL. Questo nuovo codice è scritto in un linguaggio \textit{assembly} per una \textit{stack virtual machine} con registri (SVM), il quale offre istruzioni per alcuni calcoli aritmentici, per gestione di \textit{stack} e \textit{heap} e salti condizionati. In accordo con le estensioni fatte a FOOL, anche il linguaggio SVM è stato arricchito.
 
 \section{Outline}
-Nei capitoli successivi è presentato in modo approfondito il progetto e le sue caratteristiche principali. Nel capitolo successivo viene descritta la struttura del compilatore e come utilizzarlo e una breve analisi sulle diverse parti che lo costituiscono. Il capitolo 3 discute la grammatica del linguaggio e come da questa si ricavano le informazioni per proseguire con la compilazione. Nel capitolo 4 è discussa l'analisi semantica, di particolare importanza è la sezione del \textit{type checking}. Prima di concludere è descritta, nel capitolo 5, la generazione del codice \textit{svm}.
+Nei capitoli successivi è presentato in modo approfondito il progetto e le sue caratteristiche principali. Nel capitolo successivo viene descritta la struttura del compilatore e come utilizzarlo e una breve analisi sulle diverse parti che lo costituiscono. 
+Il capitolo 3 discute la grammatica del linguaggio e come da questa si ricavano le informazioni per proseguire con la compilazione. Nel capitolo 4 è discussa l'analisi semantica, in particolare \textit{scope} e \textit{type checking}. Infine, nel capitolo 5, la generazione del codice assembly e la sua esecuzione.
 
 \chapter{Descrizione del Progetto}
 \section{Struttura}
