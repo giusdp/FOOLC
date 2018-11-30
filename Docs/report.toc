@@ -15,9 +15,9 @@
 \contentsline {subsection}{\numberline {4.2.1}isSubType}{11}
 \contentsline {chapter}{\numberline {5}Generazione del Codice}{12}
 \contentsline {section}{\numberline {5.1}Codice assembly}{12}
-\contentsline {subsection}{\numberline {5.1.1}Intanziazione}{12}
-\contentsline {subsection}{\numberline {5.1.2}Indirizzo dei metodi}{13}
+\contentsline {subsection}{\numberline {5.1.1}Virtual Machine}{12}
+\contentsline {subsection}{\numberline {5.1.2}Istanziazione}{13}
+\contentsline {subsection}{\numberline {5.1.3}Indirizzo dei metodi}{13}
 \contentsline {section}{\numberline {5.2}Heap}{13}
-\contentsline {section}{\numberline {5.3}Dispatch Table}{13}
-\contentsline {section}{\numberline {5.4}Virtual Machine}{13}
-\contentsline {section}{\numberline {5.5}Espressioni Multiple}{13}
+\contentsline {section}{\numberline {5.3}Dispatch Table}{14}
+\contentsline {section}{\numberline {5.4}Istruzioni Multiple}{14}

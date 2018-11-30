@@ -249,7 +249,14 @@ il linguaggio assembly utilizzato è stato modificato ed esteso da un linguaggio
 ed usato il \textit{visitor} pattern per visitare il suo AST e definire il codice Java da eseguire per ogni nodo. In più, alcune istruzioni sono state aggiunte a quelle già definite: \textit{new} (instanziazione oggetto), \textit{lm} (load method), \textit{cts} (copy top of stack, duplica la cima dello stack facendo un \textit{pop} e due \textit{push} dello stesso valore) e le istruzioni per eseguire
 i confronti numerici e booleani.
 
-\subsection{Intanziazione}
+\subsection{Virtual Machine}
+Il pattern visitor è stato implementato per generare oggetti AssemblyNode, dove ognuno di essi rappresenta un singolo comando assembly. Vengono inseriti in una lista, uno ad uno come vengono creati, così da rispecchiare
+l'ordine dei comandi dell'apposito file assembly. Un oggetto AssemblyNode contiene l'etichetta del comando che rappresenta, l'indice nel codice (la posizione in cui si trova) ed eventualmente i valori numerici o la label associata in base al tipo di comando.
+
+Per eseguire questo codice (nella classe VirtualMachine) la lista viene ``attraversata'' prendendo uno ad uno gli oggetti AssemblyNode generati, controllando di che comando si tratti tramite l'etichetta ed eseguendo le operazioni
+opportune utilizzando i vari valori che AssemblyNode contiene, se necessario. L'esecuzione termina quando si raggiunge il nodo con l'etichetta ``HALT'', non necessariamente l'ultimo nodo (funzioni e classi sono dichiarate dopo e raggiunte tramite labels, quindi appaiono dopo anche nella lista).
+
+\subsection{Istanziazione}
 
 Quando si crea una nuova instanza con il costruttore ``new ClassName()'', il codice generato (dal nodo ConstructorNode) corrisponde al push dei campi, al push del \textbf{numero} dei campi e all'istruzione \textit{new}. Quest'ultima 
 istruzione si occupa di instanziare l'oggetto, cioè di inserire nell'\textbf{heap} l'indirizzo della dispatch table (vedi dopo) e i campi. Presume che in cima allo stack ci sia l'indirizzo della dispatch table, 
@@ -275,10 +282,25 @@ aggiornando la testa della lista alla posizione seguente dell'ultima allocata.
 
 \section{Dispatch Table}
 
-Per gestire l'ereditarietà con overriding dei metodi
+Per gestire l'ereditarietà con overriding dei metodi è stata utilizzata la tecnica della \textit{dispatch table} (definita nella classe DispatchTable), dove ad ogni classe viene associata la lista
+dei metodi della classe, con gli indirizzi in memoria che puntano al corpo dei metodi. Seguendo l'idea della Symbol Table di avere come entry una classe apposita, la dispatch table è popolata da oggetti DTEntry.
 
-\section{Virtual Machine}
+Una DTEntry è un contenitore per l'identificatore del metodo (il nome) e la sua label nel codice per SVM, la label indica l'inizio del codice del corpo del metodo nel file assembly.
+Perciò, per accedere ad un certo metodo si utilizza l'offset ottenuto durante le fasi precedenti dell'analisi semantica, il quale funziona
+da indice sulla lista dei metodi.
 
-\section{Espressioni Multiple}
+Per ogni classe, si aggiunge la sua dispatch table all'insieme di tutte le dispatch table, in modo tale da averle raggruppate in un unico punto per poi
+inserirle una dopo l'altra nel codice SVM. Al momento della generazione del codice, in sequenza vengono ``trasformate'' in stringhe della forma ``nomeClasse\textunderscore class: labelMetodo1 labelMetodo2'' etc.
+Per accedere ad un certo metodo, in cima allo stack dovrà esserci l'indirizzo alla label ``nomeClasse\textunderscore class:'' e ad esso viene aggiunto l'offset per accedere al metodo corretto. Ad esempio per accedere a ``labelMetodo1'' l'offset sarà 1, per 
+``labelMetodo2'' l'offset sarà 2. Ottenuto l'indirizzo corretto per un metodo specifico, l'istruzione successiva dovrà essere \textit{lm} che si occuperà di inserire nello stack l'indirizzo alla label che delimita l'inizio del corpo del metodo sudetto, utilizzando la label del metodo della dispatch table.
+
+\section{Istruzioni Multiple}
+Come già detto, il compilatore sviluppato permette l'utilizzo di expressions e statements multipli nel corpo di una funzione o nella clausola ``in'' dei \textit{let in}. Questa è stata una 
+scelta di design degli autori per creare un linguaggio più espressivo e più simile ai moderni linguaggi di programmazione. Per aggiungere questa nuova caratteristica sono state affrontate alcune sfide sopratutto 
+nella fase di generazione del codice. 
+
+Un problema in particolare è stato il gestire invocazioni multiple di funzioni o metodi, in quanto invocare funzioni più di una volta ``sporcava'' lo stack lasciando
+valori non più utilizzati che rendeno sbagliati i successivi utilizzi di offset. Questo ha richiesto una gestione dei comandi \textit{pop} dinamica
+in base al numero di invocazioni in una funzione e ad un utilizzo più attento del comando \textit{srv} per restituire (lasciare in seguito nello stack) il valore di ritorno corretto.  
 
 \end{document}

@@ -7,16 +7,16 @@ package codeexecution;
 
 public class DTEntry {
 
-	private String methodID;
+	private String methodId;
     private String methodLabel;
 
-    public DTEntry(String mID, String mLabel) {
-        methodID = mID;
-        methodLabel = mLabel;
+    public DTEntry(String mId, String mLabel) {
+        this.methodId = mId;
+        this.methodLabel = mLabel;
     }
 
-    public String getMethodID() {
-        return methodID;
+    public String getMethodId() {
+        return methodId;
     }
 
     public String getMethodLabel() {

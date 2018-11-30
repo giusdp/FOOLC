@@ -2,7 +2,6 @@ package ast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -262,7 +261,7 @@ public class ClassNode implements Node {
         HashMap<String, String> superClassMethods = new HashMap<>();
         //aggiungo i metodi della superclasse alla hashmap
         for (DTEntry d : dispatchTable) {
-            superClassMethods.put(d.getMethodID(), d.getMethodLabel());
+            superClassMethods.put(d.getMethodId(), d.getMethodLabel());
         }
 
         //contiene i metodi della classe attuale
@@ -278,7 +277,7 @@ public class ClassNode implements Node {
         // ***** OVERRIDE DEI METODI NELLA DISPATCH TABLE *****
         for (int i = 0; i < dispatchTable.size(); i++) {
 
-            String oldMethodID = dispatchTable.get(i).getMethodID();
+            String oldMethodID = dispatchTable.get(i).getMethodId();
 
             String newMethodCode = currentClassMethods.get(oldMethodID);
 
