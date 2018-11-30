@@ -268,11 +268,9 @@ Istruzione usata per il dispatch dinamico, carica in cima allo stack l'indirizzo
 dispatch table della sua classe. Presume che in cima allo stack ci sia l'indirizzo al metodo nella dispatch table, in questo modo può andare a prendere l'indirizzo
 alla label che indica l'inizio del corpo del metodo e inserirlo nello stack.
 
-
 \section{Heap}
-La memoria della virtual machine è gestita come uno stack, ma implementata in Java è in realtà un array di interi chiamato \textit{memory}. 
-Le istanze delle classi, invece, sono gestite con un heap che si traduce nell'usare lo stesso array di interi però gestendo
-gli indici delle prime posizioni dell'array (inoltre se l'ultimo indice dell'heap si incrocia con il puntatore della cima dello stack, significa che la memoria è esaurita).
+La memoria della virtual machine è gestita come uno stack, ma implementata in Java è, in realtà, un array di interi chiamato \textit{memory}. 
+Le istanze delle classi, invece, sono gestite con un heap. Questo si traduce nell'usare lo stesso array di interi però usando le prime posizioni dell'array (inoltre se l'ultima posizione dell'heap si incrocia con il puntatore della cima dello stack, significa che la memoria è esaurita).
 
 In particolare lo heap è costituito dalla classe Heap e dalle sue ``entry'': HeapBlock. 
 Con queste classi si gestiscono le allocazioni delle celle dell'array \textit{memory}. Il funzionamento

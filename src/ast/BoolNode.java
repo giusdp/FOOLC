@@ -32,7 +32,7 @@ public class BoolNode implements Node {
 
   @Override
   public ArrayList<SemanticError> checkSemantics(Environment env) {
-      return new ArrayList<SemanticError>();
+      return new ArrayList<>();
   }
 
   public String codeGeneration() {

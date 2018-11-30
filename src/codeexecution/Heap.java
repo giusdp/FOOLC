@@ -24,19 +24,18 @@ public class Heap {
 
         if (heapSize < size) throw new Exception("HeapError: Heap Overflow");
 
-        HeapBlock res = this.head; //testa del blocco da allocare
+        HeapBlock allocatedHead = this.head; //testa del blocco da allocare
 
-
-        HeapBlock lastItem = head;
+        HeapBlock allocatedLastBlock = head;
         for (int i = 1; i < size; i++) {
-            lastItem = lastItem.next;
+            allocatedLastBlock = allocatedLastBlock.next;
         }
-        this.head = lastItem.next; // sposta opportunamente la testa del heap libero
+        this.head = allocatedLastBlock.next; // sposta opportunamente la testa del heap libero
 
 
-        lastItem.next = null; // L'ultimo elemento restituito deve puntare a null
+        allocatedLastBlock.next = null; // L'ultimo elemento restituito deve puntare a null
         heapSize = heapSize - size;
-        return res; 
+        return allocatedHead;
     }
 
     int getHeadIndex() {

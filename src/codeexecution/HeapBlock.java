@@ -5,7 +5,7 @@ package codeexecution;
  */
 public class HeapBlock {
 
-	HeapBlock next; // contiene il prossimo blocco libero
+    HeapBlock next; // contiene il prossimo blocco libero
 
     private int position; // l'indice di questo blocco
 

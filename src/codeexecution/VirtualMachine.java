@@ -11,9 +11,9 @@ import svm.SVMParser;
  */
 public class VirtualMachine {
 
-    public static boolean debugCodeGen = false;
+    private static boolean debugCodeGen = false;
 
-    public static final int MEMSIZE = 10000;
+    private static final int MEMSIZE = 10000;
 
     private List<AssemblyNode> code;
     private int[] memory = new int[MEMSIZE];
@@ -214,33 +214,33 @@ public class VirtualMachine {
                     if (debugCodeGen) System.out.println("new");
 
                     int dispatchTableAddress = pop();
-                    int fieldNumber = pop();
-                    int[] fieldValues = new int[fieldNumber];
-                    for (int i = 0; i < fieldNumber; ++i) {
+                    int numberOfFields = pop();
+                    int[] fieldValues = new int[numberOfFields];
+                    for (int i = 0; i < numberOfFields; ++i) {
                         fieldValues[i] = pop();
                     }
 
-                    HeapBlock allocatedMemory; // Primo blocco della lista di heap blocks "allocati", con next si accede al
+                    HeapBlock allocatedMemoryHead; // Primo blocco della lista di heap blocks "allocati", con next si accede al
                     // blocco successivo
 
                     // Bisogna allocare memoria per i campi e l'indirizzo alla dispatch table
-                    allocatedMemory = heap.alloc(fieldNumber + 1);
+                    allocatedMemoryHead = heap.alloc(numberOfFields + 1);
 
                     // Si prende la prima posizione per l'array memory della lista di heap blocks
                     // allocati
-                    int heapMemoryStart = allocatedMemory.getPointedPosition();
+                    int heapMemoryStart = allocatedMemoryHead.getPointedPosition();
 
                     // Si inserisce nell'array memory l'indirizzo alla dispatch table alla posizione
                     // getPointedPosition() dell'heapblock attuale (il primo)
                     // ed avanzo al prossimo heap block
-                    setMemory(allocatedMemory.getPointedPosition(), dispatchTableAddress);
-                    allocatedMemory = allocatedMemory.next;
+                    setMemory(allocatedMemoryHead.getPointedPosition(), dispatchTableAddress);
+                    allocatedMemoryHead = allocatedMemoryHead.next;
 
                     // Si inseriscono uno alla volta i campi passati in input, spostandoci uno ad
                     // uno all'heap block successivo
-                    for (int i = 0; i < fieldNumber; i++) {
-                        setMemory(allocatedMemory.getPointedPosition(), fieldValues[i]);
-                        allocatedMemory = allocatedMemory.next;
+                    for (int i = 0; i < numberOfFields; i++) {
+                        setMemory(allocatedMemoryHead.getPointedPosition(), fieldValues[i]);
+                        allocatedMemoryHead = allocatedMemoryHead.next;
                     }
                     // Si fa un push sullo stack della prima posizione puntata all'array memory (da
                     // dove parte la classe nell'heap)

@@ -1,16 +1,1 @@
-class A {
-    int x() {
-        print(3);
-    }
-};
-
-class B extends A {
-    int x(){
-        print(5);
-    }
-};
-
-let
-    A a = new B();
-in
-    a.x();
+print(1);
