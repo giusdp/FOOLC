@@ -79,6 +79,13 @@ public class IfNode implements Node {
             ClassNode elseParent = elseClass.getSuperClass();
 
             // Se hanno un padre in comune allora tutto bene
+            while (elseParent != null){
+
+                if (FOOLlib.isSubtype(t, elseParent.getClassType())) return elseParent.getClassType();
+
+                elseParent = elseParent.getSuperClass();
+            }
+
             while (thenParent != null){
 
                 if (FOOLlib.isSubtype(e, thenParent.getClassType())) return thenParent.getClassType();
@@ -86,12 +93,6 @@ public class IfNode implements Node {
                 thenParent = thenParent.getSuperClass();
             }
 
-            while (elseParent != null){
-
-                if (FOOLlib.isSubtype(t, elseParent.getClassType())) return elseParent.getClassType();
-
-                elseParent = elseParent.getSuperClass();
-            }
         }
 
         // TODO Se t ed e sono di tipo classe, si deve controllare se abbiano una classe base in comune

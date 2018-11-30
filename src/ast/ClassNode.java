@@ -277,14 +277,14 @@ public class ClassNode implements Node {
         // ***** OVERRIDE DEI METODI NELLA DISPATCH TABLE *****
         for (int i = 0; i < dispatchTable.size(); i++) {
 
-            String oldMethodID = dispatchTable.get(i).getMethodId();
+            String oldMethodName = dispatchTable.get(i).getMethodId();
 
-            String newMethodCode = currentClassMethods.get(oldMethodID);
+            String newMethodLabel = currentClassMethods.get(oldMethodName);
 
             // Sovrascrive versioni vecchie di funzioni polimorfiche quando
             // i nomi corrispondono.
-            if (newMethodCode != null) {
-                dispatchTable.set(i, new DTEntry(oldMethodID, newMethodCode));
+            if (newMethodLabel != null) {
+                dispatchTable.set(i, new DTEntry(oldMethodName, newMethodLabel));
             }
         }
 
